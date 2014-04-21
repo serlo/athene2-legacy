@@ -77,7 +77,8 @@ class RepositoryController extends AbstractController implements AdaptableInterf
 
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
-        $repository->checkoutRevision($revision->getId(), 'Approved');
+        $reason     = $this->params()->fromPost('reason', 'Approved');
+        $repository->checkoutRevision($revision->getId(), $reason);
         $this->getEntityManager()->flush();
         return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
@@ -132,8 +133,8 @@ class RepositoryController extends AbstractController implements AdaptableInterf
         }
         $this->assertGranted('entity.revision.trash', $entity);
         $repository = $this->getRepositoryManager()->getRepository($entity);
-
-        $repository->rejectRevision($this->params('revision'), 'Rejected');
+        $reason     = $this->params()->fromPost('reason', 'Rejected');
+        $repository->rejectRevision($this->params('revision'), $reason);
         $this->getEntityManager()->flush();
         return $this->redirect()->toReferer();
     }

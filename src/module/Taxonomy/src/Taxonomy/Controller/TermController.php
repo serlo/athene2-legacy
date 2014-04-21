@@ -17,20 +17,6 @@ use Zend\View\Model\ViewModel;
 
 class TermController extends AbstractController
 {
-    /**
-     * @var \Taxonomy\Form\TermForm
-     */
-    protected $termForm;
-
-    public function __construct(
-        InstanceManagerInterface $instanceManager,
-        TaxonomyManagerInterface $taxonomyManager,
-        TermForm $termForm
-    ) {
-        $this->termForm = $termForm;
-        parent::__construct($instanceManager, $taxonomyManager);
-    }
-
     public function createAction()
     {
         $this->assertGranted('taxonomy.term.create');

@@ -240,8 +240,11 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         return $this->parent;
     }
 
-    public function setParent(TaxonomyTermInterface $parent)
+    public function setParent(TaxonomyTermInterface $parent = null)
     {
+        if(!$parent){
+            return;
+        }
         $this->parent = $parent;
         $parent->getChildren()->add($this);
     }

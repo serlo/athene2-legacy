@@ -12,6 +12,14 @@
     }
 }
 
+body {
+    min-width: $minWidth;
+
+    @media only screen and (min-width: $minWidth) {
+        overflow-x: auto;
+    }
+}
+
 #subject-nav,
 #serlo-menu,
 #page,

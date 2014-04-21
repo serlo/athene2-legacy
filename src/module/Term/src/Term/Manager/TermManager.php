@@ -54,7 +54,7 @@ class TermManager implements TermManagerInterface
 
         if (!is_object($entity)) {
             foreach ($this->terms as $term) {
-                if ($term->getName() == $name) {
+                if ($term->getName() == $name && $term->getInstance() === $instance) {
                     return $term;
                 }
             }

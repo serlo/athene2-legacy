@@ -71,6 +71,10 @@ class TaxonomyManagerListener extends AbstractListener
 
     protected function process(TaxonomyTermInterface $term)
     {
+        if(!$term->hasParent()){
+            return;
+        }
+
         if ($term->getId() === null) {
             $this->getAliasManager()->flush($term);
         }

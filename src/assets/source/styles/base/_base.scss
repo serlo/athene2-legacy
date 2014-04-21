@@ -24,10 +24,6 @@ body {
   @include theme-font(normal);
 }
 
-h1 {
-    font-size: 30px;
-}
-
 .wrap {
     min-height: 100%;
     height: auto !important;
