@@ -33,6 +33,30 @@ return [
                                 'controller' => 'Ads\Controller\AdsController',
                                 'action' => 'adPage'
                             ]
+                        ],
+                        'child_routes' => [
+                            'editabout' => [
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => [
+                                    'route' => '/editabout',
+                                    'defaults' => [
+                                        'controller' => 'Ads\Controller\AdsController',
+                                        'action' => 'editAdPage'
+                                    ]
+                                ]
+                            ],
+                            'setabout' => [
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => [
+                                    'route' => '/setabout',
+                                    'defaults' => [
+                                        'controller' => 'Ads\Controller\AdsController',
+                                        'action' => 'setAbout'
+                                    ]
+                                ]
+                            ]
                         ]
                     ],
                     'add' => [
