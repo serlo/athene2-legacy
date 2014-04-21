@@ -8,10 +8,7 @@
                     <div class="timeline-body">
                         <h4>{{ translate('Start a new discussion') }}</h4>
                         <hr>
-                        {% if forum %}
-                            {{ form().render(form, null) }}
-                        {% else %}
-                        {% endif %}
+                        {{ form().render(form, null) }}
                     </div>
                 </div>
             </li>

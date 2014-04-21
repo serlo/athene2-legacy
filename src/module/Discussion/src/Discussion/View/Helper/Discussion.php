@@ -108,18 +108,24 @@ class Discussion extends AbstractHelper
         return $this->getDiscussionManager()->findDiscussionsOn($object);
     }
 
-    public function getForm($type, $object, $forum = null)
+    public function getForm($type, UuidInterface $object, TaxonomyTermInterface $forum = null)
     {
+        $view = $this->getView();
         switch ($type) {
             case 'discussion':
                 $form = clone $this->discussionForm;
                 if ($forum) {
                     $form->setAttribute(
                         'action',
-                        $this->getView()->url(
+                        $view->url(
                             'discussion/discussion/start',
                             ['on' => $object->getId(), 'forum' => $forum->getId()]
                         )
+                    );
+                } else {
+                    $form->setAttribute(
+                        'data-select-forum-href',
+                        $view->url('discussion/discussion/select/forum', ['on' => $object->getId()])
                     );
                 }
                 return $form;
@@ -128,7 +134,7 @@ class Discussion extends AbstractHelper
                 $form = clone $this->commentForm;
                 $form->setAttribute(
                     'action',
-                    $this->getView()->url(
+                    $view->url(
                         'discussion/discussion/comment',
                         ['discussion' => $object->getId()]
                     )

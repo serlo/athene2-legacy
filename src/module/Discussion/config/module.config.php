@@ -123,6 +123,26 @@ return [
                                     ]
                                 ]
                             ],
+                            'select'        => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/select',
+                                    'defaults' => [
+                                        'controller' => 'Discussion\Controller\DiscussionController'
+                                    ]
+                                ],
+                                'child_routes' => [
+                                    'forum' => [
+                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => [
+                                            'route'    => '/forum/:on',
+                                            'defaults' => [
+                                                'action'     => 'selectForum'
+                                            ]
+                                        ]
+                                    ],
+                                ]
+                            ],
                             'comment' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [

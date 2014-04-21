@@ -1,6 +1,6 @@
 {% set subject = term.findAncestorByTypeName('subject') %}
 <div class="panel">
     <div class="panel-body">
-        {{ discussion(term).findForum([subject.getName(), term.getTaxonomy().getName()]).render() }}
+        {{ discussion(term).render() }}
     </div>
 </div>

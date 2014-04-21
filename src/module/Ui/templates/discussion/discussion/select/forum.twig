@@ -1,0 +1,20 @@
+{% if terms.count() %}
+    <div class="list-group">
+        {% for term in terms %}
+            {% if(term.getTaxonomy().getName() == 'forum-category') %}
+                <div class="list-group-item">
+                    {{ term.getName() }}
+                    {% include 'discussion/discussion/select/forum' with {'terms': term.getChildren()} %}
+                </div>
+            {% else %}
+                <div class="list-group-item">
+                    <button class="pull-right select btn btn-xs btn-default" data-action="{{ url('discussion/discussion/start', {'on': on, 'forum': term.getId}) }}">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    {{ term.getName() }}
+                    {% include 'discussion/discussion/select/forum' with {'terms': term.getChildren()} %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

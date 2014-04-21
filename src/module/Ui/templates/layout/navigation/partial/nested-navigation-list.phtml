@@ -31,7 +31,7 @@ foreach ($this->pages as $page) {
     }
 
     $elements = '';
-    if ($page->get('elements') > 0) {
+    if ($page->get('elements') !== null) {
         $elements = ' data-element-count="' . $page->get('elements') . '"';
     }
 
