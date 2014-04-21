@@ -27,6 +27,10 @@ define(['jquery', 'underscore'], function ($, _) {
         _.each(this.elements, fn);
     };
 
+    function resetHeight () {
+
+    }
+
     function positionElements($elem) {
         var cssProp = {},
             scrollTop = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0),
@@ -37,7 +41,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
         // Case 1: element has more height than window 
         // && Case 2: element height is lower than stickToElements height
-        if (height > windowHeight && height > stickToHeight) {
+        if (height > windowHeight || height > stickToHeight) {
             targetTop = 0;
         } else {
             // Case 2: element has less height than window
@@ -79,6 +83,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
     $(window)
         // .resize(_.throttle(affixOnWindowResize, 300))
+        .scroll(_.debounce(resetHeight, 1000))
         .scroll(affixOnScroll);
 
 
