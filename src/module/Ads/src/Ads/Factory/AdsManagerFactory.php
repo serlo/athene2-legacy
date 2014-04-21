@@ -35,7 +35,8 @@ class AdsManagerFactory implements FactoryInterface
         $entityManager        = $this->getEntityManager($serviceLocator);
         $classResolver        = $this->getClassResolver($serviceLocator);
         $attachmentManager    = $serviceLocator->get('Attachment\Manager\AttachmentManager');
-        $adsManager           = new AdsManager($authorizationService, $attachmentManager, $classResolver, $entityManager);
+        $pageManager = $serviceLocator->get('Page\Manager\PageManager');
+        $adsManager           = new AdsManager($authorizationService, $attachmentManager, $classResolver, $entityManager,$pageManager);
 
         return $adsManager;
     }
