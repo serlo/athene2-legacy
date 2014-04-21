@@ -3,11 +3,11 @@
 @import "base/bootstrap-override";
 @import "sass-bootstrap/lib/bootstrap";
 
+@import "modules/mixins";
+
 @import "base/content_layout";
 @import "base/content";
 
-@import "modules/mixins";
-@import "modules/states";
 @import "modules/alerts";
 @import "modules/bars";
 @import "modules/modes";
@@ -31,5 +31,7 @@
 
 @import "thirdparty/datepicker";
 @import "thirdparty/timeline";
+
+@import "modules/states";
 
 @import "shame";
