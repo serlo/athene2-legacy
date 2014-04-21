@@ -1,4 +1,4 @@
-{% set pages = entity.getChildren('link', 'module-page') %}
+{% set pages = entity.getChildren('link', 'course-page') %}
 <article>
 	<!-- Overview -->
     <section>
@@ -47,9 +47,10 @@
         {% endfor %}
     </section>
     <hr>
+    {% include 'entity/view/partials/license' %}
+    <hr>
     
     <!-- Discussions -->
     <section>
-        {{ entity().renderDiscussions(entity) }}
     </section>
 </article>

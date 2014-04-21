@@ -88,7 +88,7 @@ return [
     'router'          => [
         'routes' => [
             'subject' => [
-                'type'         => 'subject',
+                'type'         => 'Subject',
                 'options'      => [
                     'route'      => '/:subject',
                     'identifier' => 'subject'
@@ -120,7 +120,7 @@ return [
     ],
     'route_manager' =>[
         'invokables' => [
-            'subject' => __NAMESPACE__ . '\Route\SubjectRoute'
+            'Subject' => __NAMESPACE__ . '\Route\SubjectRoute'
         ],
     ],
     'di'              => [

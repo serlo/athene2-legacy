@@ -21,6 +21,8 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\RequestInterface as Request;
+use Instance\Manager\InstanceManagerInterface;
+use Traversable;
 
 class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
 {
@@ -31,7 +33,7 @@ class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
      */
     protected $identifier;
 
-    public function __construct($route, array $constraints = array(), array $defaults = array(), $identifier = '')
+    public function __construct($route, array $constraints, array $defaults, $identifier)
     {
         $this->defaults   = $defaults;
         $this->parts      = $this->parseRouteDefinition($route);
@@ -49,7 +51,7 @@ class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
      */
     public static function factory($options = array())
     {
-        if ($options instanceof \Traversable) {
+        if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         } elseif (!is_array($options)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' expects an array or Traversable set of options');
@@ -75,7 +77,7 @@ class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
     }
 
     /**
-     * @return SubjectManagerInterface
+     * @return InstanceManagerInterface
      */
     public function getInstanceManager()
     {
@@ -93,14 +95,14 @@ class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Match a given request.
-     *
-     * @param  Request $request
-     * @return RouteMatch|null
+     * @param Request $request
+     * @param null    $pathOffset
+     * @param array   $options
+     * @return null|RouteMatch
      */
-    public function match(Request $request)
+    public function match(Request $request, $pathOffset = null, array $options = array())
     {
-        $routeMatch = parent::match($request);
+        $routeMatch = parent::match($request, $pathOffset, $options);
 
         if (!$routeMatch) {
             return null;

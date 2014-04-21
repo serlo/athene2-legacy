@@ -29,10 +29,10 @@ class LicenseForm extends Form
         $inputFilter = new InputFilter('license');
         $this->setInputFilter($inputFilter);
 
-        $this->add((new Text('title'))->setLabel('Title:'));
-        $this->add((new Textarea('content'))->setLabel('Content:'));
-        $this->add((new Url('url'))->setLabel('License url:'));
-        $this->add((new Url('iconHref'))->setLabel('Icon url:'));
+        $this->add((new Text('title'))->setLabel('Title:')->setAttribute('id', 'title'));
+        $this->add((new Textarea('content'))->setLabel('Content:')->setAttribute('id', 'content'));
+        $this->add((new Url('url'))->setLabel('License url:')->setAttribute('id', 'url'));
+        $this->add((new Url('iconHref'))->setLabel('Icon url:')->setAttribute('id', 'iconHref'));
 
         $this->add(
             (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')

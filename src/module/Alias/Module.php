@@ -60,8 +60,7 @@ class Module
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
         $this->registerRoute($e);
-        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 1000);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatch'), 1000);
 
         foreach (self::$listeners as $listener) {
             $sharedEventManager->attachAggregate(
@@ -103,44 +102,6 @@ class Module
         $response->sendHeaders();
         $e->stopPropagation();
         return $response;
-    }
-
-    public function onRender(MvcEvent $e)
-    {
-        $application = $e->getApplication();
-        $response    = $e->getResponse();
-        $request     = $application->getRequest();
-
-        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
-            return;
-        }
-
-        if ($response->getStatusCode() == 404) {
-            /* @var $aliasManager AliasManager */
-            $eventManager    = $application->getEventManager();
-            $serviceManager  = $application->getServiceManager();
-            $aliasManager    = $serviceManager->get('Alias\AliasManager');
-            $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
-            /* @var $uriObject \Zend\Uri\Http */
-            $uriObject = $request->getUri();
-            $uri       = $uriObject->makeRelative('/')->getPath();
-            try {
-                $aliasManager->findSourceByAlias($uri, $instanceManager->getInstanceFromRequest());
-            } catch (Exception $ex) {
-                // We need to be doing this here, because otherwise we mess up the layout in some cases
-                $e->getViewModel()->setTemplate('layout/1-col');
-                return;
-            }
-            $response->setStatusCode(200);
-            $newEvent   = clone $e;
-            $routeMatch = new RouteMatch([
-                'controller' => 'Alias\Controller\AliasController',
-                'action'     => 'forward',
-                'alias'      => $uri
-            ]);
-            $newEvent->setRouteMatch($routeMatch);
-            $eventManager->trigger('dispatch', $newEvent);
-        }
     }
 
     protected function registerRoute(MvcEvent $e)
