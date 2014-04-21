@@ -470,7 +470,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         var usePosition = position.slice(),
             parent = this.getParent(this.findByPosition(usePosition));
 
-        return parent.children || [];
+        return parent ? parent.children || [] : [];
     };
 
     /**
