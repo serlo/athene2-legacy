@@ -6,7 +6,7 @@
     </div>
     <div class="row">
     	<?php  if ($this->ads!=null):foreach ($this->ads as $count => $ad) : ?>
-    	    <div class="col-md-3 col-sm-4 col-xs-12<?php if ($count > 0) : ?> hidden-xs<?php endif; ?>">
+    	    <div class="col-md-4 col-sm-4 col-xs-6<?php if ($count > 1) : ?> hidden-xs<?php endif; ?>">
                 <a class="ad" href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="_blank">
                     <img alt="<?php echo $ad->getTitle();?>" src="<?php echo $ad->getImage()->getLocation();?>" class="img-responsive" />
                     <div class="caption">
