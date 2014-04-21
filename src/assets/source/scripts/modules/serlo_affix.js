@@ -27,10 +27,6 @@ define(['jquery', 'underscore'], function ($, _) {
         _.each(this.elements, fn);
     };
 
-    function resetHeight () {
-
-    }
-
     function positionElements($elem) {
         var cssProp = {},
             scrollTop = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0),
@@ -83,7 +79,6 @@ define(['jquery', 'underscore'], function ($, _) {
 
     $(window)
         // .resize(_.throttle(affixOnWindowResize, 300))
-        .scroll(_.debounce(resetHeight, 1000))
         .scroll(affixOnScroll);
 
 
