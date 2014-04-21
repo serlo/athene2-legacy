@@ -7,4 +7,4 @@ if ($repository) {
     $entity = $this->normalize()->toAnchor($repository);
 }
 $reason = $this->event->getParameter('reason');
-echo sprintf($this->translate('%s checked out a new version of %s: <strong>"%s"</strong>'), $user, $entity, $reason);
+echo sprintf($this->translate('%s checked out a new version of %s: "%s"'), $user, $entity, $reason);

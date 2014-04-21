@@ -18,11 +18,13 @@ use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Instance\Entity\InstanceInterface;
+use Instance\Manager\InstanceManager;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Form\TermForm;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
 use Type\TypeManagerAwareTrait;
@@ -47,10 +49,16 @@ class TaxonomyManager implements TaxonomyManagerInterface
      */
     protected $moduleOptions;
 
+    /**
+     * @var InstanceManager
+     */
+    protected $instanceManager;
+
     public function __construct(
         AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
         ModuleOptions $moduleOptions,
+        InstanceManager $instanceManager,
         ObjectManager $objectManager,
         TypeManagerInterface $typeManager
     ) {
@@ -59,6 +67,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->objectManager = $objectManager;
         $this->typeManager   = $typeManager;
         $this->setAuthorizationService($authorizationService);
+        $this->instanceManager = $instanceManager;
     }
 
     public function associateWith($term, TaxonomyTermAwareInterface $object, $position = null)
@@ -248,7 +257,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
         if (!empty($changeSet)) {
             $this->getEventManager()->trigger('update', $this, ['term' => $term]);
-            if(isset($changeSet['parent'])){
+            if (isset($changeSet['parent'])) {
                 $this->getEventManager()->trigger(
                     'parent.change',
                     $this,
@@ -265,6 +274,25 @@ class TaxonomyManager implements TaxonomyManagerInterface
     }
 
     /**
+     * @param TermForm $termForm
+     * @return TaxonomyTermInterface
+     */
+    public function createRoot(TermForm $termForm)
+    {
+        $instance = $this->instanceManager->getInstanceFromRequest();
+        $termForm->setData(
+            [
+                'instance' => $instance,
+                'term'     => [
+                    'name' => 'root'
+                ],
+                'taxonomy' => $this->findTaxonomyByName('root', $instance)
+            ]
+        );
+        return $this->createTerm($termForm);
+    }
+
+    /**
      * @param TaxonomyTermInterface $object
      * @param FormInterface         $form
      * @return TaxonomyTermInterface
@@ -273,7 +301,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
     protected function bind(TaxonomyTermInterface $object, FormInterface $form)
     {
         if (!$form->isValid()) {
-            throw new RuntimeException(print_r([$form->getMessages(), $form->getData(FormInterface::VALUES_AS_ARRAY)], true));
+            throw new RuntimeException(print_r(
+                [$form->getMessages(), $form->getData(FormInterface::VALUES_AS_ARRAY)],
+                true
+            ));
         }
         $processingForm = clone $form;
         $data           = $form->getData(FormInterface::VALUES_AS_ARRAY);

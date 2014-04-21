@@ -27,11 +27,17 @@
                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#revisionRejectModal">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                {% endif %}
+                {% elseif revision.isTrashed() and isGranted('entity.revision.restore', revision) %}
+                    <a class="btn btn-success btn-sm" href="{{ url('uuid/restore', {'id': revision.getId()}) }}">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </a>
+                {% endif  %}
             </p>
         </footer>
     {% else %}
         {% include 'entity/repository/revision' %}
     {% endif %}
 </article>
-{{ placeholder('modals').append(include('entity/repository/modal-accept')).append(include('entity/repository/modal-reject')) }}
+{% set accept = include('entity/repository/modal-accept') %}
+{% set reject = include('entity/repository/modal-reject') %}
+{{ placeholder('modals').append(accept).append(reject) }}
