@@ -134,8 +134,9 @@
   white-space: nowrap;
 
   .sub-nav-slider {
-    position: relative;
     @include inline-block;
+
+    position: relative;
     width: 100%;
     height: 100%;
 
@@ -156,14 +157,16 @@
       display: block;
       padding: 8px 35px 8px 28px;
 
+      @include theme-font(600);
+
       &:hover, &:active, &:focus {
         background-color: lighten($themeColor, 5%);
       }
-      &:last-child {
-        &:hover, &:active, &:focus {
-          background: $themeColor;
-        }
-      }
+      // &:last-child {
+      //   &:hover, &:active, &:focus {
+      //     background: $themeColor;
+      //   }
+      // }
     }
     &.sub-nav-header > a {
       padding-left: 14px;
@@ -175,29 +178,99 @@
 }
 
 #serlo-side-navigation-breadcrumbs {
-  a {
-    padding: 5px 15px 5px 30px;
+  $parentColor: #006DA7;
+  $siblingsColor: #0D99E4;
+  $arrowWidth: 8px;
 
-    background: $themeColor;
+  position: relative;
+
+  padding-top: 5px;
+  background: $parentColor;
+
+  a {
+    display: block;
+    padding: 8px 15px 8px 30px;
+    
+    @include theme-font(600);
+
+    background: $parentColor;
     //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
 
     color: white;
     font-size: 0.85em;
 
     &:hover, &:active, &:focus {
-      background-color: lighten($themeColor, 5%);
+      background-color: lighten($parentColor, 5%);
     }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -1 * $arrowWidth;
+
+    @include triangle(down, $themeColor, $arrowWidth);
   }
 
   + li {
     margin-top: 2px;
   }
 
-  li:last-child:after {
-    content: ' ';
-    position: absolute;
-    right: -12px;
-    bottom: 1px;
-    @include triangle(right, $themeColor, 12px);
+  > li > ul {
+    position: relative;
+    display: block;
+    padding: 5px 0;
+    background: $siblingsColor;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      margin-left: -1 * $arrowWidth;
+
+      @include triangle(down, $parentColor, $arrowWidth);
+    }
+
+    > li {
+      list-style: none;
+      
+      &.is-active {
+        position: relative;
+        
+        &:after {
+          content: " ";
+          position: absolute;
+          right: -12px;
+          bottom: 4px;
+
+          @include triangle(right, $siblingsColor, 12px);
+        }
+
+        &:hover {
+          &:after {
+            background-color-right: lighten($siblingsColor, 5%);
+          }
+        }
+
+        a {
+          background-color: $siblingsColor;
+
+          &:hover {
+            background-color: lighten($siblingsColor, 5%);
+          }
+        }
+      }
+
+      a {
+        background-color: $siblingsColor;
+        &:hover {
+          background-color: lighten($siblingsColor, 5%);
+        }
+      }
+    }
   }
+
 }
