@@ -10,6 +10,19 @@ $dropdownLinkBackgroundActive: $themeColor;
 
 $alert-border-radius: 0;
 
+
+/* Override Default Breakpoints */
+$screen-xs: $navigationBreakPoint;
+
+// Small screen / tablet
+$screen-sm: $sidebarBreakPoint;
+
+// Medium screen / desktop
+$screen-md: $fullStackBreakPoint;
+
+// Large screen / wide desktop
+$screen-lg: $screen-md;
+
 /* Override Default Grid */
 $gridGutterWidth: 24px;
 $gridColumnWidth: 73px;

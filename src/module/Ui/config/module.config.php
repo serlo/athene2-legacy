@@ -153,7 +153,8 @@ return [
                     ],
                     'styles'         => [
                         'assets'  => [
-                            'styles/main.css'
+                            'styles/main.css',
+                            '../node_modules/athene2-editor/build/styles/content.css'
                         ],
                         'filters' => [
                             'CssRewriteFilter' => [

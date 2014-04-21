@@ -11,7 +11,9 @@
 namespace Ads\Controller;
 
 use Ads\Form\AdForm;
+use Ads\Form\AdPageForm;
 use Attachment\Exception\NoFileSent;
+use Page\Exception\PageNotFoundException;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -19,10 +21,11 @@ use Zend\View\Model\ViewModel;
 class AdsController extends AbstractActionController
 {
     use InstanceManagerAwareTrait;
-    use\Common\Traits\ObjectManagerAwareTrait;
-    use\User\Manager\UserManagerAwareTrait;
-    use\Ads\Manager\AdsManagerAwareTrait;
-    use\Attachment\Manager\AttachmentManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait;
+    use \User\Manager\UserManagerAwareTrait;
+    use \Ads\Manager\AdsManagerAwareTrait;
+    use \Attachment\Manager\AttachmentManagerAwareTrait;
+    use\Page\Manager\PageManagerAwareTrait;
 
     public function indexAction()
     {
@@ -135,20 +138,56 @@ class AdsController extends AbstractActionController
         return $view;
     }
 
-    /*
-    public function setAdPage(){
+    public function editAdPageAction()
+    {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $id = $this->params('id');
-        $this->getAdsManager()->createAdPage()
+        $this->assertGranted('ad.create', $instance);
+        $adPage = $this->getAdsManager()->getAdPage($instance);
+        if (! is_object($adPage)) {
+            $this->redirect()->toRoute('ads/about/setabout');
+        } else {
+            $repository = $adPage->getPageRepository();
+            
+            $this->redirect()->toRoute('page/revision/create', [
+                'page' => $repository->getId(),
+                'revision' => $repository->getCurrentRevision()
+            ]);
+        }
+    }
+
+    public function setAboutAction()
+    {
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $form = new AdPageForm();
+        $this->assertGranted('ad.create', $instance);
         
-    }*/
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            
+            $form->setData($data);
+            if ($form->isValid()) {
+                $array = $form->getData();
+                $adPage = $this->getAdsManager()->setAdPage($instance, $array['id']);
+                $this->getObjectManager()->persist($adPage);
+                $this->getObjectManager()->flush();
+                return $this->redirect()->toRoute('ads');
+            }
+        }
+        
+        $view = new ViewModel([
+            'form' => $form
+        ]);
+        $view->setTemplate('ads/setAdPage');
+        
+        return $view;
+    }
 
     public function adPageAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('ad.get', $instance);
         $adPage = $this->getAdsManager()->getAdPage($instance);
-        if (!is_object($adPage)) {
+        if (! is_object($adPage)) {
             return $this->redirect()->toReferer();
         }
         
