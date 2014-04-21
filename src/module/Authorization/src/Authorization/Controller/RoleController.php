@@ -54,8 +54,6 @@ class RoleController extends AbstractActionController
         $this->assertGranted('authorization.role.grant.permission');
 
         $permissions = $this->getPermissionService()->findAllPermissions();
-        $role        = $this->getRoleService()->getRole($this->params('role'));
-        $permissions = array_diff($permissions, $role->getPermissions()->toArray());
         $instances   = $this->getInstanceManager()->findAllInstances();
         $form        = new PermissionForm($permissions, $instances);
 
