@@ -1,7 +1,6 @@
 <?php
 namespace CacheInvalidator\Listener;
 
-use CacheInvalidator\Listener\AbstractListener;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\Event;
 use CacheInvalidator\Options\CacheOptions;
@@ -23,30 +22,30 @@ class CacheListener extends AbstractSharedListenerAggregate
     public function attachShared(SharedEventManagerInterface $events)
     {
         $classes = $this->cacheOptions->getListens();
+        
+        
         foreach ($classes as $class => $options) {
-            foreach ($options as $event => $storage) {
-                
-                /* @var $storage StorageInterface */
-                $cache = $this->serviceLocator->get($storage);
-                
-                $events->attach($class, $event, function (Event $e) use($class, $options, $cache)
-                {
-                    
-                    if (is_array($storage)) {
-                        foreach ($storage as $key) {
-                            $cache->removeItem($key);
+            foreach ($options as $event => $storages) {
+                $serviceLocator = $this->serviceLocator;
+                $events->attach($class, $event, function(Event $e) use($class, $storages, $serviceLocator){
+                    foreach ($storages as $storagekey => $storage) {
+                        if (is_array($storage)) {
+                            /* @var $cache StorageInterface */
+                            $cache = $serviceLocator->get($storagekey);
+                            foreach ($storage as $concreteStorage => $key) {
+                                $cache->removeItem($key);
+                            }
+                        } else {
+                            /* @var $cache StorageInterface */
+                            $cache = $serviceLocator->get($storage);
+                            $cache->flush();
                         }
-                    } else {
-                        $cache->flush();
                     }
-                }, 1);
+                });
             }
         }
     }
     
-    /*
-     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
-     */
     protected function getMonitoredClass()
     {
         // TODO Auto-generated method stub

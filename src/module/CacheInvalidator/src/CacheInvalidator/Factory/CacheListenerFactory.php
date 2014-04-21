@@ -10,18 +10,16 @@
  */
 namespace CacheInvalidator\Factory;
 
-use CacheInvalidator\Options\CacheOptions;
+use CacheInvalidator\Listener\CacheListener;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class CacheOptionsFactory implements FactoryInterface
+class CacheListenerFactory implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config  = $serviceLocator->get('config');
-        $options = array_key_exists('cache_invalidator', $config) ? $config['cache_invalidator'] : [];
-        $listens = array_key_exists('listen', $options) ? $options['listen'] : [];
-        return new CacheOptions($listens);
+        $instance = new CacheListener($serviceLocator->get('CacheInvalidator\Options\CacheOptions'), $serviceLocator);
+        return $instance;
     }
 }
