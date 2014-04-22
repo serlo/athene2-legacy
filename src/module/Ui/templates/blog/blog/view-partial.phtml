@@ -1,7 +1,7 @@
-<ul class="list-group">
+<div class="list-group">
     <?php /* @var $post \Blog\Entity\PostInterface */ ?>
     <?php foreach($this->posts as $post): ?>
-        <li class="list-group-item">
+        <div class="list-group-item">
     		<article>
     			<header>
     			    <div class="pull-right btn-group">
@@ -17,6 +17,6 @@
     			<hr>
                 <?php echo $this->markdown()->toHtml($post->getContent()); ?>
             </article>
-    	</li>
+    	</div>
     <?php endforeach; ?>
-</ul>
+</div>
