@@ -60,6 +60,7 @@ class SignpostController extends AbstractActionController
         $view = new ViewModel([
             'id'                        => $object->getId(),
             'type'                      => $type,
+            'url'                       => $url,
             '__disableTemplateDebugger' => true
         ]);
 
