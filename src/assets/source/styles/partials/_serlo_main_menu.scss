@@ -178,31 +178,14 @@
 }
 
 #serlo-side-navigation-breadcrumbs {
-  $parentColor: #006DA7;
-  $siblingsColor: #0D99E4;
+  $parentColor: #588EC3;
+  $siblingsColor: #779DC2;
   $arrowWidth: 8px;
 
   position: relative;
 
   padding-top: 5px;
   background: $parentColor;
-
-  a {
-    display: block;
-    padding: 8px 15px 8px 30px;
-    
-    @include theme-font(600);
-
-    background: $parentColor;
-    //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
-
-    color: white;
-    font-size: 0.85em;
-
-    &:hover, &:active, &:focus {
-      background-color: lighten($parentColor, 5%);
-    }
-  }
 
   &:after {
     content: '';
@@ -214,8 +197,48 @@
     @include triangle(down, $themeColor, $arrowWidth);
   }
 
+  > li {
+      a {
+      display: block;
+      padding: 8px 15px 8px 30px;
+      
+      @include theme-font(600);
+
+      background: $parentColor;
+      //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
+
+      color: white;
+      font-size: 0.85em;
+    }
+
+    a:hover,
+    a:active,
+    a:focus,
+    &.is-active a:hover {
+      background-color: $parentColor;
+      text-decoration: underline;
+    }
+  }
+
+  
   + li {
     margin-top: 2px;
+  }
+
+  > li.is-active {
+
+    &:after {
+      content: " ";
+      position: absolute;
+      right: -12px;
+      bottom: 4px;
+
+      @include triangle(right, $parentColor, 12px);
+    }
+
+    > a {
+      background: $parentColor;
+    }
   }
 
   > li > ul {

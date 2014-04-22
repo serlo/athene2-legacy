@@ -108,7 +108,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 self.$el.addClass(self.data.cssClass);
             }
 
-            if (self.data.renderedChildren) {
+            if (self.data.renderedChildren && self.data.renderedChildren.length) {
                 $children = $('<ul>');
 
                 _.each(self.data.renderedChildren, function (child) {
@@ -557,6 +557,11 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
             if (self.options.breadcrumbDepth) {
                 parents = parents.splice(-1 * self.options.breadcrumbDepth);
+            }
+
+            if (!parents.length) {
+                parents = siblings;
+                siblings = [];
             }
 
             if (parents.length) {
