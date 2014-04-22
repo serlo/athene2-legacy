@@ -11,6 +11,7 @@
 namespace User\Controller;
 
 use Instance\Manager\InstanceManagerAwareTrait;
+use User\Exception\UserNotFoundException;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 use ZfcRbac\Exception\UnauthorizedException;
@@ -41,7 +42,17 @@ class UserController extends AbstractUserController
 
     public function profileAction()
     {
-        $user = $this->getUserManager()->getUser($this->params('id'));
+        try {
+            $id   = $this->params('id');
+            if(is_numeric($id)){
+                $user = $this->getUserManager()->getUser($id);
+            } else {
+                $user = $this->getUserManager()->findUserByUsername($id);
+            }
+        } catch (UserNotFoundException $e){
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
         $view = new ViewModel(['user' => $user]);
         $view->setTemplate('user/user/profile');
         return $view;
