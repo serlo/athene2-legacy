@@ -21,7 +21,7 @@ return [
                         'article',
                         'text-exercise',
                         'video',
-                        'module',
+                        'course',
                         'text-exercise-group'
                     ]
                 ],
@@ -43,7 +43,7 @@ return [
                     'allowed_entities' => [
                         'article',
                         'video',
-                        'module',
+                        'course',
                     ]
                 ],
                 'physik' => [
@@ -55,7 +55,7 @@ return [
                         'article',
                         'text-exercise',
                         'video',
-                        'module',
+                        'course',
                         'text-exercise-group'
                     ]
                 ],
@@ -68,7 +68,7 @@ return [
                         'article',
                         'text-exercise',
                         'video',
-                        'module',
+                        'course',
                         'text-exercise-group'
                     ]
                 ]
@@ -83,7 +83,7 @@ return [
                         'article',
                         'text-exercise',
                         'video',
-                        'module',
+                        'course',
                         'text-exercise-group'
                     ]
                 ]

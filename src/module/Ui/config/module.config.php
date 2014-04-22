@@ -111,6 +111,12 @@ return [
                 '@styles',
                 '@editor_styles'
             ],
+            'license/update'                 => [
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ],
             'page/revision/create'           => [
                 '@libs',
                 '@editor_scripts',

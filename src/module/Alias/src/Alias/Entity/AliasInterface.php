@@ -10,9 +10,9 @@
  */
 namespace Alias\Entity;
 
+use DateTime;
 use Instance\Entity\InstanceAwareInterface;
 use Uuid\Entity\UuidInterface;
-use DateTime;
 
 interface AliasInterface extends InstanceAwareInterface
 {
@@ -73,4 +73,10 @@ interface AliasInterface extends InstanceAwareInterface
      * @return DateTime
      */
     public function getTimestamp();
+
+    /**
+     * @param DateTime $timestamp
+     * @return void
+     */
+    public function setTimestamp(DateTime $timestamp);
 }

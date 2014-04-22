@@ -10,11 +10,28 @@
  */
 namespace CacheInvalidator\Options;
 
-
 use Zend\Stdlib\AbstractOptions;
 
 class CacheOptions extends AbstractOptions
 {
+    /**
+     * @var array
+     */
+    protected $listens = [];
 
-    
+    /**
+     * @return array
+     */
+    public function getListens()
+    {
+        return $this->listens;
+    }
+
+    /**
+     * @param array $listens
+     */
+    public function setListens(array $listens)
+    {
+        $this->listens = $listens;
+    }
 }

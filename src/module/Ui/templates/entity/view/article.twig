@@ -4,7 +4,8 @@
         {{ markdown().toHtml(revision.get('content')) | raw }}
     </section>
     <hr>
+    {% include 'entity/view/partials/license' %}
+    <hr>
     <section>
-        {{ entity().renderDiscussions(entity) }}
     </section>
 </article>

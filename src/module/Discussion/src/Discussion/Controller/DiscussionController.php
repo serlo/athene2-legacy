@@ -13,6 +13,7 @@ namespace Discussion\Controller;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\View\Model\ViewModel;
@@ -31,10 +32,19 @@ class DiscussionController extends AbstractController
      */
     protected $discussionForm;
 
-    public function __construct(CommentForm $commentForm, DiscussionForm $discussionForm)
-    {
-        $this->commentForm    = $commentForm;
-        $this->discussionForm = $discussionForm;
+    /**
+     * @var TaxonomyManagerInterface
+     */
+    protected $taxonomyManager;
+
+    public function __construct(
+        CommentForm $commentForm,
+        DiscussionForm $discussionForm,
+        TaxonomyManagerInterface $taxonomyManager
+    ) {
+        $this->commentForm     = $commentForm;
+        $this->discussionForm  = $discussionForm;
+        $this->taxonomyManager = $taxonomyManager;
     }
 
     public function archiveAction()
@@ -44,6 +54,19 @@ class DiscussionController extends AbstractController
         $this->getDiscussionManager()->toggleArchived($this->params('comment'));
         $this->getDiscussionManager()->flush();
         return $this->redirect()->toReferer();
+    }
+
+    public function selectForumAction()
+    {
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $terms    = $this->taxonomyManager->findTaxonomyByName('forum-category', $instance)->getChildren();
+        $view     = new ViewModel([
+            'terms' => $terms,
+            'on'    => $this->params('on')
+        ]);
+        $view->setTerminal(true);
+        $view->setTemplate('discussion/discussion/select/forum');
+        return $view;
     }
 
     public function commentAction()
@@ -103,7 +126,11 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->startDiscussion($form);
                 $this->getDiscussionManager()->flush();
-                return $this->redirect()->toReferer();
+                if(!$this->getRequest()->isXmlHttpRequest()){
+                    return $this->redirect()->toReferer();
+                }
+                $view->setTerminal(true);
+                return $view;
             }
         }
 

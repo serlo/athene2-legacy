@@ -64,42 +64,4 @@ class EntityHelper extends AbstractHelper
             $entity->getType()->getName()
         );
     }
-
-    public function renderDiscussions(EntityInterface $entity, $type = 'subject')
-    {
-        $view    = $this->getView();
-        $uuid    = $entity;
-        $subject = $this->findTaxonomyTermInAncestorOrSelf($entity, $type);
-        $forum   = [$subject->getName(), $entity->getType()->getName()];
-
-        return $view->discussion($uuid)->findForum($forum)->render();
-    }
-
-    protected function findTaxonomyTermInAncestorOrSelf(EntityInterface $entity, $type)
-    {
-        // Check self
-        $subject = $this->findTaxonomyTerm($entity, $type);
-        if ($subject) {
-            return $subject;
-        }
-
-        // Check parents
-        foreach ($entity->getParents('link') as $parent) {
-            $subject = $this->findTaxonomyTerm($parent, $type);
-            if ($subject) {
-                return $subject;
-            }
-        }
-
-        // Last resort: check ancestors
-        foreach ($entity->getParents('link') as $parent) {
-            $subject = $this->findTaxonomyTermInAncestorOrSelf($parent, $type);
-            if ($subject) {
-                return $subject;
-            }
-        }
-
-        // Nothing found
-        throw new Exception\RuntimeException(sprintf('Entity does not have an taxonomy term ancestor "%s"', $type));
-    }
 }

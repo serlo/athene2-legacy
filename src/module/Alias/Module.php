@@ -16,7 +16,6 @@ use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\Http\TreeRouteStack;
-use Zend\Mvc\Router\RouteMatch;
 
 class Module
 {
@@ -60,7 +59,6 @@ class Module
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
         $this->registerRoute($e);
-        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 1000);
 
         foreach (self::$listeners as $listener) {
@@ -90,57 +88,44 @@ class Module
         try {
             $location = $aliasManager->findAliasBySource($uri, $instanceManager->getInstanceFromRequest());
         } catch (Exception $ex) {
-            try {
-                $uri      = $uriClone->makeRelative('/')->getPath();
-                $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
-            } catch (Exception $ex) {
-                return null;
-            }
+            return null;
         }
 
         $response->getHeaders()->addHeaderLine('Location', $location);
-        $response->setStatusCode(302);
+        $response->setStatusCode(301);
         $response->sendHeaders();
         $e->stopPropagation();
         return $response;
     }
 
-    public function onRender(MvcEvent $e)
+    public function onDispatchError(MvcEvent $e)
     {
-        $application = $e->getApplication();
-        $response    = $e->getResponse();
-        $request     = $application->getRequest();
-
+        $application    = $e->getApplication();
+        $response       = $e->getResponse();
+        $request        = $application->getRequest();
+        $serviceManager = $application->getServiceManager();
+        /* @var $aliasManager AliasManagerInterface */
+        $aliasManager    = $serviceManager->get('Alias\AliasManager');
+        $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
         if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
-            return;
+            return null;
         }
 
-        if ($response->getStatusCode() == 404) {
-            /* @var $aliasManager AliasManager */
-            $eventManager    = $application->getEventManager();
-            $serviceManager  = $application->getServiceManager();
-            $aliasManager    = $serviceManager->get('Alias\AliasManager');
-            $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
-            /* @var $uriObject \Zend\Uri\Http */
-            $uriObject = $request->getUri();
-            $uri       = $uriObject->makeRelative('/')->getPath();
-            try {
-                $aliasManager->findSourceByAlias($uri, $instanceManager->getInstanceFromRequest());
-            } catch (Exception $ex) {
-                // We need to be doing this here, because otherwise we mess up the layout in some cases
-                $e->getViewModel()->setTemplate('layout/1-col');
-                return;
-            }
-            $response->setStatusCode(200);
-            $newEvent   = clone $e;
-            $routeMatch = new RouteMatch([
-                'controller' => 'Alias\Controller\AliasController',
-                'action'     => 'forward',
-                'alias'      => $uri
-            ]);
-            $newEvent->setRouteMatch($routeMatch);
-            $eventManager->trigger('dispatch', $newEvent);
+        /* @var $uriClone \Zend\Uri\Http */
+        $uriClone = clone $request->getUri();
+
+        try {
+            $uri      = $uriClone->makeRelative('/')->getPath();
+            $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
+        } catch (Exception $ex) {
+            return null;
         }
+
+        $response->getHeaders()->addHeaderLine('Location', $location);
+        $response->setStatusCode(301);
+        $response->sendHeaders();
+        $e->stopPropagation();
+        return $response;
     }
 
     protected function registerRoute(MvcEvent $e)

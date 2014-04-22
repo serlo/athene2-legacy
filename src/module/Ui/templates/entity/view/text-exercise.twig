@@ -31,7 +31,6 @@
         </div>
     </section>
     <div class="collapse" id="discussions-{{ entity.getId() }}">
-        {{ entity().renderDiscussions(entity) }}
     </div>
     {% if solution %}
         {% include 'entity/view/default' with {'entity': solution} only %}

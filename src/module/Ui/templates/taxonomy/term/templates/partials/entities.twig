@@ -3,12 +3,12 @@
 {% set types = entity().asTypeCollection(entities) %}
 <div>
     {% for i in 0..2 %}
-        {% set type = cycle(['article', 'video', 'module'], i) %}
+        {% set type = cycle(['article', 'video', 'course'], i) %}
         {% if types.get(type) %}
             <div class="row">
             <div class="col-md-12">
                 <h4>
-                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Modules'], i)) }}
+                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Courses'], i)) }}
                 </h4>
                 <hr>
             </div>

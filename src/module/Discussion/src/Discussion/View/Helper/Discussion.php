@@ -85,15 +85,6 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    public function findForum(array $path)
-    {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
-        $term     = $this->getTaxonomyManager()->findTerm($taxonomy, ['root']);
-        $this->setForum($this->iterForums($path, $term));
-        return $this;
-    }
-
     /**
      * @return boolean $archived
      */
@@ -117,25 +108,33 @@ class Discussion extends AbstractHelper
         return $this->getDiscussionManager()->findDiscussionsOn($object);
     }
 
-    public function getForm($type, $object, $forum = null)
+    public function getForm($type, UuidInterface $object, TaxonomyTermInterface $forum = null)
     {
+        $view = $this->getView();
         switch ($type) {
             case 'discussion':
                 $form = clone $this->discussionForm;
-                $form->setAttribute(
-                    'action',
-                    $this->getView()->url(
-                        'discussion/discussion/start',
-                        ['on' => $object->getId(), 'forum' => $forum->getId()]
-                    )
-                );
+                if ($forum) {
+                    $form->setAttribute(
+                        'action',
+                        $view->url(
+                            'discussion/discussion/start',
+                            ['on' => $object->getId(), 'forum' => $forum->getId()]
+                        )
+                    );
+                } else {
+                    $form->setAttribute(
+                        'data-select-forum-href',
+                        $view->url('discussion/discussion/select/forum', ['on' => $object->getId()])
+                    );
+                }
                 return $form;
                 break;
             case 'comment':
                 $form = clone $this->commentForm;
                 $form->setAttribute(
                     'action',
-                    $this->getView()->url(
+                    $view->url(
                         'discussion/discussion/comment',
                         ['discussion' => $object->getId()]
                     )
@@ -187,62 +186,12 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    protected function createForums(array $forums, TaxonomyTermInterface $current)
-    {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
-
-        foreach ($forums as $forum) {
-            $data = [
-                'term'     => [
-                    'name' => $forum
-                ],
-                'parent'   => $current,
-                'taxonomy' => $taxonomy
-            ];
-            $key  = hash('sha512', serialize($data));
-            if (!isset($this->inMemory[$key])) {
-                $form = clone $this->termForm;
-                $form->setData($data);
-                $current              = $this->getTaxonomyManager()->createTerm($form);
-                $this->inMemory[$key] = $current;
-                unset($form);
-            }
-        }
-        $this->getTaxonomyManager()->flush($current);
-        return $this->getTaxonomyManager()->getTerm($current);
-    }
-
     protected function getDefaultConfig()
     {
         return [
-            'template'       => 'discussion/discussions',
-            'root'           => 'root',
-            'forum'          => 'forum'
+            'template' => 'discussion/discussions',
+            'root'     => 'root',
+            'forum'    => 'forum'
         ];
-    }
-
-    /**
-     * @param TaxonomyTermInterface[] $forums
-     * @param TaxonomyTermInterface   $current
-     * @return TaxonomyTermInterface
-     */
-    protected function iterForums(array $forums, TaxonomyTermInterface $current)
-    {
-        if (empty($forums)) {
-            return $current;
-        }
-
-        /* @var TaxonomyTermInterface $current */
-        $forum    = current($forums);
-        $children = $current->findChildrenByTaxonomyNames(['forum']);
-
-        foreach ($children as $child) {
-            if ($child->getName() == $forum || $child->getSlug() == $forum) {
-                array_shift($forums);
-                return $this->iterForums($forums, $child);
-            }
-        }
-        return $this->createForums($forums, $current);
     }
 }

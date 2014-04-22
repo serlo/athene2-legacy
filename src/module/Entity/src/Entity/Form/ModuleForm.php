@@ -20,7 +20,7 @@ class ModuleForm extends Form
 
     function __construct()
     {
-        parent::__construct('module');
+        parent::__construct('course');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
@@ -36,7 +36,7 @@ class ModuleForm extends Form
         );
         $this->add(new Controls());
 
-        $inputFilter = new InputFilter('module');
+        $inputFilter = new InputFilter('course');
         $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'StripTags']]]);
         $inputFilter->add(['name' => 'reasoning', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);

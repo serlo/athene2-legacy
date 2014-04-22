@@ -46,12 +46,19 @@ return [
     ],
     'taxonomy'        => [
         'types' => [
+            'forum-category' => [
+                'allowed_parents'      => [
+                    'root'
+                ],
+                'rootable'             => false
+            ],
             'forum' => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
                 ],
                 'allowed_parents'      => [
                     'forum',
+                    'forum-category',
                     'root'
                 ],
                 'rootable'             => false
@@ -114,6 +121,26 @@ return [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'start'
                                     ]
+                                ]
+                            ],
+                            'select'        => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/select',
+                                    'defaults' => [
+                                        'controller' => 'Discussion\Controller\DiscussionController'
+                                    ]
+                                ],
+                                'child_routes' => [
+                                    'forum' => [
+                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => [
+                                            'route'    => '/forum/:on',
+                                            'defaults' => [
+                                                'action'     => 'selectForum'
+                                            ]
+                                        ]
+                                    ],
                                 ]
                             ],
                             'comment' => [

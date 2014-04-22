@@ -10,11 +10,12 @@
  */
 namespace Alias\Controller;
 
+use Alias\Exception\AliasNotFoundException;
+use Alias\Exception\CanonicalUrlNotFoundException;
 use Alias;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ArrayUtils;
-use Zend\Mvc\ApplicationInterface;
 
 class AliasController extends AbstractActionController
 {
@@ -31,8 +32,16 @@ class AliasController extends AbstractActionController
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         try {
-            $source = $this->getAliasManager()->findSourceByAlias($alias, $instance);
-        } catch (Alias\Exception\AliasNotFoundException $e) {
+            $location = $this->aliasManager->findCanonicalAlias($alias, $instance);
+            $this->redirect()->toUrl($location);
+            $this->getResponse()->setStatusCode(301);
+            return false;
+        } catch (CanonicalUrlNotFoundException $e) {
+        }
+
+        try {
+            $source = $this->aliasManager->findSourceByAlias($alias, $instance);
+        } catch (AliasNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }

@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term` (
   `instance_id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uq_term_name_language` (`name` ASC),
+  UNIQUE INDEX `uq_term_name_language` (`name` ASC, `instance_id` ASC),
   INDEX `fk_term_language1_idx` (`instance_id` ASC),
   CONSTRAINT `fk_term_language1`
     FOREIGN KEY (`instance_id`)
@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy` (
   INDEX `fk_term_taxonomy_term1_idx` (`term_id` ASC),
   INDEX `fk_term_taxonomy_term_taxonomy1_idx` (`parent_id` ASC),
   INDEX `fk_term_taxonomy_uuid_idx` (`id` ASC),
-  INDEX `uq_term_taxonomy_unique` (`term_id` ASC, `parent_id` ASC, `taxonomy_id` ASC),
+  INDEX `uq_term_taxonomy_unique` (`term_id` ASC, `parent_id` ASC),
   CONSTRAINT `fk_term_taxonomy_taxonomy1`
     FOREIGN KEY (`taxonomy_id`)
     REFERENCES `serlo`.`taxonomy` (`id`)
@@ -1466,6 +1466,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`session` (
 ENGINE = InnoDB;
 
 
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 -- -----------------------------------------------------
 -- Data for table `serlo`.`language`
 -- -----------------------------------------------------
@@ -2205,7 +2209,3 @@ INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (11, 10);
 
 COMMIT;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

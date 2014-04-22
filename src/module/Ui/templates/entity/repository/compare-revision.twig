@@ -40,4 +40,4 @@
 </article>
 {% set accept = include('entity/repository/modal-accept') %}
 {% set reject = include('entity/repository/modal-reject') %}
-{{ placeholder('modals').append(accept).append(reject) }}
+{% set waste = placeholder('modals').append(accept).append(reject) %}
