@@ -56,16 +56,6 @@ class Alias implements AliasInterface
         $this->timestamp = new DateTime;
     }
 
-    public function getObject()
-    {
-        return $this->uuid;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
     public function getAlias()
     {
         return $this->alias;
@@ -74,6 +64,16 @@ class Alias implements AliasInterface
     public function setAlias($alias)
     {
         $this->alias = $alias;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getObject()
+    {
+        return $this->uuid;
     }
 
     public function getSource()
@@ -86,16 +86,21 @@ class Alias implements AliasInterface
         $this->source = $source;
     }
 
-    public function setObject(UuidInterface $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
     /**
      * @return DateTime
      */
     public function getTimestamp()
     {
         return $this->timestamp;
+    }
+
+    public function setTimestamp(DateTime $timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
+
+    public function setObject(UuidInterface $uuid)
+    {
+        $this->uuid = $uuid;
     }
 }

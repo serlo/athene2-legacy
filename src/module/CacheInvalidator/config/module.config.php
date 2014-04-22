@@ -12,26 +12,42 @@
 namespace CacheInvalidator;
 
 return [
-    'service_manager' => [
+    'service_manager'   => [
         'factories' => [
             __NAMESPACE__ . '\Listener\CacheListener' => __NAMESPACE__ . '\Factory\CacheListenerFactory',
-            __NAMESPACE__ . '\Options\CacheOptions' => __NAMESPACE__ . '\Factory\CacheOptionsFactory'
+            __NAMESPACE__ . '\Options\CacheOptions'   => __NAMESPACE__ . '\Factory\CacheOptionsFactory'
         ]
     ],
     'cache_invalidator' => [
         'listens' => [
-            'Taxonomy\Manager\TaxonomyManager' => [ // Die Klasse mit dem EventManager
-                'create' => [ // Das Event
-                    'Navigation\Storage\Storage',
-                    'Navigation\Storage\NavigationHelperStorage' // Der gesamte storage wird resettet
+            'Taxonomy\Manager\TaxonomyManager' => [
+                'create' => [
+                    'Navigation\Storage\Storage'
                 ],
-                'update' => [ // Das Event
-                    'Navigation\Storage\Storage',
-                    'Navigation\Storage\NavigationHelperStorage' // Der gesamte storage wird resettet
+                'update' => [
+                    'Navigation\Storage\Storage'
                 ]
+            ],
+            'Navigation\Manager\NavigationManager' => [
+                'page.create' => [
+                    'Navigation\Storage\Storage'
+                ],
+                'page.update' => [
+                    'Navigation\Storage\Storage'
+                ],
+                'page.remove' => [
+                    'Navigation\Storage\Storage'
+                ],
+                'parameter.create' => [
+                    'Navigation\Storage\Storage'
+                ],
+                'parameter.update' => [
+                    'Navigation\Storage\Storage'
+                ],
+                'parameter.remove' => [
+                    'Navigation\Storage\Storage'
+                ],
             ]
         ]
     ]
-]
-
-;
+];

@@ -16,7 +16,6 @@ use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\Http\TreeRouteStack;
-use Zend\Mvc\Router\RouteMatch;
 
 class Module
 {
@@ -60,7 +59,7 @@ class Module
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
         $this->registerRoute($e);
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatch'), 1000);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 1000);
 
         foreach (self::$listeners as $listener) {
             $sharedEventManager->attachAggregate(
@@ -89,16 +88,41 @@ class Module
         try {
             $location = $aliasManager->findAliasBySource($uri, $instanceManager->getInstanceFromRequest());
         } catch (Exception $ex) {
-            try {
-                $uri      = $uriClone->makeRelative('/')->getPath();
-                $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
-            } catch (Exception $ex) {
-                return null;
-            }
+            return null;
         }
 
         $response->getHeaders()->addHeaderLine('Location', $location);
-        $response->setStatusCode(302);
+        $response->setStatusCode(301);
+        $response->sendHeaders();
+        $e->stopPropagation();
+        return $response;
+    }
+
+    public function onDispatchError(MvcEvent $e)
+    {
+        $application    = $e->getApplication();
+        $response       = $e->getResponse();
+        $request        = $application->getRequest();
+        $serviceManager = $application->getServiceManager();
+        /* @var $aliasManager AliasManagerInterface */
+        $aliasManager    = $serviceManager->get('Alias\AliasManager');
+        $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
+            return null;
+        }
+
+        /* @var $uriClone \Zend\Uri\Http */
+        $uriClone = clone $request->getUri();
+
+        try {
+            $uri      = $uriClone->makeRelative('/')->getPath();
+            $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
+        } catch (Exception $ex) {
+            return null;
+        }
+
+        $response->getHeaders()->addHeaderLine('Location', $location);
+        $response->setStatusCode(301);
         $response->sendHeaders();
         $e->stopPropagation();
         return $response;

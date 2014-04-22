@@ -10,12 +10,14 @@
  */
 namespace Alias;
 
+use Alias\Entity\AliasInterface;
 use Alias\Exception;
 use Alias\Options\ManagerOptions;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Filter\Slugify;
 use Common\Traits;
+use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Token\TokenizerAwareTrait;
@@ -24,7 +26,6 @@ use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Mvc\Router\RouteInterface;
-use Alias\Entity\AliasInterface;
 
 class AliasManager implements AliasManagerInterface
 {
@@ -118,6 +119,9 @@ class AliasManager implements AliasManagerInterface
         $aliases = $this->findAliases($alias);
         foreach ($aliases as $entity) {
             if ($entity->getObject() === $uuid) {
+                // Alias exists and its the same object -> update timestamp
+                $entity->setTimestamp(new DateTime());
+                $this->objectManager->persist($entity);
                 return $entity;
             } elseif ($entity->getObject() !== $uuid) {
                 $useFallback = true;
@@ -146,7 +150,7 @@ class AliasManager implements AliasManagerInterface
     {
         /* @var $entity Entity\AliasInterface */
         $criteria = ['uuid' => $uuid->getId()];
-        $order    = ['id' => 'desc'];
+        $order    = ['timestamp' => 'desc'];
         $entity   = $this->getAliasRepository()->findOneBy($criteria, $order);
 
         if (!is_object($entity)) {

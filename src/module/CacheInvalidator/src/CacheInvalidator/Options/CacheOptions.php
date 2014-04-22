@@ -14,24 +14,24 @@ use Zend\Stdlib\AbstractOptions;
 
 class CacheOptions extends AbstractOptions
 {
-    
+    /**
+     * @var array
+     */
     protected $listens = [];
-    
-	/**
-     * @return the $listens
+
+    /**
+     * @return array
      */
     public function getListens()
     {
         return $this->listens;
     }
 
-	/**
-     * @param multitype: $listens
+    /**
+     * @param array $listens
      */
-    public function setListens($listens)
+    public function setListens(array $listens)
     {
         $this->listens = $listens;
     }
-
-    
 }

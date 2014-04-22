@@ -16,7 +16,9 @@ define(['jquery', 'translator'], function ($, t) {
 
             $('button.select').click(function () {
                 $that.unbind('submit', selectForum);
-                var href = $(this).data('action');
+                var $this = $(this),
+                    href = $this.data('action');
+                $this.button('loading');
                 $.ajax({
                     url: href,
                     type: 'POST',
