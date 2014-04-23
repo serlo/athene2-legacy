@@ -15,6 +15,7 @@
         </div>
     </section>
     <div class="collapse" id="discussions-{{ entity.getId() }}">
+        {{ discussion(entity).render() }}
     </div>
     {% set index = 0 %}
     {% for child in entity.getChildren('link', 'grouped-text-exercise') if not child.isTrashed() and child.hasCurrentRevision() %}
