@@ -34,7 +34,7 @@ define(['jquery', 'translator'], function ($, t) {
     ForumSelect = function () {
         return $(this).each(function () {
             // Edit mode toggle
-            if ($(this).data('select-forum-href').length) {
+            if ($(this).data('select-forum-href')) {
                 $(this).submit(selectForum);
             }
         });
