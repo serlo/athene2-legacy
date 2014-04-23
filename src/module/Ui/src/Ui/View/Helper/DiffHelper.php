@@ -21,6 +21,8 @@ class DiffHelper extends AbstractHelper
 
     function html($old, $new)
     {
+        $old = strip_tags($old);
+        $new = strip_tags($new);
         $diff = $this->text(explode(' ', $old), explode(' ', $new));
         $ret  = '';
         foreach ($diff as $k) {
