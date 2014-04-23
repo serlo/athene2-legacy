@@ -89,7 +89,7 @@ class AliasManager implements AliasManagerInterface
         return $this->createAlias($source, $alias, $aliasFallback, $object, $instance);
     }
 
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance)
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $object, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -113,24 +113,11 @@ class AliasManager implements AliasManagerInterface
             ));
         }
 
-        $alias       = $this->slugify($alias);
-        $useFallback = false;
+        $alias = $this->findUniqueAlias($alias, $aliasFallback, $object);
 
-        $aliases = $this->findAliases($alias);
-        foreach ($aliases as $entity) {
-            if ($entity->getObject() === $uuid) {
-                // Alias exists and its the same object -> update timestamp
-                $entity->setTimestamp(new DateTime());
-                $this->objectManager->persist($entity);
-                return $entity;
-            } elseif ($entity->getObject() !== $uuid) {
-                $useFallback = true;
-                break;
-            }
-        }
-
-        if ($useFallback) {
-            $alias = $aliasFallback;
+        if($alias instanceof AliasInterface){
+            // Found existing alias, no need to create new one
+            return $alias;
         }
 
         /* @var $class Entity\AliasInterface */
@@ -138,7 +125,7 @@ class AliasManager implements AliasManagerInterface
 
         $class->setSource($source);
         $class->setInstance($instance);
-        $class->setObject($uuid);
+        $class->setObject($object);
         $class->setAlias($alias);
         $this->getObjectManager()->persist($class);
         $this->inMemoryAliases[] = $class;
@@ -255,7 +242,7 @@ class AliasManager implements AliasManagerInterface
 
     public function flush($object = null)
     {
-        if($object === null){
+        if ($object === null) {
             $this->inMemoryAliases = [];
         }
         $this->getObjectManager()->flush($object);
@@ -289,15 +276,29 @@ class AliasManager implements AliasManagerInterface
         $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria);
 
         $inMemory = [];
-        foreach($this->inMemoryAliases as $memoryAlias){
-            if($memoryAlias->getAlias() == $alias){
+        foreach ($this->inMemoryAliases as $memoryAlias) {
+            if ($memoryAlias->getAlias() == $alias) {
                 $inMemory[] = $memoryAlias;
             }
         }
 
-        $aliases = array_merge($aliases, $inMemory);
+        return array_merge($aliases, $inMemory);
+    }
 
-        return $aliases;
+    protected function findUniqueAlias($alias, $fallback, UuidInterface $object)
+    {
+        $alias   = $this->slugify($alias);
+        $aliases = $this->findAliases($alias);
+        foreach ($aliases as $entity) {
+            if ($entity->getObject() === $object) {
+                // Alias exists and its the same object -> update timestamp
+                $entity->setTimestamp(new DateTime());
+                $this->objectManager->persist($entity);
+                return $entity;
+            }
+            return $this->findUniqueAlias($fallback, $fallback . '-' . uniqid(), $object);
+        }
+        return $alias;
     }
 
     protected function getAliasRepository()

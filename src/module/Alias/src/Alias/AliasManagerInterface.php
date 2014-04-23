@@ -30,11 +30,11 @@ interface AliasManagerInterface extends Flushable
      * @param                   $source
      * @param                   $alias
      * @param                   $aliasFallback
-     * @param UuidInterface     $uuid
+     * @param UuidInterface     $object
      * @param InstanceInterface $instance
      * @return AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $object, InstanceInterface $instance);
 
     /**
      * @param UuidInterface $uuid
