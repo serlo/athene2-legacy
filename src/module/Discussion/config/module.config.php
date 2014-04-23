@@ -48,7 +48,8 @@ return [
         'types' => [
             'forum-category' => [
                 'allowed_parents'      => [
-                    'root'
+                    'root',
+                    'forum-category'
                 ],
                 'rootable'             => false
             ],

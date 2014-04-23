@@ -1,7 +1,7 @@
 {% set id = random(100000) %}
 {% if terms.count() %}
     <div class="panel-group" id="fs{{ id }}">
-        {% for term in terms %}
+        {% for term in terms if not term.isTrashed() %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">

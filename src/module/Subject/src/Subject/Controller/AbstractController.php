@@ -25,19 +25,20 @@ class AbstractController extends AbstractActionController
      */
     public function getSubject($id = null)
     {
-        if ($id === null) {
-            $subject = $this->params()->fromRoute('subject');
+        $subject = $id ? : $this->params()->fromRoute('subject');
 
-            return $this->getSubjectManager()->findSubjectByString(
-                $subject,
-                $this->getInstanceManager()->getInstanceFromRequest()
-            );
-        } else {
+        if (is_numeric($subject)) {
             return $this->getSubjectManager()->getSubject($id);
         }
+
+        return $this->getSubjectManager()->findSubjectByString(
+            $subject,
+            $this->getInstanceManager()->getInstanceFromRequest()
+        );
     }
 
-    public function getTerm($id = null){
+    public function getTerm($id = null)
+    {
         $id = $this->params()->fromRoute('id', $id);
         return $this->taxonomyManager->getTerm($id);
     }

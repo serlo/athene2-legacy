@@ -34,7 +34,7 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this->adapter;
     }
 
-    public function setAdaptee(AdaptableInterface $adapter)
+    public function setAdaptee($adapter)
     {
         if (!$this->isValidController($adapter)) {
             throw new RuntimEexception(sprintf('Invalid controller type'));

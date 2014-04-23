@@ -39,6 +39,10 @@ return [
                         [
                             'controller' => 'Entity\Controller\RepositoryController',
                             'action'     => 'compare'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\TaxonomyController',
+                            'action'     => 'update'
                         ]
                     ]
                 ],
@@ -48,6 +52,15 @@ return [
                         [
                             'controller' => 'Taxonomy\Controller\TermController',
                             'action'     => 'organize'
+                        ],
+                    ]
+                ],
+                [
+                    'adapter'     => __NAMESPACE__ . '\Adapter\SubjectControllerAdapter',
+                    'controllers' => [
+                        [
+                            'controller' => 'Subject\Controller\EntityController',
+                            'action'     => 'unrevised'
                         ],
                     ]
                 ]

@@ -10,7 +10,6 @@
  */
 namespace Taxonomy\Controller;
 
-use Contexter\Adapter\AdaptableInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
@@ -19,7 +18,7 @@ use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 
-class AbstractController extends AbstractActionController implements AdaptableInterface
+class AbstractController extends AbstractActionController
 {
     use TaxonomyManagerAwareTrait;
     use InstanceManagerAwareTrait;
@@ -34,8 +33,11 @@ class AbstractController extends AbstractActionController implements AdaptableIn
      * @param TaxonomyManagerInterface $taxonomyManager
      * @param TermForm                 $termForm
      */
-    public function __construct(InstanceManagerInterface $instanceManager, TaxonomyManagerInterface $taxonomyManager, TermForm $termForm)
-    {
+    public function __construct(
+        InstanceManagerInterface $instanceManager,
+        TaxonomyManagerInterface $taxonomyManager,
+        TermForm $termForm
+    ) {
         $this->instanceManager = $instanceManager;
         $this->taxonomyManager = $taxonomyManager;
         $this->termForm        = $termForm;
