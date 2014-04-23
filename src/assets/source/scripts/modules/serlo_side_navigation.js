@@ -218,9 +218,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 } else {
                     elementCount = parentData.$li.data('element-count');
                     if (parentData.url !== '' && parentData.url !== '#' && typeof elementCount !== "undefined") {
-                        msg = t('Show content for \"%s\"', parentData.title);
+                        msg = t('Show overview');
+
                         if (elementCount > 0) {
-                            msg = t('Show %d contents for \"%s\"', elementCount, parentData.title);
+                            msg = t('Show %d contents for "%s"', elementCount, parentData.title);
                         }
 
                         parentLink = new MenuItem($.extend({}, parentData, {
