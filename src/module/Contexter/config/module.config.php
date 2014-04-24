@@ -47,12 +47,37 @@ return [
                     ]
                 ],
                 [
+                    'adapter'     => __NAMESPACE__ . '\Adapter\RelatedContentControllerAdapter',
+                    'controllers' => [
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'manage'
+                        ],
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'addInternal'
+                        ],
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'addExternal'
+                        ],
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'addCategory'
+                        ],
+                    ]
+                ],
+                [
                     'adapter'     => __NAMESPACE__ . '\Adapter\TaxonomyTermControllerAdapter',
                     'controllers' => [
                         [
                             'controller' => 'Taxonomy\Controller\TermController',
                             'action'     => 'organize'
                         ],
+                        [
+                            'controller' => 'Taxonomy\Controller\TermController',
+                            'action'     => 'orderAssociated'
+                        ]
                     ]
                 ],
                 [

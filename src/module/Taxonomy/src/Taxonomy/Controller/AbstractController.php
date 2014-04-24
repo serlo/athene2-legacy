@@ -49,8 +49,8 @@ class AbstractController extends AbstractActionController
      */
     public function getTerm($id = null)
     {
-        $id = $this->params('id', $id);
-        $id = $this->params('term', $id);
+        $id = $id ? : $this->params('id', $id);
+        $id = $id ? : $this->params('term', $id);
         if ($id === null) {
             $instance = $this->getInstanceManager()->getInstanceFromRequest();
             $root     = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance)->getChildren()->first();
@@ -59,8 +59,7 @@ class AbstractController extends AbstractActionController
                 $this->getTaxonomyManager()->flush();
             }
             return $root;
-        } else {
-            return $this->getTaxonomyManager()->getTerm($id);
         }
+        return $this->getTaxonomyManager()->getTerm($id);
     }
 }

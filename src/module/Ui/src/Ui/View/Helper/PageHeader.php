@@ -66,6 +66,14 @@ class PageHeader extends AbstractHelper
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
+
+    /**
      * @param string $string
      * @return $this
      */

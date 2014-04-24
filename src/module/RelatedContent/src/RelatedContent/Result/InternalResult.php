@@ -43,17 +43,11 @@ class InternalResult extends AbstractResult
         return 'internal';
     }
 
-    /*
-     * (non-PHPdoc) @see \Related\Result\ResultInterface::getTitle()
-     */
     public function getTitle()
     {
         return $this->getObject()->getTitle();
     }
 
-    /*
-     * (non-PHPdoc) @see \Related\Result\ResultInterface::getUrl()
-     */
     public function getUrl()
     {
         return $this->getRouter()->assemble(
@@ -61,7 +55,7 @@ class InternalResult extends AbstractResult
                 'object' => $this->getObject()->getReference()->getId()
             ],
             [
-                'name' => 'normalizer/signpost'
+                'name' => 'get/uuid'
             ]
         );
     }

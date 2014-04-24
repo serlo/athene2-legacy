@@ -59,7 +59,7 @@ class Module
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
         $this->registerRoute($e);
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 1000);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), -1000);
 
         foreach (self::$listeners as $listener) {
             $sharedEventManager->attachAggregate(

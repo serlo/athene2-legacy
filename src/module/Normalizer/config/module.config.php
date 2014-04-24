@@ -82,7 +82,7 @@ return [
                             'route'    => '/ref/:object',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\SignpostController',
-                                'action'     => 'index'
+                                'action'     => 'ref'
                             ]
                         ]
                     ]

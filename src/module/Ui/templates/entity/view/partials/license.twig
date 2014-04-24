@@ -1,9 +1,9 @@
 <section class="row">
-    <div class="col-md-10">
+    <div class="col-xs-10">
         {{ entity.getLicense().getTitle() }}
         <a href="{{ url('license/detail', {'id': entity.getLicense().getId()}) }}">{{ translate('What is that?') }}</a>
     </div>
-    <div class="col-md-2">
-        <a href="{{ entity.getLicense().getUrl() }}" rel=license"><img alt="{{ entity.getLicense().getTitle() }}" src="{{ entity.getLicense().getIconHref() }}"></a>
+    <div class="col-xs-2">
+        <a class="pull-right" href="{{ entity.getLicense().getUrl() }}" rel="license"><img alt="{{ entity.getLicense().getTitle() }}" src="{{ entity.getLicense().getIconHref() }}"></a>
     </div>
 </section>

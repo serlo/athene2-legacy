@@ -10,9 +10,6 @@
  */
 namespace Taxonomy\Controller;
 
-use Instance\Manager\InstanceManagerInterface;
-use Taxonomy\Form\TermForm;
-use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\View\Model\ViewModel;
 
 class TermController extends AbstractController
@@ -97,8 +94,7 @@ class TermController extends AbstractController
 
     public function updateAction()
     {
-        $id   = $this->params('id');
-        $term = $this->getTerm($id);
+        $term = $this->getTerm();
         $form = $this->termForm;
         $this->assertGranted('taxonomy.term.update', $term);
         $form->bind($term);

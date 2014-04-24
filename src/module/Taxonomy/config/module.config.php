@@ -130,7 +130,7 @@ return [
                             'organize'        => [
                                 'type'    => 'Segment',
                                 'options' => [
-                                    'route'    => '/organize/:id',
+                                    'route'    => '/organize/:term',
                                     'defaults' => [
                                         'action' => 'organize'
                                     ]
