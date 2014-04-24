@@ -87,6 +87,28 @@ return [
                         ]
                     ]
                 ]
+            ],
+            'uuid'       => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route' => '/uuid'
+                ],
+                'child_routes' => [
+                    'get' => [
+                        'type'     => 'Zend\Mvc\Router\Http\Segment',
+                        'priority' => -9999,
+                        'options'  => [
+                            'route'       => '/:uuid',
+                            'defaults'    => [
+                                'controller' => __NAMESPACE__ . '\Controller\SignpostController',
+                                'action'     => 'index'
+                            ],
+                            'constraints' => [
+                                'alias' => '[0-9]+'
+                            ],
+                        ]
+                    ]
+                ]
             ]
         ]
     ]

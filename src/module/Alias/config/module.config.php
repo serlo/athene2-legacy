@@ -33,6 +33,24 @@ return [
     'class_resolver'  => [
         __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
     ],
+    'router'          => [
+        'routes' => [
+            'alias' => [
+                'type'     => 'Common\Router\Slashable',
+                'priority' => -10000,
+                'options'  => [
+                    'route'       => '/:alias',
+                    'defaults'    => [
+                        'controller' => 'Alias\Controller\AliasController',
+                        'action'     => 'forward'
+                    ],
+                    'constraints' => [
+                        'alias' => '(.)+'
+                    ],
+                ]
+            ],
+        ]
+    ],
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Options\ManagerOptions'             => __NAMESPACE__ . '\Factory\ManagerOptionsFactory',
@@ -85,7 +103,7 @@ return [
     ],
     'view_helpers'    => [
         'factories' => [
-            'url' => __NAMESPACE__ . '\Factory\UrlHelperFactory',
+            'url'   => __NAMESPACE__ . '\Factory\UrlHelperFactory',
             'alias' => __NAMESPACE__ . '\Factory\AliasHelperFactory'
         ]
     ]

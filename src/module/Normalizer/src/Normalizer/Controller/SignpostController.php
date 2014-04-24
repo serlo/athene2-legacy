@@ -22,8 +22,8 @@ class SignpostController extends AbstractActionController
     use NormalizerAwareTrait, UuidManagerAwareTrait;
 
     public function refAction(){
-        $this->redirect()->toRoute('uuid/get', $this->params('object'));
-        $this->getRequest()->setStatusCode(301);
+        $this->redirect()->toRoute('uuid/get', ['uuid' => $this->params('object')]);
+        $this->getResponse()->setStatusCode(301);
         return false;
     }
 

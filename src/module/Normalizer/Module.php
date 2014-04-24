@@ -10,21 +10,12 @@
  */
 namespace Normalizer;
 
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Segment;
-use Zend\Mvc\Router\Http\TreeRouteStack;
-
 class Module
 {
 
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [
@@ -44,32 +35,8 @@ class Module
         return $autoloader;
     }
 
-    public function onBootstrap(MvcEvent $e)
+    public function getConfig()
     {
-        $this->registerRoute($e);
-    }
-
-    protected function registerRoute(MvcEvent $e)
-    {
-        $serviceManager = $e->getApplication()->getServiceManager();
-        $router         = $e->getRouter();
-        $route          = Segment::factory(
-            [
-                'route'       => '/:uuid',
-                'defaults'    => [
-                    'controller' => __NAMESPACE__ . '\Controller\SignpostController',
-                    'action'     => 'index'
-                ],
-                'constraints' => [
-                    'alias' => '[0-9]+'
-                ]
-            ]
-        );
-
-        if (!$router instanceof TreeRouteStack) {
-            $router = $serviceManager->get('HttpRouter');
-        }
-
-        $router->addRoute('uuid/get', $route, -9999);
+        return include __DIR__ . '/config/module.config.php';
     }
 }

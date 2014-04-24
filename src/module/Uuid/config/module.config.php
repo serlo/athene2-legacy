@@ -31,7 +31,6 @@ return [
         'routes' => [
             'uuid' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => false,
                 'options'      => [
                     'route' => '/uuid'
                 ],

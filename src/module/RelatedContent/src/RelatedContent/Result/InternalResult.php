@@ -52,10 +52,10 @@ class InternalResult extends AbstractResult
     {
         return $this->getRouter()->assemble(
             [
-                'object' => $this->getObject()->getReference()->getId()
+                'uuid' => $this->getObject()->getReference()->getId()
             ],
             [
-                'name' => 'get/uuid'
+                'name' => 'uuid/get'
             ]
         );
     }

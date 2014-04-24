@@ -10,12 +10,10 @@
  */
 namespace Alias;
 
-use Common\Router\Slashable;
 use Exception;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\TreeRouteStack;
 
 class Module
 {
@@ -58,7 +56,6 @@ class Module
     {
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
-        $this->registerRoute($e);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), -1000);
 
         foreach (self::$listeners as $listener) {
@@ -126,29 +123,5 @@ class Module
         $response->sendHeaders();
         $e->stopPropagation();
         return $response;
-    }
-
-    protected function registerRoute(MvcEvent $e)
-    {
-        $serviceManager = $e->getApplication()->getServiceManager();
-        $router         = $e->getRouter();
-        $route          = Slashable::factory(
-            [
-                'route'       => '/:alias',
-                'defaults'    => [
-                    'controller' => 'Alias\Controller\AliasController',
-                    'action'     => 'forward'
-                ],
-                'constraints' => [
-                    'alias' => '(.)+'
-                ]
-            ]
-        );
-
-        if (!$router instanceof TreeRouteStack) {
-            $router = $serviceManager->get('HttpRouter');
-        }
-
-        $router->addRoute('alias', $route, -10000);
     }
 }
