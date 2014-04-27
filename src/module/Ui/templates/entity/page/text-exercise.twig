@@ -1,6 +1,7 @@
 <div class="page-header">
-    <div class="pull-right">
+    <div class="pull-right btn-group">
         {% include 'entity/view/partials/actions/toggle-controls' %}
+        {{ contexter().renderButton() }}
     </div>
     <h1>{{ entity.getId() }} <small>{{ translate('Text exercise') }}</small></h1>
 </div>

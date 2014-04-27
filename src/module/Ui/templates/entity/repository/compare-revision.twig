@@ -1,4 +1,4 @@
-{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').append(contexter().renderButton()).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
+{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').append(contexter().renderButton('right')).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
 <article>
     {% if revision is not sameas(currentRevision) %}
         <div class="revision panel-group">
