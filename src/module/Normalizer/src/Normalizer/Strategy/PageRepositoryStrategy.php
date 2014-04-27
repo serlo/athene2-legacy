@@ -38,6 +38,11 @@ class PageRepositoryStrategy extends AbstractStrategy
         return '';
     }
 
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getPreview()
     {
         $revision = $this->getRevision();

@@ -14,6 +14,14 @@ use Zend\View\Model\ViewModel;
 
 class EntityController extends AbstractController
 {
+    public function trashBinAction()
+    {
+        $subject  = $this->getSubject();
+        $entities = $this->getSubjectManager()->getTrashedEntities($subject);
+        $view     = new ViewModel(['entities' => $entities, 'subject' => $subject]);
+        $view->setTemplate('subject/entity/trash-bin');
+        return $view;
+    }
 
     public function unrevisedAction()
     {
@@ -21,15 +29,6 @@ class EntityController extends AbstractController
         $entities = $this->getSubjectManager()->getUnrevisedEntities($subject);
         $view     = new ViewModel(['entities' => $entities, 'subject' => $subject]);
         $view->setTemplate('subject/entity/unrevised');
-        return $view;
-    }
-
-    public function trashBinAction()
-    {
-        $subject  = $this->getSubject();
-        $entities = $this->getSubjectManager()->getTrashedEntities($subject);
-        $view     = new ViewModel(['entities' => $entities, 'subject' => $subject]);
-        $view->setTemplate('subject/entity/trash-bin');
         return $view;
     }
 }

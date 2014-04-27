@@ -23,6 +23,11 @@ class AttachmentStrategy extends AbstractStrategy
         return $this->object;
     }
 
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getTitle()
     {
         return $this->getObject()->getFirstFile()->getFilename();
