@@ -2,10 +2,17 @@
     {% include 'page/partials/head' %}
     {{ markdown().toHtml(revision.getContent()) }}
 {% endif %}
-{% if page.getForum() %}
-    <div class="panel">
-        <div class="panel-body">
-            {{ discussion(page).setForum(page.getForum()).render() }}
-        </div>
+<hr>
+<section class="row">
+    <div class="col-xs-10">
+        {{ page.getLicense().getTitle() }}
+        <a href="{{ url('license/detail', {'id': page.getLicense().getId()}) }}">{{ translate('What is that?') }}</a>
     </div>
+    <div class="col-xs-2">
+        <a class="pull-right" href="{{ page.getLicense().getUrl() }}" rel="license"><img alt="{{ page.getLicense().getTitle() }}" src="{{ page.getLicense().getIconHref() }}"></a>
+    </div>
+</section>
+{% if page.getForum() %}
+    <hr>
+    {{ discussion(page).setForum(page.getForum()).render() }}
 {% endif %}
