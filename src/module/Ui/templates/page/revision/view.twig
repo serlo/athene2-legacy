@@ -5,8 +5,8 @@
 <hr>
 <section class="row">
     <div class="col-xs-10">
-        {{ page.getLicense().getTitle() }}
-        <a href="{{ url('license/detail', {'id': page.getLicense().getId()}) }}">{{ translate('What is that?') }}</a>
+        <p>{{ page.getLicense().getTitle() }}</p>
+        <p><a href="{{ url('license/detail', {'id': page.getLicense().getId()}) }}">{{ translate('What is that?') }}</a></p>
     </div>
     <div class="col-xs-2">
         <a class="pull-right" href="{{ page.getLicense().getUrl() }}" rel="license"><img alt="{{ page.getLicense().getTitle() }}" src="{{ page.getLicense().getIconHref() }}"></a>
