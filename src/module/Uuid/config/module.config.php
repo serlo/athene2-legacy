@@ -32,13 +32,14 @@ return [
             'uuid' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
                 'options'      => [
-                    'route' => '/uuid'
+                    // Do not change this or /:id refs wont work (see normalizer route config)
+                    'route' => ''
                 ],
                 'child_routes' => [
                     'trash'       => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'    => '/trash/:id',
+                            'route'    => '/uuid/trash/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'trash'
@@ -48,7 +49,7 @@ return [
                     'recycle-bin' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'    => '/recycle-bin',
+                            'route'    => '/uuid/recycle-bin',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'recycleBin'
@@ -58,7 +59,7 @@ return [
                     'restore'     => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'    => '/restore/:id',
+                            'route'    => '/uuid/restore/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'restore'
@@ -68,7 +69,7 @@ return [
                     'purge'       => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'    => '/purge/:id',
+                            'route'    => '/uuid/purge/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'purge'
