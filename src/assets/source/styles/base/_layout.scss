@@ -36,11 +36,15 @@ body {
 #horizon {
     clear: both;
     width: 740px;
-    margin: 50px 0 100px 200px;
+    margin: 50px 0 100px 0;
     padding: 0;
 
-    @media only screen and (max-width: $navigationBreakPoint) {
-      margin: 50px 0 100px $sideElementWidthCollapsed
+    .has-navigation & {
+        margin-left: 200px;
+
+        @media only screen and (max-width: $navigationBreakPoint) {
+            margin: 50px 0 100px $sideElementWidthCollapsed
+        }
     }
 }
 
