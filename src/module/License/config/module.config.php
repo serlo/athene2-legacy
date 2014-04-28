@@ -16,9 +16,6 @@ return [
             'license.get'   => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
-    'license_manager' => [
-        'defaults' => []
-    ],
     'service_manager' => [
         'factories' => []
     ],

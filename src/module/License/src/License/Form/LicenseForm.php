@@ -10,6 +10,7 @@
 namespace License\Form;
 
 use License\Hydrator\LicenseHydrator;
+use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -32,6 +33,7 @@ class LicenseForm extends Form
         $this->add((new Textarea('content'))->setLabel('Content:')->setAttribute('id', 'content'));
         $this->add((new Url('url'))->setLabel('License url:')->setAttribute('id', 'url'));
         $this->add((new Url('iconHref'))->setLabel('Icon url:')->setAttribute('id', 'iconHref'));
+        $this->add((new Checkbox('default'))->setLabel('This is the default license for this instance.')->setAttribute('id', 'default'));
 
         $this->add(
             (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')

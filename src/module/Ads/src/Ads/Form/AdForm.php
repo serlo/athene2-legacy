@@ -39,7 +39,7 @@ class AdForm extends Form implements AttachmentFieldsetProvider
                     '2' => 'Normal',
                     '3' => 'More'
                 ]
-            )->setAttribute('required', 'required')->setLabel('frequency')->setValue('2')
+            )->setAttribute('required', 'required')->setLabel('frequency')
         );
         $this->add(new AttachmentFieldset(false));
         $this->add(
