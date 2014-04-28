@@ -15,7 +15,8 @@ return [
         'factories' => [
             __NAMESPACE__ . '\Options\ModuleOptions'  => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
             __NAMESPACE__ . '\Manager\SubjectManager' => __NAMESPACE__ . '\Factory\SubjectManagerFactory',
-            __NAMESPACE__ . '\Hydrator\Navigation'    => __NAMESPACE__ . '\Factory\NavigationFactory'
+            __NAMESPACE__ . '\Hydrator\Navigation'    => __NAMESPACE__ . '\Factory\NavigationFactory',
+            __NAMESPACE__ . '\Storage\SubjectStorage' => __NAMESPACE__ . '\Factory\SubjectStorageFactory'
         ]
     ],
     'view_helpers'    => [

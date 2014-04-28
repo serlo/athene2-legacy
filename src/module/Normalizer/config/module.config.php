@@ -89,14 +89,10 @@ return [
                 ]
             ],
             'uuid'       => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
-                'options'      => [
-                    'route' => '/uuid'
-                ],
                 'child_routes' => [
                     'get' => [
                         'type'     => 'Zend\Mvc\Router\Http\Segment',
-                        'priority' => -9999,
+                        'priority' => -9000,
                         'options'  => [
                             'route'       => '/:uuid',
                             'defaults'    => [
@@ -104,7 +100,7 @@ return [
                                 'action'     => 'index'
                             ],
                             'constraints' => [
-                                'alias' => '[0-9]+'
+                                'uuid' => '[0-9]+'
                             ],
                         ]
                     ]

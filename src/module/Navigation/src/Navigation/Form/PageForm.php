@@ -39,16 +39,22 @@ class PageForm extends Form
                 ]
             ]
         );
+
         $this->add(
             [
-                'type'    => 'Common\Form\Element\ObjectHidden',
+                'type'    => 'DoctrineModule\Form\Element\ObjectSelect',
                 'name'    => 'parent',
                 'options' => [
+                    'label'          => 'Parent:',
                     'object_manager' => $entityManager,
-                    'target_class'   => 'Navigation\Entity\Page'
-                ]
+                    'target_class'   => 'Navigation\Entity\Page',
+                    'property'       => 'id',
+                    'display_empty_item' => true,
+                    'empty_item_label'   => '---',
+                ],
             ]
         );
+
         $this->add((new Text('position'))->setLabel('Position'));
 
         $this->add(

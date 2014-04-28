@@ -43,6 +43,10 @@ return [
                         [
                             'controller' => 'Entity\Controller\TaxonomyController',
                             'action'     => 'update'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\PageController',
+                            'action'     => 'index'
                         ]
                     ]
                 ],
@@ -77,6 +81,10 @@ return [
                         [
                             'controller' => 'Taxonomy\Controller\TermController',
                             'action'     => 'orderAssociated'
+                        ],
+                        [
+                            'controller' => 'Taxonomy\Controller\GetController',
+                            'action'     => 'index'
                         ]
                     ]
                 ],

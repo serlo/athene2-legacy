@@ -12,7 +12,7 @@
 <?php /* @var $router \Contexter\Router\RouterInterface */ ?>
 <?php $router = $this->router; ?>
 <?php if ($router->hasAdapter()): ?>
-    <div  class="dropdown pull-right">
+    <div class="btn-group<?php echo $this->float ? ' pull-' . $this->float : ''; ?>">
         <button class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown">
             <strong>?</strong>
             <span class="caret"></span>
@@ -31,7 +31,7 @@
                 </li>
             <?php endforeach; ?>
             <?php if ($this->isGranted('contexter.context.add')): ?>
-                <?php $url = $this->url($router->getRouteMatch()->getMatchedRouteName(), $router->getRouteMatch()->getParams()); ?>
+                <?php $url = $this->url ? $this->url : $this->url($router->getRouteMatch()->getMatchedRouteName(), $router->getRouteMatch()->getParams(), [], false, false); ?>
                 <li>
                     <a href="<?php echo $this->url('contexter/add', array(), array('query' => array('uri' => $url))); ?>">
                         <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;

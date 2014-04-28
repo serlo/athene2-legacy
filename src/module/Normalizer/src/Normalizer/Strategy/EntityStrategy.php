@@ -23,46 +23,14 @@ class EntityStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getField('title', 'id');
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getTimestamp();
+        return $object instanceof EntityInterface;
     }
 
     protected function getContent()
     {
         return $this->getField('content');
-    }
-
-    protected function getPreview()
-    {
-        return $this->getField('summary', 'content');
-    }
-
-    protected function getType()
-    {
-        return $this->getObject()->getType()->getName();
-    }
-
-    protected function getRouteName()
-    {
-        return 'entity/page';
-    }
-
-    protected function getRouteParams()
-    {
-        return [
-            'entity' => $this->getObject()->getId()
-        ];
-    }
-
-    public function isValid($object)
-    {
-        return $object instanceof EntityInterface;
     }
 
     protected function getField($field, $fallback = null)
@@ -82,5 +50,42 @@ class EntityStrategy extends AbstractStrategy
         } else {
             return $this->getObject()->getId();
         }
+    }
+
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
+    protected function getPreview()
+    {
+        return $this->getField('summary', 'content');
+    }
+
+    protected function getRouteName()
+    {
+        return 'entity/page';
+    }
+
+    protected function getRouteParams()
+    {
+        return [
+            'entity' => $this->getObject()->getId()
+        ];
+    }
+
+    protected function getTimestamp()
+    {
+        return $this->getObject()->getTimestamp();
+    }
+
+    protected function getTitle()
+    {
+        return $this->getField('title', 'id');
+    }
+
+    protected function getType()
+    {
+        return $this->getObject()->getType()->getName();
     }
 }

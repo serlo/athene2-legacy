@@ -10,15 +10,12 @@
  */
 namespace Subject\Factory;
 
-use Subject\Manager\SubjectManager;
-use Taxonomy\Factory\TaxonomyManagerFactoryTrait;
+use Zend\Cache\StorageFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class SubjectManagerFactory implements FactoryInterface
+class SubjectStorageFactory implements FactoryInterface
 {
-    use TaxonomyManagerFactoryTrait;
-
     /**
      * Create service
      *
@@ -27,11 +24,26 @@ class SubjectManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $taxonomyManager = $this->getTaxonomyManager($serviceLocator);
-        $storage         = $serviceLocator->get('Subject\Storage\SubjectStorage');
-        $normalizer = $serviceLocator->get('Normalizer\Normalizer');
-        $service         = new SubjectManager($normalizer, $storage, $taxonomyManager);
+        $cache = StorageFactory::factory(
+            [
+                'adapter' => [
+                    'name'    => 'apc',
+                    'options' => [
+                        'namespace' => __NAMESPACE__,
+                        'ttl'       => 60 * 60
+                    ]
+                ],
+                'plugins' => [
+                    'exception_handler' => [
+                        'throw_exceptions' => false
+                    ],
+                    'serializer'
+                ]
+            ]
+        );
 
-        return $service;
+        return $cache;
     }
+
 }
+ 

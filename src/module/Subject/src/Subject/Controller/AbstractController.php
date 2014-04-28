@@ -11,13 +11,26 @@
 namespace Subject\Controller;
 
 use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Subject\Manager\SubjectManagerAwareTrait;
+use Subject\Manager\SubjectManagerInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractController extends AbstractActionController
 {
     use SubjectManagerAwareTrait, InstanceManagerAwareTrait, TaxonomyManagerAwareTrait;
+
+    public function __construct(
+        InstanceManagerInterface $instanceManager,
+        SubjectManagerInterface $subjectManager,
+        TaxonomyManagerInterface $taxonomyManager
+    ) {
+        $this->instanceManager = $instanceManager;
+        $this->subjectManager  = $subjectManager;
+        $this->taxonomyManager = $taxonomyManager;
+    }
 
     /**
      * @param null $id
