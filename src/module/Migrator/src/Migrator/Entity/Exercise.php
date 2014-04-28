@@ -74,7 +74,7 @@ class Exercise
     public function getChildren()
     {
         $return = new ArrayCollection();
-        foreach($this->children as $child){
+        foreach ($this->children as $child) {
             $return->add($child->getExercise());
         }
         return $return;
@@ -110,7 +110,7 @@ class Exercise
     public function getParents()
     {
         $return = new ArrayCollection();
-        foreach($this->parents as $parent){
+        foreach ($this->parents as $parent) {
             $return->add($parent->getGroup());
         }
         return $return;

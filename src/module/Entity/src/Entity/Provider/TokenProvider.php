@@ -21,7 +21,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class TokenProvider extends AbstractProvider implements ProviderInterface
 {
     use ServiceLocatorAwareTrait, NormalizerAwareTrait;
-    
+
     public function __construct(NormalizerInterface $normalizer, ServiceLocatorInterface $serviceLocator)
     {
         $this->normalizer     = $normalizer;

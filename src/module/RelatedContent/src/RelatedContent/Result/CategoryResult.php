@@ -1,13 +1,11 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace RelatedContent\Result;
 
@@ -22,22 +20,26 @@ class CategoryResult extends AbstractResult
     {
         return 'category';
     }
-    
-    public function setObject(TypeInterface $object){
-        if(!$object instanceof CategoryInterface)
-            throw new Exception\InvalidArgumentException(sprintf('Expected CategoryInterface but got `%s`', get_class($object)));
+
+    public function setObject(TypeInterface $object)
+    {
+        if (!$object instanceof CategoryInterface) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Expected CategoryInterface but got `%s`',
+                get_class($object)
+            ));
+        }
         return parent::setObject($object);
     }
-    
+
     /**
-     *
      * @return CategoryInterface
      */
     public function getObject()
     {
         return parent::getObject();
     }
-    
+
     /*
      * (non-PHPdoc) @see \RelatedContent\Result\ResultInterface::getTitle()
      */
@@ -45,12 +47,12 @@ class CategoryResult extends AbstractResult
     {
         return $this->getObject()->getTitle();
     }
-    
+
     /*
      * (non-PHPdoc) @see \RelatedContent\Result\ResultInterface::getUrl()
      */
     public function getUrl()
     {
-        return NULL;
+        return null;
     }
 }

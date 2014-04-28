@@ -1,13 +1,11 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license    LGPL-3.0
- * @license    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Search\Result;
 
@@ -17,19 +15,16 @@ use Doctrine\Common\Collections\Collection;
 class Container implements ContainerInterface
 {
     /**
-     *
      * @var Collection
      */
     protected $containers;
 
     /**
-     *
      * @var Collection
      */
     protected $results;
 
     /**
-     *
      * @var string
      */
     protected $name;
@@ -42,7 +37,7 @@ class Container implements ContainerInterface
     public function __construct()
     {
         $this->containers = new ArrayCollection();
-        $this->results = new ArrayCollection();
+        $this->results    = new ArrayCollection();
     }
 
     public function getContainers()

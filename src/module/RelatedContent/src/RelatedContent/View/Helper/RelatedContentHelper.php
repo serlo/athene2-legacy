@@ -1,13 +1,11 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace RelatedContent\View\Helper;
 
@@ -19,13 +17,11 @@ class RelatedContentHelper extends AbstractHelper
     use \RelatedContent\Manager\RelatedContentManagerAwareTrait;
 
     /**
-     *
      * @var UuidInterface
      */
     protected $object;
 
     /**
-     *
      * @return UuidInterface $object
      */
     public function getObject()
@@ -34,7 +30,6 @@ class RelatedContentHelper extends AbstractHelper
     }
 
     /**
-     *
      * @param UuidInterface $object
      * @return self
      */
@@ -52,10 +47,14 @@ class RelatedContentHelper extends AbstractHelper
 
     protected function render()
     {
-        $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->getObject()
-            ->getId());
-        return $this->getView()->partial('related-content/view', [
-            'aggregated' => $aggregated
-        ]);
+        $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent(
+            $this->getObject()->getId()
+        );
+        return $this->getView()->partial(
+            'related-content/view',
+            [
+                'aggregated' => $aggregated
+            ]
+        );
     }
 }

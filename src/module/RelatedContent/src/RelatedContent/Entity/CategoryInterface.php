@@ -14,13 +14,11 @@ interface CategoryInterface
 {
 
     /**
-     *
      * @return string
      */
     public function getTitle();
 
     /**
-     *
      * @param string $name
      *            return $this
      */

@@ -73,7 +73,7 @@ class EventLog implements EventLogInterface
     {
         foreach ($this->getParameters() as $parameter) {
             if ($parameter->getName() == $name) {
-                if($parameter instanceof EventParameterUuid){
+                if ($parameter instanceof EventParameterUuid) {
                     return $parameter->getValue();
                 } else {
                     return $parameter->getValue();

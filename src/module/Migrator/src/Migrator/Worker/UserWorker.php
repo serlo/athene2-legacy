@@ -91,7 +91,8 @@ class UserWorker implements Worker
         return $results;
     }
 
-    public function getWorkload(){
-        return  [];
+    public function getWorkload()
+    {
+        return [];
     }
 }

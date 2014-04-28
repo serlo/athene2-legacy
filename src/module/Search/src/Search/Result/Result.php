@@ -1,13 +1,11 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace Search\Result;
 
@@ -15,31 +13,26 @@ class Result implements ResultInterface
 {
 
     /**
-     *
      * @var string
      */
     protected $name;
 
     /**
-     *
      * @var int
      */
     protected $id;
 
     /**
-     *
      * @var array
      */
     protected $routeParams;
 
     /**
-     *
      * @var string
      */
     protected $routeName;
 
     /**
-     *
      * @var mixed
      */
     protected $object;
@@ -70,7 +63,6 @@ class Result implements ResultInterface
     }
 
     /**
-     *
      * @param string $name
      * @return void
      */
@@ -80,7 +72,6 @@ class Result implements ResultInterface
     }
 
     /**
-     *
      * @param number $id
      * @return void
      */
@@ -90,7 +81,6 @@ class Result implements ResultInterface
     }
 
     /**
-     *
      * @param array $routeParams
      * @return void
      */
@@ -100,7 +90,6 @@ class Result implements ResultInterface
     }
 
     /**
-     *
      * @param string $routeName
      * @return void
      */
@@ -110,7 +99,6 @@ class Result implements ResultInterface
     }
 
     /**
-     *
      * @param mixed $object
      * @return void
      */

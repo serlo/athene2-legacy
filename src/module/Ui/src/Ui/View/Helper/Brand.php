@@ -24,7 +24,9 @@ class Brand extends AbstractHelper
     {
         $this->options = $brandHelperOptions;
     }
-    public function __invoke(){
+
+    public function __invoke()
+    {
         return $this;
     }
 

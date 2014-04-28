@@ -1,13 +1,11 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace User\Entity;
 
@@ -21,110 +19,93 @@ interface UserInterface extends UuidInterface, IdentityInterface
 {
 
     /**
-     *
      * @return string
      */
     public function getEmail();
 
     /**
-     *
      * @return string
      */
     public function getUsername();
 
     /**
-     *
      * @return string
      */
     public function getPassword();
 
     /**
-     *
      * @return string
      */
     public function getLogins();
 
     /**
-     *
      * @return DateTime
      */
     public function getLastLogin();
 
     /**
-     *
      * @return DateTime
      */
     public function getDate();
 
     /**
-     *
      * @return Collection RoleInterface[]
      */
     public function getRoles();
 
     /**
-     *
      * @return string
      */
     public function getToken();
 
     /**
-     *
      * @return self
      */
     public function generateToken();
 
     /**
-     *
-     * @param string $email            
+     * @param string $email
      * @return self
      */
     public function setEmail($email);
 
     /**
-     *
-     * @param string $username            
+     * @param string $username
      * @return self
      */
     public function setUsername($username);
 
     /**
-     *
-     * @param string $password            
+     * @param string $password
      * @return self
      */
     public function setPassword($password);
 
     /**
-     *
-     * @param DateTime $lastLogin            
+     * @param DateTime $lastLogin
      * @return self
      */
     public function setLastLogin(DateTime $lastLogin);
 
     /**
-     *
-     * @param DateTime $date            
+     * @param DateTime $date
      * @return self
      */
     public function setDate(DateTime $date);
 
     /**
-     *
-     * @param RoleInterface $role            
+     * @param RoleInterface $role
      * @return self
      */
     public function addRole(RoleInterface $role);
 
     /**
-     *
-     * @param RoleInterface $role            
+     * @param RoleInterface $role
      * @return self
      */
     public function removeRole(RoleInterface $role);
 
     /**
-     *
      * @param RoleInterface $role
      */
     public function hasRole(RoleInterface $role);

@@ -54,20 +54,20 @@ class Migrator
             $worker->migrate($results, $workload);
 
             $idResults = [];
-            foreach($results as $type => $result){
-                foreach($result as $key => $result){
+            foreach ($results as $type => $result) {
+                foreach ($result as $key => $result) {
                     $idResults[$type][$key] = $result->getId();
                 }
             }
 
-            file_put_contents ("/var/www/src/data/migration-$i.dat", print_r($idResults, true));
+            file_put_contents("/var/www/src/data/migration-$i.dat", print_r($idResults, true));
         }
 
         $worker = $this->serviceLocator->get('Migrator\Worker\PostWorker');
         $worker->migrate($workload, $results);
 
         $time_end = microtime(true);
-        $time = $time_end - $time_start;
+        $time     = $time_end - $time_start;
 
         echo "Migration took $time seconds";
     }

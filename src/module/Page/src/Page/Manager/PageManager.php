@@ -97,7 +97,7 @@ class PageManager implements PageManagerInterface
 
     public function editPageRepository(FormInterface $form)
     {
-        $page      = $form->getObject();
+        $page = $form->getObject();
         if (!$form->isValid()) {
             throw new RuntimeException(print_r($form->getMessages(), true));
         }

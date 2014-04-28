@@ -6,7 +6,6 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace RelatedContent\Factory;
 
@@ -18,9 +17,10 @@ class RelatedContentHelperFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instance              = new RelatedContentHelper();
-        $relatedContentManager = $serviceLocator->getServiceLocator()
-            ->get('RelatedContent\Manager\RelatedContentManager');
+        $instance = new RelatedContentHelper();
+        $relatedContentManager = $serviceLocator->getServiceLocator()->get(
+                'RelatedContent\Manager\RelatedContentManager'
+            );
 
         $instance->setRelatedContentManager($relatedContentManager);
 

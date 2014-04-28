@@ -58,9 +58,9 @@ class UpdatePostForm extends Form
 
         $inputFilter->add(
             [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'StripTags'
                     ]

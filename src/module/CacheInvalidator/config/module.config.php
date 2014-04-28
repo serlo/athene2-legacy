@@ -20,7 +20,7 @@ return [
     ],
     'cache_invalidator' => [
         'listens' => [
-            'Taxonomy\Manager\TaxonomyManager' => [
+            'Taxonomy\Manager\TaxonomyManager'     => [
                 'create' => [
                     'Navigation\Storage\Storage'
                 ],
@@ -29,13 +29,13 @@ return [
                 ]
             ],
             'Navigation\Manager\NavigationManager' => [
-                'page.create' => [
+                'page.create'      => [
                     'Navigation\Storage\Storage'
                 ],
-                'page.update' => [
+                'page.update'      => [
                     'Navigation\Storage\Storage'
                 ],
-                'page.remove' => [
+                'page.remove'      => [
                     'Navigation\Storage\Storage'
                 ],
                 'parameter.create' => [

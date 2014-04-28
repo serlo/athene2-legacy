@@ -41,7 +41,7 @@ class PostConverter extends AbstractConverter
             }
 
             $id   = $this->map['exercise'][$match[1]]->getId();
-            $view = '\n'.">[Übungsaufgabe](/ref/$id)".'\n';
+            $view = '\n' . ">[Übungsaufgabe](/ref/$id)" . '\n';
 
             // replace the match with the view content
             $content = str_replace($match[0], $view, $content);

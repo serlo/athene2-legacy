@@ -17,10 +17,10 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\Worker' => [],
+                __NAMESPACE__ . '\Controller\Worker'            => [],
                 __NAMESPACE__ . '\Controller\PreConverterChain' => [],
-                __NAMESPACE__ . '\Migrator'          => [],
-                'Migrator\Worker\ArticleWorker'      => []
+                __NAMESPACE__ . '\Migrator'                     => [],
+                'Migrator\Worker\ArticleWorker'                 => []
             ]
         ],
         'instance'            => [
@@ -45,7 +45,7 @@ return [
             ]
         ]
     ],
-    'console' => [
+    'console'         => [
         'router' => [
             'routes' => [
                 'migrator' => [
@@ -61,7 +61,7 @@ return [
             ]
         ]
     ],
-    'router' => [
+    'router'          => [
         'routes' => [
         ]
     ],

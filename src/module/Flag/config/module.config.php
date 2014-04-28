@@ -14,7 +14,7 @@ return [
     'zfc_rbac'        => [
         'assertion_map' => [
             'flag.create' => 'Authorization\Assertion\RequestInstanceAssertion',
-            'flag.get' => 'Authorization\Assertion\InstanceAssertion',
+            'flag.get'    => 'Authorization\Assertion\InstanceAssertion',
             'flag.remove' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],

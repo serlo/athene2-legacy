@@ -21,7 +21,6 @@ class HydratorPluginManager extends AbstractPluginManager
      * of FilterInterface.
      *
      * @param  mixed $plugin
-     *
      * @return void
      * @throws Exception\RuntimeException if invalid
      */

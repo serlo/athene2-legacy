@@ -12,7 +12,8 @@ namespace Session\Factory;
 
 use Zend\Session\Service\SessionManagerFactory as ZendSessionManagerFactory;
 
-class SessionManagerFactory extends ZendSessionManagerFactory {
+class SessionManagerFactory extends ZendSessionManagerFactory
+{
 
 }
  

@@ -119,7 +119,7 @@ return [
             ]
         ],
     ],
-    'route_manager' =>[
+    'route_manager'   => [
         'invokables' => [
             'Subject' => __NAMESPACE__ . '\Route\SubjectRoute'
         ],

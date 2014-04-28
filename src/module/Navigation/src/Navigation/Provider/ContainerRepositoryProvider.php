@@ -70,7 +70,7 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
                 $pages[] = $addPage;
             }
         }
-        
+
         $this->storage->setItem($key, $pages);
 
         return $pages;

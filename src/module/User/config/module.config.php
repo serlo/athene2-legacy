@@ -6,7 +6,6 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace User;
 
@@ -88,7 +87,7 @@ return [
                     ]
                 ],
                 'child_routes'  => [
-                    'me'        => [
+                    'me'       => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options'       => [
@@ -98,7 +97,7 @@ return [
                             ]
                         ]
                     ],
-                    'profile'   => [
+                    'profile'  => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options'       => [
@@ -108,7 +107,7 @@ return [
                             ]
                         ]
                     ],
-                    'register'  => [
+                    'register' => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options'       => [
@@ -118,7 +117,7 @@ return [
                             ]
                         ]
                     ],
-                    'settings'  => [
+                    'settings' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route'    => '/settings',
@@ -127,7 +126,7 @@ return [
                             ]
                         ]
                     ],
-                    'remove'    => [
+                    'remove'   => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route'    => '/remove/:id',
@@ -140,9 +139,9 @@ return [
             ]
         ]
     ],
-    'uuid'           => [
+    'uuid'            => [
         'permissions' => [
-            'User\Entity\User'   => [
+            'User\Entity\User' => [
                 'trash'   => 'user.trash',
                 'restore' => 'user.restore',
                 'purge'   => 'user.purge'

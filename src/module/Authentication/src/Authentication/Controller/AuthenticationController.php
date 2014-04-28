@@ -79,7 +79,9 @@ class AuthenticationController extends AbstractActionController
                     try {
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
                         $this->getEventManager()->trigger('activate', $this, ['user' => $user]);
-                        $this->flashMessenger()->addSuccessMessage('Your have been sent an activation email. Please check your spam folder as well.');
+                        $this->flashMessenger()->addSuccessMessage(
+                            'Your have been sent an activation email. Please check your spam folder as well.'
+                        );
 
                         return $this->redirect()->toRoute('authentication/login');
                     } catch (UserNotFoundException $e) {
