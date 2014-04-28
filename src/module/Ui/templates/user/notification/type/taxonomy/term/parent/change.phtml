@@ -1,0 +1,10 @@
+<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+<?php $term = $this->event->getObject()->getName(); ?>
+<?php $old = $this->event->getParameter('from'); ?>
+<?php $new = $this->event->getParameter('to'); ?>
+<?php $old = is_object($old) ? $old->getName() : $old; ?>
+<?php $new = is_object($new) ? $new->getName() : $new; ?>
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getObject(), true); ?>">
+    <?php echo sprintf($this->translate('<strong>%s</strong> changed parent of %s from %s to %s'), $user ,$term, $old, $new); ?>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
+</a>

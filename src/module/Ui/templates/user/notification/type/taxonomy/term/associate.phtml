@@ -1,0 +1,8 @@
+<?php $event = $this->notification->getEvents()->current(); ?>
+<?php $user = $this->normalize()->toTitle($event->getActor()); ?>
+<?php $object = $this->normalize()->toTitle($event->getObject()); ?>
+<?php $associate = $this->normalize()->toTitle($event->getParameter('object')); ?>
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getObject(), true); ?>">
+    <?php echo sprintf($this->translate('<strong>%s</strong> associated %s with %s'), $user, $associate, $object); ?>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
+</a>

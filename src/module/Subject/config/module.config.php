@@ -15,7 +15,8 @@ return [
         'factories' => [
             __NAMESPACE__ . '\Options\ModuleOptions'  => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
             __NAMESPACE__ . '\Manager\SubjectManager' => __NAMESPACE__ . '\Factory\SubjectManagerFactory',
-            __NAMESPACE__ . '\Hydrator\Navigation'    => __NAMESPACE__ . '\Factory\NavigationFactory'
+            __NAMESPACE__ . '\Hydrator\Navigation'    => __NAMESPACE__ . '\Factory\NavigationFactory',
+            __NAMESPACE__ . '\Storage\SubjectStorage' => __NAMESPACE__ . '\Factory\SubjectStorageFactory'
         ]
     ],
     'view_helpers'    => [
@@ -35,14 +36,14 @@ return [
                 'rootable'             => false
             ],
             'topic'                   => [
-                'allowed_parents' => [
+                'allowed_parents'      => [
                     'subject',
                     'topic'
                 ],
                 'allowed_associations' => [
                     'Entity\Entity\EntityInterface'
                 ],
-                'rootable'        => false
+                'rootable'             => false
             ],
             'subject'                 => [
                 'allowed_parents' => [
@@ -64,7 +65,7 @@ return [
                 ],
                 'rootable'        => false
             ],
-            'curriculum-topic'       => [
+            'curriculum-topic'        => [
                 'allowed_associations' => [
                     'Entity\Entity\EntityInterface'
                 ],
@@ -88,44 +89,40 @@ return [
     'router'          => [
         'routes' => [
             'subject' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options'       => [
-                    'route'    => '/{subject}/:subject',
-                    'defaults' => [
-                        'controller' => __NAMESPACE__ . '\Controller\HomeController',
-                        'action'     => 'index'
-                    ]
+                'type'         => 'Subject',
+                'options'      => [
+                    'route'      => '/:subject',
+                    'identifier' => 'subject'
                 ],
-                'child_routes'  => [
-                    'taxonomy' => [
-                        'type'    => 'slashable',
+                'child_routes' => [
+                    'entity' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'       => '/:path',
-                            'defaults'    => [
-                                'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
-                                'action'     => 'index'
-                            ],
-                            'constraints' => [
-                                'path' => '(.)+'
-                            ]
-                        ]
-                    ],
-                    'entity'   => [
-                        'may_terminate' => true,
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'options'       => [
                             'route'    => '/entity/:action',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\EntityController',
                                 'action'     => 'index',
-                                'plugin'     => 'entity'
+                            ]
+                        ]
+                    ],
+                    'home'   => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\HomeController',
+                                'action'     => 'index',
                             ]
                         ]
                     ]
                 ]
             ]
-        ]
+        ],
+    ],
+    'route_manager' =>[
+        'invokables' => [
+            'Subject' => __NAMESPACE__ . '\Route\SubjectRoute'
+        ],
     ],
     'di'              => [
         'allowed_controllers' => [
@@ -141,6 +138,9 @@ return [
                     ],
                     'setSubjectManager'  => [
                         'required' => true
+                    ],
+                    'setTaxonomyManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\TaxonomyController' => [
@@ -149,6 +149,9 @@ return [
                     ],
                     'setSubjectManager'  => [
                         'required' => true
+                    ],
+                    'setTaxonomyManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\EntityController'   => [
@@ -156,6 +159,9 @@ return [
                         'required' => true
                     ],
                     'setSubjectManager'  => [
+                        'required' => true
+                    ],
+                    'setTaxonomyManager' => [
                         'required' => true
                     ]
                 ]

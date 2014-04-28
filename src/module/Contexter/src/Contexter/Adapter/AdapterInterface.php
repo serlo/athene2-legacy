@@ -51,5 +51,5 @@ interface AdapterInterface
      * @param AdaptableInterface $adapter
      * @return self
      */
-    public function setAdaptee(AdaptableInterface $adapter);
+    public function setAdaptee($adapter);
 }

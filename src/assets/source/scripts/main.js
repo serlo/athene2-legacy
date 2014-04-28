@@ -44,6 +44,7 @@ require.config({
         "support" : "modules/serlo_supporter",
         "modals" : "modules/serlo_modals",
         "router" : "modules/serlo_router",
+        "forum_select" : "modules/serlo_forum_select",
         "toggle_action" : "modules/serlo_toggle",
         "mathjax_trigger" : "modules/serlo_mathjax_trigger",
         "affix" : "modules/serlo_affix"

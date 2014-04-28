@@ -32,9 +32,9 @@ foreach ($this->pages as $page) {
     $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
     if ($dropdown) {
-        $html[] = '<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="' . $page->getHref() . '">';
+        $html[] = '<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="' . $this->alias($page->getHref()) . '">';
     } else {
-        $html[] = '<a href="' . $page->getHref() . '">';
+        $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
     }
 
     if ($page->get('icon')) {

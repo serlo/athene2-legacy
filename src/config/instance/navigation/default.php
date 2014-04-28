@@ -124,10 +124,6 @@ return [
                             [
                                 'route' => 'license/update',
                                 'visible' => false
-                            ],
-                            [
-                                'route' => 'license/detail',
-                                'visible' => false
                             ]
                         ]
                     ],

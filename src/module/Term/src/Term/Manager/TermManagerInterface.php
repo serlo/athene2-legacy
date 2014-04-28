@@ -32,13 +32,6 @@ interface TermManagerInterface extends Flushable
     public function findTermByName($name, InstanceInterface $instance);
 
     /**
-     * @param string           $slug
-     * @param InstanceInterface $instance
-     * @return TermEntityInterface
-     */
-    public function findTermBySlug($slug, InstanceInterface $instance);
-
-    /**
      * @param int $term
      * @return TermEntityInterface
      */

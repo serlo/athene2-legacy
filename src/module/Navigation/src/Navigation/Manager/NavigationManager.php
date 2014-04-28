@@ -27,11 +27,12 @@ use Navigation\Exception\ParameterNotFoundException;
 use Navigation\Exception\RuntimeException;
 use Type\Entity\TypeInterface;
 use Type\TypeManagerInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Form\FormInterface;
 
 class NavigationManager implements NavigationManagerInterface
 {
-    use AuthorizationAssertionTrait;
+    use AuthorizationAssertionTrait, EventManagerAwareTrait;
 
     /**
      * @var ObjectManager
@@ -95,7 +96,7 @@ class NavigationManager implements NavigationManagerInterface
     {
         /* @var $entity FormInterface */
         $entity = $this->classResolver->resolve($this->interfaces['container']);
-
+        $this->getEventManager()->trigger('container.create', $this);
         return $this->bind($entity, $form);
     }
 
@@ -107,7 +108,7 @@ class NavigationManager implements NavigationManagerInterface
     {
         /* @var $entity PageInterface */
         $entity = $this->classResolver->resolve($this->interfaces['page']);
-
+        $this->getEventManager()->trigger('page.create', $this);
         return $this->bind($entity, $form);
     }
 
@@ -119,7 +120,7 @@ class NavigationManager implements NavigationManagerInterface
     {
         /* @var $entity ParameterInterface */
         $entity = $this->classResolver->resolve($this->interfaces['parameter']);
-
+        $this->getEventManager()->trigger('parameter.create', $this);
         return $this->bind($entity, $form);
     }
 
@@ -131,7 +132,7 @@ class NavigationManager implements NavigationManagerInterface
     {
         /* @var $entity ParameterKeyInterface */
         $entity = $this->classResolver->resolve($this->interfaces['key']);
-
+        $this->getEventManager()->trigger('parameter.key.create', $this);
         return $this->bind($entity, $form);
     }
 
@@ -274,9 +275,9 @@ class NavigationManager implements NavigationManagerInterface
     public function removeContainer($id)
     {
         $container = $this->getContainer($id);
-
         $this->assertGranted('navigation.manage', $container);
         $this->objectManager->remove($container);
+        $this->getEventManager()->trigger('container.remove', $this);
     }
 
     /**
@@ -286,9 +287,9 @@ class NavigationManager implements NavigationManagerInterface
     public function removePage($id)
     {
         $page = $this->getPage($id);
-
         $this->assertGranted('navigation.manage', $page);
         $this->objectManager->remove($page);
+        $this->getEventManager()->trigger('page.remove', $this);
     }
 
     /**
@@ -298,9 +299,9 @@ class NavigationManager implements NavigationManagerInterface
     public function removeParameter($id)
     {
         $parameter = $this->getParameter($id);
-
         $this->assertGranted('navigation.manage', $parameter);
         $this->objectManager->remove($parameter);
+        $this->getEventManager()->trigger('parameter.remove', $this);
     }
 
     /**
@@ -311,14 +312,14 @@ class NavigationManager implements NavigationManagerInterface
     public function updatePage(FormInterface $form)
     {
         $object = $form->getObject();
-
         $this->assertGranted('navigation.manage', $object);
 
         if (!$form->isValid()) {
-            throw new RuntimeException;
+            throw new RuntimeException(print_r($form->getMessages()));
         }
 
         $this->objectManager->persist($object);
+        $this->getEventManager()->trigger('page.update', $this);
     }
 
     /**
@@ -333,10 +334,11 @@ class NavigationManager implements NavigationManagerInterface
         $this->assertGranted('navigation.manage', $object);
 
         if (!$form->isValid()) {
-            throw new RuntimeException;
+            throw new RuntimeException(print_r($form->getMessages()));
         }
 
         $this->objectManager->persist($object);
+        $this->getEventManager()->trigger('parameter.update', $this);
     }
 
     /**

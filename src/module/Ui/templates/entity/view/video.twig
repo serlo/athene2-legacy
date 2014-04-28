@@ -7,8 +7,10 @@
     <section>
         {{ markdown().toHtml(entity.getCurrentRevision().get('description')) }}
     </section>
+    <hr>
+    {% include 'entity/view/partials/license' %}
 	<hr>
 	<section>
-        {{ entity().renderDiscussions(entity) }}
+        {{ discussion(entity).render() }}
     </section>
 </article>

@@ -13,20 +13,43 @@ namespace Alias;
 return [
     'alias_manager'   => [
         'aliases' => [
-            'blogPost' => [
+            'blogPost'     => [
                 'tokenize' => 'blog/{category}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
                 'fallback' => 'blog/{category}/{id}-{title}'
             ],
-            'entity'   => [
+            'entity'       => [
                 'tokenize' => '{path}/{title}',
                 'fallback' => '{path}/{type}/{title}-{id}',
                 'provider' => 'Entity\Provider\TokenProvider'
+            ],
+            'taxonomyTerm' => [
+                'tokenize' => '{path}',
+                'fallback' => '{path}-{id}',
+                'provider' => 'Taxonomy\Provider\TokenProvider'
             ]
         ]
     ],
     'class_resolver'  => [
         __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
+    ],
+    'router'          => [
+        'routes' => [
+            'alias' => [
+                'type'     => 'Common\Router\Slashable',
+                'priority' => -10000,
+                'options'  => [
+                    'route'       => '/:alias',
+                    'defaults'    => [
+                        'controller' => 'Alias\Controller\AliasController',
+                        'action'     => 'forward'
+                    ],
+                    'constraints' => [
+                        'alias' => '(.)+'
+                    ],
+                ]
+            ],
+        ]
     ],
     'service_manager' => [
         'factories' => [
@@ -35,7 +58,8 @@ return [
             __NAMESPACE__ . '\Listener\BlogManagerListener'       => __NAMESPACE__ . '\Factory\BlogManagerListenerFactory',
             __NAMESPACE__ . '\Listener\BlogManagerListener'       => __NAMESPACE__ . '\Factory\BlogManagerListenerFactory',
             __NAMESPACE__ . '\Listener\RepositoryManagerListener' => __NAMESPACE__ . '\Factory\RepositoryManagerListenerFactory',
-            __NAMESPACE__ . '\ListenerPageControllerListener'     => __NAMESPACE__ . '\Factory\PageControllerListenerFactory',
+            __NAMESPACE__ . '\Listener\PageControllerListener'    => __NAMESPACE__ . '\Factory\PageControllerListenerFactory',
+            __NAMESPACE__ . '\Listener\TaxonomyManagerListener'   => __NAMESPACE__ . '\Factory\TaxonomyManagerListenerFactory',
             __NAMESPACE__ . '\Storage\AliasStorage'               => __NAMESPACE__ . '\Factory\AliasStorageFactory'
         ]
     ],
@@ -79,7 +103,8 @@ return [
     ],
     'view_helpers'    => [
         'factories' => [
-            'url' => __NAMESPACE__ . '\Factory\UrlHelperFactory'
+            'url'   => __NAMESPACE__ . '\Factory\UrlHelperFactory',
+            'alias' => __NAMESPACE__ . '\Factory\AliasHelperFactory'
         ]
     ]
 ];

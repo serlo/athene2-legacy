@@ -15,6 +15,7 @@ use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Form\TermForm;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Form\FormInterface;
 
@@ -79,4 +80,10 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
      * @return mixed
      */
     public function updateTerm(FormInterface $form);
+
+    /**
+     * @param TermForm $termForm
+     * @return TaxonomyTermInterface
+     */
+    public function createRoot(TermForm $termForm);
 }

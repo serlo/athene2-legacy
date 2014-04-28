@@ -11,7 +11,6 @@
 namespace Alias\Factory;
 
 use Alias\AliasManager;
-use Zend\Mvc\Service\RouterFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -30,7 +29,7 @@ class AliasManagerFactory implements FactoryInterface
         $tokenizer     = $serviceLocator->get('Token\Tokenizer');
         $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
         $storage       = $serviceLocator->get('Alias\Storage\AliasStorage');
-        $router        = (new RouterFactory())->createService($serviceLocator);
+        $router        = $serviceLocator->get('Router');
         $aliasManager  = new AliasManager($classResolver, $options, $objectManager, $router, $storage, $tokenizer);
 
         return $aliasManager;

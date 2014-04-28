@@ -3,8 +3,9 @@
 //$this->render($this->response);
 echo json_encode(
     [
-        'id' => $this->id,
-        'type' => $this->type,
+        'id'       => $this->id,
+        'type'     => $this->type,
+        'url'      => $this->url,
         'response' => $this->response
     ]
 );

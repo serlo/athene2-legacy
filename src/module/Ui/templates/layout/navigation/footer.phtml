@@ -5,7 +5,7 @@
 * renders first level menu items as 1of6 columns
 */
 $html = array(
-    '<div class="row">',
+    '<ul class="nav nav-pills">',
 );
 
 foreach ($this->container as $page) {
@@ -14,13 +14,10 @@ foreach ($this->container as $page) {
         continue;
     }
 
-    $html[] = '<div class="col-md-3 col-sm-4 col-xs-12">';
-    $html[] = '<div class="inner">';
-    $html[] = '<ul class="nav">';
     // header
     // $html[] = '<li class="nav-header">';
     $html[] = '<li>';
-    $html[] = '<a href="' . $page->getHref() . '">';
+    $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
     if ($page->get('icon')) {
         $html[] = '<i class="icon-' . $page->get('icon') . '"></i>';
     }
@@ -40,7 +37,7 @@ foreach ($this->container as $page) {
                 continue;
             }
             $html[] = '<li' . ($subpage->isActive() ? ' class="active"' : '') . '>';
-            $html[] = '<a href="' . $subpage->getHref() . '">';
+            $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
             
             if ($subpage->get('icon')) {
                 $html[] = '<i class="icon-' . $subpage->get('icon') . '"></i>';
@@ -52,11 +49,8 @@ foreach ($this->container as $page) {
         }
     }
 
-    $html[] = '</ul>';
-    $html[] = '</div>';
-    $html[] = '</div>';
 }
 
-$html[] = '</div>';
+$html[] = '</ul>';
 
 echo join(PHP_EOL, $html);

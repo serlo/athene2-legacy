@@ -12,7 +12,6 @@
 namespace Term\Manager;
 
 use ClassResolver\ClassResolverAwareTrait;
-use Common\Filter\Slugify;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Instance\Entity\InstanceInterface;
@@ -37,14 +36,11 @@ class TermManager implements TermManagerInterface
         }
 
         /* @var $entity TermEntityInterface */
-        $filter        = new Slugify();
-        $slug          = $filter->filter($name);
         $entity        = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
         $this->terms[] = $entity;
 
         $entity->setName($name);
         $entity->setInstance($instance);
-        $entity->setSlug($slug);
         $this->getObjectManager()->persist($entity);
 
         return $entity;
@@ -58,7 +54,7 @@ class TermManager implements TermManagerInterface
 
         if (!is_object($entity)) {
             foreach ($this->terms as $term) {
-                if ($term->getName() == $name) {
+                if ($term->getName() == $name && $term->getInstance() === $instance) {
                     return $term;
                 }
             }
@@ -73,27 +69,6 @@ class TermManager implements TermManagerInterface
             $entity->setName($name);
             $this->persist($entity);
             $this->flush($entity);
-        }
-
-        return $entity;
-    }
-
-    public function findTermBySlug($slug, InstanceInterface $instance)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface');
-        $criteria  = ['slug' => $slug, 'instance' => $instance->getId()];
-        $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
-
-        if (!is_object($entity)) {
-            foreach ($this->terms as $term) {
-                if ($term->getSlug() == $slug) {
-                    return $term;
-                }
-            }
-        }
-
-        if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $slug, $instance->getId()));
         }
 
         return $entity;

@@ -1,4 +1,4 @@
-{{ pageHeader(normalize().toTitle(entity)).setSubtitle('History').setBacklink(normalize().toUrl(entity)).render() }}
+{{ pageHeader(normalize().toTitle(entity)).setSubtitle('History').setBacklink(normalize().toUrl(entity)).append(contexter().renderButton('right')).render() }}
 {% if(entity.countUnrevised() > 1) %}
     <div class="alert alert-info">
         {{ translate('There are multiple recent revisions for this object. Please be aware that they may be of very different nature. Consider reviewing all of them before accepting or merging.') }}

@@ -10,7 +10,7 @@
  */
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_element', 'content', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix'],
+                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'],
     function ($, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
@@ -64,6 +64,8 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 $('[data-toggle*="-controls"]').ToggleAction();
                 // init triggers
                 $('[data-trigger]').TriggerAction();
+                // forum select
+                $('form[name="discussion"]', $context).ForumSelect();
 
                 // NOTE: deactivated for now
                 // init AjaxOverlay for /ref links

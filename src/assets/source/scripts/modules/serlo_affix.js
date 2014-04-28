@@ -37,7 +37,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
         // Case 1: element has more height than window 
         // && Case 2: element height is lower than stickToElements height
-        if (height > windowHeight && height > stickToHeight) {
+        if (height > windowHeight || height > stickToHeight) {
             targetTop = 0;
         } else {
             // Case 2: element has less height than window

@@ -61,7 +61,7 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
             $params            = ['subject' => $subject->getSlug()];
             $routeMatch        = new RouteMatch($params);
 
-            $routeMatch->setMatchedRouteName('subject');
+            $routeMatch->setMatchedRouteName('subject/home');
             $navigationFactory->setRouteMatch($routeMatch);
         }
     }

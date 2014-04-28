@@ -24,7 +24,7 @@ class AdPage implements AdPageInterface
 {
 
     /**
-     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Instance\Entity\Instance")
      * @ORM\JoinColumn(name="instance_id", referencedColumnName="id")
      * 
@@ -33,7 +33,7 @@ class AdPage implements AdPageInterface
     protected $instance_id;
 
     /**
-     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\Id 
      * @ORM\ManyToOne(targetEntity="Page\Entity\PageRepository")
      * @ORM\JoinColumn(name="page_repository_id", referencedColumnName="id")
      * 

@@ -255,14 +255,16 @@ class NavigationController extends AbstractActionController
                 $this->navigationManager->updatePage($this->pageForm);
                 $this->navigationManager->flush();
                 $this->flashMessenger()->addSuccessMessage('The page was successfully updated');
-            } else {
-                $this->flashMessenger()->addErrorMessage('The page could not be updated');
+                return $this->redirect()->toReferer();
             }
         } else {
-            $this->flashMessenger()->addErrorMessage('No post data was sent - the page could not be updated');
+            $this->referer()->store();
         }
 
-        return $this->redirect()->toReferer();
+        $view = new ViewModel(['form' => $this->pageForm]);
+        $view->setTemplate('navigation/page/update');
+
+        return $view;
     }
 
     public function updateParameterAction()

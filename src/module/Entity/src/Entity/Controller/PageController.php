@@ -11,28 +11,16 @@
 namespace Entity\Controller;
 
 use Alias\AliasManagerAwareTrait;
-use Alias\Exception\AliasNotFoundException;
 use Zend\View\Model\ViewModel;
 
 class PageController extends AbstractController
 {
-    use AliasManagerAwareTrait;
-
     public function indexAction()
     {
         $entity = $this->getEntity();
 
         if (!$entity) {
             return false;
-        }
-
-        if (!$this->params('forwarded', false)) {
-            try {
-                $alias = $this->getAliasManager()->findAliasByObject($entity);
-                return $this->redirect()->toRoute('alias', ['alias' => $alias->getAlias()]);
-            } catch (AliasNotFoundException $e) {
-                // No Alias found? Well, then we got nothing to do!
-            }
         }
 
         $model = new ViewModel(['entity' => $entity]);

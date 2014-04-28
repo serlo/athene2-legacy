@@ -11,6 +11,7 @@
 namespace User\Controller;
 
 use Instance\Manager\InstanceManagerAwareTrait;
+use User\Exception\UserNotFoundException;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 use ZfcRbac\Exception\UnauthorizedException;
@@ -34,22 +35,26 @@ class UserController extends AbstractUserController
         if (!$user) {
             throw new UnauthorizedException;
         }
-
         $view = new ViewModel(['user' => $user]);
-
-        $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
-
         return $view;
     }
 
     public function profileAction()
     {
-        $user = $this->getUserManager()->getUser($this->params('id'));
+        try {
+            $id   = $this->params('id');
+            if(is_numeric($id)){
+                $user = $this->getUserManager()->getUser($id);
+            } else {
+                $user = $this->getUserManager()->findUserByUsername($id);
+            }
+        } catch (UserNotFoundException $e){
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
         $view = new ViewModel(['user' => $user]);
-        $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
-
         return $view;
     }
 
@@ -110,21 +115,6 @@ class UserController extends AbstractUserController
         return $this->forms[$name];
     }
 
-    public function removeAction()
-    {
-        // todo: make sure this doesn't get abused and remove exception
-        throw new \Exception();
-
-        $user = $this->getUserManager()->getUser($this->params('id', null));
-        $user->setTrashed(true);
-
-        $this->getUserManager()->persist($user);
-        $this->getUserManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
-    }
-
     /**
      * @param string $name
      * @param Form   $form
@@ -160,7 +150,6 @@ class UserController extends AbstractUserController
 
         $view = new ViewModel(['user' => $user, 'form' => $form]);
         $view->setTemplate('user/user/settings');
-        $this->layout('layout/1-col');
 
         return $view;
     }

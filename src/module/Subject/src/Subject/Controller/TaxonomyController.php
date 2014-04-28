@@ -23,12 +23,7 @@ class TaxonomyController extends AbstractController
     public function indexAction()
     {
         try {
-            $subject = $this->getSubject();
-            $term    = $subject->findChildBySlugs(explode('/', $this->params('path')));
-            if (!is_object($term)) {
-                $this->getResponse()->setStatusCode(404);
-                return false;
-            }
+            $term = $this->getTerm();
         } catch (TermNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return false;
@@ -36,11 +31,19 @@ class TaxonomyController extends AbstractController
 
         /* @var $entities Collection|EntityInterface[] */
         $types    = [];
+        $subject = $term->findAncestorByTypeName('subject');
+
+        if(!is_object($subject)){
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
         $entities = $term->getAssociated('entities')->filter(
             function (EntityInterface $e) {
                 return !$e->isTrashed() && $e->hasCurrentRevision();
             }
         );
+
         foreach ($entities as $e) {
             $types[$e->getType()->getName()][] = $e;
         }

@@ -31,13 +31,13 @@ foreach ($this->pages as $page) {
     }
 
     $elements = '';
-    if ($page->get('elements') > 0) {
+    if ($page->get('elements') !== null) {
         $elements = ' data-element-count="' . $page->get('elements') . '"';
     }
 
     $html[] = '<li' . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
-    $html[] = '<a href="' . $page->getHref() . '">';
+    $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
 
     if ($page->get('icon')) {
         $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';

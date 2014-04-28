@@ -31,10 +31,10 @@
         </div>
     </section>
     <div class="collapse" id="discussions-{{ entity.getId() }}">
-        {{ entity().renderDiscussions(entity) }}
+        {{ discussion(entity).render() }}
     </div>
     <section>
-        {% if(solution and solution.hasCurrentRevision()) %}
+        {% if solution %}
             {% include 'entity/view/default' with {'entity': solution} only %}
         {% endif %}
     </section>

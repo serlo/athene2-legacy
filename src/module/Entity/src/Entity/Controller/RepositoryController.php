@@ -11,7 +11,6 @@
  */
 namespace Entity\Controller;
 
-use Contexter\Adapter\AdaptableInterface;
 use Entity\Entity\EntityInterface;
 use Entity\Options\ModuleOptions;
 use Instance\Manager\InstanceManagerAwareTrait;
@@ -19,9 +18,10 @@ use User\Manager\UserManagerAwareTrait;
 use Versioning\Exception\RevisionNotFoundException;
 use Versioning\RepositoryManagerAwareTrait;
 use Zend\Form\Form;
+use Zend\Mvc\Exception;
 use Zend\View\Model\ViewModel;
 
-class RepositoryController extends AbstractController implements AdaptableInterface
+class RepositoryController extends AbstractController
 {
     use UserManagerAwareTrait, InstanceManagerAwareTrait;
     use RepositoryManagerAwareTrait;
@@ -76,7 +76,8 @@ class RepositoryController extends AbstractController implements AdaptableInterf
 
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
-        $repository->checkoutRevision($revision->getId(), 'Approved');
+        $reason     = $this->params()->fromPost('reason', '');
+        $repository->checkoutRevision($revision->getId(), $reason);
         $this->getEntityManager()->flush();
         return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
@@ -84,12 +85,19 @@ class RepositoryController extends AbstractController implements AdaptableInterf
     public function compareAction()
     {
         $entity = $this->getEntity();
+
         if (!$entity) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
+
+        if (!$revision) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
 
         $view = new ViewModel([
             'currentRevision' => $currentRevision,
@@ -124,8 +132,8 @@ class RepositoryController extends AbstractController implements AdaptableInterf
         }
         $this->assertGranted('entity.revision.trash', $entity);
         $repository = $this->getRepositoryManager()->getRepository($entity);
-
-        $repository->rejectRevision($this->params('revision'), 'Rejected');
+        $reason     = $this->params()->fromPost('reason', '');
+        $repository->rejectRevision($this->params('revision'), $reason);
         $this->getEntityManager()->flush();
         return $this->redirect()->toReferer();
     }

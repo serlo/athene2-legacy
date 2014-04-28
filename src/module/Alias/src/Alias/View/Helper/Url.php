@@ -36,15 +36,18 @@ class Url extends ZendUrl
         $this->instanceManager = $instanceManager;
     }
 
-    public function __invoke($name = null, $params = [], $options = [], $reuseMatchedParams = false)
+    public function __invoke($name = null, $params = [], $options = [], $reuseMatchedParams = false, $useAlias = true)
     {
         $link = parent::__invoke($name, $params, $options, $reuseMatchedParams);
+
+        if(!$useAlias){
+            return $link;
+        }
 
         try {
             $aliasManager = $this->getAliasManager();
             $instance     = $this->getInstanceManager()->getInstanceFromRequest();
-            $alias        = $aliasManager->findAliasBySource($link, $instance);
-            $link         = parent::__invoke('alias', ['alias' => $alias]);
+            return $aliasManager->findAliasBySource($link, $instance);
         } catch (AliasNotFoundException $e) {
             // No alias was found -> nothing to do
         }

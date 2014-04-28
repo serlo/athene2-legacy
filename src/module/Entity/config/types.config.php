@@ -133,7 +133,7 @@ return [
                     'related_content' => []
                 ]
             ],
-            'module'                => [
+            'course'                => [
                 'components' => [
                     'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
@@ -145,7 +145,7 @@ return [
                     ],
                     'link'            => [
                         'children' => [
-                            'module-page' => [
+                            'course-page' => [
                                 'multiple' => true
                             ]
                         ]
@@ -155,7 +155,7 @@ return [
                     'related_content' => []
                 ]
             ],
-            'module-page'           => [
+            'course-page'           => [
                 'components' => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
@@ -167,7 +167,7 @@ return [
                     ],
                     'link'       => [
                         'parents' => [
-                            'module' => [
+                            'course' => [
                                 'multiple' => false
                             ]
                         ]

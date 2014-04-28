@@ -1,7 +1,7 @@
 {{ pageHeader('Discussions').setSubtitle(forum ? forum.getName() : '').render() }}
 <div class="list-group">
     {% for forum in forums if not forum.isTrashed() %}
-        <a class="list-group-item" href="{{ url('discussion/discussions', {'id': forum.getId()}) }}">
+        <a class="list-group-item" href="{{ url('discussion/discussions/get', {'id': forum.getId()}) }}">
             {% set discussions = forum.getAssociatedRecursive('comments', ['forum']) %}
             <span class="badge pull-right">{{ discussions.count() }}</span>
             {{ translate(forum.getName()) }}

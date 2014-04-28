@@ -32,7 +32,7 @@ class TaxonomyTermControllerAdapter extends AbstractAdapter
         /* @var $controller AbstractController */
         $params     = $this->getRouteParams();
         $controller = $this->getAdaptee();
-        $entity     = $controller->getTerm($params['id']);
+        $entity     = $controller->getTerm($params['term']);
         $array      = [
             'type'     => $entity->getType()->getName(),
             'instance' => $entity->getInstance()->getName()

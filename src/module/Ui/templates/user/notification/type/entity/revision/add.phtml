@@ -1,0 +1,11 @@
+<?php
+$event = $this->notification->getEvents()->current();
+$user = $this->normalize()->toTitle($event->getActor());
+$object = $this->normalize()->toTitle($event->getObject());
+$repository = $event->getParameter('repository');
+$url = $this->normalize()->toUrl($repository, true);
+?>
+<a role="menuitem" tabindex="-1" href="<?php echo $url; ?>">
+    <?php echo sprintf($this->translate('<strong>%s</strong> edited %s'), $user, $object); ?>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
+</a>

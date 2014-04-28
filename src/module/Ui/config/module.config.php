@@ -70,7 +70,8 @@ return [
             'timeago'         => 'Ui\View\Helper\Timeago',
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
-            'toAlpha'         => 'Ui\View\Helper\ToAlpha'
+            'toAlpha'         => 'Ui\View\Helper\ToAlpha',
+            'diff'            => 'Ui\View\Helper\DiffHelper'
         ]
     ],
     'page_header_helper'    => [],
@@ -105,6 +106,12 @@ return [
         ],
         'routes'           => [
             'entity/repository/add-revision' => [
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ],
+            'license/update'                 => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
@@ -146,7 +153,8 @@ return [
                     ],
                     'styles'         => [
                         'assets'  => [
-                            'styles/main.css'
+                            'styles/main.css',
+                            '../node_modules/athene2-editor/build/styles/content.css'
                         ],
                         'filters' => [
                             'CssRewriteFilter' => [

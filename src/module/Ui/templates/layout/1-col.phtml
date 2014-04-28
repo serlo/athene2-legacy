@@ -24,14 +24,14 @@ echo $this->doctype();
                     <?php echo $this->partial('layout/partials/notifications'); ?>
                     <?php echo $this->partial('layout/partials/main'); ?>
                 </div>
-                <?php echo $this->partial('layout/partials/contexter'); ?>
             </section>
-            <?php echo $this->horizon(4);?>
+            <?php echo $this->horizon(3);?>
         </div>
         <?php /* sticky footer: */ ?>
         <!-- <div id="footer-push"></div> -->
         <?php echo $this->partial('layout/partials/footer'); ?>
     </div>
     <?php echo $this->partial('layout/partials/default-modal'); ?>
+    <?php echo $this->placeholder('modals'); ?>
 </body>
 </html>

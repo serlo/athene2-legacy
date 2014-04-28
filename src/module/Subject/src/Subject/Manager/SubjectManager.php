@@ -14,23 +14,34 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Entity\Entity\EntityInterface;
 use Instance\Entity\InstanceInterface;
+use Normalizer\Normalizer;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
+use Zend\Cache\Storage\StorageInterface;
 
 class SubjectManager implements SubjectManagerInterface
 {
     use TaxonomyManagerAwareTrait;
 
-    public function __construct(TaxonomyManagerInterface $taxonomyManager)
-    {
-        $this->taxonomyManager = $taxonomyManager;
-    }
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
 
-    public function getSubject($id)
-    {
-        $term = $this->getTaxonomyManager()->getTerm($id);
-        return $term;
+    /**
+     * @var Normalizer
+     */
+    protected $normalizer;
+
+    public function __construct(
+        Normalizer $normalizer,
+        StorageInterface $storage,
+        TaxonomyManagerInterface $taxonomyManager
+    ) {
+        $this->taxonomyManager = $taxonomyManager;
+        $this->storage         = $storage;
+        $this->normalizer      = $normalizer;
     }
 
     public function findSubjectByString($name, InstanceInterface $instance)
@@ -46,11 +57,37 @@ class SubjectManager implements SubjectManagerInterface
         return $taxonomy->getChildren();
     }
 
+    public function getSubject($id)
+    {
+        $term = $this->getTaxonomyManager()->getTerm($id);
+        return $term;
+    }
+
     public function getTrashedEntities(TaxonomyTermInterface $term)
     {
+        $key = hash('sha256', serialize($term));
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
+
         $entities   = $this->getEntities($term);
         $collection = new ArrayCollection();
         $this->iterEntities($entities, $collection, 'isTrashed');
+        $this->storage->setItem($key, $collection);
+        return $collection;
+    }
+
+    public function getUnrevisedEntities(TaxonomyTermInterface $term)
+    {
+        $key = hash('sha256', serialize($term));
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
+
+        $entities   = $this->getEntities($term);
+        $collection = new ArrayCollection();
+        $this->iterEntities($entities, $collection, 'isRevised');
+        $this->storage->setItem($key, $collection);
         return $collection;
     }
 
@@ -59,9 +96,27 @@ class SubjectManager implements SubjectManagerInterface
         return $term->getAssociatedRecursive('entities');
     }
 
+    protected function isRevised(EntityInterface $entity, Collection $collection)
+    {
+        if ($entity->isUnrevised() && !$collection->contains($entity)) {
+            $normalized = $this->normalizer->normalize($entity);
+            $collection->add($normalized);
+        }
+    }
+
+    protected function isTrashed(EntityInterface $entity, Collection $collection)
+    {
+        if ($entity->getTrashed()) {
+            // Todo undirtify, this is needed because we can't cache doctrine models (where are your proxies now?)
+            $normalized = $this->normalizer->normalize($entity);
+            $collection->add($normalized);
+        }
+    }
+
     protected function iterEntities(Collection $entities, Collection $collection, $callback)
     {
         foreach ($entities as $entity) {
+            // Todo undirtify, this is needed because we can't cache doctrine models (where are your proxies now?)
             $this->$callback($entity, $collection);
             $this->iterLinks($entity, $collection, $callback);
         }
@@ -70,27 +125,5 @@ class SubjectManager implements SubjectManagerInterface
     protected function iterLinks(EntityInterface $entity, $collection, $callback)
     {
         $this->iterEntities($entity->getChildren('link'), $collection, $callback);
-    }
-
-    public function getUnrevisedEntities(TaxonomyTermInterface $term)
-    {
-        $entities   = $this->getEntities($term);
-        $collection = new ArrayCollection();
-        $this->iterEntities($entities, $collection, 'isRevised');
-        return $collection;
-    }
-
-    protected function isRevised(EntityInterface $entity, Collection $collection)
-    {
-        if ($entity->isUnrevised() && !$collection->contains($entity)) {
-            $collection->add($entity);
-        }
-    }
-
-    protected function isTrashed(EntityInterface $entity, Collection $collection)
-    {
-        if ($entity->getTrashed()) {
-            $collection->add($entity);
-        }
     }
 }

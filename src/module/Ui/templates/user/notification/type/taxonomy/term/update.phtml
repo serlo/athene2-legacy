@@ -1,0 +1,6 @@
+<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+<?php $term = $this->event->getObject()->getName(); ?>
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getObject(), true); ?>">
+    <?php echo sprintf($this->translate('<strong>%s</strong> updated %s'), $user, $associate, $object); ?>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
+</a>

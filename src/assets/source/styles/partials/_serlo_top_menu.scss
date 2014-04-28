@@ -15,6 +15,7 @@
             float: left;
             > a {
               padding: 8px 15px 6px 0;
+              @include theme-font(600);
             }
         }
     }
