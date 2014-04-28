@@ -6,7 +6,6 @@
  * @license     LGPL-3.0
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace License\Manager;
 
@@ -30,9 +29,8 @@ use ZfcRbac\Service\AuthorizationService;
 class LicenseManager implements LicenseManagerInterface
 {
     use ClassResolverAwareTrait, ObjectManagerAwareTrait;
-    use ConfigAwareTrait, InstanceManagerAwareTrait;
+    use InstanceManagerAwareTrait, EventManagerAwareTrait;
     use AuthorizationAssertionTrait, FlushableTrait;
-    use EventManagerAwareTrait;
 
     public function __construct(
         AuthorizationService $authorizationService,
@@ -56,29 +54,7 @@ class LicenseManager implements LicenseManagerInterface
         $this->getEventManager()->trigger('inject', $this, ['object' => $object, 'license' => $license]);
     }
 
-    protected function getDefaultLicense()
-    {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $code     = $instance->getName();
-        $defaults = $this->getDefaultConfig()['defaults'];
-        if (!array_key_exists($code, $defaults)) {
-            throw new Exception\RuntimeException(sprintf('No default license set for instance `%s`', $code));
-        }
-        $title = $defaults[$code];
-
-        return $this->findLicenseByTitleAndInterface($title, $instance);
-    }
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'defaults' => [
-                'Deutsch' => 'cc-by-sa-3.0'
-            ]
-        ];
-    }
-
-    public function findLicenseByTitleAndInterface($title, InstanceInterface $instance)
+    public function findLicenseByTitleAndInstance($title, InstanceInterface $instance)
     {
         if (!is_string($title)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -110,6 +86,10 @@ class LicenseManager implements LicenseManagerInterface
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('license.create', $instance);
+
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
+        }
 
         /* @var $entity \License\Entity\LicenseInterface */
         $entity = $form->getObject();
@@ -154,6 +134,9 @@ class LicenseManager implements LicenseManagerInterface
     public function updateLicense(LicenseForm $form)
     {
         $form->bind($form->getObject());
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
+        }
         $license = $form->getObject();
         $this->assertGranted('license.update', $license);
         $this->getObjectManager()->persist($license);
@@ -177,5 +160,23 @@ class LicenseManager implements LicenseManagerInterface
             $this->assertGranted('license.get', $license);
         }
         return $licenses;
+    }
+
+    protected function getDefaultLicense()
+    {
+        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
+        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
+        $license   = $this->getObjectManager()->getRepository($className)->findOneBy(
+            [
+                'default'  => true,
+                'instance' => $instance->getId()
+            ]
+        );
+
+        if (!is_object($license)) {
+            throw new Exception\Runtimeexception(sprintf('No default license set for for %s', $license->getName()));
+        }
+
+        return $license;
     }
 }

@@ -6,7 +6,6 @@
  * @license     LGPL-3.0
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Mailman\Listener;
 
@@ -15,6 +14,7 @@ use DoctrineModule\Paginator\Adapter\Collection;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
+use Zend\Mail\Protocol\Exception\RuntimeException;
 use Zend\View\Model\ViewModel;
 
 class NotificationWorkerListener extends AbstractListener
@@ -43,12 +43,18 @@ class NotificationWorkerListener extends AbstractListener
         $subject->setTemplate('mailman/messages/notification/subject');
         $body->setTemplate('mailman/messages/notification/body');
 
-        $this->getMailman()->send(
-            $user->getEmail(),
-            $this->getMailman()->getDefaultSender(),
-            $this->getRenderer()->render($subject),
-            $this->getRenderer()->render($body)
-        );
+        try {
+            $this->getMailman()->send(
+                $user->getEmail(),
+                $this->getMailman()->getDefaultSender(),
+                $this->getRenderer()->render($subject),
+                $this->getRenderer()->render($body)
+            );
+        } catch (RuntimeException $e){
+            // Todo find a better way to do this - maybe via syslog?
+            // Email could not be send, however, we do not want to crash  notifications because
+            // of this...
+        }
     }
 
     protected function getMonitoredClass()

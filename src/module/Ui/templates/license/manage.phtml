@@ -3,6 +3,7 @@
 	<thead>
 		<tr>
 			<th><?php echo $this->translate('Title'); ?></th>
+            <th><?php echo $this->translate('Default'); ?></th>
 			<th><?php echo $this->translate('Url'); ?></th>
 			<th><?php echo $this->translate('Icon'); ?></th>
 			<th><?php echo $this->translate('Actions'); ?></th>
@@ -13,6 +14,7 @@
         <?php foreach($this->licenses as $license): ?>
             <tr>
                 <td><?php echo $license->getTitle(); ?></td>
+                <td><?php echo $license->isDefault() ? '<span class="glyphicon glyphicon-ok"></span>' : ''; ?></td>
                 <td><a href="<?php echo $license->getUrl(); ?>"><?php echo $license->getUrl(); ?></a></td>
                 <td><img height="30" src="<?php echo $license->getIconHref(); ?>" /></td>
                 <td>
