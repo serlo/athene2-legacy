@@ -3,15 +3,30 @@
     {% if revision is not sameas(currentRevision) %}
         <div class="revision panel-group">
             {% for field in revision.getFields() %}
+
+
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ translate(field.getName()) }}</div>
+                    <div class="panel-heading">
+                        {{ translate(field.getName()) }}
+                        <ul class="nav nav-pills">
+                            <li class="active"><a href="#source{{ field.getName() }}" data-toggle="tab">{{ translate('Source') }}</a></li>
+                            <li><a href="#preview{{ field.getId() }}" data-toggle="tab">{{ translate('Preview') }}</a></li>
+                        </ul>
+                    </div>
                     <div class="panel-body">
-                        {% set oldField = currentRevision.get(field.getName()) %}
-                        {% if oldField %}
-                            {{ diff().markdown(oldField, field.getValue()) }}
-                        {% else %}
-                            {{ markdown().toHtml(field.getValue()) }}
-                        {% endif %}
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="source{{ field.getName() }}">
+                                {% set oldField = currentRevision.get(field.getName()) %}
+                                {% if oldField %}
+                                    {{ diff().markdown(oldField, field.getValue()) }}
+                                {% else %}
+                                    {{ markdown().toHtml(field.getValue()) }}
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="preview{{ field.getId() }}">
+                                {{ markdown().toHtml(field.getValue()) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
