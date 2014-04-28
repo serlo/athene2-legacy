@@ -1,17 +1,32 @@
-{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').append(contexter().renderButton()).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
+{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').append(contexter().renderButton('right')).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
 <article>
     {% if revision is not sameas(currentRevision) %}
         <div class="revision panel-group">
             {% for field in revision.getFields() %}
+
+
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ translate(field.getName()) }}</div>
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li class="active"><a href="#source{{ field.getName() }}" data-toggle="tab">{{ translate('Source') }}</a></li>
+                            <li><a href="#preview{{ field.getId() }}" data-toggle="tab">{{ translate('Preview') }}</a></li>
+                        </ul>
+                        <h4>{{ translate(field.getName()) }}</h4>
+                    </div>
                     <div class="panel-body">
-                        {% set oldField = currentRevision.get(field.getName()) %}
-                        {% if oldField %}
-                            {{ diff().markdown(oldField, field.getValue()) }}
-                        {% else %}
-                            {{ markdown().toHtml(field.getValue()) }}
-                        {% endif %}
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="source{{ field.getName() }}">
+                                {% set oldField = currentRevision.get(field.getName()) %}
+                                {% if oldField %}
+                                    {{ diff().markdown(oldField, field.getValue()) }}
+                                {% else %}
+                                    {{ markdown().toHtml(field.getValue()) }}
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="preview{{ field.getId() }}">
+                                {{ markdown().toHtml(field.getValue()) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

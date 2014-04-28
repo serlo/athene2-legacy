@@ -52,6 +52,7 @@ abstract class AbstractStrategy implements StrategyInterface
         $normalized->setType($this->getType());
         $normalized->setRouteName($this->getRouteName());
         $normalized->setRouteParams($this->getRouteParams());
+        $normalized->setId($this->getId());
 
         return $normalized;
     }
@@ -62,6 +63,11 @@ abstract class AbstractStrategy implements StrategyInterface
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    abstract protected function getId();
 
     /**
      * @return string

@@ -1,2 +1,2 @@
-{{ pageHeader(entity.getCurrentRevision().get('title')).setSubtitle('Module page').render() }}
+{{ pageHeader(entity.getCurrentRevision().get('title')).setSubtitle('Module page').append(contexter().renderButton()).render() }}
 {% include 'entity/view/default' %}

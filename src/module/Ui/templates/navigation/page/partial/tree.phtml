@@ -21,15 +21,19 @@
                     <div class="btn-group">
                         <a class="btn btn-xs btn-default" href="<?php echo $this->url('navigation/parameter/create', ['page' => $page->getId()]); ?>">
                             <span class="glyphicon glyphicon-plus"></span>
-                            <?php echo $this->translate('parameter'); ?>
+                            <?php echo $this->translate('Add parameter'); ?>
                         </a>
                         <a class="btn btn-xs btn-default"
                            href="<?php echo $this->url('navigation/page/create', ['container' => $page->getContainer()->getId(), 'parent' => $page->getId()]); ?>">
-                            <span class="glyphicon glyphicon-plus"></span> <?php echo $this->translate('page'); ?>
+                            <span class="glyphicon glyphicon-plus"></span> <?php echo $this->translate('Add page'); ?>
+                        </a>
+                        <a class="btn btn-xs btn-default"
+                           href="<?php echo $this->url('navigation/page/update', ['page' => $page->getId()]); ?>">
+                            <span class="glyphicon glyphicon-cog"></span> <?php echo $this->translate('Settings'); ?>
                         </a>
                         <a class="btn btn-xs btn-danger"
                            href="<?php echo $this->url('navigation/page/remove', ['page' => $page->getId()]); ?>">
-                            <span class="glyphicon glyphicon-trash"></span> <?php echo $this->translate('page'); ?>
+                            <span class="glyphicon glyphicon-trash"></span> <?php echo $this->translate('Remove page'); ?>
                         </a>
                     </div>
                 </li>

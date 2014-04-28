@@ -50,21 +50,53 @@ class Normalized implements NormalizedInterface
      */
     protected $content;
 
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+    /**
+     * @var int
+     */
+    protected $id;
 
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * @param string $content
+     * @return void
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function getPreview()
+    {
+        return $this->preview;
+    }
+
+    /**
+     * @param string $preview
+     * @return void
+     */
+    public function setPreview($preview)
+    {
+        $this->preview = $preview;
     }
 
     public function getRouteName()
@@ -72,19 +104,27 @@ class Normalized implements NormalizedInterface
         return $this->routeName;
     }
 
+    /**
+     * @param string $routeName
+     * @return void
+     */
+    public function setRouteName($routeName)
+    {
+        $this->routeName = $routeName;
+    }
+
     public function getRouteParams()
     {
         return $this->routeParams;
     }
 
-    public function getTitle()
+    /**
+     * @param multitype : $routeParams
+     * @return void
+     */
+    public function setRouteParams($routeParams)
     {
-        return $this->title;
-    }
-
-    public function getPreview()
-    {
-        return $this->preview;
+        $this->routeParams = $routeParams;
     }
 
     public function getTimestamp()
@@ -93,68 +133,35 @@ class Normalized implements NormalizedInterface
     }
 
     /**
-     * @param string $routeName
-     * @return self
-     */
-    public function setRouteName($routeName)
-    {
-        $this->routeName = $routeName;
-
-        return $this;
-    }
-
-    /**
-     * @param multitype : $routeParams
-     * @return self
-     */
-    public function setRouteParams($routeParams)
-    {
-        $this->routeParams = $routeParams;
-
-        return $this;
-    }
-
-    /**
-     * @param string $title
-     * @return self
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @param string $preview
-     * @return self
-     */
-    public function setPreview($preview)
-    {
-        $this->preview = $preview;
-
-        return $this;
-    }
-
-    /**
      * @param DateTime $timestamp
-     * @return self
+     * @return void
      */
     public function setTimestamp(DateTime $timestamp)
     {
         $this->timestamp = $timestamp;
+    }
 
-        return $this;
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**
-     * @param string $content
-     * @return self
+     * @param string $title
+     * @return void
      */
-    public function setContent($content)
+    public function setTitle($title)
     {
-        $this->content = $content;
+        $this->title = $title;
+    }
 
-        return $this;
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 }

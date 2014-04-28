@@ -8,13 +8,13 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+
 namespace Entity\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An entity link.
- *
  * @ORM\Entity
  * @ORM\Table(name="entity_revision_field")
  */
@@ -45,7 +45,15 @@ class RevisionField
     protected $value;
 
     /**
-     * @return field_type $entityRevisionId
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return RevisionInterface $entityRevisionId
      */
     public function getRevision()
     {
@@ -53,7 +61,7 @@ class RevisionField
     }
 
     /**
-     * @return field_type $field
+     * @return string $field
      */
     public function getName()
     {
@@ -61,7 +69,7 @@ class RevisionField
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {
@@ -69,15 +77,15 @@ class RevisionField
     }
 
     /**
-     * @param $entityRevision
+     * @param RevisionInterface $entityRevision
      */
-    public function setRevision($entityRevision)
+    public function setRevision(RevisionInterface $entityRevision)
     {
         $this->revision = $entityRevision;
     }
 
     /**
-     * @param field_type $field
+     * @param string $field
      */
     public function setName($field)
     {
@@ -85,7 +93,7 @@ class RevisionField
     }
 
     /**
-     * @param field_type $value
+     * @param string $value
      */
     public function setValue($value)
     {
@@ -95,6 +103,6 @@ class RevisionField
     public function __construct($revision, $field)
     {
         $this->revision = $revision;
-        $this->name    = $field;
+        $this->name     = $field;
     }
 }

@@ -23,14 +23,9 @@ class EntityRevisionStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getObject()->get('title');
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getTimestamp();
+        return $object instanceof Revision;
     }
 
     protected function getContent()
@@ -38,14 +33,25 @@ class EntityRevisionStrategy extends AbstractStrategy
         return $this->getObject()->get('content');
     }
 
+    protected function getField($field, $fallback = null)
+    {
+        if ($this->getObject()->get($field) !== null) {
+            return $this->getObject()->get($field);
+        } elseif ($fallback !== null && $this->getObject()->get($fallback) !== null) {
+            return $this->getObject()->get($fallback);
+        } else {
+            return $this->getObject()->getId();
+        }
+    }
+
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getPreview()
     {
         return $this->getObject()->get('content');
-    }
-
-    protected function getType()
-    {
-        return $this->getObject()->getRepository()->getType()->getName() . 'Revision';
     }
 
     protected function getRouteName()
@@ -61,19 +67,18 @@ class EntityRevisionStrategy extends AbstractStrategy
         ];
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof Revision;
+        return $this->getObject()->getTimestamp();
     }
 
-    protected function getField($field, $fallback = null)
+    protected function getTitle()
     {
-        if ($this->getObject()->get($field) !== null) {
-            return $this->getObject()->get($field);
-        } elseif ($fallback !== null && $this->getObject()->get($fallback) !== null) {
-            return $this->getObject()->get($fallback);
-        } else {
-            return $this->getObject()->getId();
-        }
+        return $this->getObject()->get('title');
+    }
+
+    protected function getType()
+    {
+        return $this->getObject()->getRepository()->getType()->getName() . 'Revision';
     }
 }

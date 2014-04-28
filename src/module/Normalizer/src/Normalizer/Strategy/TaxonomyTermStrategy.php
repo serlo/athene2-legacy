@@ -35,6 +35,11 @@ class TaxonomyTermStrategy extends AbstractStrategy
         return $this->getObject()->getDescription();
     }
 
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getPreview()
     {
         return $this->getObject()->getName();

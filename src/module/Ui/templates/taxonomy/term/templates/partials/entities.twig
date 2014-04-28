@@ -31,6 +31,10 @@
 
     {% if types.get('text-exercise') or types.get('text-exercise-group') %}
         <!-- Rest -->
+        <h4>
+            <span class="glyphicon glyphicon-ok"></span> {{ translate('Exercises') }}
+        </h4>
+        <hr>
         {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
                 <div class="row">
                     <div class="col-xs-1">

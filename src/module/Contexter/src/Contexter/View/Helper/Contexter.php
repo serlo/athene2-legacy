@@ -16,35 +16,50 @@ class Contexter extends AbstractHelper
 {
     use \Contexter\Router\RouterAwareTrait;
 
+    protected $url = false;
+
     public function __invoke()
     {
+        return $this;
+    }
+
+    public function forceUrl($url)
+    {
+        $this->url = $url;
         return $this;
     }
 
     public function render($type = null)
     {
         if (is_object($this->getRouter()->getRouteMatch())) {
-            $matches = $this->getRouter()->match(null, $type);
+            $matches   = $this->getRouter()->match(null, $type);
+            $url       = $this->url;
+            $this->url = false;
             return $this->getView()->partial(
                 'contexter/helper/default',
                 [
                     'router'  => $this->getRouter(),
                     'matches' => $matches,
-                    'type'    => $type
+                    'type'    => $type,
+                    'url'     => $url
                 ]
             );
         }
     }
 
-    public function renderButton()
+    public function renderButton($float = null)
     {
         if (is_object($this->getRouter()->getRouteMatch())) {
-            $matches = $this->getRouter()->match();
+            $matches   = $this->getRouter()->match();
+            $url       = $this->url;
+            $this->url = false;
             return $this->getView()->partial(
                 'contexter/helper/button',
                 [
                     'router'  => $this->getRouter(),
-                    'matches' => $matches
+                    'matches' => $matches,
+                    'url'     => $url,
+                    'float'   => $float
                 ]
             );
         }
