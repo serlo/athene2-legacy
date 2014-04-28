@@ -1,19 +1,17 @@
 {% set revision = entity.getCurrentRevision() %}
 <article class="panel-group">
-    {% if(revision.get('hint')) %}
+    {% if(revision and revision.get('hint')) %}
         <section class="collapse panel panel-default" id="hint-{{ entity.getId() }}">
             <div class="panel-body">
                 <strong>
+                    <ul class="nav nav-pills">
+                        {% include 'entity/view/partials/actions/small-essential' %}
+                    </ul>
                     <span class="glyphicon glyphicon-question-sign"></span>
                     {{ translate('Hint') }}
                 </strong>
             </div>
             <div class="list-group">
-                <div class="list-group-item">
-                    <ul class="nav nav-pills">
-                        {% include 'entity/view/partials/actions/small-essential' %}
-                    </ul>
-                </div>
                 <div class="list-group-item">
                     {{ markdown().toHtml(revision.get('hint')) | raw }}
                 </div>
@@ -23,23 +21,30 @@
     <section class="collapse panel panel-default" id="solution-{{ entity.getId() }}">
         <div class="panel-body">
             <strong>
-                <span class="glyphicon glyphicon-question-sign"></span>
+                <ul class="nav nav-pills pull-right">
+                    {% include 'entity/view/partials/actions/small-essential' %}
+                </ul>
+                <span class="glyphicon glyphicon-ok-circle"></span>
                 {{ translate('Solution') }}
             </strong>
         </div>
         <div class="list-group">
             <div class="list-group-item">
-                <ul class="nav nav-pills">
-                    {% include 'entity/view/partials/actions/small-essential' %}
-                </ul>
-            </div>
-            <div class="list-group-item">
-                {{ markdown().toHtml(revision.get('content')) | raw }}
+                {% if revision %}
+                    {{ markdown().toHtml(revision.get('content')) | raw }}
+                {% elseif not entity.getHead() %}
+                    {{ translate('A solution has been created but no content has been added yet or it is pending approval.') }}
+                {% endif %}
             </div>
         </div>
         <div class="list-group">
             <div class="list-group-item">
-                {{ entity().renderDiscussions(entity) }}
+                {% include 'entity/view/partials/license' %}
+            </div>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                {{ discussion(entity).render() }}
             </div>
         </div>
     </section>

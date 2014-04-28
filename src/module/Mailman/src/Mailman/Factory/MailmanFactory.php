@@ -24,10 +24,7 @@ class MailmanFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $mailman = new Mailman();
-        $mailman->setConfig($serviceLocator->get('config')['mailman']);
-        $mailman->setServiceLocator($serviceLocator);
-
-        return $mailman;
+        $options = $serviceLocator->get('Mailman\Options\ModuleOptions');
+        return new Mailman($options, $serviceLocator);
     }
 }

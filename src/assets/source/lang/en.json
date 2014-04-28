@@ -9,5 +9,8 @@
     "No results found." : "",
     "No results found for \"%s\"." : "",
     "Illegal injection found" : "",
-    "Could not load injection" : ""
+    "Could not load injection" : "",
+    "Select a forum for your discussion." : "",
+    "Show overview" : "",
+    "Show %d contents for \"%s\"" : ""
 }

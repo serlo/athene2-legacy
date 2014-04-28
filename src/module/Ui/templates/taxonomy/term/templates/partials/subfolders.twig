@@ -1,0 +1,8 @@
+<div class="list-group">
+    {% for child in term.findChildrenByTrashed(false) if child.getType().getName() not in ['topic-folder' , 'curriculum-topic-folder'] %}
+        <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ child.getName() }}</h4>
+            <p class="list-group-item-text">{{ child.getDescription() | nl2br }}</p>
+        </a>
+    {% endfor %}
+</div>

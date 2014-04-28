@@ -11,7 +11,6 @@
 namespace Normalizer\View\Helper;
 
 use Normalizer\NormalizerAwareTrait;
-use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class Normalize extends AbstractHelper
@@ -23,13 +22,13 @@ class Normalize extends AbstractHelper
         if ($object === null) {
             return $this;
         }
-
         return $this->normalize($object);
     }
 
-    public function toTitle($object)
+    public function toAnchor($object)
     {
-        return $this->normalize($object)->getTitle();
+        $normalized = $this->normalize($object);
+        return '<a href="' . $this->toUrl($object) . '">' . $normalized->getTitle() . '</a>';
     }
 
     public function toPreview($object)
@@ -37,31 +36,28 @@ class Normalize extends AbstractHelper
         return $this->normalize($object)->getPreview();
     }
 
+    public function toTitle($object)
+    {
+        return $this->normalize($object)->getTitle();
+    }
+
     public function toType($object)
     {
         return $this->normalize($object)->getType();
     }
 
-    public function toUrl($object)
+    public function toUrl($object, $forceCanonical = false)
     {
         $normalized = $this->normalize($object);
-
-        return $this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams());
-    }
-
-    public function toAnchor($object)
-    {
-        $normalized = $this->normalize($object);
-
-        return '<a href="' . $this->toUrl($object) . '">' . $normalized->getTitle() . '</a>';
+        return $this->getView()->url(
+            $normalized->getRouteName(),
+            $normalized->getRouteParams(),
+            ['force_canonical' => $forceCanonical]
+        );
     }
 
     protected function normalize($object)
     {
-        if ($object instanceof UuidInterface) {
-            $object = $object;
-        }
-
         return $this->getNormalizer()->normalize($object);
     }
 }

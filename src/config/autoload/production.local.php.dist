@@ -26,5 +26,11 @@ return [
             'strict_variables' => false,
             'autoescape' => false
         ],
+    ],
+    'assetic_configuration' => [
+        'buildOnRequest' => false
+    ],
+    'log' => [
+        'exceptions' => true
     ]
 ];

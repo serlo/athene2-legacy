@@ -3,23 +3,28 @@
 @import "base/bootstrap-override";
 @import "sass-bootstrap/lib/bootstrap";
 
-@import "base/content_layout";
+@import "modules/mixins";
+
+// @import "base/content_layout";
 @import "base/content";
 
-@import "modules/mixins";
-@import "modules/states";
 @import "modules/alerts";
 @import "modules/bars";
+@import "modules/modes";
+@import "modules/grid_boxes";
+@import "modules/diff";
 
 @import "base/layout";
 
 @import "base/base";
 @import "base/typography";
 
-@import "partials/bootstrap_extention";
+@import "partials/bootstrap_extension";
+@import "partials/serlo_ad";
 @import "partials/serlo_top_menu";
 @import "partials/serlo_search";
 @import "partials/serlo_main_menu";
+@import "partials/serlo_side_context";
 @import "partials/serlo_header";
 @import "partials/serlo_footer";
 @import "partials/serlo_home";
@@ -28,5 +33,7 @@
 
 @import "thirdparty/datepicker";
 @import "thirdparty/timeline";
+
+@import "modules/states";
 
 @import "shame";

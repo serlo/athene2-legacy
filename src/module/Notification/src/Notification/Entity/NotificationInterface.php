@@ -10,7 +10,8 @@
  */
 namespace Notification\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Event\Entity\EventLogInterface;
 use User\Entity;
 
@@ -39,13 +40,13 @@ interface NotificationInterface
     public function getUser();
 
     /**
-     * @param Entity\User $user
+     * @param Entity\UserInterface $user
      * @return self
      */
     public function setUser(Entity\UserInterface $user);
 
     /**
-     * @return EventLogInterface[]
+     * @return EventLogInterface[]|Collection
      */
     public function getEvents();
 
@@ -56,27 +57,28 @@ interface NotificationInterface
     public function addEvent(NotificationEventInterface $event);
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getActors();
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getObjects();
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getParameters();
 
     /**
-     * @return \DateTime $timestamp
+     * @return DateTime $timestamp
      */
     public function getTimestamp();
 
     /**
-     * @return \DateTime $timestamp
+     * @param DateTime $timestamp
+     * @return void
      */
-    public function setTimestamp(\DateTime $timestamp);
+    public function setTimestamp(DateTime $timestamp);
 }

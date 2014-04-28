@@ -11,6 +11,7 @@
 namespace Subject\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Entity\Entity\EntityInterface;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 
@@ -35,4 +36,16 @@ interface SubjectManagerInterface
      * @return TaxonomyTermInterface
      */
     public function getSubject($id);
+
+    /**
+     * @param TaxonomyTermInterface $subject
+     * @return EntityInterface[]
+     */
+    public function getUnrevisedEntities(TaxonomyTermInterface $subject);
+
+    /**
+     * @param TaxonomyTermInterface $subject
+     * @return EntityInterface[]
+     */
+    public function getTrashedEntities(TaxonomyTermInterface $subject);
 }

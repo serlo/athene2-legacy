@@ -35,28 +35,34 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
     public function onDispatch(Event $event)
     {
         $controller = $event->getTarget();
-        if ($controller instanceof AbstractController) {
-            $entity = $controller->getEntity();
-            $subject = null;
+        if (!$controller instanceof AbstractController) {
+            return;
+        }
 
-            foreach ($entity->getTaxonomyTerms() as $term) {
-                $subject = $term->findAncestorByTypeName('subject');
-                if ($subject) {
-                    break;
-                }
+        $entity = $controller->getEntity();
+        if (!$entity) {
+            return;
+        }
+
+        $subject = null;
+
+        foreach ($entity->getTaxonomyTerms() as $term) {
+            $subject = $term->findAncestorByTypeName('subject');
+            if ($subject) {
+                break;
             }
+        }
 
-            if ($subject !== null) {
-                /* @var $navigationFactory DefaultNavigationFactoryFactory */
-                $navigationFactory = $controller->getServiceLocator()->get(
-                    'Navigation\Factory\DefaultNavigationFactory'
-                );
-                $params            = ['subject' => $subject->getSlug()];
-                $routeMatch        = new RouteMatch($params);
+        if ($subject !== null) {
+            /* @var $navigationFactory DefaultNavigationFactoryFactory */
+            $navigationFactory = $controller->getServiceLocator()->get(
+                'Navigation\Factory\DefaultNavigationFactory'
+            );
+            $params            = ['subject' => $subject->getSlug()];
+            $routeMatch        = new RouteMatch($params);
 
-                $routeMatch->setMatchedRouteName('subject');
-                $navigationFactory->setRouteMatch($routeMatch);
-            }
+            $routeMatch->setMatchedRouteName('subject/home');
+            $navigationFactory->setRouteMatch($routeMatch);
         }
     }
 }

@@ -11,51 +11,81 @@
 namespace Notification;
 
 use ClassResolver\ClassResolverAwareTrait;
+use Common\Traits\FlushableTrait;
+use Common\Traits\ObjectManagerAwareTrait;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Event\Entity\EventLogInterface;
-use Notification\Entity\NotificationLogInterface;
+use Notification\Entity\NotificationInterface;
 use User\Entity\UserInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 
 class NotificationManager implements NotificationManagerInterface
 {
+    use ClassResolverAwareTrait, ObjectManagerAwareTrait;
+    use FlushableTrait;
 
-    use ClassResolverAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
-
-    public function createNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
+    public function createNotification(UserInterface $user, EventLogInterface $log)
     {
-        $notification = $this->aggregateNotification($user, $log);
-
-        $className = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationEventInterface');
         /* @var $notificationLog \Notification\Entity\NotificationEventInterface */
+        $notification    = $this->aggregateNotification($user, $log);
+        $class           = 'Notification\Entity\NotificationEventInterface';
+        $className       = $this->getClassResolver()->resolveClassName($class);
         $notificationLog = new $className();
 
-        // $notification->addEvent($notificationLog);
-        $notificationLog->setNotification($notification);
         $notification->setUser($user);
         $notification->setSeen(false);
-        $notification->setTimestamp(new \DateTime('NOW'));
+        $notification->setTimestamp(new DateTime());
+        $notification->addEvent($notificationLog);
         $notificationLog->setEventLog($log);
+        $notificationLog->setNotification($notification);
 
         $this->getObjectManager()->persist($notification);
         $this->getObjectManager()->persist($notificationLog);
 
-        return $this;
+        return $notification;
     }
 
-    public function findNotificationsBySubsriber(\User\Entity\UserInterface $userService)
+    public function findNotificationsBySubscriber(UserInterface $user)
     {
-        $notifications = $this->getObjectManager()->getRepository(
-                $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface')
-            )->findBy(
-                [
-                    'user' => $userService->getId()
-                ],
-                ['id' => 'desc']
-            );
+        $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface');
+        $criteria      = ['user' => $user->getId()];
+        $order         = ['id' => 'desc'];
+        $notifications = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order);
+        $collection    = new ArrayCollection;
 
-        return new ArrayCollection($notifications);
+        /* @var $notification NotificationInterface */
+        foreach ($notifications as $notification) {
+            if ($notification->getEvents()->count() < 1) {
+                $this->objectManager->remove($notification);
+                $this->objectManager->flush($notification);
+                continue;
+            }
+            $collection->add($notification);
+        }
+
+        return $collection;
     }
 
+    public function markRead(UserInterface $user)
+    {
+        $notifications = $this->findNotificationsBySubscriber($user);
+        $entityManager = $this->objectManager;
+        $notifications->map(
+            function (NotificationInterface $n) use ($entityManager) {
+                if (!$n->getSeen()) {
+                    $n->setSeen(true);
+                    $entityManager->persist($n);
+                }
+            }
+        );
+    }
+
+    /**
+     * @param UserInterface     $user
+     * @param EventLogInterface $log
+     * @return NotificationInterface
+     */
     protected function aggregateNotification(UserInterface $user, EventLogInterface $log)
     {
         $className = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface');

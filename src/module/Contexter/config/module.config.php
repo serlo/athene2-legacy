@@ -39,7 +39,62 @@ return [
                         [
                             'controller' => 'Entity\Controller\RepositoryController',
                             'action'     => 'compare'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\TaxonomyController',
+                            'action'     => 'update'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\PageController',
+                            'action'     => 'index'
                         ]
+                    ]
+                ],
+                [
+                    'adapter'     => __NAMESPACE__ . '\Adapter\RelatedContentControllerAdapter',
+                    'controllers' => [
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'manage'
+                        ],
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'addInternal'
+                        ],
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'addExternal'
+                        ],
+                        [
+                            'controller' => 'RelatedContent\Controller\RelatedContentController',
+                            'action'     => 'addCategory'
+                        ],
+                    ]
+                ],
+                [
+                    'adapter'     => __NAMESPACE__ . '\Adapter\TaxonomyTermControllerAdapter',
+                    'controllers' => [
+                        [
+                            'controller' => 'Taxonomy\Controller\TermController',
+                            'action'     => 'organize'
+                        ],
+                        [
+                            'controller' => 'Taxonomy\Controller\TermController',
+                            'action'     => 'orderAssociated'
+                        ],
+                        [
+                            'controller' => 'Taxonomy\Controller\GetController',
+                            'action'     => 'index'
+                        ]
+                    ]
+                ],
+                [
+                    'adapter'     => __NAMESPACE__ . '\Adapter\SubjectControllerAdapter',
+                    'controllers' => [
+                        [
+                            'controller' => 'Subject\Controller\EntityController',
+                            'action'     => 'unrevised'
+                        ],
                     ]
                 ]
             ]

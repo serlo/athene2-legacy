@@ -37,7 +37,7 @@ class Comment extends Uuid implements CommentInterface
     protected $object;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist", "remove"})
      */
     protected $parent;
 
@@ -206,19 +206,21 @@ class Comment extends Uuid implements CommentInterface
     public function upVote(UserInterface $user)
     {
         if ($this->findVotesByUser($user)->count()) {
-            return null;
+            return false;
         }
 
         $this->createVote($user, 1);
+        return true;
     }
 
     public function downVote(UserInterface $user)
     {
         if ($this->findVotesByUser($user)->count() === 0) {
-            return null;
+            return false;
         }
         $element = $this->findVotesByUser($user)->current();
         $this->getVotes()->removeElement($element);
+        return true;
     }
 
     public function hasUserVoted(UserInterface $user)

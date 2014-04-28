@@ -124,10 +124,6 @@ return [
                             [
                                 'route' => 'license/update',
                                 'visible' => false
-                            ],
-                            [
-                                'route' => 'license/detail',
-                                'visible' => false
                             ]
                         ]
                     ],
@@ -171,16 +167,10 @@ return [
                     ]
                 ]
             ],
-            'community' => [
-                'label' => 'Community',
-                'route' => 'discussion',
-                'params' => [],
+            'me' => [
+                'label' => 'Me',
+                'uri' => '#',
                 'pages' => [
-                    [
-                        'label' => 'Diskussionen',
-                        'route' => 'discussion/discussions',
-                        'icon' => 'comment'
-                    ],
                     [
                         'route' => 'user/login',
                         'visible' => false

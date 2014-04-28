@@ -36,15 +36,12 @@ class WorkerController extends AbstractActionController
     public function setNotificationWorker(NotificationWorker $notificationWorker)
     {
         $this->notificationWorker = $notificationWorker;
-
-        return $this;
     }
 
     public function runAction()
     {
         $this->getNotificationWorker()->run();
         $this->getNotificationWorker()->getObjectManager()->flush();
-
-        return 'worker successfull';
+        return 'success';
     }
 }

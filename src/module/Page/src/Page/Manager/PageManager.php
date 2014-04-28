@@ -17,6 +17,7 @@ use Authorization\Service\RoleServiceAwareTrait;
 use Authorization\Service\RoleServiceInterface;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
+use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -25,16 +26,17 @@ use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use License\Manager\LicenseManagerAwareTrait;
 use License\Manager\LicenseManagerInterface;
-use Page\Entity\Page;
 use Page\Entity\PageRepositoryInterface;
 use Page\Exception\InvalidArgumentException;
 use Page\Exception\PageNotFoundException;
+use Page\Exception\RuntimeException;
 use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\RepositoryManagerAwareTrait;
 use Versioning\RepositoryManagerInterface;
+use Zend\Form\FormInterface;
 use ZfcRbac\Service\AuthorizationService;
 
 class PageManager implements PageManagerInterface
@@ -43,6 +45,7 @@ class PageManager implements PageManagerInterface
     use InstanceManagerAwareTrait, AuthorizationAssertionTrait;
     use LicenseManagerAwareTrait, RepositoryManagerAwareTrait;
     use RoleServiceAwareTrait, UserManagerAwareTrait;
+    use FlushableTrait;
 
     public function __construct(
         AuthorizationService $authorizationService,
@@ -64,13 +67,57 @@ class PageManager implements PageManagerInterface
         $this->userManager       = $userManager;
     }
 
-    public function editPageRepository(array $data, PageRepositoryInterface $pageRepository)
+    public function createPageRepository(FormInterface $form)
     {
-        $this->assertGranted('page.update', $pageRepository);
-        $pageRepository->setRoles(new ArrayCollection());
-        $this->setRoles($data, $pageRepository);
-        $this->getObjectManager()->persist($pageRepository);
-        return $pageRepository;
+        $formClone = clone $form;
+        if (!$formClone->isValid()) {
+            throw new RuntimeException(print_r($formClone->getMessages(), true));
+        }
+        $data   = $formClone->getData(FormInterface::VALUES_AS_ARRAY);
+        $entity = $formClone->getObject();
+        $formClone->setData($data);
+        $formClone->isValid();
+        $this->assertGranted('page.create', $entity);
+        $this->getObjectManager()->persist($entity);
+        return $entity;
+    }
+
+    public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user)
+    {
+        $this->assertGranted('page.revision.create', $repository);
+
+        $repository = $this->getRepositoryManager()->getRepository($repository);
+        $revision   = $repository->commitRevision($data);
+        $this->getObjectManager()->persist($revision);
+        $this->getObjectManager()->persist($repository->getRepository());
+        $repository->checkoutRevision($revision->getId());
+
+        return $repository;
+    }
+
+    public function editPageRepository(FormInterface $form)
+    {
+        $page      = $form->getObject();
+        if (!$form->isValid()) {
+            throw new RuntimeException(print_r($form->getMessages(), true));
+        }
+        $data      = $form->getData(FormInterface::VALUES_AS_ARRAY);
+        $formClone = clone $form;
+        $formClone->bind($page);
+        $formClone->setData($data);
+        $formClone->isValid();
+        $this->assertGranted('page.update', $page);
+        $this->getObjectManager()->persist($page);
+        return $page;
+    }
+
+    public function findAllRepositories(InstanceInterface $instance)
+    {
+        $this->assertGranted('page.get', $instance);
+        $className    = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
+        $params       = ['instance' => $instance->getId(), 'trashed' => false];
+        $repositories = $this->getObjectManager()->getRepository($className)->findBy($params);
+        return $repositories;
     }
 
     public function findAllRoles()
@@ -78,20 +125,23 @@ class PageManager implements PageManagerInterface
         return $this->getRoleService()->findAllRoles();
     }
 
-    public function findAllRepositories(InstanceInterface $instance)
+    public function getPageRepository($id)
     {
-        $this->assertGranted('page.get', $instance);
-        $className    = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
-        $params       = ['instance' => $instance->getId()];
-        $repositories = $this->getObjectManager()->getRepository($className)->findBy($params);
-        $return       = [];
-        foreach ($repositories as $repository) {
-            if (!$repository->isTrashed()) {
-                $return[] = $repository;
-            }
+        if (!is_numeric($id)) {
+            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
         }
 
-        return $return;
+        $className      = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
+        $pageRepository = $this->getObjectManager()->find($className, $id);
+        $this->assertGranted('page.get', $pageRepository);
+
+        if (!is_object($pageRepository)) {
+            throw new PageNotFoundException(sprintf('Page Repository "%d" not found.', $id));
+        } elseif ($pageRepository->isTrashed()) {
+            throw new PageNotFoundException(sprintf('Page Repository "%d" is trashed.', $id));
+        }
+
+        return $pageRepository;
     }
 
     public function getRevision($id)
@@ -115,56 +165,15 @@ class PageManager implements PageManagerInterface
         return $revision;
     }
 
-    public function getPageRepository($id)
+    protected function countRoles()
     {
-        if (!is_numeric($id)) {
-            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
-        }
-
-        $className      = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
-        $pageRepository = $this->getObjectManager()->find($className, $id);
-        $this->assertGranted('page.get', $pageRepository);
-
-        if (!is_object($pageRepository)) {
-            throw new PageNotFoundException(sprintf('Page Repository "%d" not found.', $id));
-        } elseif ($pageRepository->isTrashed()) {
-            throw new PageNotFoundException(sprintf('Page Repository "%d" is trashed.', $id));
-        }
-
-        return $pageRepository;
-    }
-
-    public function createPageRepository(array $data, InstanceInterface $instance)
-    {
-        $this->assertGranted('page.create', $instance);
-
-        $page = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
-        $page->populate($data);
-        $page->setInstance($instance);
-        $page->setTrashed(false);
-        $this->setRoles($data, $page);
-        $this->getLicenseManager()->injectLicense($page);
-        $this->getObjectManager()->persist($page);
-
-        return $page;
-    }
-
-    public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user)
-    {
-        $this->assertGranted('page.revision.create', $repository);
-
-        $repository = $this->getRepositoryManager()->getRepository($repository);
-        $revision   = $repository->commitRevision($data);
-        $this->getObjectManager()->persist($revision);
-        $this->getObjectManager()->persist($revision);
-        $this->getObjectManager()->persist($repository->getRepository());
-        $repository->checkoutRevision($revision->getId());
-
-        return $repository;
+        $roles = $this->findAllRoles();
+        return count($roles);
     }
 
     protected function setRoles(array $data, PageRepositoryInterface $pageRepository)
     {
+        $pageRepository->setRoles(new ArrayCollection());
         for ($i = 0; $i <= $this->countRoles(); $i++) {
             if (array_key_exists($i, $data['roles'])) {
                 $role = $this->getRoleService()->getRole($data['roles'][$i]);
@@ -173,11 +182,5 @@ class PageManager implements PageManagerInterface
                 }
             }
         }
-    }
-
-    protected function countRoles()
-    {
-        $roles = $this->findAllRoles();
-        return count($roles);
     }
 }

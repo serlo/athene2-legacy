@@ -58,37 +58,37 @@ return [
     'view_helpers'          => [
         'factories'  => [
             'pageHeader' => function ($helperPluginManager) {
-                    $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
-                    $plugin = new PageHeader();
-                    $plugin->setConfig($config);
-
-                    return $plugin;
+                    $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\PageHeaderHelperOptions');
+                    return new PageHeader($config);
                 },
             'brand'      => function ($helperPluginManager) {
-                    $config = $helperPluginManager->getServiceLocator()->get('config')['brand'];
-                    $plugin = new Brand();
-                    $plugin->setConfig($config);
-
-                    return $plugin;
+                    $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\BrandHelperOptions');
+                    return new Brand($config);
                 }
         ],
         'invokables' => [
             'timeago'         => 'Ui\View\Helper\Timeago',
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
-            'toAlpha'         => 'Ui\View\Helper\ToAlpha'
+            'toAlpha'         => 'Ui\View\Helper\ToAlpha',
+            'diff'            => 'Ui\View\Helper\DiffHelper'
         ]
     ],
     'page_header_helper'    => [],
     'service_manager'       => [
-        'factories' => [
-            'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm) {
+        'factories'  => [
+            'Ui\Renderer\PhpDebugRenderer'                     => function (ServiceLocatorInterface $sm) {
                     $service = new Renderer\PhpDebugRenderer();
                     $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
                     $service->setHelperPluginManager($sm->get('ViewHelperManager'));
 
                     return $service;
-                }
+                },
+            __NAMESPACE__ . '\Options\BrandHelperOptions'      => __NAMESPACE__ . '\Factory\BrandHelperOptionsFactory',
+            __NAMESPACE__ . '\Options\PageHeaderHelperOptions' => __NAMESPACE__ . '\Factory\PageHeaderHelperOptionsFactory',
+        ],
+        'invokables' => [
+            //'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
         ]
     ],
     'assetic_configuration' => [
@@ -106,6 +106,12 @@ return [
         ],
         'routes'           => [
             'entity/repository/add-revision' => [
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ],
+            'license/update'                 => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
@@ -147,7 +153,8 @@ return [
                     ],
                     'styles'         => [
                         'assets'  => [
-                            'styles/main.css'
+                            'styles/main.css',
+                            '../node_modules/athene2-editor/build/styles/content.css'
                         ],
                         'filters' => [
                             'CssRewriteFilter' => [

@@ -32,11 +32,11 @@ class EntityControllerAdapter extends AbstractAdapter
     {
         /* @var $controller AbstractController */
         $params     = $this->getRouteParams();
-        $controller = $this->getController();
+        $controller = $this->getAdaptee();
         $entity     = $controller->getEntity($params['entity']);
         $array      = [
             'type'     => $entity->getType()->getName(),
-            'instance' => $this->getInstanceManager()->getInstanceFromRequest()->getName()
+            'instance' => $entity->getInstance()->getName()
         ];
 
         $this->retrieveTerms($entity, $array);
@@ -45,7 +45,7 @@ class EntityControllerAdapter extends AbstractAdapter
     }
 
     /**
-     * @param objet $controller
+     * @param object $controller
      * @return bool
      */
     public function isValidController($controller)

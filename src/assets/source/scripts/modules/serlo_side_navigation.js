@@ -81,7 +81,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
     MenuItem.prototype.render = function () {
         var self = this,
-            $a;
+            $a,
+            $children;
+
         this.$el.empty();
 
         if (self.data.level === 0) {
@@ -99,11 +101,31 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 .appendTo(self.$el);
 
             if (self.data.icon) {
-                $a.html('<i class="glyphicon glyphicon-' + self.data.icon + '"></i> <span>' + self.data.title + '</span>');
+                $a.html('<span class="glyphicon glyphicon-' + self.data.icon + '"></span> <span>' + self.data.title + '</span>');
             }
 
             if (self.data.cssClass) {
                 self.$el.addClass(self.data.cssClass);
+            }
+
+            if (self.data.renderedChildren && self.data.renderedChildren.length) {
+                $children = $('<ul>');
+
+                _.each(self.data.renderedChildren, function (child) {
+                    var childItem = new MenuItem(_.extend({}, child.data, {
+                        icon: false
+                    }));
+
+                    childItem.addEventListener('reload', function (e) {
+                        self.trigger('reload', {
+                            originalEvent: e.originalEvent
+                        });
+                    });
+
+                    childItem.$el.appendTo($children);
+                });
+
+                self.$el.append($children);
             }
         }
 
@@ -129,14 +151,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 originalEvent: e
             });
         }
-    };
-
-    /**
-     * @method getChildren
-     * @return {Array} Returns children or false
-     **/
-    MenuItem.prototype.getChildren = function () {
-        return this.children || false;
     };
 
     /**
@@ -178,7 +192,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         _.each(self.levels, function (level) {
             var $div = $('<div>'),
                 $ul = $('<ul>'),
-                elementCount = 0;
+                msg,
+                elementCount;
 
             // add back btns
             if (level[0].data.parent) {
@@ -202,12 +217,18 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 } else {
                     elementCount = parentData.$li.data('element-count');
-                    if (parentData.url !== '' && parentData.url !== '#' && elementCount > 0) {
+                    if (parentData.url !== '' && parentData.url !== '#' && typeof elementCount !== "undefined") {
+                        msg = t('Show overview');
+
+                        if (elementCount > 0) {
+                            msg = t('Show %d contents for "%s"', elementCount, parentData.title);
+                        }
+
                         parentLink = new MenuItem($.extend({}, parentData, {
                             icon: 'eye-open',
                             cssClass: 'sub-nav-footer',
                             level: -1,
-                            title: t('Show %d contents for \"%s\"', elementCount, parentData.title)
+                            title: msg
                         }));
 
                         parentLink.$el.unbind('click').click(function (e) {
@@ -302,7 +323,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 var $listItem = $(this),
                     $link = $listItem.children().filter('a').first(),
-                    position = [].concat(deepness);
+                    position = [].concat(deepness),
+                    hasChildren = $listItem.children().filter('ul').find('> li').length,
+                    icon;
+
+                if (hasChildren) {
+                    icon = 'chevron-right';
+                }
 
                 dataHierarchy[i] = new MenuItem({
                     url: $link.attr('href'),
@@ -312,10 +339,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     position: position,
                     level: level,
                     parent: parent,
-                    icon: 'chevron-right'
+                    icon: icon
                 });
 
-                if ($listItem.children().filter('ul').find('> li').length) {
+                if (hasChildren) {
                     dataHierarchy[i].children = [];
                     loop($listItem.children().filter('ul').first(), dataHierarchy[i].children, level + 1, dataHierarchy[i]);
                 }
@@ -435,6 +462,19 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     };
 
     /**
+     * @method getSiblings
+     * @param {Array} position An array of indexes
+     * @return {Array} an Array of menuItems - the siblings of the given array
+     *
+     **/
+    Hierarchy.prototype.getSiblings = function (position) {
+        var usePosition = position.slice(),
+            parent = this.getParent(this.findByPosition(usePosition));
+
+        return parent ? parent.children || [] : [];
+    };
+
+    /**
      * @method getParent
      * @param {MenuItem} menuItem A menuItem
      * @return {MenuItem} The direct parent of the given MenuItem
@@ -487,6 +527,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         var self = this,
             position,
             parents,
+            siblings,
             $rootMenuItem;
 
         if (self.active) {
@@ -502,16 +543,37 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
             // Create 'breadcrumbs'
             parents = self.hierarchy.getParents(position).reverse();
+
             parents.shift();
+            parents.pop();
+
+            siblings = self.hierarchy.getSiblings(position);
+
+            // set siblings activeClass
+            _.each(siblings, function (menuItem) {
+                if (_.isEqual(menuItem.data.position, position)) {
+                    menuItem.data.cssClass = self.options.activeClass;
+                }
+            });
+
             if (self.options.breadcrumbDepth) {
                 parents = parents.splice(-1 * self.options.breadcrumbDepth);
             }
 
+            if (!parents.length) {
+                parents = siblings;
+                siblings = [];
+            }
+
             if (parents.length) {
-                _.each(parents, function (menuItem, index) {
-                    var breadcrumb = new MenuItem(_.extend({}, menuItem.data, {
-                        icon: (index === parents.length - 1) ? 'arrow-right' : false
-                    }));
+                _.each(parents, function (menuItem, key) {
+                    var breadcrumb,
+                        breadCrumbOptions = {
+                        icon: false,
+                        renderedChildren: (key === parents.length - 1) ? siblings : false
+                    };
+
+                    breadcrumb = new MenuItem(_.extend({}, menuItem.data, breadCrumbOptions));
 
                     // breadcrumb.alwaysPrevent = true;
 

@@ -1,9 +1,12 @@
-<!-- REMOVE ME DATEFORMAT -->
-<?php $this->plugin("dateFormat")->setTimezone("America/New_York")->setLocale("de_DE"); ?>
-
-
 <li class="dropdown">
-    <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-comment"></span> <?php echo $this->translate('Notifications'); ?></a>
+    <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-trigger="ping" data-href="<?php echo $this->url('notification/read'); ?>">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <?php echo $this->translate('Notifications'); ?>
+        <?php $seen = $this->notifications()->getSeen($this->notifications); ?>
+        <?php if($seen->count()): ?>
+            <span class="label label-info"><?php echo $seen->count(); ?></span>
+        <?php endif; ?>
+    </a>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <?php if (count($this->notifications) == 0): ?>
             <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><?php echo sprintf(
@@ -11,25 +14,10 @@
                     ); ?></a></li>
         <?php else: ?>
             <?php foreach ($this->notifications as $notification): ?>
-                <?php if($this->isGranted('event.log.get', $notification->getEvents()->current())): ?>
-                    <?php $name = $notification->getEventName(); ?>
+                <?php //todo this is a very ugly hack */ ?>
+                <?php if($notification->getEvents()->current() && $this->isGranted('event.log.get', $notification->getEvents()->current())): ?>
                     <li role="presentation" class="<?php $notification->getSeen() ? '' : 'active ' ?>">
-                        <?php if ($this->resolver('user/notification/type/' . $name)): ?>
-                            <?php echo $this->partial(
-                                'user/notification/type/' . $name,
-                                array('notification' => $notification)
-                            ); ?>
-                        <?php else: ?>
-                            <a role="menuitem" tabindex="-1" href="#">
-                                <?php echo sprintf(
-                                    $this->translate('Event %s, User %s, Uuid %s'),
-                                    $name,
-                                    $notification->getActors()->current()->getUsername(),
-                                    $notification->getObjects()->current()->getId()
-                                ); ?>
-                                <small><?php echo $this->timeago()->render($notification->getEvents()->current()->getTimestamp()); ?></small>
-                            </a>
-                        <?php endif; ?>
+                        <?php echo $this->partial('user/notification/notification', ['notification' => $notification]); ?>
                     </li>
                 <?php endif; ?>
             <?php endforeach; ?>

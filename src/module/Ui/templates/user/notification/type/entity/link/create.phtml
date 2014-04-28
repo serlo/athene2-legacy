@@ -1,9 +1,16 @@
-<?php $event = $this->notification->getEvents()->current(); ?>
-<?php $user = $this->normalize()->toTitle($event->getActor()); ?>
-<?php $object = $this->normalize()->toTitle($event->getObject()); ?>
-<?php $parent = $this->normalize()->toTitle($event->getParameter('parent')); ?>
+<?php
+$event = $this->notification->getEvents()->current();
+$user = $this->normalize()->toTitle($event->getActor());
+$object = $this->normalize()->toTitle($event->getObject());
+$parent = $event->getParameter('parent');
+if($parent){
+    $parent = $this->normalize()->toTitle($parent);
+} else {
+    $parent = '<strong>'.$this->translate('removed content').'</strong>';
+}
+?>
 
-<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('parent')); ?>">
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('parent'), true); ?>">
     <?php echo sprintf($this->translate('<strong>%s</strong> added %s to %s'), $user, $object, $parent); ?>
     <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>

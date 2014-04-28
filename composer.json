@@ -22,13 +22,14 @@
         "zf-commons/zfc-base": "0.*",
         "zendframework/zendframework": "2.2.*",
         "foolz/sphinxql-query-builder": "dev-master",
-        "neilime/zf2-twb-bundle": "dev-master",
-        "zendframework/zend-developer-tools": "dev-master",
+        "neilime/zf2-twb-bundle": "2.0.*",
+        "zendframework/zend-developer-tools": "~0.0.2",
         "dnode/dnode": "dev-master",
         "nickcernis/html-to-markdown": "dev-master",
         "ryakad/pandoc-php": "dev-master",
         "stroker/cache": "0.2.*",
-        "zf-commons/zfc-twig": "dev-master"
+        "zf-commons/zfc-twig": "dev-master",
+        "umpirsky/twig-gettext-extractor": "1.1.*"
     },
     "minimum-stability": "dev",
     "autoload": {

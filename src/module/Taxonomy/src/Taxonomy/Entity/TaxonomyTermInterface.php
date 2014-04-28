@@ -13,8 +13,9 @@ namespace Taxonomy\Entity;
 use Doctrine\Common\Collections\Collection;
 use Instance\Entity\InstanceProviderInterface;
 use Type\Entity\TypeInterface;
+use Uuid\Entity\UuidInterface;
 
-interface TaxonomyTermInterface extends InstanceProviderInterface
+interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
 {
     /**
      * @param TaxonomyTermAwareInterface $object
@@ -53,7 +54,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
 
     /**
      * @param string $association
-     * @return TaxonomyTermAwareInterface[]
+     * @return TaxonomyTermAwareInterface[]|Collection
      */
     public function getAssociated($association);
 
@@ -61,6 +62,12 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
      * @return Collection|TaxonomyTermInterface[]
      */
     public function getChildren();
+
+    /**
+     * @param bool $trashed
+     * @return Collection|TaxonomyTermInterface[]
+     */
+    public function findChildrenByTrashed($trashed);
 
     /**
      * @return string
@@ -148,7 +155,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
      * @param self $parent
      * @return self
      */
-    public function setParent(self $parent);
+    public function setParent(self $parent = null);
 
     /**
      * @param int $position

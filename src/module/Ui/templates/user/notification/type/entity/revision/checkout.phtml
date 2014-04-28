@@ -1,8 +1,15 @@
-<?php $event = $this->notification->getEvents()->current(); ?>
-<?php $user = $this->normalize()->toTitle($event->getActor()); ?>
-<?php $object = $this->normalize()->toTitle($event->getObject()); ?>
-
-<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('repository')); ?>">
-    <?php echo sprintf($this->translate('<strong>%s</strong> accepted a revision of %s'), $user, $object); ?>
-    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
-</a>
+<?php
+$event = $this->notification->getEvents()->current();
+$user = $this->normalize()->toTitle($event->getActor());
+$object = $this->normalize()->toTitle($event->getObject());
+$repository = $event->getParameter('repository');
+if($repository){
+    $url = $this->normalize()->toUrl($repository, true);
+    ?>
+    <a role="menuitem" tabindex="-1" href="<?php echo $url; ?>">
+        <?php echo sprintf($this->translate('<strong>%s</strong> accepted a revision of %s'), $user, $object); ?>
+        <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
+    </a>
+    <?php
+}
+?>

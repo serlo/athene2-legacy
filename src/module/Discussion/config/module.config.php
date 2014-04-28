@@ -34,18 +34,6 @@ return [
             ],
         ]
     ],
-    'term_router'     => [
-        'routes' => [
-            'forum'          => [
-                'route'          => 'discussion/discussions',
-                'param_provider' => 'Discussion\Provider\ParamProvider'
-            ],
-            'forum-category' => [
-                'route'          => 'discussion/discussions',
-                'param_provider' => 'Discussion\Provider\ParamProvider'
-            ]
-        ]
-    ],
     'view_helpers'    => [
         'factories' => [
             'discussion' => __NAMESPACE__ . '\Factory\DiscussionHelperFactory'
@@ -59,19 +47,20 @@ return [
     'taxonomy'        => [
         'types' => [
             'forum-category' => [
-                'allowed_parents' => [
-                    'subject',
-                    'root'
+                'allowed_parents'      => [
+                    'root',
+                    'forum-category'
                 ],
-                'rootable'        => false
+                'rootable'             => false
             ],
-            'forum'          => [
+            'forum' => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
                 ],
                 'allowed_parents'      => [
                     'forum',
-                    'forum-category'
+                    'forum-category',
+                    'root'
                 ],
                 'rootable'             => false
             ]
@@ -88,7 +77,6 @@ return [
                 'options'       => [
                     'route' => ''
                 ],
-                'may_terminate' => false,
                 'child_routes'  => [
                     'view'        => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
@@ -101,13 +89,22 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route'    => '/discussions[/:id]',
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route'    => '/discussions',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionsController',
                                 'action'     => 'index'
                             ]
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'get' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/:id'
+                                ]
+                            ],
                         ]
                     ],
                     'discussion'  => [
@@ -125,6 +122,26 @@ return [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'start'
                                     ]
+                                ]
+                            ],
+                            'select'        => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/select',
+                                    'defaults' => [
+                                        'controller' => 'Discussion\Controller\DiscussionController'
+                                    ]
+                                ],
+                                'child_routes' => [
+                                    'forum' => [
+                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => [
+                                            'route'    => '/forum/:on',
+                                            'defaults' => [
+                                                'action'     => 'selectForum'
+                                            ]
+                                        ]
+                                    ],
                                 ]
                             ],
                             'comment' => [

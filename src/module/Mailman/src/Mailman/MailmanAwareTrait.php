@@ -33,7 +33,5 @@ trait MailmanAwareTrait
     public function setMailman(MailmanInterface $mailman)
     {
         $this->mailman = $mailman;
-
-        return $this;
     }
 }

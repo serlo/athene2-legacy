@@ -11,13 +11,6 @@
  *      file.
  */
 return [
-    'page_header_helper' => [
-        'brand'     => 'www.serlo.org',
-        'delimiter' => ' - '
-    ],
-    'brand'              => [
-        'name' => 'Serlo <sup><small>beta</small></sup>'
-    ],
     'zfctwig'            => [
         'environment_options' => [
             'cache' => __DIR__ . '/../../data/twig'

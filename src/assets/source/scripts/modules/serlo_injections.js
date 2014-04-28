@@ -17,7 +17,7 @@ define(['jquery', 'common', 'translator', 'content'], function ($, Common, t) {
         ggbApplets = {},
         ggbAppletsCount = 0,
         geogebraScriptSource = 'http://www.geogebra.org/web/4.4/web/web.nocache.js',
-        $geogebraTemplate = $('<article class="geogebraweb" data-param-width="500" data-param-height="500" data-param-usebrowserforjs="true" data-param-enableRightClick="false"></article>');
+        $geogebraTemplate = $('<article class="geogebraweb" data-param-width="700" data-param-height="525" data-param-usebrowserforjs="true" data-param-enableRightClick="false"></article>');
 
     // terrible geogebra oninit handler..
     // that doesnt work.....

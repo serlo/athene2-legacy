@@ -45,7 +45,7 @@ class RelatedContentController extends AbstractActionController
 
     public function addExternalAction()
     {
-        $container = $this->getRelatedContentManager()->getContainer($this->params('id'));
+        $container = $this->getContainer();
         $form      = new ExternalForm();
         $view      = new ViewModel(['form' => $form]);
         $this->assertGranted('related.content.create', $container);
@@ -66,7 +66,7 @@ class RelatedContentController extends AbstractActionController
 
     public function addInternalAction()
     {
-        $container = $this->getRelatedContentManager()->getContainer($this->params('id'));
+        $container = $this->getContainer();
         $form      = new InternalForm();
         $view      = new ViewModel(['form' => $form]);
         $this->assertGranted('related.content.create', $container);
@@ -89,9 +89,15 @@ class RelatedContentController extends AbstractActionController
         return $view;
     }
 
+    public function getContainer($id = null)
+    {
+        $id = $id ? : $this->params('id');
+        return $this->getRelatedContentManager()->getContainer($id);
+    }
+
     public function manageAction()
     {
-        $container  = $this->getRelatedContentManager()->getContainer($this->params('id'));
+        $container  = $this->getContainer();
         $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->params('id'));
         $view       = new ViewModel([
             'aggregated' => $aggregated,

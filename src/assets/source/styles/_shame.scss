@@ -14,7 +14,28 @@ img.license-intext {
 
 // I feel ashamed already super hack wow omg
 // See https://github.com/twbs/bootstrap/issues/10000
-.panel-body .form-group {
+.form-group {
   margin-left: 0px;
   margin-right: 0px;
+}
+
+#serlo-menu {
+  .nav {
+    /* this is really hacky */
+    .dropdown-menu {
+      word-wrap: normal;
+      min-width: 500px;
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+  }
+}
+
+
+#content-container {
+  .panel-group {
+    .panel {
+      overflow: visible; // Do not crop contents (solves #383)
+    }
+  }
 }

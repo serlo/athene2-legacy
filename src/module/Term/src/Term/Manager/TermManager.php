@@ -12,7 +12,7 @@
 namespace Term\Manager;
 
 use ClassResolver\ClassResolverAwareTrait;
-use Common\Filter\Slugify;
+use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Instance\Entity\InstanceInterface;
 use Term\Entity\TermEntityInterface;
@@ -21,85 +21,68 @@ use Term\Exception\TermNotFoundException;
 class TermManager implements TermManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use FlushableTrait;
 
     /**
      * @var TermEntityInterface[]
      */
     protected $terms = [];
 
-    public function getTerm($id)
+    public function createTerm($name, InstanceInterface $instance)
     {
-        $instance = $this->getObjectManager()->find(
-            $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'),
-            $id
-        );
-
-        if (!is_object($instance)) {
-            throw new TermNotFoundException($id);
+        try {
+            return $this->findTermByName($name, $instance);
+        } catch (TermNotFoundException $e) {
         }
 
-        return $instance;
-    }
+        /* @var $entity TermEntityInterface */
+        $entity        = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
+        $this->terms[] = $entity;
 
-    public function findTermBySlug($slug, InstanceInterface $instance)
-    {
-        $entity = $this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface')
-        )->findOneBy(
-                [
-                    'slug'     => $slug,
-                    'instance' => $instance->getId()
-                ]
-            );
-
-        if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $slug, $instance->getId()));
-        }
+        $entity->setName($name);
+        $entity->setInstance($instance);
+        $this->getObjectManager()->persist($entity);
 
         return $entity;
     }
 
     public function findTermByName($name, InstanceInterface $instance)
     {
-        $entity = $this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface')
-        )->findOneBy(
-                [
-                    'name'     => $name,
-                    'instance' => $instance->getId()
-                ]
-            );
+        $className = $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface');
+        $criteria  = ['name' => $name, 'instance' => $instance->getId()];
+        $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 
         if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $name, $instance->getId()));
-        }
-
-        return $entity;
-    }
-
-    public function createTerm($name, InstanceInterface $instance)
-    {
-        try {
-            return $this->findTermByName($name, $instance);
-        } catch (TermNotFoundException $e) {
             foreach ($this->terms as $term) {
-                if ($term->getName() == $name) {
+                if ($term->getName() == $name && $term->getInstance() === $instance) {
                     return $term;
                 }
             }
         }
 
-        /* @var $entity TermEntityInterface */
-        $filter        = new Slugify();
-        $slug          = $filter->filter($name);
-        $entity        = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
-        $this->terms[] = $entity;
+        if (!is_object($entity)) {
+            throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $name, $instance->getId()));
+        }
 
-        $entity->setName($name);
-        $entity->setInstance($instance);
-        $entity->setSlug($slug);
-        $this->getObjectManager()->persist($entity);
+        // Since we can not search case sensitive in mysql (without side effects) we need to do this manually.
+        if ($entity->getName() != $name && strcasecmp($entity->getName(), $name) == 0) {
+            $entity->setName($name);
+            $this->persist($entity);
+            $this->flush($entity);
+        }
 
         return $entity;
+    }
+
+    public function getTerm($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface');
+        $instance  = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($instance)) {
+            throw new TermNotFoundException($id);
+        }
+
+        return $instance;
     }
 }

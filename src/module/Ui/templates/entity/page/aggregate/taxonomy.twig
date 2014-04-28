@@ -1,9 +1,9 @@
 <div class="sidebar-content-group">
-    <ul class="nav nav-side">
-        <li class="nav-side-header">
-            {{ translate('Related taxonomies') }}
+    <ul class="nav nav-aside">
+        <li class="nav-aside-header">
+            <strong>{{ translate('Related taxonomies') }}</strong>
         </li>
-        {% for term in terms %}
+        {% for term in terms if term.getTaxonomy.getName() in ['topic', 'topic-folder'] %}
            <li>{{ normalize().toAnchor(term) }}</li>
         {% endfor %}
     </ul>

@@ -1,46 +1,58 @@
-{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').render() }}
-<ul class="nav nav-tabs">
-    <li class="active">
-        <a href="#display" data-toggle="tab">{{ translate("Revision #%s") | format(revision.getId()) }}</a>
-    </li>
-    {% if currentRevision and currentRevision is not sameas(revision) %}
-    <li>
-        <a href="#current" data-toggle="tab">{{ translate('Current revision #%s') | format(currentRevision.getId()) }}</a>
-    </li>
-    {% endif %}
-</ul>
-<div class="tab-content clearfix">
-    <div class="tab-pane active" id="display">
-        <article>
-            {% include 'entity/repository/revision' %}
-            {% if revision is not sameas(currentRevision) %}
-                <footer>
-                    <div class="btn-group pull-right">
-                        {% if not revision.isTrashed() and isGranted('entity.revision.checkout', revision) %}
-                            <a class="btn btn-success btn-sm" href="{{ url('entity/repository/checkout', {'entity': entity.getId(), 'revision': revision.getId()}) }}">
-                                <span class="glyphicon glyphicon-ok"></span>
-                            </a>
-                        {% endif %}
+{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').append(contexter().renderButton('right')).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
+<article>
+    {% if revision is not sameas(currentRevision) %}
+        <div class="revision panel-group">
+            {% for field in revision.getFields() %}
 
-                        {% if not revision.isTrashed() and isGranted('entity.revision.trash', revision) %}
-                            <a class="btn btn-danger btn-sm" href="{{ url('entity/repository/reject', {'entity': entity.getId(), 'revision': revision.getId()}) }}">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a>
-                        {% elseif revision.isTrashed() and isGranted('entity.revision.restore', revision) %}
-                            <a class="btn btn-success btn-sm" href="{{ url('uuid/restore', {'id': revision.getId()}) }}">
-                                <span class="glyphicon glyphicon-refresh"></span>
-                            </a>
-                        {% endif  %}
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li class="active"><a href="#source{{ field.getName() }}" data-toggle="tab">{{ translate('Source') }}</a></li>
+                            <li><a href="#preview{{ field.getId() }}" data-toggle="tab">{{ translate('Preview') }}</a></li>
+                        </ul>
+                        <h4>{{ translate(field.getName()) }}</h4>
                     </div>
-                </footer>
-            {% endif %}
-        </article>
-    </div>
-    {% if currentRevision %}
-    <div class="tab-pane" id="current">
-        <article class="current">
-            {% include 'entity/repository/revision' with {'revision': currentRevision} only %}
-        </article>
-    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="source{{ field.getName() }}">
+                                {% set oldField = currentRevision.get(field.getName()) %}
+                                {% if oldField %}
+                                    {{ diff().markdown(oldField, field.getValue()) }}
+                                {% else %}
+                                    {{ markdown().toHtml(field.getValue()) }}
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="preview{{ field.getId() }}">
+                                {{ markdown().toHtml(field.getValue()) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <footer>
+            <p class="btn-group pull-right">
+                {% if not revision.isTrashed() and isGranted('entity.revision.checkout', revision) %}
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#revisionAcceptModal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                {% endif %}
+                {% if not revision.isTrashed() and isGranted('entity.revision.trash', revision) %}
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#revisionRejectModal">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                {% elseif revision.isTrashed() and isGranted('entity.revision.restore', revision) %}
+                    <a class="btn btn-success btn-sm" href="{{ url('uuid/restore', {'id': revision.getId()}) }}">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </a>
+                {% endif  %}
+            </p>
+        </footer>
+    {% else %}
+        {% include 'entity/repository/revision' %}
     {% endif %}
-</div>
+</article>
+{% set accept = include('entity/repository/modal-accept') %}
+{% set reject = include('entity/repository/modal-reject') %}
+{% set waste = placeholder('modals').append(accept).append(reject) %}

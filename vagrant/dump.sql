@@ -265,73 +265,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`page_repository`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`page_repository` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`page_repository` (
-  `id` BIGINT NOT NULL,
-  `instance_id` INT NOT NULL,
-  `license_id` INT NOT NULL DEFAULT 1,
-  `current_revision_id` INT NULL,
-  INDEX `fk_page_repository_uuid2_idx` (`id` ASC),
-  INDEX `fk_page_repository_language1_idx` (`instance_id` ASC),
-  PRIMARY KEY (`id`),
-  INDEX `fk_page_repository_license1_idx` (`license_id` ASC),
-  CONSTRAINT `fk_page_repository_uuid2`
-    FOREIGN KEY (`id`)
-    REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_page_repository_language1`
-    FOREIGN KEY (`instance_id`)
-    REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_page_repository_license1`
-    FOREIGN KEY (`license_id`)
-    REFERENCES `serlo`.`license` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `serlo`.`page_revision`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`page_revision` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`page_revision` (
-  `id` BIGINT NOT NULL,
-  `author_id` BIGINT NOT NULL,
-  `page_repository_id` BIGINT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `content` LONGTEXT NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
-  PRIMARY KEY (`id`),
-  INDEX `fk_page_revision_page_repository1_idx` (`page_repository_id` ASC),
-  INDEX `fk_page_revision_user1_idx` (`author_id` ASC),
-  INDEX `fk_page_revision_uuid1_idx` (`id` ASC),
-  CONSTRAINT `fk_page_revision_page_repository1`
-    FOREIGN KEY (`page_repository_id`)
-    REFERENCES `serlo`.`page_repository` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_page_revision_user1`
-    FOREIGN KEY (`author_id`)
-    REFERENCES `serlo`.`user` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_page_revision_uuid1`
-    FOREIGN KEY (`id`)
-    REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `serlo`.`taxonomy`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`taxonomy` ;
@@ -365,10 +298,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `instance_id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
-  `slug` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uq_term_name_language` (`name` ASC),
-  UNIQUE INDEX `uq_term_slug_language` (`slug` ASC),
+  UNIQUE INDEX `uq_term_name_language` (`name` ASC, `instance_id` ASC),
   INDEX `fk_term_language1_idx` (`instance_id` ASC),
   CONSTRAINT `fk_term_language1`
     FOREIGN KEY (`instance_id`)
@@ -395,6 +326,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy` (
   INDEX `fk_term_taxonomy_term1_idx` (`term_id` ASC),
   INDEX `fk_term_taxonomy_term_taxonomy1_idx` (`parent_id` ASC),
   INDEX `fk_term_taxonomy_uuid_idx` (`id` ASC),
+  INDEX `uq_term_taxonomy_unique` (`term_id` ASC, `parent_id` ASC),
   CONSTRAINT `fk_term_taxonomy_taxonomy1`
     FOREIGN KEY (`taxonomy_id`)
     REFERENCES `serlo`.`taxonomy` (`id`)
@@ -411,6 +343,80 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_term_taxonomy_uuid`
+    FOREIGN KEY (`id`)
+    REFERENCES `serlo`.`uuid` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`page_repository`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`page_repository` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`page_repository` (
+  `id` BIGINT NOT NULL,
+  `instance_id` INT NOT NULL,
+  `license_id` INT NOT NULL DEFAULT 1,
+  `forum_id` BIGINT NULL,
+  `current_revision_id` INT NULL,
+  INDEX `fk_page_repository_uuid2_idx` (`id` ASC),
+  INDEX `fk_page_repository_language1_idx` (`instance_id` ASC),
+  PRIMARY KEY (`id`),
+  INDEX `fk_page_repository_license1_idx` (`license_id` ASC),
+  INDEX `fk_page_repository_term_taxonomy1_idx` (`forum_id` ASC),
+  CONSTRAINT `fk_page_repository_uuid2`
+    FOREIGN KEY (`id`)
+    REFERENCES `serlo`.`uuid` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_page_repository_language1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_page_repository_license1`
+    FOREIGN KEY (`license_id`)
+    REFERENCES `serlo`.`license` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_page_repository_term_taxonomy1`
+    FOREIGN KEY (`forum_id`)
+    REFERENCES `serlo`.`term_taxonomy` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`page_revision`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`page_revision` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`page_revision` (
+  `id` BIGINT NOT NULL,
+  `author_id` BIGINT NOT NULL,
+  `page_repository_id` BIGINT NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `content` LONGTEXT NOT NULL,
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (`id`),
+  INDEX `fk_page_revision_page_repository1_idx` (`page_repository_id` ASC),
+  INDEX `fk_page_revision_user1_idx` (`author_id` ASC),
+  INDEX `fk_page_revision_uuid1_idx` (`id` ASC),
+  CONSTRAINT `fk_page_revision_page_repository1`
+    FOREIGN KEY (`page_repository_id`)
+    REFERENCES `serlo`.`page_repository` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_page_revision_user1`
+    FOREIGN KEY (`author_id`)
+    REFERENCES `serlo`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_page_revision_uuid1`
     FOREIGN KEY (`id`)
     REFERENCES `serlo`.`uuid` (`id`)
     ON DELETE CASCADE
@@ -812,6 +818,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`url_alias` (
   `uuid_id` BIGINT NOT NULL,
   `source` VARCHAR(255) NOT NULL,
   `alias` VARCHAR(255) NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `alias_UNIQUE` (`alias` ASC, `instance_id` ASC),
   INDEX `fk_url_alias_language1_idx` (`instance_id` ASC),
@@ -1459,6 +1466,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`session` (
 ENGINE = InnoDB;
 
 
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 -- -----------------------------------------------------
 -- Data for table `serlo`.`language`
 -- -----------------------------------------------------
@@ -1608,11 +1619,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (1, 1, 'Root', 'root');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (2, 1, 'Discussions', 'discussions');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (3, 1, 'Mathe', 'mathe');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (4, 1, 'Articles', 'articles');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (5, 1, 'Deutsch', 'deutsch');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`) VALUES (1, 1, 'Root');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`) VALUES (2, 1, 'Discussions');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`) VALUES (3, 1, 'Mathe');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`) VALUES (4, 1, 'Articles');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`) VALUES (5, 1, 'Deutsch');
 
 COMMIT;
 
@@ -2198,7 +2209,3 @@ INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (11, 10);
 
 COMMIT;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

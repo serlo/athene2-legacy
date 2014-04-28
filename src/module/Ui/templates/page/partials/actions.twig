@@ -1,0 +1,45 @@
+<nav class="navbar navbar-light" role="navigation">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            {% if isGranted('page.revision.create', page) %}
+                <li>
+                    <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}">
+                        <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
+                    </a>
+                </li>
+            {% endif %}
+            <li>
+                <a href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
+                    <span class="glyphicon glyphicon-time"></span> {{ translate('History') }}
+                </a>
+            </li>
+            {% if isGranted('event.log.get', page) %}
+                <li>
+                    <a href="{{ url('event/history', {'id': page.getId()}) }}"> <span
+                                class="glyphicon glyphicon-hdd"></span> {{ translate('Log') }}
+                    </a>
+                </li>
+            {% endif %}
+            {% if page.getCurrentRevision() is not same as (revision) %}
+                <li>
+                    <a href="{{ url('uuid/trash', {'id': revision.getId()}) }}" class="btn btn-link">
+                        <span class="glyphicon glyphicon-trash"></span> {{ translate('Trash') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('page/revision/checkout', {'page': page.getId(), 'revision': revision.getId()}) }}"
+                       class="btn btn-link">
+                        <span class="glyphicon glyphicon-ok"> {{ translate('Set as base revision') }} </a>
+                </li>
+            {% endif %}
+            {% if isGranted('page.update', page) %}
+                <li>
+                    <a href="{{ url('page/update', {'page': page.getId()}) }}">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{ translate('Settigs') }}
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

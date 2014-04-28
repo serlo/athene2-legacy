@@ -1,0 +1,12 @@
+<?php
+$content = '';
+foreach($this->notifications as $notification){
+    $content .= '<li>'.$this->partial('user/notification/notification', ['notification' => $notification]) . "</li>";
+}
+echo sprintf($this->translate("Hello %s,<br>
+<br>
+here's a heads up of what has happened on %s:<br>
+<br>
+<ul>
+    %s
+</ul>"), $this->user->getUsername(), $this->brand()->getBrand(true), $content);

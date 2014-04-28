@@ -23,14 +23,9 @@ class UserStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getObject()->getUsername();
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getDate();
+        return $object instanceof UserInterface;
     }
 
     protected function getContent()
@@ -38,14 +33,14 @@ class UserStrategy extends AbstractStrategy
         return $this->getObject()->getUsername();
     }
 
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getPreview()
     {
         return $this->getObject()->getUsername();
-    }
-
-    protected function getType()
-    {
-        return 'user';
     }
 
     protected function getRouteName()
@@ -58,8 +53,18 @@ class UserStrategy extends AbstractStrategy
         return ['id' => $this->getObject()->getId()];
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof UserInterface;
+        return $this->getObject()->getDate();
+    }
+
+    protected function getTitle()
+    {
+        return $this->getObject()->getUsername();
+    }
+
+    protected function getType()
+    {
+        return 'user';
     }
 }

@@ -16,5 +16,8 @@ return [
             'strict_variables' => true,
             'autoescape' => false
         ],
+    ],
+    'assetic_configuration' => [
+        'buildOnRequest' => true
     ]
 ];

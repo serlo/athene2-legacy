@@ -24,27 +24,20 @@ interface TermEntityInterface extends InstanceAwareInterface
 
     /**
      *
-     * @return field_type $name
+     * @return string $name
      */
     public function getName();
 
     /**
      *
-     * @return field_type $slug
+     * @return string $slug
      */
     public function getSlug();
 
     /**
      *
      * @param string $name            
-     * @return self
+     * @return void
      */
     public function setName($name);
-
-    /**
-     *
-     * @param string $slug
-     * @return self
-     */
-    public function setSlug($slug);
 }

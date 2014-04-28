@@ -10,7 +10,7 @@
  */
 ?>
 <?php if (!isset($this->isChild)): ?>
-    <?php echo $this->pageHeader('Assign a resource')->render(); ?>
+    <?php echo $this->pageHeader('Assign a resource')->append($this->contexter()->renderButton('right'))->render(); ?>
     <form method="post"
     action="<?php $this->url('entity/taxonomy/update', array('entity' => $this->entity->getId())); ?>">
     <input type="hidden" name="ref" value="<?php echo $this->ref; ?>"/>

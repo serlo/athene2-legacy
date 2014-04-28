@@ -10,37 +10,54 @@
  */
 namespace Notification;
 
+use Notification\Entity\SubscriptionInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 
 class NotificationWorker
 {
     use\Common\Traits\ObjectManagerAwareTrait, \User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait,
         NotificationManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait;
+    use EventManagerAwareTrait;
 
     /**
      * @TODO Undirtyfy
      */
     public function run()
     {
+        // Solves "mysql server has gone away" error for large sets of data
+        $timeout        = 60 * 20;
+        $notifyWorkload = [];
+        ini_set('mysql.connect_timeout', $timeout);
+        ini_set('default_socket_timeout', $timeout);
+
         if (!$this->getSubscriptionManager()->hasSubscriptions()) {
             return;
         }
 
         /* @var $eventLog \Event\Entity\EventLogInterface */
         foreach ($this->getWorkload() as $eventLog) {
-            /* @var $subscriptions UserInterface[] */
+            /* @var $subscriptions SubscriptionInterface[] */
             $object        = $eventLog->getObject();
             $subscriptions = $this->getSubscriptionManager()->findSubscriptionsByUuid($object);
             $subscribed    = [];
 
             foreach ($subscriptions as $subscription) {
+                $subscriber = $subscription->getSubscriber();
                 // Don't create notifications for myself
-                if ($subscription->getSubscriber() !== $eventLog->getActor() && $eventLog->getTimestamp(
-                    ) > $subscription->getTimestamp()
+                if ($subscriber !== $eventLog->getActor() && $eventLog->getTimestamp() > $subscription->getTimestamp()
                 ) {
-                    $this->getNotificationManager()->createNotification($subscription->getSubscriber(), $eventLog);
-                    $subscribed[] = $subscription->getSubscriber();
+                    $notification = $this->getNotificationManager()->createNotification(
+                        $subscriber,
+                        $eventLog
+                    );
+                    if ($subscription->getNotifyMailman()) {
+                        $id                                     = $subscriber->getId();
+                        $notifyWorkload[$id]['subscriber']      = $subscriber;
+                        $notifyWorkload[$id]['notifications'][] = $notification;
+                    }
+                    $subscribed[] = $subscriber;
                 }
             }
 
@@ -51,17 +68,31 @@ class NotificationWorker
                     $subscriptions = $this->getSubscriptionManager()->findSubscriptionsByUuid($object);
 
                     foreach ($subscriptions as $subscription) {
-                        if (!in_array($subscription->getSubscriber(), $subscribed) && $subscription->getSubscriber(
-                            ) !== $eventLog->getActor() && $eventLog->getTimestamp() > $subscription->getTimestamp()
+                        $subscriber = $subscription->getSubscriber();
+                        if (!in_array($subscriber, $subscribed) && $subscriber !== $eventLog->getActor(
+                            ) && $eventLog->getTimestamp() > $subscription->getTimestamp()
                         ) {
-                            $this->getNotificationManager()->createNotification(
-                                $subscription->getSubscriber(),
+                            $notification = $this->getNotificationManager()->createNotification(
+                                $subscriber,
                                 $eventLog
                             );
+                            if ($subscription->getNotifyMailman()) {
+                                $id                                     = $subscriber->getId();
+                                $notifyWorkload[$id]['subscriber']      = $subscriber;
+                                $notifyWorkload[$id]['notifications'][] = $notification;
+                            }
                         }
                     }
                 }
             }
+        }
+
+        foreach ($notifyWorkload as $data) {
+            $this->getEventManager()->trigger(
+                'notify',
+                $this,
+                ['notifications' => $data['notifications'], 'user' => $data['subscriber']]
+            );
         }
     }
 

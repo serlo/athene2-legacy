@@ -14,8 +14,8 @@ use Exception;
 use Navigation\Provider\ContainerProviderInterface;
 use Navigation\Provider\PageProviderInterface;
 use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Mvc\Router\RouteStackInterface;
+use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Navigation\Exception\InvalidArgumentException;
 use Zend\Navigation\Navigation;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -57,10 +57,9 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
                 ));
             }
 
-            $pages     = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
-            $container = $this->provideContainer($configuration);
-            $pages     = ArrayUtils::merge($this->getPagesFromConfig($container), $pages);
-
+            $pages       = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
+            $container   = $this->provideContainer($configuration);
+            $pages       = ArrayUtils::merge($pages, $this->getPagesFromConfig($container));
             $this->pages = $this->preparePages($serviceLocator, $pages);
         }
 
@@ -72,8 +71,12 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
      *
      * @see \Zend\Navigation\Service\AbstractNavigationFactory::injectComponents()
      */
-    protected function injectComponents(array $pages, RouteMatch $routeMatch = null, RouteStackInterface $router = null, $request = null)
-    {
+    protected function injectComponents(
+        array $pages,
+        RouteMatch $routeMatch = null,
+        RouteStackInterface $router = null,
+        $request = null
+    ) {
         foreach ($pages as &$page) {
             $hasMvc = isset($page['action']) || isset($page['controller']) || isset($page['route']);
             if ($hasMvc) {

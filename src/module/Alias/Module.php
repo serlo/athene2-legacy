@@ -10,6 +10,9 @@
  */
 namespace Alias;
 
+use Exception;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 
 class Module
@@ -18,17 +21,13 @@ class Module
     public static $listeners = [
         'Alias\Listener\BlogManagerListener',
         'Alias\Listener\PageControllerListener',
-        'Alias\Listener\RepositoryManagerListener'
+        'Alias\Listener\RepositoryManagerListener',
+        'Alias\Listener\TaxonomyManagerListener'
     ];
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
 
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [
@@ -48,12 +47,81 @@ class Module
         return $autoloader;
     }
 
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
+
     public function onBootstrap(MvcEvent $e)
     {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), -1000);
+
         foreach (self::$listeners as $listener) {
-            $e->getApplication()->getEventManager()->getSharedManager()->attachAggregate(
+            $sharedEventManager->attachAggregate(
                 $e->getApplication()->getServiceManager()->get($listener)
             );
         }
+    }
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $application    = $e->getApplication();
+        $response       = $e->getResponse();
+        $request        = $application->getRequest();
+        $serviceManager = $application->getServiceManager();
+        /* @var $aliasManager AliasManagerInterface */
+        $aliasManager    = $serviceManager->get('Alias\AliasManager');
+        $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
+            return null;
+        }
+
+        /* @var $uriClone \Zend\Uri\Http */
+        $uriClone = clone $request->getUri();
+        $uri      = $uriClone->getPath();
+
+        try {
+            $location = $aliasManager->findAliasBySource($uri, $instanceManager->getInstanceFromRequest());
+        } catch (Exception $ex) {
+            return null;
+        }
+
+        $response->getHeaders()->addHeaderLine('Location', $location);
+        $response->setStatusCode(301);
+        $response->sendHeaders();
+        $e->stopPropagation();
+        return $response;
+    }
+
+    public function onDispatchError(MvcEvent $e)
+    {
+        $application    = $e->getApplication();
+        $response       = $e->getResponse();
+        $request        = $application->getRequest();
+        $serviceManager = $application->getServiceManager();
+        /* @var $aliasManager AliasManagerInterface */
+        $aliasManager    = $serviceManager->get('Alias\AliasManager');
+        $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
+            return null;
+        }
+
+        /* @var $uriClone \Zend\Uri\Http */
+        $uriClone = clone $request->getUri();
+
+        try {
+            $uri      = $uriClone->makeRelative('/')->getPath();
+            $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
+        } catch (Exception $ex) {
+            return null;
+        }
+
+        $response->getHeaders()->addHeaderLine('Location', $location);
+        $response->setStatusCode(301);
+        $response->sendHeaders();
+        $e->stopPropagation();
+        return $response;
     }
 }

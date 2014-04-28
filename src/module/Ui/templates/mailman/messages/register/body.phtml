@@ -1,9 +1,9 @@
 <?php
-echo sprintf($this->translate("Hello %s,
+echo nl2br(sprintf($this->translate("Hello %s,
 
 thank you for your registration on %s.
 Please confirm your account:
     
 %s
 
-your %s Team. "), $this->user->getUsername(), $this->brand(), $this->url('authentication/activate', ['token' => $this->user->getToken()], array('force_canonical' => true)), $this->brand(), $this->brand());
+your %s Team. "), $this->user->getUsername(), $this->brand()->getBrand(true), $this->url('authentication/activate', ['token' => $this->user->getToken()], array('force_canonical' => true)), $this->brand()->getBrand(true), $this->brand()->getBrand(true)));

@@ -1,124 +1,254 @@
-.container {
-    @media only screen and (max-width: $navigationBreakPoint) {
-        width: auto;
-        max-width: 100%;
+/* MAIN PAGE LAYOUT */
+
+%pageMargin {
+    padding: 0 $pagePaddingSmall;
+
+    @media only screen and (min-width: $navigationBreakPoint) {
+        padding: 0 $pagePaddingMedium;
     }
-}
-
-#page {
-    position: relative;
-    margin-top: 35px;
-    margin-bottom: 75px;
-
-    transform-style: preserve-3d;
-    transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
-
-    @media only screen and (max-width: $navigationBreakPoint) {
-        margin-top: 54px;
-        width: auto;
-        max-width: 100%;
-    }
-}
-
-#main {
-    position: relative;
-
-    .col-2 &,
-    .col-3 & {
-        padding-left: $navigationWidth;
-
-        @media only screen and (max-width: $navigationBreakPoint) {
-            padding-left: 40px;
-
-            .slide-right & {
-                padding-left: $navigationWidth + 40;
-            }
-        }
-
-        @media only screen and (max-width: $sidebarBreakPoint) {
-            .slide-left & {
-                padding-right: $sidebarWidth + 40;
-            }
-        }
-    }
-}
-
-#content-container {
-    background: #FFF;
-    border: 1px solid #DFDFDF;
-    min-height: 620px;
-
-    padding: 0 20px;
 
     @media only screen and (min-width: $sidebarBreakPoint) {
-        padding: 0 35px;
+        padding: 0 $pagePaddingLarge;
     }
 }
 
-#content {
-    .col-3 & {
-        margin-right: $sidebarWidth;
+body {
+    min-width: $minWidth;
 
-        @media only screen and (max-width: $sidebarBreakPoint) {
-            margin-right: 40px;
-        }
+    @media only screen and (min-width: $minWidth) {
+        overflow-x: auto;
     }
 }
 
-#sidebar {
+#subject-nav,
+#serlo-menu,
+#page,
+#horizon,
+#footer {
+    @extend %pageMargin;
+}
+
+#header {
+    margin-bottom: 30px;
+    clear: both;
+}
+
+#horizon {
+    clear: both;
+    width: 740px;
+    margin: 50px 0 100px 200px;
+    padding: 0;
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+      margin: 50px 0 100px $sideElementWidthCollapsed
+    }
+}
+
+#header {
     position: relative;
-    width: $sidebarWidth;
-    margin-top: 20px;
-
-    float: right;
-
-    @media only screen and (max-width: $sidebarBreakPoint) {
-        width: 40px;
-    }
+    z-index: $headerZIndex;
 }
 
-#sidebar-content {
-    width: $sidebarWidth;
+/* Side Elements (Navigation && Context) */
 
-    color: white;
-    background: $gray;
+.side-element {
+    position: relative;
+    z-index: $sideElementZIndex;
 
-    @media only screen and (max-width: $sidebarBreakPoint) {
-        visibility: hidden;
+    &.visible {
 
-        .slide-left & {
+        .side-element-inner {
             visibility: visible;
         }
+
+        .layout-toggle {
+            .glyphicon {
+                display: none;
+
+                & + .glyphicon {
+                    display: block;
+                }
+            }
+        }
     }
-}
 
-#sidebar-toggle {
-    display: none;
+    .layout-toggle {
+        display: none;
 
-    @media only screen and (max-width: $sidebarBreakPoint) {
-        display: block;
+        cursor: pointer;
+        user-select: none;
 
-        .slide-left & {
-            left: $sidebarWidth;
+
+        .glyphicon {
+            display: block;
+
+            & + .glyphicon {
+                display: none;
+            }
         }
     }
 }
 
+/* side element layout toggler */
 .layout-toggle {
     position: absolute;
-    left: 0;
     top: 0;
-    
-    width: 40px;
-    height: 100%;
-    padding: 10px 0;
-    
-    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: $darkGray;
     color: white;
 
-    background: $gray;
+    &:hover {
+        background: $darkerGray;
+    }
 
-    cursor: pointer;
+    .glyphicon {
+        display: block;
 
-    user-select: none;
+        margin: 0 auto;
+
+        line-height: $sideElementWidthCollapsed;
+    }
+}
+
+/* Left Navigation */
+.side-navigation {
+    width: $navigationWidth;
+    float: left;
+    margin-top: $sideNavTopOffset;
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+        width: $sideElementWidthCollapsed;
+
+        .side-element-inner {
+            visibility: hidden;
+            margin-left: $sideElementWidthCollapsed;
+        }
+
+        .layout-toggle {
+            display: block;
+        }
+    }
+}
+
+/* Main Container */
+.main {
+    // float: left;
+
+    .has-navigation & {
+        margin-left: $navigationWidth;
+
+        @media only screen and (max-width: $navigationBreakPoint) {
+            margin-left: $sideElementWidthCollapsed;
+        }
+    }
+
+    .has-context & {
+
+        @media only screen and (min-width: $sidebarBreakPoint + 150px) {
+            width: $contentWidth + $sidebarWidth + 150px;
+        }
+    }
+}
+
+/* Content */
+#content {
+    width: $contentWidth;
+    padding: 0 $contentPadding;
+
+    float: left;
+    box-sizing: content-box;
+
+    line-height: 1.5;
+
+    .has-context & {
+        // margin-right: $sidebarWidth;
+
+        // @media only screen and (max-width: $sidebarBreakPoint) {
+        //     margin-right: $sideElementWidthCollapsed;
+        // }
+
+
+        // @media only screen and (min-width: $sidebarBreakPoint + 150px) {
+        //     margin-right: $sidebarWidth + 150px;
+        // }
+    }
+}
+
+/* Right Context Area */
+.side-context {
+    // width: $sidebarWidth;
+    margin-left: $contentWidth + 2 * $contentPadding;
+
+    background: $lighterGray;
+
+    top: $sideNavTopOffset;
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      left: 0px;
+      top: 12px;
+      @include triangle(right, $white, 13px);
+    }
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        width: $sideElementWidthCollapsed;
+
+        .side-element-inner {
+            position: relative;
+
+            visibility: hidden;
+            margin-right: $sideElementWidthCollapsed;
+
+            width: 200px;
+            right: 200px;
+            background: $lighterGray;
+        }
+
+        .layout-toggle {
+            display: block;
+        }
+    }
+
+    @media only screen and (min-width: $sidebarBreakPoint + 150px) {
+        width: $sidebarWidth + 150px - $pagePaddingLarge;
+    }
+
+    .nav {
+        &:after,
+        &:before {
+            clear: none;
+            display: none;
+        }
+    }
+}
+
+
+
+.page-header {
+    margin: 20px 0;
+    .navbar {
+        margin: 0px;
+        .navbar-collapse {
+            padding: 0px;
+        }
+    }
+}
+
+.page-header {
+    margin: 0 0 20px 0;
+    padding-top: 20px;
+    position: relative;
+    z-index: 1;
+    background-color: $white;
+    .navbar {
+        min-height: 0;
+        margin: 5px 0 0 0;
+    }
+    &>h1 {
+        margin: 0;
+    }
 }

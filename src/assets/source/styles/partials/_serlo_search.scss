@@ -25,27 +25,11 @@
 
     z-index: 1;
     
-    background: white;
-
-    @media only screen and (max-width: $navigationBreakPoint) {
-        position: absolute;
-        top: -62px;
-        left: 40px;
-
-        width: 220px;
-        input {
-            border: none;
-        }
-
-        .slide-right & {
-            left: $navigationWidth + 40;
-        }
-    }
+    background: $lighterGray;
 
     &.is-in-focus {
         width: 386px;
 
-        box-shadow: 0 0 7px #9f9f9f;
         #search-help {
             display: block;
         }
@@ -116,7 +100,7 @@
 
     .glyphicon-search {
         position: absolute;
-        top: 12px;
+        top: 15px;
         right: 11px;
 
         color: $gray;
@@ -139,7 +123,6 @@
     padding-top: 44px;
 
     background: white;
-    box-shadow: 0 0 3px #dadada;
     
     .active a {
         background: $lightGray;
@@ -170,5 +153,4 @@
     padding-top: 60px;
 
     background: white;
-    box-shadow: 0 0 3px #dadada;
 }

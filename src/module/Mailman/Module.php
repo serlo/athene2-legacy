@@ -10,18 +10,17 @@
  */
 namespace Mailman;
 
+use Zend\Console\Request;
+use Zend\Mvc\MvcEvent;
+use Zend\Uri\Http;
+
 class Module
 {
-
     public static $listeners = [
         'Mailman\Listener\UserControllerListener',
         'Mailman\Listener\AuthenticationControllerListener',
+        'Mailman\Listener\NotificationWorkerListener'
     ];
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
 
     public function getAutoloaderConfig()
     {
@@ -45,12 +44,27 @@ class Module
         return $autoloader;
     }
 
-    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    public function getConfig()
     {
+        return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $application        = $e->getApplication();
+        $eventManager       = $application->getEventManager();
+        $serviceLocator     = $application->getServiceManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+
         foreach (static::$listeners as $listener) {
-            $e->getApplication()->getEventManager()->getSharedManager()->attachAggregate(
-                $e->getApplication()->getServiceManager()->get($listener)
-            );
+            $sharedEventManager->attachAggregate($serviceLocator->get($listener));
+        }
+
+        if ($e->getRequest() instanceof Request) {
+            /* @var $moduleOptions Options\ModuleOptions */
+            $moduleOptions = $serviceLocator->get('Mailman\Options\ModuleOptions');
+            $uri           = new Http($moduleOptions->getLocation());
+            $serviceLocator->get('HttpRouter')->setRequestUri($uri);
         }
     }
 }

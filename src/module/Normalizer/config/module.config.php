@@ -82,8 +82,26 @@ return [
                             'route'    => '/ref/:object',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\SignpostController',
-                                'action'     => 'index'
+                                'action'     => 'ref'
                             ]
+                        ]
+                    ]
+                ]
+            ],
+            'uuid'       => [
+                'child_routes' => [
+                    'get' => [
+                        'type'     => 'Zend\Mvc\Router\Http\Segment',
+                        'priority' => -9000,
+                        'options'  => [
+                            'route'       => '/:uuid',
+                            'defaults'    => [
+                                'controller' => __NAMESPACE__ . '\Controller\SignpostController',
+                                'action'     => 'index'
+                            ],
+                            'constraints' => [
+                                'uuid' => '[0-9]+'
+                            ],
                         ]
                     ]
                 ]

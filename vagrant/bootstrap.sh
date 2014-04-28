@@ -114,6 +114,8 @@ echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> 
 crontab cron
 rm cron
 
+sudo su - www-data -c "(cd /var/www/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar install)"
+
 chmod +x /home/vagrant/bin/*
 sudo /home/vagrant/bin/clean-ui.sh
 sudo /home/vagrant/bin/boot.sh

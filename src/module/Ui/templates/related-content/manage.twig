@@ -1,6 +1,6 @@
 {% set rows = 4 %}
 {% set col = 12 / 4 %}
-{{ pageHeader(normalize().toTitle(container.getObject())).setSubtitle('Manage related content').setBackLink(normalize().toUrl(container.getObject())).render }}
+{{ pageHeader('Manage related links').setSubtitle(normalize().toTitle(container.getObject())).setBackLink(normalize().toUrl(container.getObject())).append(contexter().renderButton('right')) }}
 <div class="row">
     <div class="col-md-{{ col }}">
         <strong>{{ translate('Title') }}</strong>

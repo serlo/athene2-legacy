@@ -10,23 +10,31 @@
  */
 namespace Notification;
 
+use Common\ObjectManager\Flushable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Event\Entity\EventLogInterface;
+use Notification\Entity\NotificationInterface;
 use User\Entity\UserInterface;
 
-interface NotificationManagerInterface
+interface NotificationManagerInterface extends Flushable
 {
 
     /**
      * @param UserInterface     $user
      * @param EventLogInterface $eventLog
-     * @return self
+     * @return NotificationInterface
      */
     public function createNotification(UserInterface $user, EventLogInterface $eventLog);
 
     /**
-     * @param UserInterface $userService
+     * @param UserInterface $user
      * @return ArrayCollection
      */
-    public function findNotificationsBySubsriber(UserInterface $userService);
+    public function findNotificationsBySubscriber(UserInterface $user);
+
+    /**
+     * @param UserInterface $user
+     * @return void
+     */
+    public function markRead(UserInterface $user);
 }

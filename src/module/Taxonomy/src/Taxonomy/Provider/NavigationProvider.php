@@ -55,6 +55,12 @@ class NavigationProvider implements PageProviderInterface
      */
     protected $term;
 
+    /**
+     * @param InstanceManagerInterface $instanceManager
+     * @param TaxonomyManagerInterface $taxonomyManager
+     * @param ObjectManager            $objectManager
+     * @param StorageInterface         $storage
+     */
     public function __construct(
         InstanceManagerInterface $instanceManager,
         TaxonomyManagerInterface $taxonomyManager,
@@ -68,20 +74,38 @@ class NavigationProvider implements PageProviderInterface
 
     }
 
+    /**
+     * @return TaxonomyTermInterface
+     */
+    public function getTerm()
+    {
+        if (!is_object($this->term)) {
+            $instance   = $this->getInstanceManager()->findInstanceByName($this->options['instance']);
+            $parent     = $this->options['parent'];
+            $taxonomy   = $this->getTaxonomyManager()->findTaxonomyByName($parent['type'], $instance);
+            $this->term = $this->getTaxonomyManager()->findTerm($taxonomy, (array)$parent['slug']);
+        }
+
+        return $this->term;
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
     public function provide(array $options)
     {
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
-
-        $term = $this->getTerm();
-        $key  = hash('sha256',serialize($term));
+        $key = hash('sha256', serialize($this->options));
 
         if ($this->storage->hasItem($key)) {
-            $pages = $this->storage->getItem($key);
-            return $pages;
+            return $this->storage->getItem($key);
         }
 
+        $term          = $this->getTerm();
+
         if ($this->getObjectManager()->isOpen()) {
-            $this->getObjectManager()->refresh($this->getTerm());
+            $this->getObjectManager()->refresh($term);
         }
 
         $terms      = $term->findChildrenByTaxonomyNames($this->options['types']);
@@ -92,20 +116,11 @@ class NavigationProvider implements PageProviderInterface
         return $pages;
     }
 
-    public function getTerm()
-    {
-        if (!is_object($this->term)) {
-            $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName(
-                $this->options['parent']['type'],
-                $this->getInstanceManager()->findInstanceByName($this->options['instance'])
-            );
-
-            $this->term = $this->getTaxonomyManager()->findTerm($taxonomy, (array)$this->options['parent']['slug']);
-        }
-
-        return $this->term;
-    }
-
+    /**
+     * @param TaxonomyTermInterface[] $terms
+     * @param int                     $depth
+     * @return array
+     */
     protected function iterTerms($terms, $depth)
     {
         if ($depth < 1) {
@@ -115,16 +130,9 @@ class NavigationProvider implements PageProviderInterface
         $return = [];
         foreach ($terms as $term) {
             if (!$term->isTrashed()) {
-                $current          = [];
-                $current['route'] = $this->options['route'];
-
-                $current['params'] = ArrayUtils::merge(
-                    $this->options['params'],
-                    [
-                        'path' => $term->slugify($this->options['parent']['type'])
-                    ]
-                );
-
+                $current             = [];
+                $current['route']    = $this->options['route'];
+                $current['params']   = ['term' => (string) $term->getId()];
                 $current['label']    = $term->getName();
                 $current['elements'] = $term->countElements();
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);
@@ -134,7 +142,6 @@ class NavigationProvider implements PageProviderInterface
                 $return[] = $current;
             }
         }
-
         return $return;
     }
 }

@@ -2,7 +2,7 @@
 namespace Page;
 
 return [
-    'zfc_rbac'       => [
+    'zfc_rbac'        => [
         'assertion_manager' => [
             'factories' => [
                 __NAMESPACE__ . '\Assertion\PageAssertion' => __NAMESPACE__ . '\Factory\PageAssertionFactory',
@@ -22,7 +22,16 @@ return [
             'page.revision.trash'    => __NAMESPACE__ . '\Assertion\PageAssertion',
         ]
     ],
-    'versioning'     => [
+    'taxonomy'        => [
+        'types' => [
+            'forum' => [
+                'allowed_associations' => [
+                    'Page\Entity\PageRepositoryInterface'
+                ],
+            ]
+        ]
+    ],
+    'versioning'      => [
         'permissions' => [
             'Page\Entity\PageRepository' => [
                 'commit'   => 'page.revision.create',
@@ -31,7 +40,7 @@ return [
             ]
         ]
     ],
-    'uuid'           => [
+    'uuid'            => [
         'permissions' => [
             'Page\Entity\PageRevision'   => [
                 'trash'   => 'page.revision.trash',
@@ -45,7 +54,7 @@ return [
             ]
         ]
     ],
-    'router'         => [
+    'router'          => [
         'routes' => [
             'pages' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
@@ -144,38 +153,24 @@ return [
             ]
         ]
     ],
-    'class_resolver' => [
+    'class_resolver'  => [
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
         'Page\Entity\PageRevisionInterface'   => 'Page\Entity\PageRevision',
         'Page\Entity\PageInterface'           => 'Page\Entity\Page'
     ],
-    'di'             => [
+    'service_manager' => [
+        'factories' => [
+            'Page\Form\RepositoryForm' => 'Page\Factory\RepositoryFormFactory'
+        ]
+    ],
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\IndexController'
         ],
         'definition'          => [
             'class' => [
-                'Page\Controller\IndexController' => [
-                    'setAliasManager'    => [
-                        'required' => true
-                    ],
-                    'setObjectManager'   => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ],
-                    'setPageManager'     => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ],
-                    'setEventManager'    => [
-                        'required' => true
-                    ]
-                ],
-                'Page\Manager\PageManager'        => []
+                'Page\Controller\IndexController' => [],
+                'Page\Manager\PageManager'        => [],
             ]
         ],
         'instance'            => [
@@ -184,7 +179,7 @@ return [
             ]
         ]
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

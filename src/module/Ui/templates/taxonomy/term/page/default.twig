@@ -1,0 +1,11 @@
+<div class="page-header">
+    <div class="pull-right btn-group">
+        {% include 'taxonomy/term/templates/partials/controls' %}
+        {{ contexter().renderButton() }}
+    </div>
+    <h1>{{ term.getName() }}</h1>
+    <div class="edit-control hidden">
+        {% include 'taxonomy/term/templates/partials/actions' %}
+    </div>
+</div>
+{% include 'taxonomy/term/templates/default' %}

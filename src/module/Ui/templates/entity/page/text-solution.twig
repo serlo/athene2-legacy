@@ -1,2 +1,8 @@
-{{ pageHeader(entity.getId()).setSubtitle('Text solution').render() }}
+<div class="page-header">
+    <div class="pull-right btn-group">
+        {% include 'entity/view/partials/actions/toggle-controls' %}
+        {{ contexter().renderButton() }}
+    </div>
+    <h1>{{ entity.getId() }} <small>{{ translate('Text solution') }}</small></h1>
+</div>
 {% include 'entity/view/default' %}

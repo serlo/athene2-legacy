@@ -13,6 +13,7 @@ namespace Taxonomy\Factory;
 use ClassResolver\ClassResolverFactoryTrait;
 use Common\Factory\AuthorizationServiceFactoryTrait;
 use Common\Factory\EntityManagerFactoryTrait;
+use Instance\Factory\InstanceManagerFactoryTrait;
 use Taxonomy\Manager\TaxonomyManager;
 use Taxonomy\Options\ModuleOptions;
 use Type\Factory\TypeManagerFactoryTrait;
@@ -24,6 +25,7 @@ class TaxonomyManagerFactory implements FactoryInterface
 {
     use ClassResolverFactoryTrait, EntityManagerFactoryTrait;
     use TypeManagerFactoryTrait, AuthorizationServiceFactoryTrait;
+    use InstanceManagerFactoryTrait;
 
     /**
      * Create service
@@ -38,8 +40,9 @@ class TaxonomyManagerFactory implements FactoryInterface
         $classResolver        = $this->getClassResolver($serviceLocator);
         $objectManager        = $this->getEntityManager($serviceLocator);
         $typeManager          = $this->getTypeManager($serviceLocator);
+        $instanceManager      = $this->getInstanceManager($serviceLocator);
         $moduleOptions        = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
-        $service              = new TaxonomyManager($authorizationService, $classResolver, $moduleOptions, $objectManager, $typeManager);
+        $service              = new TaxonomyManager($authorizationService, $classResolver, $moduleOptions, $instanceManager, $objectManager, $typeManager);
         return $service;
     }
 }

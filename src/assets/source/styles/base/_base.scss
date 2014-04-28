@@ -20,10 +20,8 @@ body {
   -webkit-overflow-scrolling: touch;
 
   font-family: $baseFont;
-}
 
-h1 {
-    font-size: 30px;
+  @include theme-font(normal);
 }
 
 .wrap {

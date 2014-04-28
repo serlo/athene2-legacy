@@ -1,9 +1,10 @@
-<article class="revision">
+<div class="revision panel-group">
     {% for field in revision.getFields() %}
-        <section>
-            <h2>{{ translate(field.getName()) }}</h2>
-            <hr>
-            {{ markdown().toHtml(field.getValue()) }}
-        </section>
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ translate(field.getName()) }}</div>
+            <div class="panel-body">
+                {{ markdown().toHtml(field.getValue()) }}
+            </div>
+        </div>
     {% endfor %}
-</article>
+</div>

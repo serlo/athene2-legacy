@@ -9,9 +9,9 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require, MathJax*/
-define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'content', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'modals', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de'],
-    function ($, Common, SideNavigation, t, Layout, Content, Search, SystemNotification, moment, AjaxOverlay) {
+define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_element', 'content', 'search', 'system_notification',
+                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'],
+    function ($, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
             ajaxOverlay;
@@ -31,7 +31,17 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             });
             // initialize contextuals whenever a new context is added
 
+            $('.side-element').SerloAffix({
+                
+            });
+
+            $('.page-header').SerloAffix({
+
+            });
+
             Content.add(function ($context) {
+                var elements = $('.math, .mathInline', $context).filter(':visible').toArray();
+
                 // init sortable lists in context
                 $('.sortable', $context).SortableList();
                 // init timeago fields in context
@@ -50,13 +60,22 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 $('.spoiler').Spoiler();
                 // init injections
                 $('.injection').Injections();
+                // init edit controls
+                $('[data-toggle*="-controls"]').ToggleAction();
+                // init triggers
+                $('[data-trigger]').TriggerAction();
+                // forum select
+                $('form[name="discussion"]', $context).ForumSelect();
 
                 // NOTE: deactivated for now
                 // init AjaxOverlay for /ref links
                 // $('a[href^="/ref"]', $context).addClass('ajax-content');
 
                 // init Mathjax
-                MathJax.Hub.Typeset($context[0]);
+                if (elements.length) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elements]);
+                }
+                $context.MathjaxTrigger();
             });
 
             // Tooltips opt in
@@ -88,7 +107,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             // trigger new contextual
             Common.trigger('new context', $context);
 
-            Layout.init();
+            SideElement.init();
         }
 
         return {
@@ -106,6 +125,7 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
             displayAlign: 'left',
             extensions: ["tex2jax.js"],
             jax: ["input/TeX", "output/HTML-CSS"],
+            skipStartupTypeset: 'true',
             tex2jax: {
                 inlineMath: [["%%", "%%"]]
             },

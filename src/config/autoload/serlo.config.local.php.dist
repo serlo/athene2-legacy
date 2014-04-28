@@ -1,0 +1,15 @@
+<?php
+return [
+    'page_header_helper' => [
+        'brand'     => 'www.serlo.org',
+        'delimiter' => ' - '
+    ],
+    'brand'              => [
+        'name' => 'Serlo <sup><small>beta</small></sup>',
+        'slogan' => 'Freie Bildung.'
+    ],
+    'mailman'            => [
+        'sender'   => 'no-reply@serlo.org',
+        'location' => 'http://ptr.serlo.org'
+    ]
+];

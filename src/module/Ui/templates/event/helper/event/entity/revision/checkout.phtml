@@ -1,5 +1,10 @@
-<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php $revision = $this->normalize()->toAnchor($this->event->getObject()); ?>
-<?php $entity = $this->normalize()->toAnchor($this->event->getParameter('repository')); ?>
-<?php $reason = $this->event->getParameter('reason'); ?>
-<?php echo sprintf($this->translate('%s checked out a new version of %s: <em>%s</em>'), $user, $entity, $reason); ?>
+<?php
+$user       = $this->normalize()->toAnchor($this->event->getActor());
+$revision   = $this->normalize()->toAnchor($this->event->getObject());
+$repository = $this->event->getParameter('repository');
+$entity     = '<strong>' . $this->translate('trashed content') . '</strong>';
+if ($repository) {
+    $entity = $this->normalize()->toAnchor($repository);
+}
+$reason = $this->event->getParameter('reason');
+echo sprintf($this->translate('%s checked out a new version of %s: "%s"'), $user, $entity, $reason);

@@ -54,8 +54,7 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
             return [];
         }
 
-
-        $key = 'provider:container:' . $container->getId();
+        $key = hash('sha256', serialize($container));
         if ($this->storage->hasItem($key)) {
             return $this->storage->getItem($key);
         }

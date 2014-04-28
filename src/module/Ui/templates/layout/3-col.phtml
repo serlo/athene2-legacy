@@ -18,34 +18,22 @@ echo $this->doctype();
     <div class="wrap">
         <?php echo $this->partial('layout/partials/header'); ?>
 
-        <div id="page" class="container col-3">
+        <div id="page" class="has-navigation has-context col-3 clearfix">
             <?php echo $this->partial('layout/partials/left-sidebar'); ?>
-            <section id="main">
-                <div id="main-container">
-                    <aside id="sidebar">
-                        <div id="sidebar-toggle" class="layout-toggle">
-                            <i class="glyphicon glyphicon-list"></i>
-                        </div>
-                        <div id="sidebar-content">
-                            <?php echo $this->registry()->get('rnav'); ?>
-                        </div>
-                    </aside>
-                    <div id="content">
-                        <?php echo $this->partial('layout/partials/notifications'); ?>
-                        <div id="content-container" class="content">
-                        <?php echo $this->partial('layout/partials/main'); ?>
-                        </div>
-                    </div>
+            <section class="main clearfix">
+                <div id="content" class="content clearfix">
+                    <?php echo $this->partial('layout/partials/notifications'); ?>
+                    <?php echo $this->partial('layout/partials/main'); ?>
                 </div>
-                <?php echo $this->partial('layout/partials/contexter'); ?>
+                <?php echo $this->partial('layout/partials/right-sidebar'); ?>
             </section>
-            <?php echo $this->partial('layout/partials/right-sidebar'); ?>
+            <?php echo $this->horizon(3);?>
         </div>
-        <?php echo $this->Horizon(3);?>
         <?php /* sticky footer: */ ?>
-        <div id="footer-push"></div>
+        <!-- <div id="footer-push"></div> -->
+        <?php echo $this->partial('layout/partials/footer'); ?>
     </div>
-    <?php echo $this->partial('layout/partials/footer'); ?>
     <?php echo $this->partial('layout/partials/default-modal'); ?>
+    <?php echo $this->placeholder('modals'); ?>
 </body>
 </html>

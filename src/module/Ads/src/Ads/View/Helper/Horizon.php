@@ -14,12 +14,10 @@ use Zend\View\Helper\AbstractHelper;
 
 class Horizon extends AbstractHelper
 {
-
     use \Ads\Manager\AdsManagerAwareTrait;
     use \Instance\Manager\InstanceManagerAwareTrait;
 
     protected $ads;
-
 
     public function __invoke($number)
     {
@@ -33,10 +31,4 @@ class Horizon extends AbstractHelper
             ]
         );
     }
-
-    /* public function render(){
-         return $this->getView()->partial('ads/helper/ads-helper', array(
-             'ads' => $this->ads,
-         ));
-     }*/
 }

@@ -10,6 +10,7 @@
  */
 namespace Alias\Controller;
 
+use Alias\Exception\AliasNotFoundException;
 use Alias\Exception\CanonicalUrlNotFoundException;
 use Alias;
 use Zend\Http\Request;
@@ -29,40 +30,37 @@ class AliasController extends AbstractActionController
     {
         $alias    = $this->params('alias');
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
+
         try {
-            $canonical = $this->getAliasManager()->findCanonicalAlias($alias, $instance);
-            $this->redirect()->toUrl($canonical);
+            $location = $this->aliasManager->findCanonicalAlias($alias, $instance);
+            $this->redirect()->toUrl($location);
+            $this->getResponse()->setStatusCode(301);
+            return false;
         } catch (CanonicalUrlNotFoundException $e) {
         }
 
         try {
-            $source = $this->getAliasManager()->findSourceByAlias($alias, $instance);
-        } catch (Alias\Exception\AliasNotFoundException $e) {
+            $source = $this->aliasManager->findSourceByAlias($alias, $instance);
+        } catch (AliasNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
-
             return false;
         }
 
-        $router = $this->getServiceLocator()->get('Router');
-
+        $router  = $this->getServiceLocator()->get('Router');
         $request = new Request();
         $request->setMethod(Request::METHOD_GET);
         $request->setUri($source);
-
         $routeMatch = $router->match($request);
 
         if ($routeMatch === null) {
-            throw new Alias\Exception\RuntimeException(sprintf(
-                'Could not match a route for `%s`',
-                $source
-            ));
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
 
-        $params = $routeMatch->getParams();
-
+        $this->getEvent()->setRouteMatch($routeMatch);
+        $params     = $routeMatch->getParams();
         $controller = $params['controller'];
-
-        $return = $this->forward()->dispatch(
+        $return     = $this->forward()->dispatch(
             $controller,
             ArrayUtils::merge(
                 $params,

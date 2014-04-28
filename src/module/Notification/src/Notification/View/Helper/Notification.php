@@ -11,6 +11,7 @@
 namespace Notification\View\Helper;
 
 use Doctrine\Common\Collections\Collection;
+use Notification\Entity\NotificationInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class Notification extends AbstractHelper
@@ -53,11 +54,13 @@ class Notification extends AbstractHelper
         return implode(', ', $usernames);
     }
 
-    public function setTemplate($template)
+    public function getSeen(Collection $collection)
     {
-        $this->template = $template;
-
-        return $this;
+        return $collection->filter(
+            function (NotificationInterface $notification) {
+                return !$notification->getSeen();
+            }
+        );
     }
 
     public function render()
@@ -68,11 +71,18 @@ class Notification extends AbstractHelper
             $output .= $this->getView()->partial(
                 $this->template,
                 [
-                    'notifications' => $this->getNotificationManager()->findNotificationsBySubsriber($user)
+                    'notifications' => $this->getNotificationManager()->findNotificationsBySubscriber($user)
                 ]
             );
         }
 
         return $output;
+    }
+
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+
+        return $this;
     }
 }

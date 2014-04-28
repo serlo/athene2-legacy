@@ -10,27 +10,38 @@
  */
 namespace Mailman;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 class Mailman implements MailmanInterface
 {
-    use\Common\Traits\ConfigAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    /**
+     * @var Options\ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     * @var \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+
+    protected $adapters = [];
+
+    /**
+     * @param Options\ModuleOptions   $moduleOptions
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function __construct(Options\ModuleOptions $moduleOptions, ServiceLocatorInterface $serviceLocator){
+        $this->moduleOptions = $moduleOptions;
+        $this->serviceLocator = $serviceLocator;
+    }
 
     /**
      * @return string $defaultSender
      */
     public function getDefaultSender()
     {
-        return $this->getOption('default_sender');
+        return $this->moduleOptions->getSender();
     }
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'adapters'       => [],
-            'default_sender' => 'no-reply@serlo.org'
-        ];
-    }
-
-    protected $adapters = [];
 
     public function send($to, $from, $subject, $body)
     {
@@ -53,9 +64,9 @@ class Mailman implements MailmanInterface
 
     protected function loadAdapters()
     {
-        foreach ($this->getOption('adapters') as $adapter) {
+        foreach ($this->moduleOptions->getAdapters() as $adapter) {
             if (!array_key_exists($adapter, $this->adapters)) {
-                $this->adapters[$adapter] = $this->getServiceLocator()->get($adapter);
+                $this->adapters[$adapter] = $this->serviceLocator->get($adapter);
                 if (!$this->adapters[$adapter] instanceof Adapter\AdapterInterface) {
                     throw new Exception\RuntimeException(sprintf(
                         '%s does not implement AdapterInterface',

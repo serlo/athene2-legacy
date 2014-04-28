@@ -18,6 +18,7 @@ use User\Manager\UserManagerAwareTrait;
 use Versioning\Exception\RevisionNotFoundException;
 use Versioning\RepositoryManagerAwareTrait;
 use Zend\Form\Form;
+use Zend\Mvc\Exception;
 use Zend\View\Model\ViewModel;
 
 class RepositoryController extends AbstractController
@@ -55,10 +56,8 @@ class RepositoryController extends AbstractController
                     'Your revision has been saved, it will be available once it get\'s approved'
                 );
 
-                return $this->redirect()->toUrl($this->referer()->fromStorage());
+                return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
             }
-        } else {
-            $this->referer()->store();
         }
 
         $this->layout('athene2-editor');
@@ -77,7 +76,8 @@ class RepositoryController extends AbstractController
 
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
-        $repository->checkoutRevision($revision->getId(), 'Approved');
+        $reason     = $this->params()->fromPost('reason', '');
+        $repository->checkoutRevision($revision->getId(), $reason);
         $this->getEntityManager()->flush();
         return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
@@ -85,12 +85,19 @@ class RepositoryController extends AbstractController
     public function compareAction()
     {
         $entity = $this->getEntity();
+
         if (!$entity) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
+
+        if (!$revision) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
 
         $view = new ViewModel([
             'currentRevision' => $currentRevision,
@@ -125,8 +132,8 @@ class RepositoryController extends AbstractController
         }
         $this->assertGranted('entity.revision.trash', $entity);
         $repository = $this->getRepositoryManager()->getRepository($entity);
-
-        $repository->rejectRevision($this->params('revision'), 'Rejected');
+        $reason     = $this->params()->fromPost('reason', '');
+        $repository->rejectRevision($this->params('revision'), $reason);
         $this->getEntityManager()->flush();
         return $this->redirect()->toReferer();
     }

@@ -23,14 +23,9 @@ class PostStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getObject()->getTitle();
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getTimestamp();
+        return $object instanceof PostInterface;
     }
 
     protected function getContent()
@@ -38,14 +33,14 @@ class PostStrategy extends AbstractStrategy
         return $this->getObject()->getContent();
     }
 
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getPreview()
     {
         return $this->getObject()->getContent();
-    }
-
-    protected function getType()
-    {
-        return 'blogPost';
     }
 
     protected function getRouteName()
@@ -60,8 +55,18 @@ class PostStrategy extends AbstractStrategy
         ];
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof PostInterface;
+        return $this->getObject()->getTimestamp();
+    }
+
+    protected function getTitle()
+    {
+        return $this->getObject()->getTitle();
+    }
+
+    protected function getType()
+    {
+        return 'blogPost';
     }
 }

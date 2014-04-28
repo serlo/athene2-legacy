@@ -25,14 +25,9 @@ class PageRevisionStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getObject()->getTitle();
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getDate();
+        return $object instanceof PageRevisionInterface;
     }
 
     protected function getContent()
@@ -40,14 +35,14 @@ class PageRevisionStrategy extends AbstractStrategy
         return $this->getObject()->getContent();
     }
 
+    protected function getId()
+    {
+        return $this->getObject()->getId();
+    }
+
     protected function getPreview()
     {
         return $this->getObject()->getContent();
-    }
-
-    protected function getType()
-    {
-        return 'Page revision';
     }
 
     protected function getRouteName()
@@ -62,8 +57,18 @@ class PageRevisionStrategy extends AbstractStrategy
         ];
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof PageRevisionInterface;
+        return $this->getObject()->getDate();
+    }
+
+    protected function getTitle()
+    {
+        return $this->getObject()->getTitle();
+    }
+
+    protected function getType()
+    {
+        return 'Page revision';
     }
 }
