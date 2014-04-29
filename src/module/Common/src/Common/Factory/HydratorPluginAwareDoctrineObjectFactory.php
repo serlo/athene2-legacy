@@ -32,4 +32,3 @@ class HydratorPluginAwareDoctrineObjectFactory implements FactoryInterface
         return $hydrator;
     }
 }
- 

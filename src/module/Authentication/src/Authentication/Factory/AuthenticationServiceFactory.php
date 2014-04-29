@@ -32,4 +32,3 @@ class AuthenticationServiceFactory implements FactoryInterface
     }
 
 }
- 

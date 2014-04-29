@@ -13,4 +13,3 @@ namespace Navigation\Exception;
 class InvalidArgumentException extends \InvalidArgumentException
 {
 }
- 

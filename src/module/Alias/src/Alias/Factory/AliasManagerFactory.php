@@ -35,4 +35,3 @@ class AliasManagerFactory implements FactoryInterface
         return $aliasManager;
     }
 }
- 

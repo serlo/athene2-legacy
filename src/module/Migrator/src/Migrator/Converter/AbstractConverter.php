@@ -24,4 +24,3 @@ abstract class AbstractConverter implements Converter
         $this->needsFlagging = false;
     }
 }
- 

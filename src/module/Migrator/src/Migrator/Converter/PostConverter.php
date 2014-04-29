@@ -124,4 +124,3 @@ class PostConverter extends AbstractConverter
         return $content;
     }
 }
- 

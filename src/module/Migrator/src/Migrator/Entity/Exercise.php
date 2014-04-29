@@ -132,4 +132,3 @@ class Exercise
         return $this->group;
     }
 }
- 

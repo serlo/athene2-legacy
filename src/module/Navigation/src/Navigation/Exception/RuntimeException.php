@@ -13,4 +13,3 @@ namespace Navigation\Exception;
 class RuntimeException extends \RuntimeException
 {
 }
- 

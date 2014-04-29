@@ -30,4 +30,3 @@ class GetController extends AbstractController
         return $view;
     }
 }
- 

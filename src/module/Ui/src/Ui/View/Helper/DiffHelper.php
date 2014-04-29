@@ -76,4 +76,3 @@ class DiffHelper extends AbstractHelper
         );
     }
 }
- 

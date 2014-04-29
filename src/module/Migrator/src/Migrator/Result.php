@@ -44,4 +44,3 @@ class Result
         return $this->map[$old];
     }
 }
- 

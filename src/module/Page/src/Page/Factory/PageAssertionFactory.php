@@ -31,4 +31,3 @@ class PageAssertionFactory implements FactoryInterface
         return $assertion;
     }
 }
- 

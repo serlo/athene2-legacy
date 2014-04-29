@@ -13,4 +13,3 @@ namespace Attachment\Exception;
 class NoFileSent extends RuntimeException
 {
 }
- 

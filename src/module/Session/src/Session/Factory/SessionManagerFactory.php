@@ -16,4 +16,3 @@ class SessionManagerFactory extends ZendSessionManagerFactory
 {
 
 }
- 

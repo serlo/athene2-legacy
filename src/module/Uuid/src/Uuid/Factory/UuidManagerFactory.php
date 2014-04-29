@@ -38,4 +38,3 @@ class UuidManagerFactory implements FactoryInterface
         return $uuidManager;
     }
 }
- 

@@ -34,4 +34,3 @@ class RequestInstanceAssertion extends InstanceAssertion
         return parent::assert($authorization, $instance);
     }
 }
- 

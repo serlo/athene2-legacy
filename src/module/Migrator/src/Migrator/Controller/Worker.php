@@ -56,4 +56,3 @@ class Worker extends AbstractActionController
         return '';
     }
 }
- 

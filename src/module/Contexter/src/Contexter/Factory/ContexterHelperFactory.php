@@ -22,4 +22,4 @@ class ContexterHelperFactory implements FactoryInterface
 
         return $plugin;
     }
-} 
+}

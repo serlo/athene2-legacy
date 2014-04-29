@@ -31,4 +31,3 @@ class MarkdownHelperFactory implements FactoryInterface
         return $plugin;
     }
 }
- 

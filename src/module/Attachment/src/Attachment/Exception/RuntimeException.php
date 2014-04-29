@@ -13,4 +13,3 @@ namespace Attachment\Exception;
 class RuntimeException extends \RuntimeException
 {
 }
- 

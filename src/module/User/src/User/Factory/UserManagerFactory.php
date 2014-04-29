@@ -41,4 +41,3 @@ class UserManagerFactory implements FactoryInterface
     }
 
 }
- 

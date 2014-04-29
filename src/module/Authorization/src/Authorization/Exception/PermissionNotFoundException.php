@@ -12,4 +12,4 @@ namespace Authorization\Exception;
 
 class PermissionNotFoundException extends RuntimeException
 {
-} 
+}

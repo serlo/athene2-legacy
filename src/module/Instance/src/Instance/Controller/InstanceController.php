@@ -35,7 +35,6 @@ class InstanceController extends AbstractActionController
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        return $this->redirect()->toReferer();
+        return $this->redirect()->toRoute('home');
     }
 }
- 

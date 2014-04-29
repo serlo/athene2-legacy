@@ -15,4 +15,4 @@ interface Worker
     public function migrate(array & $results, array & $workload);
 
     public function getWorkload();
-} 
+}

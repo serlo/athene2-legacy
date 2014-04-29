@@ -18,4 +18,3 @@ interface Converter
 
     public function clearFlag();
 }
- 

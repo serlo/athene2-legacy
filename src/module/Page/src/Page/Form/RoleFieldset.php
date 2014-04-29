@@ -36,4 +36,3 @@ class RoleFieldset extends Fieldset implements InputFilterProviderInterface
         );
     }
 }
- 

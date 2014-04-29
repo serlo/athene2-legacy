@@ -25,4 +25,3 @@ abstract class AbstractHydratorPlugin implements HydratorPluginInterface
         return [];
     }
 }
- 

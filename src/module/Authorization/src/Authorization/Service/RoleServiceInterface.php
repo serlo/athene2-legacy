@@ -68,4 +68,4 @@ interface RoleServiceInterface extends Flushable
      * @return void
      */
     public function removeRolePermission($role, $permission);
-} 
+}

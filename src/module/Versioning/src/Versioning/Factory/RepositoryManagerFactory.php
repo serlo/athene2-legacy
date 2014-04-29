@@ -33,4 +33,3 @@ class RepositoryManagerFactory implements FactoryInterface
     }
 
 }
- 

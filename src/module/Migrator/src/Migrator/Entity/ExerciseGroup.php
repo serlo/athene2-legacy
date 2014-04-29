@@ -69,4 +69,3 @@ class ExerciseGroup
         return $this->id;
     }
 }
- 

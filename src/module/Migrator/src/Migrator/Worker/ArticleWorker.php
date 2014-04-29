@@ -148,4 +148,3 @@ class ArticleWorker implements Worker
         return $this->workload;
     }
 }
- 

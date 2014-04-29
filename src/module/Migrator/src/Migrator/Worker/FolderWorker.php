@@ -127,4 +127,3 @@ class FolderWorker implements Worker
         return [];
     }
 }
- 
