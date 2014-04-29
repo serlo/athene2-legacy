@@ -1,12 +1,12 @@
 <?php
 /**
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author         Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author        Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @license        LGPL-3.0
  * @license        http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link           https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright      Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace Subject\Options;
 
@@ -17,11 +17,13 @@ class ModuleOptions extends AbstractOptions
 {
 
     /**
+     *
      * @var array
      */
     protected $instances = [];
 
     /**
+
      * @param string $name
      * @param string $instance
      * @throws Exception\RuntimeException
@@ -29,7 +31,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function getInstance($name, $instance)
     {
-        $name     = strtolower($name);
+        $name = strtolower($name);
         $instance = strtolower($instance);
 
         if (!array_key_exists($instance, $this->instances)) {
@@ -45,6 +47,7 @@ class ModuleOptions extends AbstractOptions
     }
 
     /**
+     *
      * @param array $instances
      * @return self
      */
