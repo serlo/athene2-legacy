@@ -25,7 +25,7 @@ class LoggerFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $logger = new Logger();
-        $file = __DIR__ . '/../../../../../data/log' . date('Y-m-d') . '-error.log';
+        $file = __DIR__ . '/../../../../../logs/' . date('Y-m-d') . '-error.log';
         $writer = new Stream($file);
 
         $logger->addWriter($writer);

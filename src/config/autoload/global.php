@@ -11,12 +11,12 @@
  *      file.
  */
 return [
-    'zfctwig'            => [
+    'zfctwig'         => [
         'environment_options' => [
             'cache' => __DIR__ . '/../../data/twig'
         ],
     ],
-    'doctrine'           => [
+    'doctrine'        => [
         'entitymanager' => [
             'orm_default' => [
                 'connection'    => 'orm_default',
@@ -24,11 +24,20 @@ return [
             ]
         ]
     ],
-    'router'             => [
+    'router'          => [
         'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack'
     ],
-    'session'            => [
-        'config'              => [
+    'translator'      => [
+        'translation_file_patterns' => [
+            [
+                'type'     => 'gettext',
+                'base_dir' => __DIR__ . '/../../lang',
+                'pattern'  => '%s.mo',
+            ],
+        ],
+    ],
+    'session'         => [
+        'config'     => [
             'class'   => 'Zend\Session\Config\SessionConfig',
             'options' => [
                 'name'                => 'athene2',
@@ -38,13 +47,13 @@ return [
                 'cookie_secure'       => false
             ]
         ],
-        'storage'             => 'Zend\Session\Storage\SessionArrayStorage',
-        'validators'          => [
+        'storage'    => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => [
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent'
         ],
     ],
-    'service_manager'    => [
+    'service_manager' => [
         'factories' => [
             'doctrine.cache.apccache' => function ($sm) {
                     $cache = new \Doctrine\Common\Cache\ApcCache();
@@ -53,7 +62,7 @@ return [
                 },
         ]
     ],
-    'di'                 => [
+    'di'              => [
         'instance' => [
             'preferences' => [
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
@@ -61,12 +70,12 @@ return [
             ]
         ]
     ],
-    'sphinx'             => [
+    'sphinx'          => [
         'host' => '127.0.0.1',
         'port' => 9306
     ],
-    'zendDiCompiler'     => [],
-    'zfc_rbac'           => [
+    'zendDiCompiler'  => [],
+    'zfc_rbac'        => [
         'redirect_strategy' => [
             'redirect_to_route_connected'    => 'authorization/forbidden',
             'redirect_to_route_disconnected' => 'authentication/login',

@@ -9,7 +9,7 @@
  */
 namespace Log;
 
-use Zend\Log\Logger;
+use Zend\EventManager\Event;
 use Zend\Mvc\MvcEvent;
 
 class Module
@@ -46,9 +46,19 @@ class Module
     {
         $application    = $e->getApplication();
         $serviceLocator = $application->getServiceManager();
-        /* @var $logger Logger */
-        $logger = $serviceLocator->get('Zend\Log\Logger');
-        Logger::registerErrorHandler($logger);
-        Logger::registerExceptionHandler($logger);
+        $application->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            function (Event $e) use ($serviceLocator) {
+                $exception = $e->getParam('exception');
+                $serviceLocator->get('Zend\Log\Logger')->crit($exception);
+            }
+        );
+        $application->getEventManager()->attach(
+            MvcEvent::EVENT_RENDER_ERROR,
+            function (Event $e) use ($serviceLocator) {
+                $exception = $e->getParam('exception');
+                $serviceLocator->get('Zend\Log\Logger')->crit($exception);
+            }
+        );
     }
 }

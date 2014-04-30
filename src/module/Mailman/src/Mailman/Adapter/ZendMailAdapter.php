@@ -38,10 +38,11 @@ class ZendMailAdapter implements AdapterInterface
 
     public function addMail($to, $from, $subject, $body)
     {
-        $message           = new Message();
-        $bodyPart          = new MimeMessage();
-        $bodyMessage       = new MimePart($body);
-        $bodyMessage->type = 'text/html';
+        $message              = new Message();
+        $bodyPart             = new MimeMessage();
+        $bodyMessage          = new MimePart($body);
+        $bodyMessage->type    = 'text/html';
+        $bodyMessage->charset = 'UTF-8';
         $bodyPart->setParts([$bodyMessage]);
         $message->setFrom($from);
         $message->addTo($to);
