@@ -9,7 +9,7 @@
  */
 namespace Log;
 
-use Zend\EventManager\Event;
+use Zend\Log\Logger;
 use Zend\Mvc\MvcEvent;
 
 class Module
@@ -44,18 +44,11 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $application        = $e->getApplication();
-        $eventManager       = $application->getEventManager();
-        $serviceLocator     = $application->getServiceManager();
-        $sharedEventManager = $eventManager->getSharedManager();
-
-        $sharedEventManager->attach(
-            'Zend\Mvc\Application',
-            'dispatch.error',
-            function (Event $e) use ($serviceLocator) {
-                $exception = $e->getParam('exception');
-                $serviceLocator->get('Zend\Log\Logger')->crit($exception);
-            }
-        );
+        $application    = $e->getApplication();
+        $serviceLocator = $application->getServiceManager();
+        /* @var $logger Logger */
+        $logger = $serviceLocator->get('Zend\Log\Logger');
+        Logger::registerErrorHandler($logger);
+        Logger::registerExceptionHandler($logger);
     }
 }

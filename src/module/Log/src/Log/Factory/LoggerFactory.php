@@ -8,7 +8,7 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Log\src\Log\Factory;
+namespace Log\Factory;
 
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
@@ -25,13 +25,10 @@ class LoggerFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $logger = new Logger();
-        $file = __DIR__ . '../../../../data/log' . date('Y-m-d') . '-error.log';
+        $file = __DIR__ . '/../../../../../data/log' . date('Y-m-d') . '-error.log';
         $writer = new Stream($file);
 
         $logger->addWriter($writer);
-
-        Logger::registerErrorHandler($logger);
-        Logger::registerExceptionHandler($logger);
 
         return $logger;
     }

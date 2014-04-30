@@ -58,6 +58,7 @@ return [
         'Notification',
         'Ads',
         'Migrator',
+        'Log',
         'CacheInvalidator'
     ],
     // These are various options for the listeners attached to the ModuleManager
