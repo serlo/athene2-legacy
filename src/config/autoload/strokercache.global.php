@@ -13,7 +13,7 @@ return array(
     'strokercache' => array(
         'strategies' => array(
             'enabled' => array(
-                'Cache\Strategy\RouteStrategy' => array(
+                'StrokerCache\Strategy\RouteName' => array(
                     'routes' => array(
                         'taxonomy/term/get',
                         'alias'

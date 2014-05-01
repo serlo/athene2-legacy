@@ -9,6 +9,9 @@
  */
 namespace Cache;
 
+use StrokerCache\Event\CacheEvent;
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
     public function getConfig()
@@ -36,5 +39,22 @@ class Module
         }
 
         return $autoloader;
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $cacheService   = $serviceManager->get('strokercache_service');
+        $userManager = $serviceManager->get('User\Manager\UserManager');
+        $cacheService->getEventManager()->attach(
+            CacheEvent::EVENT_SHOULDCACHE,
+            function (CacheEvent $e) use ($userManager) {
+                if($userManager->getUserFromAuthenticator()){
+                    return false;
+                }
+                return true;
+            },
+            1000
+        );
     }
 }

@@ -12,13 +12,4 @@
 namespace Cache;
 
 return [
-    'strokercache' => array(
-        'strategies' => array(
-            'plugin_manager' => array(
-                'factories' => array(
-                    __NAMESPACE__ . '\Strategy\RouteStrategy' => __NAMESPACE__ . '\Factory\RouteStrategyFactory'
-                ),
-            ),
-        ),
-    ),
 ];
