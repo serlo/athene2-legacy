@@ -60,7 +60,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 // init injections
                 $('.injection').Injections();
                 // init edit controls
-                $('[data-toggle*="-controls"]').ToggleAction();
+                $('[data-toggle]').ToggleAction();
                 // init triggers
                 $('[data-trigger]').TriggerAction();
                 // forum select
