@@ -51,6 +51,7 @@ class License implements LicenseInterface
      * @ORM\Column(type="string")
      */
     protected $agreement;
+
     /**
      * @ORM\Column(type="string", name="icon_href")
      */
