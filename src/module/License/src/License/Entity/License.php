@@ -38,7 +38,7 @@ class License implements LicenseInterface
     protected $url;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", name="`default`")
      */
     protected $default;
 
