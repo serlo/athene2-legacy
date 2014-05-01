@@ -51,6 +51,7 @@ class LicenseHydrator implements HydratorInterface
         $object->setUrl($data['url']);
         $object->setIconHref($data['iconHref']);
         $object->setAgreement($data['agreement']);
+        $object->setDefault($data['default']);
 
         return $object;
     }

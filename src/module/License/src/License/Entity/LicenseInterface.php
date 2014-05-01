@@ -73,4 +73,14 @@ interface LicenseInterface extends InstanceAwareInterface
      * @return void
      */
     public function setAgreement($agreement);
+
+    /**
+     * @return boolean
+     */
+    public function isDefault();
+
+    /**
+     * @param boolean $default
+     */
+    public function setDefault($default);
 }
