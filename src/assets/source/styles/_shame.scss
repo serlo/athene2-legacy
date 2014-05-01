@@ -39,3 +39,13 @@ img.license-intext {
     }
   }
 }
+
+/* Geogebra Popups arent visible otherwise.. */
+.GeoGebraAppFrame,
+.GeoGebraFrame,
+.GeoGebraPopup,
+.DialogBox,
+.gwt-PopupPanel,
+.gwt-SuggestBoxPopup {
+    z-index: 120;
+}

@@ -29,7 +29,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
     };
 
     SearchResults.prototype.clear = function () {
-        this.activeFocus = 0;
+        this.activeFocus = -1;
         this.$el.empty();
     };
 
@@ -72,7 +72,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
                 xhr.abort('stop');
             }
 
-            if (undefined !== this.$links && this.$links.length) {
+            if (undefined !== this.$links && this.$links.length && this.activeFocus !== -1) {
                 Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
                 this.$input.blur();
             } else {
@@ -87,14 +87,14 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
     SearchResults.prototype.focusNext = function () {
         this.activeFocus += 1;
         if (this.activeFocus >= this.count) {
-            this.activeFocus = 0;
+            this.activeFocus = -1;
         }
         this.setActiveItem();
     };
 
     SearchResults.prototype.focusPrev = function () {
         this.activeFocus -= 1;
-        if (this.activeFocus < 0) {
+        if (this.activeFocus < -1) {
             this.activeFocus = this.count - 1;
         }
         this.setActiveItem();
@@ -102,8 +102,12 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
 
     SearchResults.prototype.setActiveItem = function () {
         this.$el.find('.active').removeClass('active');
-        var $next = this.$links.eq(this.activeFocus);
-        $next.addClass('active');
+        if (this.activeFocus !== -1) {
+            var $next = this.$links.eq(this.activeFocus);
+            if ($next.length) {
+                $next.addClass('active');
+            }
+        }
     };
 
     SearchResults.prototype.noResults = function (string) {
