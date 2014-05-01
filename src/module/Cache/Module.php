@@ -50,7 +50,7 @@ class Module
             CacheEvent::EVENT_SHOULDCACHE,
             function (CacheEvent $e) use ($userManager) {
                 if($userManager->getUserFromAuthenticator()){
-                    $e->stopPropagation();
+                    $e->stopPropagation(true);
                     return false;
                 }
                 return true;
