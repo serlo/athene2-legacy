@@ -45,11 +45,33 @@ class Module
     {
         $serviceManager = $e->getApplication()->getServiceManager();
         $cacheService   = $serviceManager->get('strokercache_service');
-        $userManager = $serviceManager->get('User\Manager\UserManager');
+        $userManager    = $serviceManager->get('User\Manager\UserManager');
+        $cacheService->getEventManager()->attach(
+            CacheEvent::EVENT_LOAD,
+            function (CacheEvent $e) use ($userManager) {
+                if (is_object($userManager->getUserFromAuthenticator())) {
+                    $e->stopPropagation(true);
+                    return false;
+                }
+                return true;
+            },
+            1000
+        );
         $cacheService->getEventManager()->attach(
             CacheEvent::EVENT_SHOULDCACHE,
             function (CacheEvent $e) use ($userManager) {
-                if($userManager->getUserFromAuthenticator()){
+                if (is_object($userManager->getUserFromAuthenticator())) {
+                    $e->stopPropagation(true);
+                    return false;
+                }
+                return true;
+            },
+            1000
+        );
+        $cacheService->getEventManager()->attach(
+            CacheEvent::EVENT_SAVE,
+            function (CacheEvent $e) use ($userManager) {
+                if (is_object($userManager->getUserFromAuthenticator())) {
                     $e->stopPropagation(true);
                     return false;
                 }
