@@ -1,4 +1,4 @@
-{% if isChild == false %}
+{% if isChild == false and isGranted('taxonomy.term.create', term) %}
     <div class="pull-right btn-group">
         <div class="btn-group group-dropdown">
             <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">

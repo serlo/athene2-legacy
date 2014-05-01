@@ -1,4 +1,5 @@
 <div class="pull-right btn-group">
+    {% if(isGranted('taxonomy.term.create', term)) %}
     <div class="btn-group group-dropdown">
         <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">
             <span class="glyphicon glyphicon-plus"></span> <span class="caret"></span> </a>
@@ -12,18 +13,25 @@
             {% endfor %}
         </ul>
     </div>
+    {% endif %}
 
-    <a href="{{ url('taxonomy/term/update', {'term':term.getId()}) }}" class="btn btn-default btn-xs">
-        <span class="glyphicon glyphicon-pencil"></span> </a>
+    {% if(isGranted('taxonomy.term.update', term)) %}
+        <a href="{{ url('taxonomy/term/update', {'term':term.getId()}) }}" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-pencil"></span> </a>
+    {% endif %}
 
     <a class="btn btn-default btn-xs" href="{{ url('event/history', {'id':term.getId()}) }}">
         <span class="glyphicon glyphicon-hdd"></span></a>
 
     {% if term.isTrashed() %}
-        <a href="{{ url('uuid/restore', {'id':term.getId()}) }}" class="btn btn-warning btn-xs">
-            <span class="glyphicon glyphicon-refresh"></span> </a>
+        {% if(isGranted('taxonomy.term.restore', term)) %}
+            <a href="{{ url('uuid/restore', {'id':term.getId()}) }}" class="btn btn-warning btn-xs">
+                <span class="glyphicon glyphicon-refresh"></span> </a>
+        {% endif %}
     {% else %}
-        <a href="{{ url('uuid/trash', {'id':term.getId()}) }}"
-           class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a>
+        {% if(isGranted('taxonomy.term.trash', term)) %}
+            <a href="{{ url('uuid/trash', {'id':term.getId()}) }}"
+               class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a>
+        {% endif %}
     {% endif %}
 </div>
