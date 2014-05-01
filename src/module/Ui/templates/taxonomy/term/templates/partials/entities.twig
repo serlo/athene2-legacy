@@ -6,7 +6,7 @@
         {% set type = cycle(['article', 'video', 'course'], i) %}
         {% if types.get(type) %}
             <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <h4>
                     <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Courses'], i)) }}
                 </h4>
@@ -19,7 +19,7 @@
                     <div class="row">
                 {% endif %}
                 {% set index = index + 1 %}
-                <div class="col-sm-4">
+                <div class="col-xs-4">
                     <p>
                         {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
                     </p>

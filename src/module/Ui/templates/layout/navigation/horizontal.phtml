@@ -38,7 +38,7 @@ foreach ($this->container as $page) {
         if ($page->get('icon')) {
             $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
         }
-        $html[] = $page->getLabel();
+        $html[] = $this->translate($page->getLabel());
 
         if ($dropdown) {
             $html[] = '<b class="caret"></b>';
@@ -52,7 +52,7 @@ foreach ($this->container as $page) {
         if ($page->get('icon')) {
             $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
         }
-        $html[] = $page->getLabel();
+        $html[] = $this->translate($page->getLabel());
         $html[] = '</a>';
     }
 
