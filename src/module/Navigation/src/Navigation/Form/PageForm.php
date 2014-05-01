@@ -73,6 +73,16 @@ class PageForm extends Form
 
         $filter->add(
             [
+                'name'     => 'parent',
+                'required' => false,
+                'filters'  => [
+                    ['name' => 'Int'],
+                ],
+            ]
+        );
+
+        $filter->add(
+            [
                 'name'     => 'position',
                 'required' => false,
                 'filters'  => [
