@@ -32,6 +32,10 @@ class LicenseForm extends Form
         $this->add((new Text('title'))->setLabel('Title:')->setAttribute('id', 'title'));
         $this->add((new Textarea('content'))->setLabel('Content:')->setAttribute('id', 'content'));
         $this->add((new Url('url'))->setLabel('License url:')->setAttribute('id', 'url'));
+        $this->add((new Textarea('agreement'))->setLabel('Agreement:')->setAttribute('id', 'agreement')->setAttribute(
+            'class',
+            'plain'
+        ));
         $this->add((new Url('iconHref'))->setLabel('Icon url:')->setAttribute('id', 'iconHref'));
         $this->add((new Checkbox('default'))->setLabel('This is the default license for this instance.')->setAttribute('id', 'default'));
 

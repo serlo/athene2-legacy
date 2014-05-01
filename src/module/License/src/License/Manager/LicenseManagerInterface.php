@@ -64,4 +64,9 @@ interface LicenseManagerInterface extends Flushable
      * @return void
      */
     public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = null);
+
+    /**
+     * @return LicenseInterface
+     */
+    public function getDefaultLicense();
 }

@@ -42,16 +42,35 @@ class License implements LicenseInterface
      */
     protected $default;
 
-
     /**
      * @ORM\Column(type="string")
      */
     protected $content;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $agreement;
+    /**
      * @ORM\Column(type="string", name="icon_href")
      */
     protected $iconHref;
+
+    /**
+     * @return string
+     */
+    public function getAgreement()
+    {
+        return $this->agreement;
+    }
+
+    /**
+     * @param string $agreement
+     */
+    public function setAgreement($agreement)
+    {
+        $this->agreement = $agreement;
+    }
 
     /**
      * @return string $iconHref
@@ -131,8 +150,6 @@ class License implements LicenseInterface
     public function setContent($content)
     {
         $this->content = $content;
-
-
     }
 
     /**

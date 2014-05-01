@@ -162,7 +162,7 @@ class LicenseManager implements LicenseManagerInterface
         return $licenses;
     }
 
-    protected function getDefaultLicense()
+    public function getDefaultLicense()
     {
         $instance  = $this->getInstanceManager()->getInstanceFromRequest();
         $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');

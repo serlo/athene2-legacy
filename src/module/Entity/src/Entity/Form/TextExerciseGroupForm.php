@@ -10,6 +10,8 @@
  */
 namespace Entity\Form;
 
+use License\Entity\LicenseInterface;
+use License\Form\AgreementFieldset;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
@@ -17,7 +19,7 @@ use Zend\InputFilter\InputFilter;
 class TextExerciseGroupForm extends Form
 {
 
-    function __construct()
+    function __construct(LicenseInterface $license)
     {
         parent::__construct('text-exercise-group');
         $this->setAttribute('method', 'post');
@@ -30,6 +32,7 @@ class TextExerciseGroupForm extends Form
                 'plain'
             )
         );
+        $this->add(new AgreementFieldset($license));
         $this->add(new Controls());
 
         $inputFilter = new InputFilter('text-exercise-group');
