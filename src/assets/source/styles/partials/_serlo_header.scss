@@ -1,9 +1,10 @@
 #subject-nav {
-    .dropdown {
+    .subject-dropdown {
+        position: relative;
         z-index: 2;
     }
 
-    .dropdown-toggle {
+    .subject-dropdown-toggle {
         display: inline-block;
         z-index: 12;
 
@@ -28,16 +29,26 @@
         }
     }
 
-    .open .dropdown-menu {
-        display: block;
+    .subject-dropdown-menu {
+        display: none;
 
+        position: absolute;
         top: 5px;
         left: 0px;
 
         padding: 75px 20px 20px;
         width: 360px;
+        
+        background: white;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        border: 1px solid #CCC;
+        border: 1px solid rgba(0, 0, 0, 0.15);
 
         z-index: -1;
+    }
+
+    .open .subject-dropdown-menu {
+        display: block;
     }
 
     .caret {
