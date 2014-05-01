@@ -27,15 +27,6 @@ return [
     'router'          => [
         'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack'
     ],
-    'translator'      => [
-        'translation_file_patterns' => [
-            [
-                'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../../lang',
-                'pattern'  => '%s.mo',
-            ],
-        ],
-    ],
     'session'         => [
         'config'     => [
             'class'   => 'Zend\Session\Config\SessionConfig',
