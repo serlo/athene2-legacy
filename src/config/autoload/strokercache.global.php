@@ -15,8 +15,10 @@ return array(
             'enabled' => array(
                 'StrokerCache\Strategy\RouteName' => array(
                     'routes' => array(
-                        //'taxonomy/term/get',
-                        //'alias'
+                        'taxonomy/term/get',
+                        'alias',
+                        'entity/page',
+                        'page/view'
                     ),
                 ),
             ),

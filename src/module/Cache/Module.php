@@ -53,7 +53,6 @@ class Module
                     $e->stopPropagation(true);
                     return false;
                 }
-                return true;
             },
             1000
         );
@@ -64,7 +63,6 @@ class Module
                     $e->stopPropagation(true);
                     return false;
                 }
-                return true;
             },
             1000
         );
@@ -75,7 +73,6 @@ class Module
                     $e->stopPropagation(true);
                     return false;
                 }
-                return true;
             },
             1000
         );
