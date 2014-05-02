@@ -71,7 +71,8 @@ class NavigationManager implements NavigationManagerInterface
         'default',
         'footer',
         'top-center',
-        'top-left'
+        'top-left',
+        'front-page'
     ];
 
     public function __construct(
