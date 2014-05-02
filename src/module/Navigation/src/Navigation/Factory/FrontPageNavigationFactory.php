@@ -13,6 +13,6 @@ class FrontPageNavigationFactory extends ProvideableNavigationFactory
 {
     protected function getName()
     {
-        return 'frontpage';
+        return 'front-page';
     }
 }
