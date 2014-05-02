@@ -19,12 +19,18 @@ echo $this->doctype();
 
 <body class="serlo-home">
     <div class="wrap">
-        <?php echo $this->partial('layout/partials/header'); ?>
+        <header id="header">
+            <?php echo $this->partial('layout/partials/top-bar'); ?>
+        </header>
         <div id="page" class="container">
             <section id="main-home">
                 <div id="main-container">
                     <div id="content">
                         <div id="content-container">
+                            <h1><?php echo $this->brand()->getBrand(); ?></h1>
+                            <div class="description">
+                                <?php echo $this->brand()->getSlogan(); ?>
+                            </div>
                             <?php echo $this->partial('layout/partials/search'); ?>
                             <?php echo $this->partial('layout/partials/main'); ?>
                         </div>

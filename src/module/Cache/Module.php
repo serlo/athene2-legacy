@@ -9,6 +9,7 @@
  */
 namespace Cache;
 
+use StrokerCache\Event\CacheEvent;
 use StrokerCache\Listener\CacheListener;
 use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\MvcEvent;
@@ -54,8 +55,16 @@ class Module
         /* @var $authService AuthenticationService */
         $authService = $serviceManager->get('Zend\Authentication\AuthenticationService');
 
-        if ($authService->hasIdentity()) {
-            $application->getEventManager()->detach($listener);
-        }
+        $cacheService = $serviceManager->get('strokercache_service');
+        $cacheService->getEventManager()->attach(
+            CacheEvent::EVENT_LOAD,
+            function (CacheEvent $e) use ($authService) {
+                if ($authService->hasIdentity()) {
+                    $e->stopPropagation(true);
+                    return false;
+                }
+            },
+            1000
+        );
     }
 }

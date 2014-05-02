@@ -44,6 +44,7 @@ return [
     'di'           => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\SignpostController',
+            __NAMESPACE__ . '\Controller\SitemapController'
         ],
         'definition'          => [
             'class' => [
@@ -88,6 +89,16 @@ return [
                     ]
                 ]
             ],
+            'sitemap'    => [
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => [
+                    'route'    => '/sitemap.xml',
+                    'defaults' => [
+                        'controller' => __NAMESPACE__ . '\Controller\SitemapController',
+                        'action'     => 'index'
+                    ],
+                ],
+            ],
             'uuid'       => [
                 'child_routes' => [
                     'get' => [
@@ -103,7 +114,7 @@ return [
                                 'uuid' => '[0-9]+'
                             ],
                         ]
-                    ]
+                    ],
                 ]
             ]
         ]
