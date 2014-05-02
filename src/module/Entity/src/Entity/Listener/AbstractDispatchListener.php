@@ -57,7 +57,7 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
             $navigationFactory = $controller->getServiceLocator()->get(
                 'Navigation\Factory\DefaultNavigationFactory'
             );
-            $params            = ['id' => $subject->getId()];
+            $params            = ['term' => $subject->getId()];
             $routeMatch        = new RouteMatch($params);
 
             $routeMatch->setMatchedRouteName('taxonomy/term/get');
