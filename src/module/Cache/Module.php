@@ -56,25 +56,5 @@ class Module
             },
             1000
         );
-        $cacheService->getEventManager()->attach(
-            CacheEvent::EVENT_SHOULDCACHE,
-            function (CacheEvent $e) use ($userManager) {
-                if (is_object($userManager->getUserFromAuthenticator())) {
-                    $e->stopPropagation(true);
-                    return false;
-                }
-            },
-            1000
-        );
-        $cacheService->getEventManager()->attach(
-            CacheEvent::EVENT_SAVE,
-            function (CacheEvent $e) use ($userManager) {
-                if (is_object($userManager->getUserFromAuthenticator())) {
-                    $e->stopPropagation(true);
-                    return false;
-                }
-            },
-            1000
-        );
     }
 }

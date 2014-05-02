@@ -104,16 +104,16 @@ return [
                             ]
                         ]
                     ],
-                    'home'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route'    => '',
-                            'defaults' => [
-                                'controller' => __NAMESPACE__ . '\Controller\HomeController',
-                                'action'     => 'index',
-                            ]
-                        ]
-                    ]
+                    //'home'   => [
+                    //    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    //    'options' => [
+                    //        'route'    => '',
+                    //        'defaults' => [
+                    //            'controller' => __NAMESPACE__ . '\Controller\HomeController',
+                    //            'action'     => 'index',
+                    //        ]
+                    //    ]
+                    //]
                 ]
             ]
         ],
