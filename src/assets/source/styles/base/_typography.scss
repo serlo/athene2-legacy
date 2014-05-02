@@ -2,6 +2,10 @@ h1, h2, h3, h4, h5, h6 {
     font-family: $themeFont;
 }
 
+.brand {
+  font-face: 'serlo';
+}
+
 @font-face {
   font-family: 'serlo';
   src: url('../fonts/serlo.eot?61257385');

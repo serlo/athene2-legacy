@@ -25,6 +25,7 @@
           display: block;
           &:hover, &:active, &:focus {
             background-color: darken($themeColor, 10%);
+            text-decoration: none;
           }
         }
 
