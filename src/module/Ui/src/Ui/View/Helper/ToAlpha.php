@@ -16,7 +16,6 @@ class ToAlpha extends AbstractHelper
 {
     /**
      * Converts a number to alphanumeric
-     *
      * 0 -> a
      * 1 -> b
      * 2 -> c

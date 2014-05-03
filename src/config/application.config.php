@@ -17,6 +17,7 @@ return [
         'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
+        'StrokerCache',
         'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
@@ -58,7 +59,9 @@ return [
         'Notification',
         'Ads',
         'Migrator',
-        'CacheInvalidator'
+        'Log',
+        'CacheInvalidator',
+        'Cache'
     ],
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => [

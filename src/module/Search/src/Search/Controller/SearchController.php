@@ -1,13 +1,11 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace Search\Controller;
 
@@ -23,10 +21,10 @@ class SearchController extends AbstractActionController
 
     public function searchAction()
     {
-        $form  = new SearchForm();
+        $form = new SearchForm();
 
         $view = new ViewModel([
-            'form' => $form,
+            'form'  => $form,
             'query' => ''
         ]);
 
@@ -34,15 +32,19 @@ class SearchController extends AbstractActionController
         $this->layout('layout/1-col');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()
-                ->getPost());
+            $form->setData(
+                $this->getRequest()->getPost()
+            );
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $container = $this->getSearchService()->search($data['q'], [
-                    'entity',
-                    'taxonomyTerm'
-                ]);
+                $container = $this->getSearchService()->search(
+                    $data['q'],
+                    [
+                        'entity',
+                        'taxonomyTerm'
+                    ]
+                );
 
                 $view->setVariable('container', $container);
                 $view->setVariable('query', $data['q']);
@@ -57,15 +59,19 @@ class SearchController extends AbstractActionController
     {
         $form = new SearchForm();
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()
-                ->getPost());
+            $form->setData(
+                $this->getRequest()->getPost()
+            );
             if ($form->isValid()) {
                 $data = $form->getData();
-                
-                $results = $this->getSearchService()->search($data['q'], [
-                    'entity',
-                    'taxonomyTerm'
-                ]);
+
+                $results = $this->getSearchService()->search(
+                    $data['q'],
+                    [
+                        'entity',
+                        'taxonomyTerm'
+                    ]
+                );
 
                 $results = $this->getSearchService()->ajaxify($results);
 

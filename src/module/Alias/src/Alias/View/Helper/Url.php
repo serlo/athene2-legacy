@@ -39,7 +39,7 @@ class Url extends ZendUrl
     {
         $link = parent::__invoke($name, $params, $options, $reuseMatchedParams);
 
-        if(!$useAlias){
+        if (!$useAlias) {
             return $link;
         }
 

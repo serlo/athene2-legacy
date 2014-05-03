@@ -1,13 +1,11 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace User\Form;
 
@@ -28,22 +26,27 @@ class Login extends Form
         $this->setAttribute('class', 'clearfix');
         $filter = new InputFilter();
         $this->setInputFilter($filter);
-        
+
         $this->add((new Text('email'))->setLabel('Email address:'));
         $this->add((new Password('password'))->setLabel('Password:'));
         $this->add((new Checkbox('remember'))->setLabel('Remember me')->setChecked(true));
-        
-        $this->add((new Submit('submit'))->setValue('Login')
-            ->setAttribute('class', 'btn btn-success pull-right'));
-        
-        $filter->add([
-            'name' => 'email',
-            'required' => true
-        ]);
-        
-        $filter->add([
-            'name' => 'password',
-            'required' => true
-        ]);
+
+        $this->add(
+            (new Submit('submit'))->setValue('Login')->setAttribute('class', 'btn btn-success pull-right')
+        );
+
+        $filter->add(
+            [
+                'name'     => 'email',
+                'required' => true
+            ]
+        );
+
+        $filter->add(
+            [
+                'name'     => 'password',
+                'required' => true
+            ]
+        );
     }
 }

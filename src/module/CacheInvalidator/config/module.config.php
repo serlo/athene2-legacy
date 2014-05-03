@@ -20,32 +20,40 @@ return [
     ],
     'cache_invalidator' => [
         'listens' => [
-            'Taxonomy\Manager\TaxonomyManager' => [
+            'Taxonomy\Manager\TaxonomyManager'     => [
                 'create' => [
-                    'Navigation\Storage\Storage'
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
                 'update' => [
-                    'Navigation\Storage\Storage'
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ]
             ],
             'Navigation\Manager\NavigationManager' => [
-                'page.create' => [
-                    'Navigation\Storage\Storage'
+                'page.create'      => [
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
-                'page.update' => [
-                    'Navigation\Storage\Storage'
+                'page.update'      => [
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
-                'page.remove' => [
-                    'Navigation\Storage\Storage'
+                'page.remove'      => [
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
                 'parameter.create' => [
-                    'Navigation\Storage\Storage'
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
                 'parameter.update' => [
-                    'Navigation\Storage\Storage'
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
                 'parameter.remove' => [
-                    'Navigation\Storage\Storage'
+                    'Navigation\Storage\Storage',
+                    'StrokerCache\Storage\CacheStorage'
                 ],
             ]
         ]

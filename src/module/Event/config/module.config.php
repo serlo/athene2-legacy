@@ -13,7 +13,7 @@ namespace Event;
 return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            'event.log.get'    => 'Authorization\Assertion\InstanceAssertion',
+            'event.log.get' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'event_manager'   => [],

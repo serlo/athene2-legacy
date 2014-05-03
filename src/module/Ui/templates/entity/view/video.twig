@@ -10,7 +10,7 @@
     <hr>
     {% include 'entity/view/partials/license' %}
 	<hr>
-	<section>
+    <section class="hidden" id="discussion-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
     </section>
 </article>

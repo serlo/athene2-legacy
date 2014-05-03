@@ -10,6 +10,8 @@
  */
 namespace Entity\Form;
 
+use License\Entity\LicenseInterface;
+use License\Form\AgreementFieldset;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
@@ -17,7 +19,7 @@ use Zend\InputFilter\InputFilter;
 class TextSolutionForm extends Form
 {
 
-    function __construct()
+    function __construct(LicenseInterface $license)
     {
         parent::__construct('text-solution');
         $this->setAttribute('method', 'post');
@@ -31,6 +33,7 @@ class TextSolutionForm extends Form
                 'plain'
             )
         );
+        $this->add(new AgreementFieldset($license));
         $this->add(new Controls());
 
         $inputFilter = new InputFilter('text-solution');

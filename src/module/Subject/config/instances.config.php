@@ -12,12 +12,12 @@ return [
     'subject' => [
         'instances' => [
             'deutsch' => [
-                'mathe' => [
+                'mathe'       => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
                     ],
-                    'allowed_entities' => [
+                    'allowed_entities'   => [
                         'article',
                         'text-exercise',
                         'video',
@@ -25,11 +25,11 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'chemie' => [
+                'chemie'      => [
                     'allowed_taxonomies' => [
                         'topic'
                     ],
-                    'allowed_entities' => [
+                    'allowed_entities'   => [
                         'article',
                         'text-exercise',
                         'video',
@@ -40,18 +40,18 @@ return [
                     'allowed_taxonomies' => [
                         'topic'
                     ],
-                    'allowed_entities' => [
+                    'allowed_entities'   => [
                         'article',
                         'video',
                         'course',
                     ]
                 ],
-                'physik' => [
+                'physik'      => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
                     ],
-                    'allowed_entities' => [
+                    'allowed_entities'   => [
                         'article',
                         'text-exercise',
                         'video',
@@ -59,12 +59,12 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'biologie' => [
+                'biologie'    => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
                     ],
-                    'allowed_entities' => [
+                    'allowed_entities'   => [
                         'article',
                         'text-exercise',
                         'video',
@@ -79,7 +79,7 @@ return [
                         'topic',
                         'locale'
                     ],
-                    'allowed_entities' => [
+                    'allowed_entities'   => [
                         'article',
                         'text-exercise',
                         'video',

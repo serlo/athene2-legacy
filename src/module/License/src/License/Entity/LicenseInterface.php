@@ -41,25 +41,46 @@ interface LicenseInterface extends InstanceAwareInterface
 
     /**
      * @param string $content
-     * @return self
+     * @return void
      */
     public function setContent($content);
 
     /**
      * @param string $iconHref
-     * @return self
+     * @return void
      */
     public function setIconHref($iconHref);
 
     /**
      * @param string $title
-     * @return self
+     * @return void
      */
     public function setTitle($title);
 
     /**
      * @param string $url
-     * @return self
+     * @return void
      */
     public function setUrl($url);
+
+    /**
+     * @return string
+     */
+    public function getAgreement();
+
+    /**
+     * @param string $agreement
+     * @return void
+     */
+    public function setAgreement($agreement);
+
+    /**
+     * @return boolean
+     */
+    public function isDefault();
+
+    /**
+     * @param boolean $default
+     */
+    public function setDefault($default);
 }

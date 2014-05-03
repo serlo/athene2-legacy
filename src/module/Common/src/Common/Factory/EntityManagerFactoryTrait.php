@@ -24,4 +24,3 @@ trait EntityManagerFactoryTrait
         return $serviceLocator->get('Doctrine\ORM\EntityManager');
     }
 }
- 

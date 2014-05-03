@@ -46,9 +46,7 @@ class RepositoryController extends AbstractController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $data     = $form->getData();
-                $instance = $this->getInstanceManager()->getInstanceFromRequest();
-
+                $data = $form->getData();
                 $this->getRepositoryManager()->getRepository($entity)->commitRevision($data);
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->addSuccessMessage(
@@ -152,6 +150,8 @@ class RepositoryController extends AbstractController
      */
     protected function getForm(EntityInterface $entity)
     {
+        // Todo: Unhack
+
         $type = $entity->getType()->getName();
         $form = $this->moduleOptions->getType($type)->getComponent('repository')->getForm();
         $form = $this->getServiceLocator()->get($form);
@@ -163,6 +163,10 @@ class RepositoryController extends AbstractController
             }
             $form->setData($data);
         }
+
+        $license   = $entity->getLicense();
+        $agreement = !empty($license->getAgreement()) ? $license->getAgreement() : $license->getTitle();
+        $form->get('license')->get('agreement')->setLabel($agreement);
 
         return $form;
     }

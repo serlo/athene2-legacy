@@ -18,7 +18,7 @@ class TableConverter extends AbstractConverter
     {
         $input = trim($input);
 
-        if(!$input){
+        if (!$input) {
             return '';
         }
 
@@ -31,7 +31,7 @@ class TableConverter extends AbstractConverter
 
         preg_match_all($pattern, $input, $tables, PREG_SET_ORDER);
 
-        if(!count($tables)){
+        if (!count($tables)) {
             $layout[][] = [
                 'col'     => $this->maxcols,
                 'content' => !$input ? ' ' : $input
@@ -64,7 +64,7 @@ class TableConverter extends AbstractConverter
 
             foreach ($tableRows as $tableRow) {
 
-                $columns = [];
+                $columns      = [];
                 $tableColumns = [];
 
                 // remove <tr>, </tr>
@@ -93,14 +93,14 @@ class TableConverter extends AbstractConverter
                     $this->needsFlagging = true;
                 }
 
-                if(!empty($columns)){
+                if (!empty($columns)) {
                     $layout[] = $columns;
                 }
 
-                if(strlen($fallback)){
+                if (strlen($fallback)) {
                     $layout[][] = [
                         'col'     => $this->maxcols,
-                        'content' => '<table>'.$fallback.'</table>'
+                        'content' => '<table>' . $fallback . '</table>'
                     ];
 
                     $fallback = '';
@@ -109,16 +109,16 @@ class TableConverter extends AbstractConverter
         }
 
         // process non-tables behind last </table>
-        $pos                   = strpos($input, $table[0]);
-        $garbage               = substr($input, $pos);
+        $pos        = strpos($input, $table[0]);
+        $garbage    = substr($input, $pos);
         $layout[][] = [
             'col'     => $this->maxcols,
             'content' => str_replace($table[0], '', $garbage)
         ];
 
         $content = json_encode($layout);
-        if(!$content){
-            throw new \Exception( json_last_error());
+        if (!$content) {
+            throw new \Exception(json_last_error());
         }
 
         return $content;

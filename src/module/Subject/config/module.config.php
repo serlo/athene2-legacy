@@ -104,21 +104,21 @@ return [
                             ]
                         ]
                     ],
-                    'home'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route'    => '',
-                            'defaults' => [
-                                'controller' => __NAMESPACE__ . '\Controller\HomeController',
-                                'action'     => 'index',
-                            ]
-                        ]
-                    ]
+                    //'home'   => [
+                    //    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    //    'options' => [
+                    //        'route'    => '',
+                    //        'defaults' => [
+                    //            'controller' => __NAMESPACE__ . '\Controller\HomeController',
+                    //            'action'     => 'index',
+                    //        ]
+                    //    ]
+                    //]
                 ]
             ]
         ],
     ],
-    'route_manager' =>[
+    'route_manager'   => [
         'invokables' => [
             'Subject' => __NAMESPACE__ . '\Route\SubjectRoute'
         ],

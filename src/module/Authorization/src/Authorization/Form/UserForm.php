@@ -37,4 +37,4 @@ class UserForm extends Form
 
         $this->setInputFilter($inputFilter);
     }
-} 
+}

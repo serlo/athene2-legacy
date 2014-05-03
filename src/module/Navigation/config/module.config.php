@@ -62,6 +62,7 @@ return [
             'top_center_navigation'                                 => __NAMESPACE__ . '\Factory\TopCenterNavigationFactory',
             'footer_navigation'                                     => __NAMESPACE__ . '\Factory\FooterNavigationFactory',
             'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory',
+            'frontpage_navigation'                                       => __NAMESPACE__ . '\Factory\FrontPageNavigationFactory',
             'navigation'                                            => function (ServiceLocatorInterface $sm) {
                     // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
                     return $sm->get(__NAMESPACE__ . '\Factory\DefaultNavigationFactory')->createService($sm);

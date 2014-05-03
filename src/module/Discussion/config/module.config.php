@@ -47,13 +47,13 @@ return [
     'taxonomy'        => [
         'types' => [
             'forum-category' => [
-                'allowed_parents'      => [
+                'allowed_parents' => [
                     'root',
                     'forum-category'
                 ],
-                'rootable'             => false
+                'rootable'        => false
             ],
-            'forum' => [
+            'forum'          => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
                 ],
@@ -73,11 +73,11 @@ return [
     'router'          => [
         'routes' => [
             'discussion' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'options'       => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
                     'route' => ''
                 ],
-                'child_routes'  => [
+                'child_routes' => [
                     'view'        => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
@@ -89,8 +89,8 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => [
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'options'       => [
                             'route'    => '/discussions',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionsController',
@@ -98,11 +98,11 @@ return [
                             ]
                         ],
                         'may_terminate' => true,
-                        'child_routes' => [
+                        'child_routes'  => [
                             'get' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route'    => '/:id'
+                                    'route' => '/:id'
                                 ]
                             ],
                         ]
@@ -124,9 +124,9 @@ return [
                                     ]
                                 ]
                             ],
-                            'select'        => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => [
+                            'select'  => [
+                                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                                'options'      => [
                                     'route'    => '/select',
                                     'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController'
@@ -138,7 +138,7 @@ return [
                                         'options' => [
                                             'route'    => '/forum/:on',
                                             'defaults' => [
-                                                'action'     => 'selectForum'
+                                                'action' => 'selectForum'
                                             ]
                                         ]
                                     ],

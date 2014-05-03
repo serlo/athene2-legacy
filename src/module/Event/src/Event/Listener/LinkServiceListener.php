@@ -22,7 +22,7 @@ class LinkServiceListener extends AbstractListener
 
         $params = [
             [
-                'name'   => 'parent',
+                'name'  => 'parent',
                 'value' => $e->getParam('parent')
             ]
         ];
@@ -38,7 +38,7 @@ class LinkServiceListener extends AbstractListener
 
         $params = [
             [
-                'name'   => 'parent',
+                'name'  => 'parent',
                 'value' => $e->getParam('parent')
             ]
         ];

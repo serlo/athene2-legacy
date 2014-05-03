@@ -44,14 +44,17 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $application        = $e->getApplication();
-        $eventManager       = $application->getEventManager();
-        $serviceLocator     = $application->getServiceManager();
-        $sharedEventManager = $eventManager->getSharedManager();
-
-        $sharedEventManager->attach(
-            'Zend\Mvc\Application',
-            'dispatch.error',
+        $application    = $e->getApplication();
+        $serviceLocator = $application->getServiceManager();
+        $application->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            function (Event $e) use ($serviceLocator) {
+                $exception = $e->getParam('exception');
+                $serviceLocator->get('Zend\Log\Logger')->crit($exception);
+            }
+        );
+        $application->getEventManager()->attach(
+            MvcEvent::EVENT_RENDER_ERROR,
             function (Event $e) use ($serviceLocator) {
                 $exception = $e->getParam('exception');
                 $serviceLocator->get('Zend\Log\Logger')->crit($exception);

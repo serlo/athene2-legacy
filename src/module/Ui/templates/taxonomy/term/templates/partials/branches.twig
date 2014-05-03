@@ -1,26 +1,29 @@
 {% set entities = term.getAssociated('entities') %}
-<div class="panel-group" id="accordion{{ term.getId() }}">
-    {% for child in term.findChildrenByTrashed(false) %}
-        {% if child.getType().getName() in ['topic-folder' , 'curriculum-topic-folder'] %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ term.getId() }}" href="#branch{{ child.getId() }}">
-                            {{ child.getName() }}
-                        </a>
-                    </h4>
-                </div>
-                <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
-                    <div class="list-group-item edit-control hidden">
-                        {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
+{% if term.findChildrenByTrashed(false).count() %}
+    <h4><span class="glyphicon glyphicon-folder-open"></span> {{ translate('Folders') }}</h4>
+    <hr>
+    <div class="panel-group" id="accordion{{ term.getId() }}">
+        {% for child in term.findChildrenByTrashed(false) %}
+            {% if child.getType().getName() in ['topic-folder' , 'curriculum-topic-folder'] %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ term.getId() }}" href="#branch{{ child.getId() }}">
+                                {{ child.getName() }}
+                            </a>
+                        </h4>
                     </div>
-                    {% if child.getDescription() %}
-                        <div class="list-group-item">
-                            <strong>
-                                {{ child.getDescription() }}
-                            </strong>
+                    <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
+                        <div class="list-group-item edit-control hidden">
+                            {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
                         </div>
-                    {% endif %}
+                        {% if child.getDescription() %}
+                            <div class="list-group-item">
+                                <strong>
+                                    {{ child.getDescription() }}
+                                </strong>
+                            </div>
+                        {% endif %}
                         {% for entity in child.getAssociated('entities') if not entity.getTrashed() %}
                             <div class="list-group-item">
                                 <div class="row">
@@ -33,8 +36,9 @@
                                 </div>
                             </div>
                         {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

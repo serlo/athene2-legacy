@@ -53,15 +53,6 @@ return [
             ]
         ]
     ],
-    'uuid'           => [
-        'permissions' => [
-            'Blog\Entity\Post' => [
-                'trash'   => 'blog.post.trash',
-                'restore' => 'blog.post.restore',
-                'purge'   => 'blog.post.purge'
-            ],
-        ]
-    ],
     'di'             => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\BlogController'

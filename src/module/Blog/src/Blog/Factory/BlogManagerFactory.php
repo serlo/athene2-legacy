@@ -23,10 +23,7 @@ class BlogManagerFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-
-
         $instance = new BlogManager();
     }
 
 }
- 

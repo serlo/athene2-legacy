@@ -23,4 +23,4 @@ trait NavigationManagerFactoryTrait
     {
         return $serviceLocator->get('Navigation\Manager\NavigationManager');
     }
-} 
+}

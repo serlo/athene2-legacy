@@ -16,7 +16,7 @@ class Result
 
     public function addResults(array $results)
     {
-        foreach($results as $old => $new){
+        foreach ($results as $old => $new) {
             $this->add($old, $new);
         }
     }
@@ -44,4 +44,3 @@ class Result
         return $this->map[$old];
     }
 }
- 

@@ -26,8 +26,8 @@ class RefererProvider extends AbstractPlugin
 
     public function store()
     {
-        if(!$this->container){
-            $this->container      = new Container('ref');
+        if (!$this->container) {
+            $this->container = new Container('ref');
         }
         $this->container->ref = $this->toUrl();
 

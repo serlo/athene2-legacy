@@ -13,4 +13,3 @@ namespace Notification\Exception;
 class RuntimeException extends \RuntimeException
 {
 }
- 

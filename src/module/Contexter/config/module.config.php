@@ -100,7 +100,7 @@ return [
             ]
         ]
     ],
-    'contexter' => [
+    'contexter'              => [
         'types' => [
             'help',
             'guideline'

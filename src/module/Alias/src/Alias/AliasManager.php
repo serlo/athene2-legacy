@@ -114,7 +114,7 @@ class AliasManager implements AliasManagerInterface
 
         $alias = $this->findUniqueAlias($alias, $aliasFallback, $object);
 
-        if($alias instanceof AliasInterface){
+        if ($alias instanceof AliasInterface) {
             // Found existing alias, no need to create new one
             return $alias;
         }

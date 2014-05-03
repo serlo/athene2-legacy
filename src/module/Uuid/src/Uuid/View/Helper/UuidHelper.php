@@ -32,7 +32,7 @@ class UuidHelper extends AbstractHelper
 
     public function getPermission(UuidInterface $object, $action)
     {
-        $class      = ClassUtils::getClass($object);
+        $class = ClassUtils::getClass($object);
         return $this->moduleOptions->getPermission($class, $action);
     }
 }

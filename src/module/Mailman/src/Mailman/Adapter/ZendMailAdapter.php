@@ -18,12 +18,25 @@ use Zend\Mime\Part as MimePart;
 
 class ZendMailAdapter implements AdapterInterface
 {
+    /**
+     * @var ZendMailAdapter
+     */
     private static $instance;
+
     /**
      * @var SmtpOptions
      */
     protected $smtpOptions;
-    protected $queue;
+
+    /**
+     * @var array
+     */
+    protected $queue = [];
+
+    /**
+     * @var Smtp
+     */
+    protected $transport;
 
     public function __construct(SmtpOptions $smtpOptions)
     {
@@ -34,14 +47,16 @@ class ZendMailAdapter implements AdapterInterface
         self::$instance    = $this;
         $this->smtpOptions = $smtpOptions;
         $this->queue       = [];
+        $this->transport   = new Smtp();
     }
 
     public function addMail($to, $from, $subject, $body)
     {
-        $message           = new Message();
-        $bodyPart          = new MimeMessage();
-        $bodyMessage       = new MimePart($body);
-        $bodyMessage->type = 'text/html';
+        $message              = new Message();
+        $bodyPart             = new MimeMessage();
+        $bodyMessage          = new MimePart($body);
+        $bodyMessage->type    = 'text/html';
+        $bodyMessage->charset = 'UTF-8';
         $bodyPart->setParts([$bodyMessage]);
         $message->setFrom($from);
         $message->addTo($to);
@@ -52,23 +67,14 @@ class ZendMailAdapter implements AdapterInterface
         $this->queue[] = $message;
     }
 
-    /*
-     * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::addMail()
-     */
-
     public function flush()
     {
-        $transport = new Smtp();
-        $transport->setOptions($this->getSmtpOptions());
+        $this->transport->setOptions($this->getSmtpOptions());
         foreach ($this->queue as $message) {
             $transport->send($message);
         }
         $this->queue = [];
     }
-
-    /*
-     * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::flush()
-     */
 
     /**
      * @return \Zend\Mail\Transport\SmtpOptions $smtpOptions

@@ -23,7 +23,7 @@
     width: $navigationWidth;
     margin-bottom: 2px;
 
-    z-index: 1;
+    z-index: 2;
     
     background: $lighterGray;
 
@@ -78,10 +78,6 @@
         // disable iOS input roundings
         -webkit-appearance: none;
         border-radius: 0;
-
-        &:hover {
-            background: white;
-        }
 
         &:focus {
             outline: 0;

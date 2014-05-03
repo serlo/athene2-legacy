@@ -25,8 +25,14 @@ img.license-intext {
     .dropdown-menu {
       word-wrap: normal;
       min-width: 500px;
+      max-width: 500px;
       max-height: 300px;
+
       overflow-y: scroll;
+
+      > li > a {
+        white-space: normal;
+      }
     }
   }
 }
@@ -38,4 +44,14 @@ img.license-intext {
       overflow: visible; // Do not crop contents (solves #383)
     }
   }
+}
+
+/* Geogebra Popups arent visible otherwise.. */
+.GeoGebraAppFrame,
+.GeoGebraFrame,
+.GeoGebraPopup,
+.DialogBox,
+.gwt-PopupPanel,
+.gwt-SuggestBoxPopup {
+    z-index: 120;
 }

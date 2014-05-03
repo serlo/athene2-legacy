@@ -10,6 +10,8 @@
  */
 namespace Entity\Form;
 
+use License\Entity\LicenseInterface;
+use License\Form\AgreementFieldset;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Element\Url;
@@ -19,7 +21,7 @@ use Zend\InputFilter\InputFilter;
 class VideoForm extends Form
 {
 
-    function __construct()
+    function __construct(LicenseInterface $license)
     {
         parent::__construct('video');
         $this->setAttribute('method', 'post');
@@ -37,6 +39,7 @@ class VideoForm extends Form
                 'plain'
             )
         );
+        $this->add(new AgreementFieldset($license));
         $this->add(new Controls());
 
         $inputFilter = new InputFilter('video');

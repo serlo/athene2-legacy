@@ -14,7 +14,21 @@ define(['jquery'], function ($) {
                         var $that = $(this);
                         $that.toggleClass('active');
                         $('.edit-control').toggleClass('hidden');
-                        return;
+                        return false;
+                    });
+            } else if ($(this).data('toggle') === 'discussions') {
+                $(this)
+                    .unbind('click')
+                    .click(function (e) {
+                        e.preventDefault();
+                        var $that = $(this),
+                            $target = $($that.data('target'));
+                        $that.toggleClass('active');
+                        $target.toggleClass('hidden');
+                        $('html, body').animate({
+                            scrollTop: $target.offset().top
+                        }, 500);
+                        return false;
                     });
             }
         });

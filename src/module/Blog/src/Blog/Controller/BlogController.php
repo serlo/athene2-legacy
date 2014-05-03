@@ -153,7 +153,7 @@ class BlogController extends AbstractActionController
             }
         );
 
-        $view = new ViewModel([            'blog'  => $blog,            'posts' => $posts        ]);
+        $view = new ViewModel(['blog' => $blog, 'posts' => $posts]);
         $view->setTemplate('blog/blog/view-all');
 
         return $view;

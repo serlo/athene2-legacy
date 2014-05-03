@@ -51,4 +51,4 @@ class PermissionForm extends Form
 
         $this->setInputFilter($inputFilter);
     }
-} 
+}

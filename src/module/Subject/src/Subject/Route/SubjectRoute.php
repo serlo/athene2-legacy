@@ -6,23 +6,22 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
 namespace Subject\Route;
 
 use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Subject\Exception;
 use Subject\Manager\SubjectManagerAwareTrait;
 use Subject\Manager\SubjectManagerInterface;
+use Traversable;
 use Zend\Mvc\Router\Http\Segment;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\RequestInterface as Request;
-use Instance\Manager\InstanceManagerInterface;
-use Traversable;
 
 class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
 {

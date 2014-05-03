@@ -16,7 +16,6 @@ interface HydratorPluginInterface
      * Extracts (key, value) pairs from the object for merging with the overall extract result.
      *
      * @param object $object
-     *
      * @return array
      */
     public function extract($object);
@@ -26,7 +25,6 @@ interface HydratorPluginInterface
      *
      * @param object $object
      * @param array  $data
-     *
      * @return array
      */
     public function hydrate($object, array $data);

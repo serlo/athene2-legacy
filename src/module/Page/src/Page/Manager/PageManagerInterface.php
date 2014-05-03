@@ -41,4 +41,3 @@ interface PageManagerInterface extends Flushable
      */
     public function getRevision($id);
 }
-

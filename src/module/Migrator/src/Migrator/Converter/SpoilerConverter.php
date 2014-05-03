@@ -26,10 +26,7 @@ class SpoilerConverter extends AbstractConverter
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             // setting the "view" content
-            $view = "\n"
-                    ."/// $match[1]\n"
-                    ."$match[2]\n"
-                    ."///\n";
+            $view = "\n" . "/// $match[1]\n" . "$match[2]\n" . "///\n";
 
             // replacing the match with the view
             $content = str_replace($match[0], $view, $content);

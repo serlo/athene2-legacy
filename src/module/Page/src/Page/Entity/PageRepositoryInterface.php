@@ -11,7 +11,8 @@ use Uuid\Entity\UuidInterface;
 use Versioning\Entity\RepositoryInterface;
 
 interface PageRepositoryInterface
-    extends RepositoryInterface, LicenseAwareInterface, InstanceAwareInterface, UuidInterface, TaxonomyTermAwareInterface
+    extends RepositoryInterface, LicenseAwareInterface, InstanceAwareInterface, UuidInterface,
+            TaxonomyTermAwareInterface
 {
     /**
      * @return RoleInterface[]|Collection

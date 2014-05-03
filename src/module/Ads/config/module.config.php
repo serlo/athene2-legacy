@@ -10,102 +10,102 @@
 namespace Ads;
 
 return [
-    'router' => [
+    'router'          => [
         'routes' => [
             'ads' => [
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options' => [
-                    'route' => '/horizon',
+                'options'       => [
+                    'route'    => '/horizon',
                     'defaults' => [
                         'controller' => 'Ads\Controller\AdsController',
-                        'action' => 'index'
+                        'action'     => 'index'
                     ]
                 ],
-                'child_routes' => [
+                'child_routes'  => [
                     'about' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options' => [
-                            'route' => '/about',
+                        'options'       => [
+                            'route'    => '/about',
                             'defaults' => [
                                 'controller' => 'Ads\Controller\AdsController',
-                                'action' => 'adPage'
+                                'action'     => 'adPage'
                             ]
                         ],
-                        'child_routes' => [
+                        'child_routes'  => [
                             'editabout' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options' => [
-                                    'route' => '/editabout',
+                                'options'       => [
+                                    'route'    => '/editabout',
                                     'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'editAdPage'
+                                        'action'     => 'editAdPage'
                                     ]
                                 ]
                             ],
-                            'setabout' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'setabout'  => [
+                                'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options' => [
-                                    'route' => '/setabout',
+                                'options'       => [
+                                    'route'    => '/setabout',
                                     'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'setAbout'
+                                        'action'     => 'setAbout'
                                     ]
                                 ]
                             ]
                         ]
                     ],
-                    'add' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'add'   => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/add',
+                            'route'    => '/add',
                             'defaults' => [
                                 'controller' => 'Ads\Controller\AdsController',
-                                'action' => 'add'
+                                'action'     => 'add'
                             ]
                         ]
                     ],
-                    'ad' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route' => '/:id',
+                    'ad'    => [
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route'    => '/:id',
                             'defaults' => [
                                 'controller' => 'Ads\Controller\AdsController',
-                                'action' => 'add'
+                                'action'     => 'add'
                             ]
                         ],
                         'child_routes' => [
                             'delete' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/delete',
+                                    'route'    => '/delete',
                                     'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'delete'
+                                        'action'     => 'delete'
                                     ]
                                 ]
                             ],
-                            'out' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'out'    => [
+                                'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options' => [
-                                    'route' => '/out',
+                                'options'       => [
+                                    'route'    => '/out',
                                     'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'out'
+                                        'action'     => 'out'
                                     ]
                                 ]
                             ],
-                            'edit' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'edit'   => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/edit',
+                                    'route'    => '/edit',
                                     'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'edit'
+                                        'action'     => 'edit'
                                     ]
                                 ]
                             ]
@@ -115,15 +115,15 @@ return [
             ]
         ]
     ],
-    'zfc_rbac' => [
+    'zfc_rbac'        => [
         'assertion_map' => [
             'ad.create' => 'Authorization\Assertion\RequestInstanceAssertion',
             'ad.update' => 'Authorization\Assertion\InstanceAssertion',
-            'ad.get' => 'Authorization\Assertion\InstanceAssertion',
+            'ad.get'    => 'Authorization\Assertion\InstanceAssertion',
             'ad.remove' => 'Authorization\Assertion\InstanceAssertion'
         ]
     ],
-    'view_helpers' => [
+    'view_helpers'    => [
         'factories' => [
             'horizon' => __NAMESPACE__ . '\Factory\HorizonHelperFactory'
         ]
@@ -133,27 +133,27 @@ return [
             __NAMESPACE__ . '\Manager\AdsManager' => __NAMESPACE__ . '\Factory\AdsManagerFactory'
         ]
     ],
-    'class_resolver' => [
-        'Ads\Entity\AdInterface' => 'Ads\Entity\Ad',
+    'class_resolver'  => [
+        'Ads\Entity\AdInterface'     => 'Ads\Entity\Ad',
         'Ads\Entity\AdPageInterface' => 'Ads\Entity\AdPage'
     ],
-    'di' => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\AdsController'
         ],
-        'definition' => [
+        'definition'          => [
             'class' => [
                 'Ads\Controller\AdsController' => [
-                    'setObjectManager' => [
+                    'setObjectManager'     => [
                         'required' => 'true'
                     ],
-                    'setInstanceManager' => [
+                    'setInstanceManager'   => [
                         'required' => 'true'
                     ],
-                    'setUserManager' => [
+                    'setUserManager'       => [
                         'required' => 'true'
                     ],
-                    'setAdsManager' => [
+                    'setAdsManager'        => [
                         'required' => true
                     ],
                     'setAttachmentManager' => [
@@ -162,13 +162,13 @@ return [
                 ]
             ]
         ],
-        'instance' => [
+        'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\AdsManagerInterface' => __NAMESPACE__ . '\Manager\AdsManager'
             ]
         ]
     ],
-    'doctrine' => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -177,7 +177,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]

@@ -20,7 +20,7 @@ return [
     'class_resolver'  => [
         __NAMESPACE__ . '\Entity\UuidInterface' => __NAMESPACE__ . '\Entity\Uuid'
     ],
-    'view_helpers'     => [
+    'view_helpers'    => [
         'factories' => [
             'uuid' => __NAMESPACE__ . '\Factory\UuidHelperFactory'
         ]
@@ -42,7 +42,7 @@ return [
                             'route'    => '/uuid/trash/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
-                                'action' => 'trash'
+                                'action'     => 'trash'
                             ]
                         ]
                     ],
@@ -52,7 +52,7 @@ return [
                             'route'    => '/uuid/recycle-bin',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
-                                'action' => 'recycleBin'
+                                'action'     => 'recycleBin'
                             ]
                         ]
                     ],
@@ -62,7 +62,7 @@ return [
                             'route'    => '/uuid/restore/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
-                                'action' => 'restore'
+                                'action'     => 'restore'
                             ]
                         ]
                     ],
@@ -72,7 +72,7 @@ return [
                             'route'    => '/uuid/purge/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
-                                'action' => 'purge'
+                                'action'     => 'purge'
                             ]
                         ]
                     ]
@@ -108,7 +108,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]

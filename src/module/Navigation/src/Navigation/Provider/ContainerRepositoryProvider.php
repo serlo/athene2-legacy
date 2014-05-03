@@ -70,7 +70,7 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
                 $pages[] = $addPage;
             }
         }
-        
+
         $this->storage->setItem($key, $pages);
 
         return $pages;
@@ -86,7 +86,6 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
 
         foreach ($page->getChildren() as $child) {
             $addPage = $this->buildPage($child);
-
             $hasUri      = isset($addPage['uri']);
             $hasMvc      = isset($addPage['action']) || isset($addPage['controller']) || isset($addPage['route']);
             $hasProvider = isset($addPage['provider']);
@@ -94,6 +93,7 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
             if ($hasUri || $hasMvc || $hasProvider) {
                 $config['pages'][] = $addPage;
             }
+
         }
 
         return $config;

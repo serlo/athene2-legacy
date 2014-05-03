@@ -27,10 +27,12 @@ class LicenseHydrator implements HydratorInterface
         }
 
         return [
-            'title'    => $object->getTitle(),
-            'url'      => $object->getUrl(),
-            'content'  => $object->getContent(),
-            'iconHref' => $object->getIconHref()
+            'title'     => $object->getTitle(),
+            'url'       => $object->getUrl(),
+            'content'   => $object->getContent(),
+            'iconHref'  => $object->getIconHref(),
+            'agreement' => $object->getAgreement(),
+            'default'   => $object->isDefault()
         ];
     }
 
@@ -48,6 +50,8 @@ class LicenseHydrator implements HydratorInterface
         $object->setTitle($data['title']);
         $object->setUrl($data['url']);
         $object->setIconHref($data['iconHref']);
+        $object->setAgreement($data['agreement']);
+        $object->setDefault($data['default']);
 
         return $object;
     }

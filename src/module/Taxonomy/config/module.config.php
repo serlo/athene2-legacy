@@ -101,9 +101,9 @@ return [
                                 ]
                             ],
                             'update'          => [
-                                'type'     => 'Segment',
-                                'options'  => [
-                                    'route' => '/update/:term',
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/update/:term',
                                     'defaults' => [
                                         'action' => 'update'
                                     ]

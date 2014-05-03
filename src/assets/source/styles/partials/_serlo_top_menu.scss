@@ -18,6 +18,11 @@
               @include theme-font(600);
             }
         }
+
+        .dropdown-menu {
+            position: absolute;
+            background: white;
+        }
     }
 
     

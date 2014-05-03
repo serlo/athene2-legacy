@@ -55,4 +55,3 @@ class FolderTranslation
         return $this->name;
     }
 }
- 

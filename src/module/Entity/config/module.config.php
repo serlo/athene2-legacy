@@ -139,7 +139,15 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions'        => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Form\ArticleForm'             => __NAMESPACE__ . '\Factory\ArticleFormFactory',
+            __NAMESPACE__ . '\Form\GroupedTextExerciseForm' => __NAMESPACE__ . '\Factory\GroupedTextExerciseFormFactory',
+            __NAMESPACE__ . '\Form\ModuleForm'              => __NAMESPACE__ . '\Factory\ModuleFormFactory',
+            __NAMESPACE__ . '\Form\ModulePageForm'          => __NAMESPACE__ . '\Factory\ModulePageFormFactory',
+            __NAMESPACE__ . '\Form\TextExerciseForm'        => __NAMESPACE__ . '\Factory\TextExerciseFormFactory',
+            __NAMESPACE__ . '\Form\TextExerciseGroupForm'   => __NAMESPACE__ . '\Factory\TextExerciseGroupFormFactory',
+            __NAMESPACE__ . '\Form\TextSolutionForm'        => __NAMESPACE__ . '\Factory\TextSolutionFormFactory',
+            __NAMESPACE__ . '\Form\VideoForm'               => __NAMESPACE__ . '\Factory\VideoFormFactory'
         ]
     ],
     'view_helpers'    => [

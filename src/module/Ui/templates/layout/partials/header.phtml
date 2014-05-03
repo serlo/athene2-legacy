@@ -14,9 +14,13 @@
     <?php echo $this->partial('layout/partials/top-bar'); ?>
 
     <div id="subject-nav">
-        <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" width="110" height="37" src="/assets/images/serlo_logo.png" /></a></h1>
-        <div class="dropdown is-inline-block">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <a id="brand-link" href="<?php echo $this->url('home'); ?>">
+            <?php echo $this->brand()->getLogo(); ?>
+            <?php echo $this->brand()->getBrand(); ?>
+        </a>
+        <div class="subject-dropdown is-inline-block">
+            <a class="subject-dropdown-toggle" href="#">
+            <span class="subject-dropdown-title">
                 <?php echo $this->navigation('navigation')
                                 ->menu()
                                 ->setPartial('layout/navigation/partial/active-subject')
@@ -25,8 +29,9 @@
                                 ->setMaxDepth(0)
                                 ->render();
                 ?>
+            </span>
             <b class="caret"></b></a>
-            <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <div class="subject-dropdown-menu" role="menu" aria-labelledby="dLabel">
                 <?php
                     echo $this->navigation('top_center_navigation')
                          ->menu()

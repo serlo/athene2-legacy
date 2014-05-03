@@ -29,13 +29,12 @@ class InstanceController extends AbstractActionController
     public function switchAction()
     {
         $instance = $this->params('instance');
-        try{
+        try {
             $this->instanceManager->switchInstance($instance);
-        } catch (InstanceNotFoundException $e){
+        } catch (InstanceNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        return $this->redirect()->toReferer();
+        return $this->redirect()->toRoute('home');
     }
 }
- 

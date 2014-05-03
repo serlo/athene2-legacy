@@ -124,4 +124,3 @@ interface NavigationManagerInterface extends Flushable
      */
     public function updateParameter(FormInterface $form);
 }
- 

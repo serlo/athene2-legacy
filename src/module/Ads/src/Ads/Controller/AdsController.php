@@ -12,7 +12,6 @@ namespace Ads\Controller;
 use Ads\Form\AdForm;
 use Ads\Form\AdPageForm;
 use Attachment\Exception\NoFileSent;
-use Page\Exception\PageNotFoundException;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -30,50 +29,54 @@ class AdsController extends AbstractActionController
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('ad.get', $instance);
-        $ads = $this->getAdsManager()->findAllAds($instance);
+        $ads  = $this->getAdsManager()->findAllAds($instance);
         $view = new ViewModel([
             'ads' => $ads
         ]);
         $view->setTemplate('ads/ads');
-        
+
         return $view;
     }
 
     public function addAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-        $form = new AdForm();
+        $user     = $this->getUserManager()->getUserFromAuthenticator();
+        $form     = new AdForm();
         $this->assertGranted('ad.create', $instance);
-        
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $data = array_merge($data, $this->getRequest()
-                ->getFiles()
-                ->toArray());
-            
+            $data = array_merge(
+                $data,
+                $this->getRequest()->getFiles()->toArray()
+            );
+
             $form->setData($data);
             if ($form->isValid()) {
-                $array = $form->getData();
+                $array  = $form->getData();
                 $upload = $this->getAttachmentManager()->attach($form);
-                $array = array_merge($array, [
-                    'attachment' => $upload,
-                    'author' => $user,
-                    'instance' => $instance
-                ]);
-                
+                $array  = array_merge(
+                    $array,
+                    [
+                        'attachment' => $upload,
+                        'author'     => $user,
+                        'instance'   => $instance
+                    ]
+                );
+
                 $this->getAdsManager()->createAd($array);
                 $this->getAdsManager()->flush();
-                
+
                 return $this->redirect()->toRoute('ads');
             }
         }
-        
+
         $view = new ViewModel([
             'form' => $form
         ]);
         $view->setTemplate('ads/create');
-        
+
         return $view;
     }
 
@@ -84,56 +87,57 @@ class AdsController extends AbstractActionController
         $this->assertGranted('ad.remove', $ad);
         $this->getAdsManager()->removeAd($ad);
         $this->getAdsManager()->flush();
-        
+
         return $this->redirect()->toRoute('ads');
     }
-    
+
     /*
      * public function shuffleAction() { $instance = $this->getInstanceManager()->getInstanceFromRequest(); $this->assertGranted('ad.get', $instance); $ads = $this->getAdsManager()->findShuffledAds($instance, 3); $view = new ViewModel([ 'ads' => $ads ]); $view->setTemplate('ads/shuffle'); return $view; }
      */
     public function editAction()
     {
         $form = new AdForm();
-        $id = $this->params('id');
-        $ad = $this->getAdsManager()->getAd($id);
+        $id   = $this->params('id');
+        $ad   = $this->getAdsManager()->getAd($id);
         $this->assertGranted('ad.update', $ad);
-        
+
         // todo: use hydrator instead
         $form->get('content')->setValue($ad->getContent());
         $form->get('title')->setValue($ad->getTitle());
         $form->get('frequency')->setValue($ad->getFrequency());
         $form->get('url')->setValue($ad->getUrl());
-        
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $data = array_merge($data, $this->getRequest()
-                ->getFiles()
-                ->toArray());
-            
+            $data = array_merge(
+                $data,
+                $this->getRequest()->getFiles()->toArray()
+            );
+
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                
+
                 // Try updating the upload
                 try {
-                    $upload = $this->getAttachmentManager()->attach($form);
+                    $upload              = $this->getAttachmentManager()->attach($form);
                     $array['attachment'] = $upload;
                 } catch (NoFileSent $e) {
                     // No file has been sent, so we stick to the old one
                     $array['attachment'] = $ad->getAttachment();
                 }
-                
+
                 $this->getAdsManager()->updateAd($array, $ad);
                 $this->getAdsManager()->flush();
                 $this->redirect()->toRoute('ads');
             }
         }
-        
+
         $view = new ViewModel([
             'form' => $form
         ]);
         $view->setTemplate('ads/update');
-        
+
         return $view;
     }
 
@@ -142,42 +146,45 @@ class AdsController extends AbstractActionController
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('ad.create', $instance);
         $adPage = $this->getAdsManager()->getAdPage($instance);
-        if (! is_object($adPage)) {
+        if (!is_object($adPage)) {
             $this->redirect()->toRoute('ads/about/setabout');
         } else {
             $repository = $adPage->getPageRepository();
-            
-            $this->redirect()->toRoute('page/revision/create', [
-                'page' => $repository->getId(),
-                'revision' => $repository->getCurrentRevision()
-            ]);
+
+            $this->redirect()->toRoute(
+                'page/revision/create',
+                [
+                    'page'     => $repository->getId(),
+                    'revision' => $repository->getCurrentRevision()
+                ]
+            );
         }
     }
 
     public function setAboutAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $form = new AdPageForm();
+        $form     = new AdPageForm();
         $this->assertGranted('ad.create', $instance);
-        
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            
+
             $form->setData($data);
             if ($form->isValid()) {
-                $array = $form->getData();
+                $array  = $form->getData();
                 $adPage = $this->getAdsManager()->setAdPage($instance, $array['id']);
                 $this->getObjectManager()->persist($adPage);
                 $this->getObjectManager()->flush();
                 return $this->redirect()->toRoute('ads');
             }
         }
-        
+
         $view = new ViewModel([
             'form' => $form
         ]);
         $view->setTemplate('ads/setAdPage');
-        
+
         return $view;
     }
 
@@ -186,14 +193,17 @@ class AdsController extends AbstractActionController
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('ad.get', $instance);
         $adPage = $this->getAdsManager()->getAdPage($instance);
-        if (! is_object($adPage)) {
+        if (!is_object($adPage)) {
             return $this->redirect()->toReferer();
         }
-        
+
         $repository = $adPage->getPageRepository();
-        return $this->redirect()->toRoute('page/view', [
-            'page' => $repository
-        ]);
+        return $this->redirect()->toRoute(
+            'page/view',
+            [
+                'page' => $repository
+            ]
+        );
     }
 
     public function outAction()

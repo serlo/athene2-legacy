@@ -6,7 +6,6 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
 namespace Navigation\View\Helper;
@@ -35,7 +34,8 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
             $output = parent::render($container);
             return $output;
         } catch (Exception $e) {
-            return '<div class="alert-danger alert"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . $e->getMessage() . '</div>';
+            return '<div class="alert-danger alert"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . $e->getMessage(
+            ) . '</div>';
         }
     }
 }

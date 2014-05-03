@@ -6,7 +6,6 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Ui\Options;
 
@@ -25,11 +24,45 @@ class BrandHelperOptions extends AbstractOptions
     protected $slogan = 'The Learning Resources Management System';
 
     /**
-     * @param string $slogan
+     * @var string
      */
-    public function setSlogan($slogan)
+    protected $description = 'Manage your learning resources, easy, fast and reliable.';
+
+    /**
+     * @var string
+     */
+    protected $logo = 'Logo html here';
+
+    /**
+     * @return string
+     */
+    public function getLogo()
     {
-        $this->slogan = $slogan;
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = (string)$description;
     }
 
     /**
@@ -38,6 +71,14 @@ class BrandHelperOptions extends AbstractOptions
     public function getSlogan()
     {
         return $this->slogan;
+    }
+
+    /**
+     * @param string $slogan
+     */
+    public function setSlogan($slogan)
+    {
+        $this->slogan = $slogan;
     }
 
     /**

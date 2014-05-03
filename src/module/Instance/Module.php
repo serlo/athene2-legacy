@@ -49,16 +49,8 @@ class Module
         $app            = $e->getTarget();
         $serviceManager = $app->getServiceManager();
 
-        $app->getEventManager()->attach('route', [$this, 'onPreRoute'], 4);
-    }
-
-    public function onPreRoute($e)
-    {
-        $app            = $e->getTarget();
-        $serviceManager = $app->getServiceManager();
-
         /* @var $translator Translator */
-        $translator = $serviceManager->get('translator');
+        $translator = $serviceManager->get('MvcTranslator');
         $router     = $serviceManager->get('router');
 
         /* @var $instanceManager Manager\InstanceManager */
@@ -73,10 +65,15 @@ class Module
         }
 
         setlocale(LC_ALL, $locale);
-        $translator->addTranslationFile('PhpArray', __DIR__ . '/language/routes/' . $code . '.php', 'default', $code);
+        $translator->addTranslationFile('PhpArray', __DIR__ . '/../../lang/routes/' . $code . '.php', 'default', $code);
         $translator->setLocale($code);
-        $translator->setFallbackLocale('default');
+        $translator->setFallbackLocale('en');
 
+        $app->getEventManager()->attach('route', [$this, 'onPreRoute'], 4);
+    }
+
+    public function onPreRoute(MvcEvent $e)
+    {
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);

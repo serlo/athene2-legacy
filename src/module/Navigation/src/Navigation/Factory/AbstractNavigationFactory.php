@@ -1,13 +1,11 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace Navigation\Factory;
 
@@ -18,13 +16,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class AbstractNavigationFactory
- *
  * Works, even if no RouteMatch is returned by the Application.
  *
  * @package Navigation\Factory
  */
 abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
-{    
+{
     /**
      * @var RouteMatch
      */
@@ -34,10 +31,10 @@ abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
      * @param ApplicationInterface $application
      * @return RouteMatch
      */
-    public function getRouteMatch (ApplicationInterface $application)
+    public function getRouteMatch(ApplicationInterface $application)
     {
-        if(!is_object($this->routeMatch)){
-            if(is_object($application->getMvcEvent()->getRouteMatch())){
+        if (!is_object($this->routeMatch)) {
+            if (is_object($application->getMvcEvent()->getRouteMatch())) {
                 $this->setRouteMatch($application->getMvcEvent()->getRouteMatch());
             } else {
                 $this->setRouteMatch(new RouteMatch([]));
@@ -46,10 +43,10 @@ abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
         return $this->routeMatch;
     }
 
-	/**
+    /**
      * @param RouteMatch $routeMatch
      */
-    public function setRouteMatch (RouteMatch $routeMatch)
+    public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
     }
@@ -64,7 +61,7 @@ abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
         $application = $serviceLocator->get('Application');
         $routeMatch  = $this->getRouteMatch($application);
         $router      = $application->getMvcEvent()->getRouter();
-        
+
         return $this->injectComponents($pages, $routeMatch, $router);
     }
 }

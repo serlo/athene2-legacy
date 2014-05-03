@@ -50,7 +50,7 @@ class NotificationWorkerListener extends AbstractListener
                 $this->getRenderer()->render($subject),
                 $this->getRenderer()->render($body)
             );
-        } catch (RuntimeException $e){
+        } catch (\Exception $e) {
             // Todo find a better way to do this - maybe via syslog?
             // Email could not be send, however, we do not want to crash  notifications because
             // of this...

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An entity link.
+ *
  * @ORM\Entity
  * @ORM\Table(name="entity_revision_field")
  */

@@ -16,16 +16,6 @@ return [
             'instance.get' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
-    'translator'      => [
-        'translation_file_patterns' => [
-            [
-                'type'        => 'gettext',
-                'base_dir'    => __DIR__ . '/../language',
-                'pattern'     => '%s.mo',
-                'text_domain' => 'default'
-            ]
-        ]
-    ],
     'router'          => [
         'routes' => [
             'instance' => [

@@ -36,8 +36,9 @@ class EventParameterString
      */
     protected $value;
 
-    public function __construct(EventParameter $eventParameter, $value){
-        $this->value = $value ? $value : '';
+    public function __construct(EventParameter $eventParameter, $value)
+    {
+        $this->value          = $value ? $value : '';
         $this->eventParameter = $eventParameter;
     }
 

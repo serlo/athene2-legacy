@@ -30,4 +30,3 @@ class SubjectControllerAdapter extends AbstractAdapter
         return $controller instanceof AbstractController;
     }
 }
- 

@@ -45,10 +45,10 @@ class PageForm extends Form
                 'type'    => 'DoctrineModule\Form\Element\ObjectSelect',
                 'name'    => 'parent',
                 'options' => [
-                    'label'          => 'Parent:',
-                    'object_manager' => $entityManager,
-                    'target_class'   => 'Navigation\Entity\Page',
-                    'property'       => 'id',
+                    'label'              => 'Parent:',
+                    'object_manager'     => $entityManager,
+                    'target_class'       => 'Navigation\Entity\Page',
+                    'property'           => 'id',
                     'display_empty_item' => true,
                     'empty_item_label'   => '---',
                 ],
@@ -73,9 +73,19 @@ class PageForm extends Form
 
         $filter->add(
             [
-                'name'    => 'position',
+                'name'     => 'parent',
                 'required' => false,
-                'filters' => [
+                'filters'  => [
+                    ['name' => 'Int'],
+                ],
+            ]
+        );
+
+        $filter->add(
+            [
+                'name'     => 'position',
+                'required' => false,
+                'filters'  => [
                     ['name' => 'Int'],
                 ],
             ]

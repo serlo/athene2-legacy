@@ -29,8 +29,9 @@ class Mailman implements MailmanInterface
      * @param Options\ModuleOptions   $moduleOptions
      * @param ServiceLocatorInterface $serviceLocator
      */
-    public function __construct(Options\ModuleOptions $moduleOptions, ServiceLocatorInterface $serviceLocator){
-        $this->moduleOptions = $moduleOptions;
+    public function __construct(Options\ModuleOptions $moduleOptions, ServiceLocatorInterface $serviceLocator)
+    {
+        $this->moduleOptions  = $moduleOptions;
         $this->serviceLocator = $serviceLocator;
     }
 
@@ -64,7 +65,7 @@ class Mailman implements MailmanInterface
     protected function loadAdapters()
     {
         foreach ($this->moduleOptions->getAdapters() as $adapter) {
-            if (!array_key_exists($adapter, $this->adapters)) {
+            if (!isset($this->adapters[$adapter])) {
                 $this->adapters[$adapter] = $this->serviceLocator->get($adapter);
                 if (!$this->adapters[$adapter] instanceof Adapter\AdapterInterface) {
                     throw new Exception\RuntimeException(sprintf(

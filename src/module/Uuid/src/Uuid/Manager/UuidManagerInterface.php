@@ -10,10 +10,49 @@
 namespace Uuid\Manager;
 
 use Common\ObjectManager\Flushable;
+use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface UuidManagerInterface extends Flushable
 {
+
+    /**
+     * Creates an UuidEntity
+     * <code>
+     * $uuid = $um->createUuid();
+     * $um->injectUuid($entity, $uuid);
+     * </code>
+     *
+     * @return UuidInterface
+     */
+    public function createUuid();
+
+    /**
+     * Finds Uuuids by their trashed attribute.
+     * <code>
+     * $uuids = $um->findByTrashed(true);
+     * foreach($uuids as $uuid)
+     * {
+     *    echo $uuid->getId();
+     * }
+     * </code>
+     *
+     * @param bool $trashed
+     * @return UuidInterface[]
+     */
+    public function findByTrashed($trashed);
+
+    /**
+     * Finds Uuids by their instance
+     * <code>
+     *    $collection = $um->findUuidsByInstance($myInstance);
+     * </code>
+     *
+     * @param InstanceInterface $instance
+     * @return UuidInterface[]|Collection
+     */
+    public function findUuidsByInstance(InstanceInterface $instance);
 
     /**
      * Get an Uuid.
@@ -32,7 +71,7 @@ interface UuidManagerInterface extends Flushable
      * @param int $id
      * @return void
      */
-    public function trashUuid($id);
+    public function purgeUuid($id);
 
     /**
      * @param int $id
@@ -44,41 +83,5 @@ interface UuidManagerInterface extends Flushable
      * @param int $id
      * @return void
      */
-    public function purgeUuid($id);
-
-    /**
-     * Finds an Uuid by its name
-     * <code>
-     * $um->findUuidByName('j49jfbaAK');
-     * </code>
-     *
-     * @param unknown $string
-     */
-    public function findUuidByName($string);
-
-    /**
-     * Creates an UuidEntity
-     * <code>
-     * $uuid = $um->createUuid();
-     * $um->injectUuid($entity, $uuid);
-     * </code>
-     *
-     * @return UuidInterface $uuid
-     */
-    public function createUuid();
-
-    /**
-     * Finds Uuuids by their trashed attribute.
-     * <code>
-     * $uuids = $um->findByTrashed(true);
-     * foreach($uuids as $uuid)
-     * {
-     * echo $uuid->getId();
-     * }
-     * </code>
-     *
-     * @param bool $trashed
-     * @return UuidInterface[]
-     */
-    public function findByTrashed($trashed);
+    public function trashUuid($id);
 }

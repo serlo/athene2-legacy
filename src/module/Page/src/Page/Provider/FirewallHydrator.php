@@ -1,14 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author  Jakob Pfab (jakob.pfab@serlo.org)
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Jakob Pfab (jakob.pfab@serlo.org)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace Page\Provider;
 
@@ -16,7 +14,7 @@ use Zend\Mvc\MvcEvent;
 
 class FirewallHydrator
 {
-    
+
     use\Page\Manager\PageManagerAwareTrait;
     use\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -29,23 +27,25 @@ class FirewallHydrator
 
     public function getRoles()
     {
-        $this->setPageManager($this->getServiceLocator()
-            ->get('Page\Manager\PageManager'));
+        $this->setPageManager(
+            $this->getServiceLocator()->get('Page\Manager\PageManager')
+        );
         $routeMatch = $this->event->getRouteMatch();
-        $id = $routeMatch->getParam('page');
+        $id         = $routeMatch->getParam('page');
         if ($id === null) {
             $id = $routeMatch->getParam('id');
         }
         $pageRepository = $this->getPageManager()->getPageRepository($id);
-        
+
         $allRoles = $this->getPageManager()->findAllRoles();
-        $array = [];
-        
-       foreach ($allRoles as $role) {
-            if ($pageRepository->hasRole($role))
+        $array    = [];
+
+        foreach ($allRoles as $role) {
+            if ($pageRepository->hasRole($role)) {
                 $array[] = $role->getName();
+            }
         }
-        
+
         return $array;
     }
 }

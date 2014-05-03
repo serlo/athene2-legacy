@@ -20,4 +20,3 @@ class YoutubeConverter extends AbstractConverter
         return preg_replace($pattern, $replace, $text);
     }
 }
- 

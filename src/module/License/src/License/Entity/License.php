@@ -38,9 +38,19 @@ class License implements LicenseInterface
     protected $url;
 
     /**
+     * @ORM\Column(type="boolean", name="`default`")
+     */
+    protected $default;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $content;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $agreement;
 
     /**
      * @ORM\Column(type="string", name="icon_href")
@@ -48,7 +58,31 @@ class License implements LicenseInterface
     protected $iconHref;
 
     /**
-     * @param mixed $iconHref
+     * @return string
+     */
+    public function getAgreement()
+    {
+        return $this->agreement;
+    }
+
+    /**
+     * @param string $agreement
+     */
+    public function setAgreement($agreement)
+    {
+        $this->agreement = $agreement;
+    }
+
+    /**
+     * @return string $iconHref
+     */
+    public function getIconHref()
+    {
+        return $this->iconHref;
+    }
+
+    /**
+     * @param string $iconHref
      * @return void
      */
     public function setIconHref($iconHref)
@@ -57,15 +91,7 @@ class License implements LicenseInterface
     }
 
     /**
-     * @return field_type $iconHref
-     */
-    public function getIconHref()
-    {
-        return $this->iconHref;
-    }
-
-    /**
-     * @return field_type $id
+     * @return int $id
      */
     public function getId()
     {
@@ -73,7 +99,7 @@ class License implements LicenseInterface
     }
 
     /**
-     * @return field_type $title
+     * @return string $title
      */
     public function getTitle()
     {
@@ -81,7 +107,18 @@ class License implements LicenseInterface
     }
 
     /**
-     * @return field_type $url
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+
+    }
+
+    /**
+     * @return string $url
      */
     public function getUrl()
     {
@@ -89,7 +126,18 @@ class License implements LicenseInterface
     }
 
     /**
-     * @return field_type $content
+     * @param string $url
+     * @return void
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+
+    }
+
+    /**
+     * @return string $content
      */
     public function getContent()
     {
@@ -97,35 +145,27 @@ class License implements LicenseInterface
     }
 
     /**
-     * @param field_type $title
-     * @return self
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @param field_type $url
-     * @return self
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * @param field_type $content
-     * @return self
+     * @param string $content
+     * @return void
      */
     public function setContent($content)
     {
         $this->content = $content;
+    }
 
-        return $this;
+    /**
+     * @return boolean
+     */
+    public function isDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param boolean $default
+     */
+    public function setDefault($default)
+    {
+        $this->default = (boolean)$default;
     }
 }

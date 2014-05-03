@@ -35,4 +35,3 @@ class NavigationFactory implements FactoryInterface
     }
 
 }
- 

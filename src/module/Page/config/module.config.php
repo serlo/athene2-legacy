@@ -160,7 +160,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Page\Form\RepositoryForm' => 'Page\Factory\RepositoryFormFactory'
+            'Page\Form\RepositoryForm' => 'Page\Factory\RepositoryFormFactory',
+            'Page\Form\RevisionForm' => 'Page\Factory\RevisionFormFactory'
         ]
     ],
     'di'              => [

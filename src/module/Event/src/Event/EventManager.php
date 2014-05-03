@@ -34,8 +34,8 @@ class EventManager implements EventManagerInterface
         ClassResolverInterface $classResolver,
         ObjectManager $objectManager
     ) {
-        $this->objectManager        = $objectManager;
-        $this->classResolver        = $classResolver;
+        $this->objectManager = $objectManager;
+        $this->classResolver = $classResolver;
         $this->setAuthorizationService($authorizationService);
     }
 

@@ -1,0 +1,1685 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: serlo\n"
+"POT-Creation-Date: 2014-04-25 15:21+0100\n"
+"PO-Revision-Date: 2014-05-01 16:24+0100\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;pageHeader;"
+"setSubtitle;addMessage;addSuccessMessage;addErrorMessage;setLabel;setLegend;"
+"setValue;__invoke:1\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: /Library/WebServer/Documents/workspace/athene2/src/"
+"module\n"
+"X-Poedit-SearchPath-1: /Library/WebServer/Documents/workspace/athene2/src/"
+"data/twig\n"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/05/7a/ecc08be959335b5a7e4b9075df03c7e33776f9ab22e7d43fb2b5d71b8d3a.php:19
+msgid "entity.link.order"
+msgstr "entity.link.order"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/0b/a5/977825321a55c69e45ddfa5f7aa59fab5f2783c79a81ccf714ae21d22b87.php:23
+msgid "Start learning now!"
+msgstr "Lernen starten!"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/12/6a/5c5ea957a62338b2523e1806d65fef9fb3ba956e9319f1bcb8d4ec4f0344.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:72
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:72
+msgid "I want to comment this"
+msgstr "Ich möchte das kommentieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/19/ee/008fb94519ad33c103cfb498cd6b892da5084e2a2ff98b3e023794aa4b0b.php:26
+msgid "entity/link/order"
+msgstr "entity/link/order"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/30/14466ebda47d7fbb1b42d1ca100e8709cb695cbac7f2552792b25e2d1dd3.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:26
+msgid "license/detail"
+msgstr "Lizenzierung/Detail"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/30/14466ebda47d7fbb1b42d1ca100e8709cb695cbac7f2552792b25e2d1dd3.php:29
+msgid "What is that?"
+msgstr "Was bedeutet das?"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:35
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:33
+msgid "taxonomy/term/create"
+msgstr "taxonomy/term/create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:59
+msgid "taxonomy/term/order"
+msgstr "taxonomy/term/order"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:101
+msgid "taxonomy.term.sort"
+msgstr "taxonomy.term.sort"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:107
+msgid "Tools"
+msgstr "Werkzeuge"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:114
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:14
+msgid "Sort"
+msgstr "Sortieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:120
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:15
+msgid "Save new order"
+msgstr "Neue Reihenfolge speichern"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:126
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:44
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:16
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/22/c1/cea0789d71ef862855180b268bcc08e639ed0a7fdf20b5f0cd52ae89a16d.php:22
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3c/cb/17de313977beaf76f285bacbda1dcdf97a733a37e2072dd7fca9bb046467.php:22
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/9a/2a/a5312a93a2d66a0d447c949124072c595e07cc74903504d744bd4202c564.php:22
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/d8/12/db473804c38531c6fb9f1af0847f6547f41729bf13cbf16a73fbbb145cfa.php:22
+msgid "entity/page"
+msgstr "entity/page"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:28
+msgid ""
+"There are multiple recent revisions for this object. Please be aware that "
+"they may be of very different nature. Consider reviewing all of them before "
+"accepting or merging."
+msgstr ""
+"Es gibt mehrere Bearbeitungen für dieses Objekt. Bitte beachte, dass sich "
+"diese groß unterscheiden können. Überprüfe daher gegebenenfalls alle "
+"Bearbeitungen, bevor du eine akzeptierst oder zusammenführst."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:39
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:5
+msgid "#"
+msgstr "#"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:43
+msgid "Current"
+msgstr "Aktuell"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:47
+msgid "Author"
+msgstr "Verfasser"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:51
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:8
+msgid "Timestamp"
+msgstr "Zeitstempel"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:74
+msgid "entity/repository/compare"
+msgstr "entity/repository/compare"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:76
+msgid "show"
+msgstr "Anzeigen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/28/70/b68bcb99a786f3969c75d0a54c07d1d66050109b7bd3b3f23b8bb33d0969.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/9e/cf/1e278244cc277bf9016b62469193dbff52cd8e5834878954b4c549ab6d6d.php:30
+msgid "Article"
+msgstr "Artikel"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:26
+msgid "Accept revision"
+msgstr "Bearbeitung akzeptieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:31
+msgid "entity/repository/checkout"
+msgstr "entity/repository/checkout"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:37
+msgid "Please give feedback."
+msgstr "Bitte gebe dem Bearbeiter eine Rückmeldung."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:45
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:45
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/default-modal.phtml:10
+msgid "Close"
+msgstr "Schließen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:49
+msgid "Accept"
+msgstr "Übernehmen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:28
+msgid "taxonomy.term.update"
+msgstr "taxonomy.term.update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:52
+msgid "taxonomy/term/update"
+msgstr "taxonomy/term/update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:37
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:21
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:45
+msgid "taxonomy.term.create"
+msgstr "taxonomy.term.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:50
+msgid "taxonomy/term/organize"
+msgstr "taxonomy/term/organize"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:54
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/49/99/d5f2f541241b7575393c3aa6e3ab3e6fa66902825adc0b489edf4b6881a8.php:19
+msgid "Organize"
+msgstr "Organisieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:62
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:19
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:53
+msgid "event.log.get"
+msgstr "event.log.get"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:67
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:24
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:58
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:58
+msgid "event/history"
+msgstr "event/history"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:71
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:47
+msgid "History"
+msgstr "Bearbeitungsverlauf"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:79
+msgid "entity.create"
+msgstr "entity.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:79
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:26
+msgid "taxonomy.term.associate"
+msgstr "taxonomy.term.associate"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:85
+msgid "Add content"
+msgstr "Neuer Inhalt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:98
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:43
+msgid "entity/create"
+msgstr "entity/create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:118
+msgid "taxonomy.term.associated.sort"
+msgstr "taxonomy.term.associated.sort"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:123
+msgid "taxonomy/term/sort-associated"
+msgstr "taxonomy/term/sort-associated"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:127
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:1
+msgid "Order content"
+msgstr "Inhalt sortieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:26
+msgid "taxonomy.term.dissociate"
+msgstr "taxonomy.term.dissociate"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:31
+msgid "entity/taxonomy/update"
+msgstr "entity/taxonomy/update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:36
+msgid "Update taxonomy"
+msgstr "Taxonomie bearbeiten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:38
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:38
+msgid "I want to see the solution"
+msgstr "Ich möchte die Lösung sehen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:54
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:54
+msgid "I need a hint"
+msgstr "Ich brauche einen Hinweis"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:19
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:140
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:202
+msgid "flag.create"
+msgstr "flag.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:24
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:143
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:207
+msgid "flag/add"
+msgstr "flag/add"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/add.phtml:1
+msgid "Flag content"
+msgstr "Inhalt des Bitschalters"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3c/4c/814fe0b84e872e4097f3563e1b3cbe6c0403686851dc0d2064582d9454f6.php:60
+msgid "discussion/discussion/start"
+msgstr "Diskussion/Diskussion/Start"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/41/d1/734d2b8ccb87c0bdb2560422e273e56b7294a40a68f3389c3e9a82ceca86.php:26
+msgid "related-content/manage"
+msgstr "related-content/manage"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/41/d1/734d2b8ccb87c0bdb2560422e273e56b7294a40a68f3389c3e9a82ceca86.php:31
+msgid "Manage related items"
+msgstr "Manage related items"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:26
+msgid "Reject revision"
+msgstr "Bearbeitung ablehnen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:31
+msgid "entity/repository/reject"
+msgstr "entity/repository/reject"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:37
+msgid "Please specify why you are rejecting the submission."
+msgstr "Bitte teile dem Bearbeiter mit, warum seine Änderung abgelehnt wurde."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:49
+msgid "Reject"
+msgstr "Ablehnen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:40
+msgid "Hint"
+msgstr "Hinweis"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:70
+msgid "Solution"
+msgstr "Lösung"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:87
+msgid ""
+"A solution has been created but no content has been added yet or it is "
+"pending approval."
+msgstr ""
+"Eine Lösung wurde erstellt, aber ihr noch kein Inhalt hinzugefügt oder noch "
+"nicht akzeptiert."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/91/255f94e52591462ccd8d9805852c6df41d87d0b74f0a82db842ed162f4c7.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f6/49/29464de8c98e149a83dd1923e2d167e29a77881ea40b26dfb286105d6564.php:32
+#, php-format
+msgid "Now view found for %s"
+msgstr "Now view found for %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:29
+msgid "entity.link.purge"
+msgstr "entity.link.purge"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:38
+msgid "entity.link.create"
+msgstr "entity.link.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:34
+msgid "entity/link/move"
+msgstr "entity/link/move"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:39
+#, php-format
+msgid "Change parent \"%s\""
+msgstr "Change parent \"%s\""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/63/85/004f7be166b7cae80fbe5d8ff70fec6fed1757226b62320b58ac4cdd6050.php:19
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:23
+msgid "discussion.create"
+msgstr "discussion.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/63/85/004f7be166b7cae80fbe5d8ff70fec6fed1757226b62320b58ac4cdd6050.php:22
+msgid "Start a discussion"
+msgstr "Starte eine neue Diskussion"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:29
+msgid "Show logfile"
+msgstr "Verlauf anzeigen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:67
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:89
+msgid "uuid/restore"
+msgstr "uuid/restore"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:74
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:24
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:75
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:153
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:217
+msgid "uuid/trash"
+msgstr "uuid/trash"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7d/da/d8a07a16782015be18febd4bb765e0933ce87ac4acdf630300b57b39201c.php:30
+#, php-format
+msgid "Template for %s not found"
+msgstr "Template for %s not found"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/91/9b/b1e9a0d9a242c82f09ad8ae1db8fd8eb8c7c339dbc9fc0798d2c50b7317d.php:26
+msgid ""
+"This taxonomy term is marked as <strong>trashed</strong>. Contents might be "
+"out of date or unmaintained."
+msgstr ""
+"Dieser Taxonomie-Punkt ist als <strong>gelöscht</strong>. Seine Inhalte "
+"könnten daher veraltet sein."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:19
+msgid "entity.trash"
+msgstr "entity.trash"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:29
+msgid "Move to trash"
+msgstr "In den Papierkorb verschieben"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/9c/94/081fbd4cb887fdbae4f45647a08f3ba036c7150d60c83d4e8dd63a3764a6.php:28
+msgid "taxonomy/term/get"
+msgstr "taxonomy/term/get"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:21
+msgid "entity.repository.history"
+msgstr "entity.repository.history"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:19
+msgid "entity/repository/history"
+msgstr "entity/repository/history"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:21
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:21
+msgid "entity.revision.create"
+msgstr "entity.revision.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:24
+msgid "I want to edit this"
+msgstr "Ich möchte das bearbeiten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:26
+msgid "entity/repository/add-revision"
+msgstr "entity/repository/add-revision"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:24
+msgid "page.revision.create"
+msgstr "page.revision.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:29
+msgid "page/revision/create"
+msgstr "page/revision/create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:43
+msgid "page/revision/view-all"
+msgstr "page/revision/view-all"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:62
+msgid "Log"
+msgstr "Verlauf"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:79
+msgid "Trash"
+msgstr "Papierkorb"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:86
+msgid "page/revision/checkout"
+msgstr "page/revision/checkout"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:91
+msgid "Set as base revision"
+msgstr "Set as base revision"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:98
+msgid "page.update"
+msgstr "page.update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:103
+msgid "page/update"
+msgstr "page/update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:108
+msgid "Settigs"
+msgstr "Einstellungen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:71
+msgid "entity.revision.checkout"
+msgstr "entity.revision.checkout"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:80
+msgid "entity.revision.trash"
+msgstr "entity.revision.trash"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:86
+msgid "entity.revision.restore"
+msgstr "entity.revision.restore"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:114
+msgid "modals"
+msgstr "modals"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:34
+msgid "Start a new discussion"
+msgstr "Neue Diskussion starten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:70
+msgid "There are no discussions on this topic yet."
+msgstr "Zu diesem Thema gibt es noch keine Diskussionen."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:48
+#, php-format
+msgid "Add %s"
+msgstr "%s hinzufügen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/df/73/c5f9c1de24d38034009e350f7dd0a442a88c76b6e97f8175d91325cf3655.php:38
+msgid "More"
+msgstr "Mehr"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/e8/4d/06ffa0315ea38e1b609de5eba51d90d92540a0e1a22c2356c69063ff3454.php:24
+msgid "Related taxonomies"
+msgstr "Themenverwandte Taxonomien"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:36
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/detail.phtml:3
+msgid "License"
+msgstr "Lizenz"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:46
+msgid "on"
+msgstr "on"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:62
+msgid "by"
+msgstr "by"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:74
+msgid "discussion.vote"
+msgstr "discussion.vote"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:98
+msgid "discussion/discussion/vote"
+msgstr "discussion/discussion/vote"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:126
+msgid "discussion.archive"
+msgstr "discussion.archive"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:129
+msgid "discussion/discussion/archive"
+msgstr "discussion/discussion/archive"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:150
+msgid "discussion.trash"
+msgstr "discussion.trash"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:158
+msgid "Do you really want to delete this discussion?"
+msgstr "Möchtest du diese Diskussion wirklich löschen?"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:214
+msgid "discussion.comment.trash"
+msgstr "discussion.comment.trash"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:222
+msgid "Do you really want to delete this comment?"
+msgstr "Willst du diesen Kommentar wirklich löschen?"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:246
+msgid "discussion.comment.create"
+msgstr "discussion.comment.create"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:21
+msgid "entity.license.update"
+msgstr "entity.license.update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:26
+msgid "entity/license/update"
+msgstr "entity/license/update"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:31
+msgid "Change license"
+msgstr "Lizenzierung ändern"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:19
+msgid "Discussions"
+msgstr "Diskussionen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:30
+msgid "discussion/discussions/get"
+msgstr "discussion/discussions/get"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:59
+msgid "Discussions from self and subtopics"
+msgstr "Diskussionen inklusive Unterthemen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/f5/6b276c280512b66e1aa074ddbe1f4a9c044aa6270d9ba86af34364ae205a.php:23
+#, php-format
+msgid "Welcome to %s"
+msgstr "Willkommen bei %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/f5/6b276c280512b66e1aa074ddbe1f4a9c044aa6270d9ba86af34364ae205a.php:29
+msgid "Subjects"
+msgstr "Fächer"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:68
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:49
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:39
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:66
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:23
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:30
+msgid "Title:"
+msgstr "Titel:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:32
+msgid "Url:"
+msgstr "URL:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:69
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:50
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/CommentForm.php:64
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseForm.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseGroupForm.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:45
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:27
+msgid "Content:"
+msgstr "Inhalt:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:43
+msgid "frequency"
+msgstr "Frequenz"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:43
+msgid "2"
+msgstr "2"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:47
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdPageForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:76
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:57
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:43
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/Controls.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ContainerForm.php:57
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/PageForm.php:55
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:71
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterKeyForm.php:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:70
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Form/TermForm.php:63
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:43
+msgid "Save"
+msgstr "Speichern"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdPageForm.php:27
+msgid "Page ID:"
+msgstr "Seiten ID:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentFieldset.php:29
+msgid "Attach file:"
+msgstr "Datei anhängen:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentForm.php:31
+msgid "Set type:"
+msgstr "Dateityp:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentForm.php:34
+msgid "Upload"
+msgstr "Hochladen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:60
+msgid "Your account has been activated, you may now log in."
+msgstr "Dein Konto wurde aktiviert. Du kannst dich jetzt anmelden."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:65
+msgid ""
+"I couldn't find an account by that token. You can now try to re-activate "
+"your account."
+msgstr ""
+"I couldn't find an account by that token. You can now try to re-activate "
+"your account."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:82
+msgid ""
+"Your have been sent an activation email. Please check your spam folder as "
+"well."
+msgstr ""
+"Wir haben dir eine Aktivierungsmail geschickt. Überprüfe gegebenenfalls "
+"deinen Spam-Ordner."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:119
+msgid "Your password has successfully been changed."
+msgstr "Dein Passwort wurde erfolgreich geändert."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:227
+msgid ""
+"You have been sent an email with instructions on how to restore your "
+"password! Please check your spam folder as well."
+msgstr ""
+"Wir haben dir eine E-Mail mit Anweisungen geschickt, wie du dein Passwort "
+"zurücksetzen kannst! Überprüfe gegebenenfalls deinen Spam-Ordner."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Form/ActivateForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SelectUserForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SettingsForm.php:29
+msgid "Email:"
+msgstr "E-Mail-Adresse:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Form/ActivateForm.php:30
+msgid "Activate"
+msgstr "Freischalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Controller/RoleController.php:150
+msgid "Role created."
+msgstr "Rolle erstellt."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:30
+msgid "Permission:"
+msgstr "Berechtigung:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:39
+msgid "Instance:"
+msgstr "Instanz:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:42
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/RoleForm.php:47
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/UserForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/button.phtml:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/default.phtml:36
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/RoleForm.php:44
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Term/src/Term/Form/TermFieldset.php:25
+msgid "Name:"
+msgstr "Name:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/UserForm.php:25
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:33
+msgid "Username:"
+msgstr "Benutzername:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:74
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:55
+msgid "Publish date:"
+msgstr "Veröffentlicht am:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:38
+msgid "Select a type:"
+msgstr "Wähle einen Typ:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:40
+msgid "Object-ID:"
+msgstr "Objekt-ID:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ParameterFieldset.php:26
+msgid "Which parameters should be matched?"
+msgstr "Welche Parameter sollen zusammengefügt werden?"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ParameterFieldset.php:49
+msgid "<strong>"
+msgstr "<strong>"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/UrlForm.php:28
+msgid "Uri:"
+msgstr "URL:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/UrlForm.php:30
+msgid "Select"
+msgstr "Auswählen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:150
+msgid "You have downvoted this comment."
+msgstr "Du hast diesen Kommentar bereits abgewertet."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:152
+msgid "You can't downvote this comment."
+msgstr "Du kannst diesen Kommentar nicht abwerten."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:156
+msgid "You have upvoted this comment."
+msgstr "Du hast diesen Kommentar bereits aufgewertet."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:158
+msgid "You can't upvote this comment."
+msgstr "Du kannst diesen Kommentar nicht aufwerten."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/CommentForm.php:67
+msgid "Comment"
+msgstr "Kommentar"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:67
+msgid "content:"
+msgstr "Inhalt:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:70
+msgid "Start discussion"
+msgstr "Diskussion starten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Controller/LinkController.php:50
+msgid "Your changes have been saved."
+msgstr "Deine Änderungen wurden gespeichert."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Controller/RepositoryController.php:56
+msgid ""
+"Your revision has been saved, it will be available once it get's approved"
+msgstr ""
+"Deine Überarbeitung wurde gespeichert. Sobald sie genehmigt wurde, ist sie "
+"verfügbar"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:32
+msgid "Reasoning:"
+msgstr "Begründung:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseGroupForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:35
+msgid "Changes:"
+msgstr "Änderungen:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:26
+msgid "Hint:"
+msgstr "Hinweis:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:29
+msgid "Description:"
+msgstr "Beschreibung:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:30
+msgid "Video url:"
+msgstr "Video-URL:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Controller/FlagController.php:42
+msgid "The content has been flagged."
+msgstr "Der Inhalt wurde gekennzeichnet."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Controller/FlagController.php:77
+msgid "Your action was successfull."
+msgstr "Deine Aktion war erfolgreich."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ContainerForm.php:39
+msgid "Type:"
+msgstr "Typ:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:48
+msgid "Report"
+msgstr "Bericht"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:34
+msgid "License url:"
+msgstr "Lizenz-URL:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:35
+msgid "Icon url:"
+msgstr "Symbol-URL:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/UpdateLicenseForm.php:34
+msgid "Select a license:"
+msgstr "Wähle eine Lizenz:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/UpdateLicenseForm.php:37
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SettingsForm.php:31
+msgid "Update"
+msgstr "Änderungen speichern"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Markdown/src/Markdown/View/Helper/MarkdownHelper.php:48
+msgid "Rendering failed:"
+msgstr "Rendering fehlgeschlagen:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:84
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:112
+msgid "The container was successfully created"
+msgstr "The container was successfully created"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:114
+msgid "The container could not be created (validation failed)"
+msgstr "The container could not be created (validation failed)"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:219
+msgid "The container was successfully removed"
+msgstr "The container was successfully removed"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:230
+msgid "The page was successfully removed"
+msgstr "Die Seite wurde erfolgreich entfernt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:241
+msgid "The parameter was successfully removed"
+msgstr "Der Parameter wurde erfolgreich gelöscht"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:257
+msgid "The page was successfully updated"
+msgstr "Die Seite wurde erfolgreich geändert"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:259
+msgid "The page could not be updated"
+msgstr "Die Seite konnte nicht geändert werden"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:262
+msgid "No post data was sent - the page could not be updated"
+msgstr ""
+"Es wurden keine POST-Daten übertragen - die Seite konnte nicht geändert "
+"werden"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/PageForm.php:52
+msgid "Position"
+msgstr "Position"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:40
+msgid "Key:"
+msgstr "Schlüssel:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:47
+msgid "Value:"
+msgstr "Wert:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Notification/src/Notification/Form/OptInFieldset.php:26
+msgid "Add to watchlist"
+msgstr "Benachrichtigungen über weitere Änderungen erhalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Notification/src/Notification/Form/OptInFieldset.php:31
+msgid "Get email notifications as well"
+msgstr "Benachrichtigungen über weitere Änderungen ebenfalls per Mail erhalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:32
+msgid "Forum Id:"
+msgstr "Forum ID:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:31
+msgid "Reference:"
+msgstr "Referenz:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Search/src/Search/Form/SearchForm.php:30
+msgid "search"
+msgstr "Suchen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Controller/TermController.php:36
+msgid "The node has been added successfully!"
+msgstr "Der Knoten wurde erfolgreich hinzugefügt!"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Controller/TermController.php:108
+msgid "Your changes have been saved!"
+msgstr "Deine Änderungen wurden gespeichert!"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Form/TermForm.php:60
+msgid "description:"
+msgstr "Beschreibung:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Controller/UserController.php:89
+msgid ""
+"You have registered successfully and\n"
+"                     will soon receive an email with instructions on\n"
+"                     how to activate your account."
+msgstr ""
+"Du hast dich erfolgreich registriert und\n"
+"\n"
+"wirst gleich eine E-Mail mit Anweisungen erhalten,\n"
+"\n"
+"wie du deinen Account aktivieren kannst."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:30
+msgid "Current password:"
+msgstr "Aktuelles Passwort eingeben:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:30
+msgid "New password:"
+msgstr "Neues Passwort eingeben:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:37
+msgid "Confirm password:"
+msgstr "Passwort wiederholen:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:32
+msgid "Email address:"
+msgstr "E-Mail-Adresse:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:36
+msgid "Password:"
+msgstr "Passwort eingeben:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:34
+msgid "Remember me"
+msgstr "Eingeloggt bleiben"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:36
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/login.phtml:15
+msgid "Login"
+msgstr "Login"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:31
+msgid "Repeat new password:"
+msgstr "Neues Passwort wiederholen:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:35
+msgid "Confirm email:"
+msgstr "E-Mail-Adresse wiederholen:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:38
+msgid "I've read and understood the terms of service."
+msgstr ""
+"Ich habe die Nutzungsbedingungen gelesen, verstanden und stimme ihnen zu."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:40
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/register.phtml:2
+msgid "Sign up"
+msgstr "Registrieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SelectUserForm.php:32
+msgid "Restore"
+msgstr "Zurücksetzen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:33
+msgid "The content has been trashed."
+msgstr "Der Inhalt wurde in den Papierkorb verschoben."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:41
+msgid "The content has been restored."
+msgstr "Der Inhalt wurde wiederhergestellt."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:49
+msgid "The content has been removed."
+msgstr "Der Inhalt wurde entfernt."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/admin/home/index.phtml:12
+msgid "Backend"
+msgstr "Backend"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/admin/home/index.phtml:15
+msgid "Welcome to the backend. Explore the possiblities on the right!"
+msgstr "Willkommen im Backend."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/ads/helper/ads-helper.phtml:4
+msgid "Horizon"
+msgstr "Horizont"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/activate.phtml:1
+msgid "Activate an account"
+msgstr "Account freischalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/change-password.phtml:2
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/login.phtml:24
+#, php-format
+msgid "Did you forget your %spassword%s?"
+msgstr "%sPasswort vergessen%s?"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/reset-password/restore.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/reset-password/select.phtml:1
+msgid "Restore password"
+msgstr "Passwort zurücksetzen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/create.phtml:2
+msgid "Create role"
+msgstr "Rolle erstellen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:16
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:17
+msgid "Username"
+msgstr "Benutzername"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:17
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/roles.phtml:12
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:18
+msgid "Roles"
+msgstr "Rollen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:18
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:19
+msgid "Last login"
+msgstr "Letzter Login"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:19
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:20
+msgid "Logins"
+msgstr "Anmeldungen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/permission/add.phtml:12
+msgid "Add permission"
+msgstr "Berechtigung hinzufügen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/roles.phtml:29
+msgid "role"
+msgstr "Rolle"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:12
+msgid "Role"
+msgstr "Rolle"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:20
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/users.phtml:14
+msgid "Users"
+msgstr "Benutzer"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:47
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:58
+msgid "Global"
+msgstr "Global"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:70
+msgid "Inherits from"
+msgstr "Erbt von"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/add.phtml:12
+msgid "Add user"
+msgstr "Benutzer hinzufügen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/partial.phtml:14
+#, php-format
+msgid "User %s not found"
+msgstr "Benutzer %s wurde nicht gefunden"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/remove.phtml:12
+msgid "Remove user"
+msgstr "Benutzer entfernen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/blogs.phtml:13
+msgid "Blogs"
+msgstr "Blogs"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/post/update.phtml:12
+msgid "Update a blog post"
+msgstr "Blogeintrag aktualisieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view-all.phtml:2
+msgid "Unpublished posts"
+msgstr "Unveröffentlichte Posts"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view-partial.phtml:13
+msgid "unpublished"
+msgstr "Unveröffentlichte Blogeinträge"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view.phtml:24
+msgid "Blog"
+msgstr "Blog"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/form.phtml:12
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/url-form.phtml:12
+msgid "Add context"
+msgstr "Kontext hinzufügen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/url-form.phtml:12
+msgid "Select uri"
+msgstr "URL auswählen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/button.phtml:23
+msgid "There is no help available for this page yet."
+msgstr "Für diese Seite gibt es noch keine Hilfe."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:12
+msgid "Manage context links"
+msgstr "Links im Kontext verwalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:16
+msgid "Link"
+msgstr "Link"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:17
+msgid "Matching"
+msgstr "deckungsgleiche Parameter"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/license/update.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/update.phtml:1
+msgid "Update license"
+msgstr "Lizenz bearbeiten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/link/move.phtml:2
+msgid "Move resource"
+msgstr "Bezugsquelle verschieben"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/repository/update-revision.phtml:1
+msgid "Update revision"
+msgstr "Korrektur überarbeiten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/taxonomy/update.phtml:13
+msgid "Assign a resource"
+msgstr "eine Quelle zuordnen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:6
+msgid "Forbidden"
+msgstr "Unzulässig"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:8
+msgid "It looks like you went somewhere you weren't supposed to be."
+msgstr "It looks like you went somewhere you weren't supposed to be."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:11
+msgid "Take the blue pill and return home"
+msgstr "Nimm die blaue Pille und geh zurück auf Start."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:33
+msgid "The requested controller was unable to dispatch the request."
+msgstr "Der angeforderte Controller konnte die Anforderung nicht bearbeiten."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:37
+msgid ""
+"The requested controller could not be mapped to an existing controller class."
+msgstr ""
+"Der angeforderte Controller konnte nicht zu einer vorhandenen Controller-"
+"Klasse zugeordnet werden."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:41
+msgid "The requested controller was not dispatchable."
+msgstr "Der angeforderte Controller konnte nicht abgesendet werden."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:44
+msgid "The requested URL could not be matched by routing."
+msgstr "Die angeforderte URL konnte nicht zugeordnet werden."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:47
+msgid "We cannot determine at this time why a 404 was generated."
+msgstr ""
+"Im Moment können wir nicht festellen warum ein 404 Fehler aufgetreten ist."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:59
+msgid "Controller"
+msgstr "Controller"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:65
+#, php-format
+msgid "resolves to %s"
+msgstr "löst sich in %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:79
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:8
+msgid "Additional information"
+msgstr "Zusätzliche Informationen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:82
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:107
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:11
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:35
+msgid "File"
+msgstr "Datei"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:87
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:112
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:39
+msgid "Message"
+msgstr "Nachricht"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:91
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:116
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:19
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:43
+msgid "Stack trace"
+msgstr "Stapelüberwachung"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:101
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:29
+msgid "Previous exceptions"
+msgstr "Vorherige Ausnahmen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:1
+msgid "An error occurred"
+msgstr "Es ist ein Fehler aufgetreten."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:58
+msgid "No Exception available"
+msgstr "Keine Ausnahmen verfügbar"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/discussion/comment/create.phtml:4
+#, php-format
+msgid "%s commented \"%s\": %s"
+msgstr "%s hat \"%s\" kommentiert: %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/discussion/create.phtml:4
+#, php-format
+msgid "%s started a new discussion \"%s\" on %s"
+msgstr "%s hat eine neue Diskussion %s auf %s gestartet"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/create.phtml:4
+#, php-format
+msgid "%s created a new %s: %s"
+msgstr "%s hat eine neue %s angelegt: %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/link/create.phtml:6
+#, php-format
+msgid "%s added %s to %s"
+msgstr "%s hat %s zu %s hinzugefügt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/add.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/reject.phtml:5
+msgid "trashed content"
+msgstr "Der Inhalt ist im Papierkorb."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/add.phtml:9
+#, php-format
+msgid "%s created a new version of %s"
+msgstr "%s hat eine neue Bearbeitung von %s erstellt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:10
+#, php-format
+msgid "%s checked out a new version of %s: \"%s\""
+msgstr "%s hat eine neue Bearbeitung %s akzeptiert: \"%s\""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/reject.phtml:10
+#, php-format
+msgid "%s rejected a version of %s: \"%s\""
+msgstr "%s lehnte eine Bearbeitung von %s ab: \"%s\""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/license/object/set.phtml:5
+#, php-format
+msgid "%s changed the license of %s"
+msgstr "%s hat die Lizenz von %s geändert"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/link/create.phtml:9
+msgid "removed content"
+msgstr "Inhalt entfernt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:10
+#, php-format
+msgid "%s associated %s with taxonomy %s"
+msgstr "%s hat %s der Taxonomie %s zugeordnet"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/create.phtml:3
+#, php-format
+msgid "%s created a new taxonomy term: <strong>\"%s\"</strong>"
+msgstr "%s erstellt eine neue Taxonomie-Formulierung: <strong>%s</strong>"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/parent/change.phtml:7
+#, php-format
+msgid ""
+"%s changed <i>\"%s\"'s</i> parent from <strong>\"%s\"</strong> to <strong>"
+"\"%s\"</strong>"
+msgstr ""
+"%s hat <i>\"%s\"</i> Ursache von <strong>\"%s\"</strong> zu <strong>\"%s\"</"
+"strong> geändert"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/update.phtml:3
+#, php-format
+msgid "%s updated a taxonomy term: <strong>\"%s\"</strong>"
+msgstr "%s hat den Taxonomie-Begriff <strong>\"%s\"</strong> aktualisiert"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/uuid/restore.phtml:3
+#, php-format
+msgid "%s restored \"%s\""
+msgstr "%s hat \"%s\" wiederhergestellt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/uuid/trash.phtml:3
+#, php-format
+msgid "%s trashed \"%s\""
+msgstr "%s hat \"%s\" in den Papierkorb verschoben"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/history.phtml:1
+msgid "Event log"
+msgstr "Ereignisprotokoll"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:5
+msgid "Flag detail"
+msgstr "Details des Bitschalters"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:6
+msgid "Object"
+msgstr "Objekt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:17
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:7
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:22
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:6
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:7
+msgid "Type"
+msgstr "Typ"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:9
+msgid "Reporter"
+msgstr "Reporter"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:44
+msgid "Content"
+msgstr "Inhalt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:1
+msgid "Manage flags"
+msgstr "Flags verwalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/default-modal.phtml:11
+msgid "Okay"
+msgstr "Okay"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/search.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/search/form.phtml:1
+msgid "Search"
+msgstr "Suchen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/add.phtml:1
+msgid "Add license"
+msgstr "Lizenz hinzufügen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:1
+msgid "Manage licenses"
+msgstr "Lizenzen verwalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:21
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:6
+msgid "Title"
+msgstr "Titel"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:6
+msgid "Url"
+msgstr "URL"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:7
+msgid "Icon"
+msgstr "Symbol"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:8
+msgid "Actions"
+msgstr "Aktionen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:22
+msgid ""
+"Caution, deleting a license has serious consequences. You are going to "
+"delete a great amount of content, you need to know exactly what you are "
+"doing! THIS ACTION CAN NOT BE UNDONE"
+msgstr ""
+"Achtung! Das Löschen einer Lizenz hat schwerwiegende Folgen. Du bist dabei "
+"eine große Menge an Inhalt zu löschen, du solltest genau wissen was du tust. "
+"Das Löschen kann nicht rückgängig gemacht werden!"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:22
+msgid ""
+"DANGER: You are going to delete all contents associated with this license!"
+msgstr ""
+"ACHTUNG! Du bist dabei alle Inhalte, die mit der Lizenz verbunden sind zu "
+"löschen!"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/notification/body.phtml:6
+#, php-format
+msgid ""
+"Hello %s,<br>\n"
+"<br>\n"
+"here's a heads up of what has happened on %s:<br>\n"
+"<br>\n"
+"<ul>\n"
+"    %s\n"
+"</ul>"
+msgstr ""
+"Hallo %s,<br>\n"
+"<br>\n"
+"hier ist eine Übersicht der Änderungen auf %s:<br>\n"
+"<br>\n"
+"<ul>\n"
+" %s\n"
+"</ul>"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/register/body.phtml:2
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"thank you for your registration on %s.\n"
+"Please confirm your account:\n"
+"    \n"
+"%s\n"
+"\n"
+"your %s Team. "
+msgstr ""
+"Hallo %s,\n"
+"\n"
+"danke für deine registrierung auf %s.\n"
+"Bitte bestätige deinen Account:\n"
+"\n"
+"%s\n"
+"\n"
+" dein%s Team. "
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/restore-password/body.phtml:2
+#, php-format
+msgid ""
+"Hi %s,\n"
+"it seems that you want to restore your password. If not, you can ignore this "
+"email.\n"
+"You can restore your password by clicking the link below:\n"
+"\n"
+"%s"
+msgstr ""
+"Hallo %s,\n"
+" es scheint du möchtest dein Passwort zurücksetzen. Wenn nicht kannst du "
+"diese Nachricht ignorieren. \n"
+"Du kannst dein Passwort zurücksetzen indem du auf den Link unten klickst:\n"
+"\n"
+"%s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/restore-password/subject.phtml:1
+#, php-format
+msgid "Restore your password on %s"
+msgstr "Stelle dein Passwort auf %s wieder her"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/create.phtml:1
+msgid "Create container"
+msgstr "Create container"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:3
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/containers.phtml:1
+msgid "Manage navigation"
+msgstr "Navigation verwalten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:4
+msgid "Information"
+msgstr "Information"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:7
+msgid "Instance: "
+msgstr "Instanz:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:10
+msgid "Name: "
+msgstr "Name:"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:32
+msgid "page"
+msgstr "Seite"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:17
+msgid "Pages"
+msgstr "Seiten"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/containers.phtml:11
+msgid "container"
+msgstr "container"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:24
+msgid "parameter"
+msgstr "Parameter"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/create.phtml:1
+msgid "Create parameter"
+msgstr "Parameter erstellen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/create.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/update.phtml:5
+msgid "Key"
+msgstr "Schlüssel"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/key/create.phtml:1
+msgid "Create parameter key"
+msgstr "Parameter Schlüssel erstellen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/update.phtml:1
+msgid "Update parameter"
+msgstr "Parameter aktualisieren"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/search/results.phtml:1
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:15
+msgid "Trashed learning resources"
+msgstr "gelöschte Lernressourcen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:23
+msgid "Action"
+msgstr "Aktion"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:26
+msgid ""
+"Do you really want to purge this item? It and all references to it will be "
+"lost forever!"
+msgstr ""
+"Möchtest du wirklich diese Datei löschen? Die Datei und alle Verweise darauf "
+"werden unwiderruflich gelöscht."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:1
+msgid "Unrevised learning resources"
+msgstr "nicht überarbeitete Lernressourcen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/upload/form.phtml:2
+msgid "Upload a file"
+msgstr "Datei hochladen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notification.phtml:11
+#, php-format
+msgid "Event %s, User %s, Uuid %s"
+msgstr "Ereignis %s, Benutzer %s, Uuid %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notifications.phtml:4
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notifications.phtml:13
+msgid "You have no notifications."
+msgstr "Du hast keine Benachrichtigungen."
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/discussion/comment/create.phtml:7
+#, php-format
+msgid "<strong>%s</strong> commented on discussion \"%s\": \"%s\""
+msgstr "<strong>%s</strong> hat die Diskussion \"%s\" kommentiert: \"%s\""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/discussion/create.phtml:7
+#, php-format
+msgid "<strong>%s</strong> started a discussion on \"%s\": <i>\"%s\"</i>"
+msgstr ""
+"<strong>%s</strong> hat eine Diskussion  über \"%s\" gestartet: <i>\"%s\"</i>"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/link/create.phtml:14
+#, php-format
+msgid "<strong>%s</strong> added %s to %s"
+msgstr "<strong>%s</strong> hat %s zu %s hinzugefügt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/add.phtml:9
+#, php-format
+msgid "<strong>%s</strong> edited %s"
+msgstr "<strong>%s</strong> hat %s bearbeitet"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/checkout.phtml:10
+#, php-format
+msgid "<strong>%s</strong> accepted a revision of %s"
+msgstr "<strong>%s</strong> hat eine Bearbeitung von %s akzeptiert"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/reject.phtml:6
+#, php-format
+msgid "<strong>%s</strong> rejectect a revision of %s: %s"
+msgstr "<strong>%s</strong> hat eine Bearbeitung von %s abgelehnt: %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/associate.phtml:6
+#, php-format
+msgid "<strong>%s</strong> associated %s with %s"
+msgstr "<strong>%s</strong> associated %s with %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/parent/change.phtml:8
+#, php-format
+msgid "<strong>%s</strong> changed parent of %s from %s to %s"
+msgstr "<strong>%s</strong> changed parent of %s from %s to %s"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/update.phtml:4
+#, php-format
+msgid "<strong>%s</strong> updated %s"
+msgstr "<strong>%s</strong> hat %s bearbeitet"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/uuid/restore.phtml:5
+#, php-format
+msgid "<strong>%s</strong> restored %s"
+msgstr "<strong>%s</strong> hat %s wiederhergestellt"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/uuid/trash.phtml:5
+#, php-format
+msgid "<strong>%s</strong> trashed %s"
+msgstr "<strong>%s</strong> hat %s gelöscht"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:1
+msgid "Profile"
+msgstr "Profil"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:5
+msgid "Last seen"
+msgstr "zuletzt angesehen"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:30
+msgid "Activity log"
+msgstr "Aktivitätsprotokoll"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/settings.phtml:2
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/settings.phtml:6
+msgid "Change your password"
+msgstr "Passwort ändern"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:1
+msgid "Uuid recycle bin"
+msgstr "Papierkorb"
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:5
+msgid "ID"
+msgstr "ID"

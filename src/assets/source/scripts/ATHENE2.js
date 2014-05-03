@@ -6,18 +6,18 @@
  * @license LGPL-3.0
  * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_element', 'content', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'],
+        'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'
+    ],
     function ($, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
             ajaxOverlay;
 
         function init($context) {
-            languageFromDOM = $('html').attr('lang') || 'de';
+            languageFromDOM = $('html').attr('lang') ||  'de';
             // configure Translator to current language
             t.config({
                 language: languageFromDOM
@@ -32,7 +32,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
             // initialize contextuals whenever a new context is added
 
             $('.side-element').SerloAffix({
-                
+
             });
 
             $('.page-header').SerloAffix({
@@ -61,7 +61,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 // init injections
                 $('.injection').Injections();
                 // init edit controls
-                $('[data-toggle*="-controls"]').ToggleAction();
+                $('[data-toggle]').ToggleAction();
                 // init triggers
                 $('[data-trigger]').TriggerAction();
                 // forum select
@@ -107,6 +107,37 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
             // trigger new contextual
             Common.trigger('new context', $context);
 
+            // Initialize the subject nav
+            (function () {
+                var opened = false,
+                    $dropdown = $('#subject-nav .subject-dropdown');
+
+                $dropdown.click(function (e) {
+                    // stop bubbling
+                    // so outside click
+                    // wont close it
+                    e.stopPropagation();
+                });
+
+                function closeDropdown() {
+                    opened = false;
+                    $dropdown.removeClass('open');
+                    $context.unbind('click', closeDropdown);
+                }
+
+                $('.subject-dropdown-toggle', $dropdown).click(function (e) {
+                    e.preventDefault();
+                    opened = !opened;
+                    $dropdown.toggleClass('open', opened);
+
+                    if (opened) {
+                        $context.click(closeDropdown);
+                    }
+
+                    return;
+                });
+            }());
+
             SideElement.init();
         }
 
@@ -127,7 +158,9 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
             jax: ["input/TeX", "output/HTML-CSS"],
             skipStartupTypeset: 'true',
             tex2jax: {
-                inlineMath: [["%%", "%%"]]
+                inlineMath: [
+                    ["%%", "%%"]
+                ]
             },
             "HTML-CSS": {
                 scale: 100,

@@ -621,4 +621,3 @@ class Html2Markdown extends AbstractConverter
         }
     }
 }
- 

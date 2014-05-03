@@ -73,9 +73,9 @@ class PermissionService implements PermissionServiceInterface
             $permission = $name;
         }
 
-        try{
+        try {
             return $this->findParametrizedPermission($name, $parameterKey, $parameterValue);
-        } catch (PermissionNotFoundException $e){
+        } catch (PermissionNotFoundException $e) {
             /* @var $parametrized ParametrizedPermissionInterface */
             $parametrized = $this->getClassResolver()->resolve($this->instancePermissionInterface);
             $parametrized->setPermission($permission);

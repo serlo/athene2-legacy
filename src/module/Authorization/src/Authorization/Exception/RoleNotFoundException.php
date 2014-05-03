@@ -12,4 +12,4 @@ namespace Authorization\Exception;
 
 class RoleNotFoundException extends RuntimeException
 {
-} 
+}

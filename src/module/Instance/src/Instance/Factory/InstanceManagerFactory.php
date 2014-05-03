@@ -36,4 +36,4 @@ class InstanceManagerFactory implements FactoryInterface
         return $instance;
     }
 
-} 
+}

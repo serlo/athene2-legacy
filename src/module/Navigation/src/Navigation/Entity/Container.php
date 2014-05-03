@@ -73,6 +73,8 @@ class Container implements ContainerInterface
      */
     public function getPages()
     {
-        return $this->pages->matching(Criteria::create()->where(Criteria::expr()->isNull('parent')));
+        return $this->pages->matching(
+            Criteria::create()->where(Criteria::expr()->isNull('parent'))->orderBy(['position' => 'asc'])
+        );
     }
 }

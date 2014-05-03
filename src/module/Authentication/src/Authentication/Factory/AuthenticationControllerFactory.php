@@ -36,4 +36,3 @@ class AuthenticationControllerFactory implements FactoryInterface
         return $controller;
     }
 }
- 

@@ -31,7 +31,7 @@ class AdHydrator implements HydratorInterface
     {
         $data = [];
         foreach ($this->keys as $key) {
-            $method = 'get' . ucfirst($key);
+            $method      = 'get' . ucfirst($key);
             $data['key'] = $object->$method();
         }
 

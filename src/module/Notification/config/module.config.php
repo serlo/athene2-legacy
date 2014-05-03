@@ -6,7 +6,6 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Notification;
 
@@ -28,24 +27,24 @@ return [
                 },
         ]
     ],
-    'router'          => [
+    'router'         => [
         'routes' => [
             'notification' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'options'       => [
-                    'route' => '/notification',
+                    'route'    => '/notification',
                     'defaults' => [
                         'controller' => 'Notification\Controller\NotificationController',
                     ]
                 ],
                 'may_terminate' => false,
                 'child_routes'  => [
-                    'read'        => [
+                    'read' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route'    => '/read',
                             'defaults' => [
-                                'action'     => 'read'
+                                'action' => 'read'
                             ]
                         ]
                     ],

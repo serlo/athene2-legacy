@@ -25,15 +25,21 @@ class IndexController extends AbstractActionController
     use UserManagerAwareTrait, AliasManagerAwareTrait;
 
     /**
-     * @var \Page\Form\RepositoryForm
+     * @var RepositoryForm
      */
     protected $repositoryForm;
+
+    /**
+     * @var RevisionForm
+     */
+    protected $revisionForm;
 
     public function __construct(
         AliasManagerInterface $aliasManager,
         InstanceManagerInterface $instanceManager,
         PageManagerInterface $pageManager,
         RepositoryForm $repositoryForm,
+        RevisionForm $revisionForm,
         RepositoryManagerInterface $repositoryManager,
         UserManagerInterface $userManager
     ) {
@@ -43,6 +49,7 @@ class IndexController extends AbstractActionController
         $this->repositoryManager = $repositoryManager;
         $this->userManager       = $userManager;
         $this->repositoryForm    = $repositoryForm;
+        $this->revisionForm      = $revisionForm;
     }
 
     public function checkoutAction()
@@ -69,7 +76,7 @@ class IndexController extends AbstractActionController
                 $data       = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $params     = [
                     'repository' => $repository,
-                    'slug' => $data['slug']
+                    'slug'       => $data['slug']
                 ];
                 $this->getEventManager()->trigger('page.create', $this, $params);
                 $this->getPageManager()->flush();
@@ -87,7 +94,7 @@ class IndexController extends AbstractActionController
     public function createRevisionAction()
     {
         $user = $this->getUserManager()->getUserFromAuthenticator();
-        $form = new RevisionForm();
+        $form = $this->revisionForm;
         $id   = $this->params('revision');
         $page = $this->getPageRepository();
         $this->assertGranted('page.revision.create', $page);

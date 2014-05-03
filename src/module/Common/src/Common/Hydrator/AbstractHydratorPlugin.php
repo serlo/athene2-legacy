@@ -18,7 +18,6 @@ abstract class AbstractHydratorPlugin implements HydratorPluginInterface
      * This method always returns an empty set.
      *
      * @param object $object
-     *
      * @return array
      */
     public function extract($object)
@@ -26,4 +25,3 @@ abstract class AbstractHydratorPlugin implements HydratorPluginInterface
         return [];
     }
 }
- 

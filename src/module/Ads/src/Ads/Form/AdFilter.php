@@ -17,8 +17,8 @@ class AdFilter extends InputFilter
     {
         $this->add(
             [
-                'name'     => 'title',
-                'required' => true,
+                'name'       => 'title',
+                'required'   => true,
                 'filters'    => [
                     [
                         'name' => 'StripTags'
@@ -34,8 +34,8 @@ class AdFilter extends InputFilter
 
         $this->add(
             [
-                'name'     => 'content',
-                'required' => true,
+                'name'       => 'content',
+                'required'   => true,
                 'filters'    => [
                     [
                         'name' => 'StripTags'

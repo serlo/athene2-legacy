@@ -6,7 +6,6 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace User\Controller;
 
@@ -43,13 +42,13 @@ class UserController extends AbstractUserController
     public function profileAction()
     {
         try {
-            $id   = $this->params('id');
-            if(is_numeric($id)){
+            $id = $this->params('id');
+            if (is_numeric($id)) {
                 $user = $this->getUserManager()->getUser($id);
             } else {
                 $user = $this->getUserManager()->findUserByUsername($id);
             }
-        } catch (UserNotFoundException $e){
+        } catch (UserNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
