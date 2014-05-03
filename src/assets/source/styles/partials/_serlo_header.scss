@@ -52,7 +52,7 @@
   }
 
   .subject-dropdown-title {
-    @include inline-block:
+    @include inline-block;
 
     border-right: 2px solid #E4E6E6;
     padding: 3px 18px;
