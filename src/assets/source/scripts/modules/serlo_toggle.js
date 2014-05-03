@@ -17,7 +17,6 @@ define(['jquery'], function ($) {
                         return false;
                     });
             } else if ($(this).data('toggle') === 'discussions') {
-                console.log('asdf');
                 $(this)
                     .unbind('click')
                     .click(function (e) {

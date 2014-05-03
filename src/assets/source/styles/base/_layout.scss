@@ -116,8 +116,10 @@ body {
     background: $darkGray;
     color: white;
 
-    &:hover {
-        background: $darkerGray;
+    html.no-touch & {
+        &:hover {
+            background: $darkerGray;
+        }
     }
 
     .glyphicon {

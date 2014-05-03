@@ -79,8 +79,10 @@
         -webkit-appearance: none;
         border-radius: 0;
 
-        &:hover {
-            background: white;
+        html.no-touch & {
+            &:hover {
+                background: white;
+            }
         }
 
         &:focus {
