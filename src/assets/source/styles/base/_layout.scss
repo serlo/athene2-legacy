@@ -65,6 +65,13 @@ body {
     z-index: $headerZIndex;
 }
 
+#page {
+    @media only screen and (max-width: $navigationBreakPoint) {
+        margin-top: 22px;
+    }
+}
+
+
 /* Side Elements (Navigation && Context) */
 
 .side-element {
@@ -116,8 +123,10 @@ body {
     background: $darkGray;
     color: white;
 
-    &:hover {
-        background: $darkerGray;
+    html.no-touch & {
+        &:hover {
+            background: $darkerGray;
+        }
     }
 
     .glyphicon {
@@ -148,6 +157,7 @@ body {
         }
     }
 }
+
 
 /* Main Container */
 .main {

@@ -8,7 +8,7 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 
-/*global define, require, window*/
+/*global define, require, window, Modernizr*/
 define(['jquery', 'common', 'translator', 'content'], function ($, Common, t) {
     "use strict";
     var Injections,

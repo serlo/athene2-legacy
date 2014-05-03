@@ -4,30 +4,32 @@
   .subject-dropdown {
     position: relative;
     z-index: 2;
-    margin-left: 200px;
+    margin-left: 180px;
     padding: 0px 20px;
     margin-top: 8px;
   }
 
   .subject-dropdown-toggle {
     display: inline-block;
-    z-index: 12;
+    padding-right: 15px;
 
     cursor: pointer;
-    border-bottom: 2px solid transparent;
+    border-bottom: 1px solid transparent;
 
     line-height: 40px;
     font-size: 35px;
 
     color: $themeColor;
-    background-color: darken($white, 10%);
+    background: #EEE;
+
+    z-index: 12;
 
     @include theme-font(600);
 
     &:hover,
     &:focus {
       text-decoration: none;
-      border-color: $themeColor;
+      border-color: #B1B1B1;
     }
   }
 
@@ -35,8 +37,8 @@
     display: none;
 
     position: absolute;
-    top: 5px;
-    left: 0px;
+    top: -15px;
+    left: 13px;
 
     padding: 75px 20px 20px;
     width: 360px;
@@ -49,12 +51,37 @@
     z-index: -1;
   }
 
-  .open .subject-dropdown-menu {
-    display: block;
+  .subject-dropdown-title {
+    @include inline-block;
+
+    vertical-align: inherit;
+    border-right: 2px solid #E4E6E6;
+    padding: 3px 18px;
+  }
+
+  .open {
+    
+    background: none;
+    
+    .subject-dropdown-title {
+      border-color: transparent;
+    }
+
+    .subject-dropdown-toggle {
+      background-color: white;
+      &:hover,
+      &:focus {
+        border-color: white;
+      }
+    }
+
+    .subject-dropdown-menu {
+      display: block;
+    }
   }
 
   .caret {
-    margin-left: 10px;
+    margin-left: 5px;
     border-width: 7px;
     border-top-color: $themeColor;
     border-bottom: none;
@@ -72,10 +99,10 @@
 
 .slogan {
   @include theme-font();
-  font-size: 1.2em;
-  font-style: italic;
-  color: $lightGray;
-  text-align: right;
   width: 180px;
+  
+  color: $darkerGray;
+  font-size: 0.9em;
+  text-align: right;
 }
 
