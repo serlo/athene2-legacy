@@ -19,5 +19,10 @@ return [
     ],
     'assetic_configuration' => [
         'buildOnRequest' => true
-    ]
+    ],
+    'strokercache' => array(
+        'storage_adapter' => array(
+            'name' => 'Zend\Cache\Storage\Adapter\Apc',
+        )
+    )
 ];

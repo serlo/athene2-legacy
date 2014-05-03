@@ -23,8 +23,5 @@ return array(
                 ),
             ),
         ),
-        'storage_adapter' => array(
-            'name' => 'Zend\Cache\Storage\Adapter\Apc',
-        ),
     ),
 );
