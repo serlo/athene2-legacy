@@ -1,4 +1,4 @@
-/*global define, window*/
+/*global define, window, Modernizr*/
 define(['jquery', 'underscore'], function ($, _) {
     "use strict";
     var SideElement,
