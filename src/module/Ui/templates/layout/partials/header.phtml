@@ -20,6 +20,7 @@
         </a>
         <div class="subject-dropdown is-inline-block">
             <a class="subject-dropdown-toggle" href="#">
+            <span class="subject-dropdown-title">
                 <?php echo $this->navigation('navigation')
                                 ->menu()
                                 ->setPartial('layout/navigation/partial/active-subject')
@@ -28,6 +29,7 @@
                                 ->setMaxDepth(0)
                                 ->render();
                 ?>
+            </span>
             <b class="caret"></b></a>
             <div class="subject-dropdown-menu" role="menu" aria-labelledby="dLabel">
                 <?php

@@ -20,7 +20,7 @@
     font-size: 35px;
 
     color: $themeColor;
-    // background-color: darken($white, 10%);
+    background: #EEE;
 
     @include theme-font(600);
 
@@ -49,12 +49,26 @@
     z-index: -1;
   }
 
-  .open .subject-dropdown-menu {
-    display: block;
+  .subject-dropdown-title {
+    border-right: 2px solid #E4E6E6;
+    padding: 2px 18px;
+  }
+
+  .open {
+    
+    background: none;
+    
+    .subject-dropdown-title {
+      background-color: white;
+    }
+
+    .subject-dropdown-menu {
+      display: block;
+    }
   }
 
   .caret {
-    margin-left: 10px;
+    margin-left: 14px;
     border-width: 7px;
     border-top-color: $themeColor;
     border-bottom: none;
@@ -72,10 +86,10 @@
 
 .slogan {
   @include theme-font();
-  font-size: 1.2em;
-  font-style: italic;
-  color: $lightGray;
-  text-align: right;
   width: 180px;
+  
+  color: $darkerGray;
+  font-size: 0.9em;
+  text-align: right;
 }
 
