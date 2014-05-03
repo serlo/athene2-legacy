@@ -65,6 +65,13 @@ body {
     z-index: $headerZIndex;
 }
 
+#page {
+    @media only screen and (max-width: $navigationBreakPoint) {
+        margin-top: 22px;
+    }
+}
+
+
 /* Side Elements (Navigation && Context) */
 
 .side-element {
@@ -151,11 +158,6 @@ body {
     }
 }
 
-.page {
-    @media only screen and (max-width: $navigationBreakPoint) {
-        margin-top: 22px;
-    }
-}
 
 /* Main Container */
 .main {
