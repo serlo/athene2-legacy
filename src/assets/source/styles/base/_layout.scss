@@ -66,8 +66,15 @@ body {
 }
 
 #page {
-    @media only screen and (max-width: $navigationBreakPoint) {
-        margin-top: 22px;
+    margin-top: 22px;
+    
+
+    &.has-navigation {
+        margin-top: 0;
+
+        @media only screen and (max-width: $navigationBreakPoint) {
+            margin-top: 22px;
+        }
     }
 }
 

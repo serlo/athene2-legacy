@@ -99,6 +99,9 @@
 
 .slogan {
   @include theme-font();
+  position: relative;
+  top: -8px;
+
   width: 180px;
   
   color: $darkerGray;
