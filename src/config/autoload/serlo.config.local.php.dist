@@ -5,8 +5,10 @@ return [
         'delimiter' => ' - '
     ],
     'brand'              => [
-        'name' => 'Serlo <sup><small>beta</small></sup>',
-        'slogan' => 'Freie Bildung.'
+        'name'        => '<h1 id="serlo-brand">Serlo <sup><small>beta</small></sup></h1>',
+        'slogan'      => 'Freie Bildung.',
+        'description' => 'Serlo bietet SchülerInnen professionelle Lernplattform mit didaktisch wertvolle Lernmaterialien.',
+        'logo' => '<span id="serlo-logo">V</span>'
     ],
     'mailman'            => [
         'sender'   => 'no-reply@serlo.org',
