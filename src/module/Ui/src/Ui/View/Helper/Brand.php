@@ -15,20 +15,35 @@ use Zend\View\Helper\AbstractHelper;
 class Brand extends AbstractHelper
 {
     /**
-     * @var \Ui\Options\BrandHelperOptions
+     * @var BrandHelperOptions
      */
     protected $options;
 
+    /**
+     * @param BrandHelperOptions $brandHelperOptions
+     */
     public function __construct(BrandHelperOptions $brandHelperOptions)
     {
         $this->options = $brandHelperOptions;
     }
 
+    public function getLogo()
+    {
+        return $this->options->getLogo();
+    }
+
+    /**
+     * @return $this
+     */
     public function __invoke()
     {
         return $this;
     }
 
+    /**
+     * @param bool $stripTags
+     * @return string
+     */
     public function getBrand($stripTags = false)
     {
         if ($stripTags) {
@@ -38,6 +53,10 @@ class Brand extends AbstractHelper
         return $this->options->getName();
     }
 
+    /**
+     * @param bool $stripTags
+     * @return string
+     */
     public function getSlogan($stripTags = false)
     {
         if ($stripTags) {
@@ -45,5 +64,13 @@ class Brand extends AbstractHelper
         }
 
         return $this->options->getSlogan();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->options->getDescription();
     }
 }

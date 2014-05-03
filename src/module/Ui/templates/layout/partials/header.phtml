@@ -14,7 +14,10 @@
     <?php echo $this->partial('layout/partials/top-bar'); ?>
 
     <div id="subject-nav">
-        <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" width="110" height="37" src="/assets/images/serlo_logo.png" /></a></h1>
+        <a id="brand-link" href="<?php echo $this->url('home'); ?>">
+            <?php echo $this->brand()->getLogo(); ?>
+            <?php echo $this->brand()->getBrand(); ?>
+        </a>
         <div class="subject-dropdown is-inline-block">
             <a class="subject-dropdown-toggle" href="#">
                 <?php echo $this->navigation('navigation')

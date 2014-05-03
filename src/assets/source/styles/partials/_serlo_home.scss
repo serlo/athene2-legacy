@@ -5,22 +5,17 @@
     padding: 0;
     min-height: 420px;
     text-align: center;
+    position: relative;
+
+    .brand {
+      margin-top: 0px;
+    }
 
     .home-nav {
-      width: 100%;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      li {
-        width: 33.3%;
-        float: left;
-        padding: 0 5px 5px 0;
-        display: block;
-        box-sizing: border-box;
-        a {
+      &>div {
+        &>a {
           background-color: $themeColor;
           color: $white;
-          margin-right: 5px;
           padding: 15px 0;
           display: block;
           &:hover, &:active, &:focus {
@@ -45,6 +40,16 @@
     }
   }
 
+  #search-help {
+    width: 750px;
+    text-align: left;
+  }
+
+  #search-results {
+    width: 750px;
+    text-align: left;
+  }
+
   #search-content {
     position: relative;
     left: 0;
@@ -58,6 +63,23 @@
     min-height: 0px;
     margin: 0 auto;
     padding: 0;
+  }
+
+  #serlo-brand {
+    margin-top: 80px;
+    font-size: 50px;
+  }
+
+  #serlo-logo {
+    font-size: 70px;
+    position: absolute;
+    top: -65px;
+    left: 220px;
+  }
+
+  #serlo-wrapper {
+    text-align: left;
+    margin-left: 310px;
   }
 }
 

@@ -27,9 +27,12 @@ echo $this->doctype();
                 <div id="main-container">
                     <div id="content">
                         <div id="content-container">
-                            <h1 class="brand"><?php echo $this->brand()->getBrand(); ?></h1>
+                            <div id="serlo-wrapper">
+                                <?php echo $this->brand()->getLogo(); ?>
+                                <?php echo $this->brand()->getBrand(); ?>
+                            </div>
                             <div class="description">
-                                <?php echo $this->brand()->getSlogan(); ?>
+                                <?php echo $this->brand()->getDescription(); ?>
                             </div>
                             <?php echo $this->partial('layout/partials/search'); ?>
                             <?php echo $this->partial('layout/partials/main'); ?>

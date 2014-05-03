@@ -28,9 +28,21 @@ body {
     @extend %pageMargin;
 }
 
+#subject-nav {
+  position: relative;
+}
+
 #header {
-    margin-bottom: 30px;
-    clear: both;
+  clear: both;
+}
+
+#brand-link {
+  color: $grayDark;
+  position: relative;
+  &:hover, &:active, &:focus {
+    color: $grayDark;
+    text-decoration: none;
+  }
 }
 
 #horizon {
