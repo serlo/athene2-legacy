@@ -71,7 +71,7 @@ class ZendMailAdapter implements AdapterInterface
     {
         $this->transport->setOptions($this->getSmtpOptions());
         foreach ($this->queue as $message) {
-            $transport->send($message);
+            $this->transport->send($message);
         }
         $this->queue = [];
     }
