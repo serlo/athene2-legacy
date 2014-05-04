@@ -7,7 +7,7 @@ return [
     'brand'              => [
         'name'        => '<h1 id="serlo-brand">Serlo <sup><small>beta</small></sup></h1>',
         'slogan'      => 'Freie Bildung.',
-        'description' => 'Serlo bietet SchülerInnen eine professionelle Lernplattform mit didaktisch wertvolle Lernmaterialien.',
+        'description' => 'Serlo bietet SchülerInnen eine professionelle Lernplattform mit didaktisch wertvollen Lernmaterialien.',
         'logo'        => '<span id="serlo-logo">V</span>'
     ],
     'mailman'            => [
