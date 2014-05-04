@@ -18,6 +18,7 @@ return [
         ],
     ],
     'assetic_configuration' => [
+        'debug' => true,
         'buildOnRequest' => true
     ],
     'strokercache' => array(

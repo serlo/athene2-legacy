@@ -34,7 +34,7 @@ class EntityAdapter extends AbstractSphinxAdapter
         $container->setName($type);
 
         $spinxQuery = $this->forge();
-        $spinxQuery->select('value', 'eid')->from('entityIndex')->match('value', $query . '*')->match('type', $type);
+        $spinxQuery->select('eid')->from('entityIndex')->match('value', $query . '*')->match('type', $type);
         $results   = $spinxQuery->execute();
         $processed = [];
 

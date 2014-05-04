@@ -18,7 +18,8 @@ return array(
                         'taxonomy/term/get',
                         'alias',
                         'entity/page',
-                        'page/view'
+                        'page/view',
+                        'sitemap'
                     ),
                 ),
             ),
