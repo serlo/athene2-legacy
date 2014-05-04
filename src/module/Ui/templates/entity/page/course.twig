@@ -1,9 +1,11 @@
+{% set tmp = headTitle(entity.getCurrentRevision().get('title')) %}
+{% set tmp = headTitle(translate('Course')) %}
 <div class="page-header">
     <div class="pull-right btn-group">
         {% include 'entity/view/partials/actions/toggle-controls' %}
         {{ contexter().renderButton() }}
     </div>
-    <h1>{{ entity.getCurrentRevision().get('title') }} <small>{{ translate('Article') }}</small></h1>
+    <h1>{{ entity.getCurrentRevision().get('title') }} <small>{{ translate('Course') }}</small></h1>
     {% include 'entity/view/partials/actions/big' %}
 </div>
 {% include 'entity/view/default' %}
