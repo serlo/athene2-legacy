@@ -1,671 +1,114 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: serlo\n"
-"POT-Creation-Date: 2014-04-25 15:21+0100\n"
-"PO-Revision-Date: 2014-05-01 16:24+0100\n"
+"POT-Creation-Date: 2014-05-04 12:40+0100\n"
+"PO-Revision-Date: 2014-05-04 12:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;pageHeader;"
 "setSubtitle;addMessage;addSuccessMessage;addErrorMessage;setLabel;setLegend;"
 "setValue;__invoke:1\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-SearchPath-0: /Library/WebServer/Documents/workspace/athene2/src/"
-"module\n"
-"X-Poedit-SearchPath-1: /Library/WebServer/Documents/workspace/athene2/src/"
-"data/twig\n"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/05/7a/ecc08be959335b5a7e4b9075df03c7e33776f9ab22e7d43fb2b5d71b8d3a.php:19
-msgid "entity.link.order"
-msgstr "entity.link.order"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/0b/a5/977825321a55c69e45ddfa5f7aa59fab5f2783c79a81ccf714ae21d22b87.php:23
-msgid "Start learning now!"
-msgstr "Lernen starten!"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/12/6a/5c5ea957a62338b2523e1806d65fef9fb3ba956e9319f1bcb8d4ec4f0344.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:72
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:72
-msgid "I want to comment this"
-msgstr "Ich möchte das kommentieren"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/19/ee/008fb94519ad33c103cfb498cd6b892da5084e2a2ff98b3e023794aa4b0b.php:26
-msgid "entity/link/order"
-msgstr "entity/link/order"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/30/14466ebda47d7fbb1b42d1ca100e8709cb695cbac7f2552792b25e2d1dd3.php:27
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:26
-msgid "license/detail"
-msgstr "Lizenzierung/Detail"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/30/14466ebda47d7fbb1b42d1ca100e8709cb695cbac7f2552792b25e2d1dd3.php:29
-msgid "What is that?"
-msgstr "Was bedeutet das?"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:35
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:33
-msgid "taxonomy/term/create"
-msgstr "taxonomy/term/create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:59
-msgid "taxonomy/term/order"
-msgstr "taxonomy/term/order"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:101
-msgid "taxonomy.term.sort"
-msgstr "taxonomy.term.sort"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:107
-msgid "Tools"
-msgstr "Werkzeuge"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:114
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:14
-msgid "Sort"
-msgstr "Sortieren"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:120
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:15
-msgid "Save new order"
-msgstr "Neue Reihenfolge speichern"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:126
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:44
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:16
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/22/c1/cea0789d71ef862855180b268bcc08e639ed0a7fdf20b5f0cd52ae89a16d.php:22
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3c/cb/17de313977beaf76f285bacbda1dcdf97a733a37e2072dd7fca9bb046467.php:22
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/9a/2a/a5312a93a2d66a0d447c949124072c595e07cc74903504d744bd4202c564.php:22
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/d8/12/db473804c38531c6fb9f1af0847f6547f41729bf13cbf16a73fbbb145cfa.php:22
-msgid "entity/page"
-msgstr "entity/page"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:28
-msgid ""
-"There are multiple recent revisions for this object. Please be aware that "
-"they may be of very different nature. Consider reviewing all of them before "
-"accepting or merging."
-msgstr ""
-"Es gibt mehrere Bearbeitungen für dieses Objekt. Bitte beachte, dass sich "
-"diese groß unterscheiden können. Überprüfe daher gegebenenfalls alle "
-"Bearbeitungen, bevor du eine akzeptierst oder zusammenführst."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:39
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:5
-msgid "#"
-msgstr "#"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:43
-msgid "Current"
-msgstr "Aktuell"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:47
-msgid "Author"
-msgstr "Verfasser"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:51
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:26
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:8
-msgid "Timestamp"
-msgstr "Zeitstempel"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:74
-msgid "entity/repository/compare"
-msgstr "entity/repository/compare"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:76
-msgid "show"
-msgstr "Anzeigen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/28/70/b68bcb99a786f3969c75d0a54c07d1d66050109b7bd3b3f23b8bb33d0969.php:30
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/9e/cf/1e278244cc277bf9016b62469193dbff52cd8e5834878954b4c549ab6d6d.php:30
-msgid "Article"
-msgstr "Artikel"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:26
-msgid "Accept revision"
-msgstr "Bearbeitung akzeptieren"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:31
-msgid "entity/repository/checkout"
-msgstr "entity/repository/checkout"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:37
-msgid "Please give feedback."
-msgstr "Bitte gebe dem Bearbeiter eine Rückmeldung."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:45
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:45
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/default-modal.phtml:10
-msgid "Close"
-msgstr "Schließen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:49
-msgid "Accept"
-msgstr "Übernehmen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:28
-msgid "taxonomy.term.update"
-msgstr "taxonomy.term.update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:52
-msgid "taxonomy/term/update"
-msgstr "taxonomy/term/update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:37
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:21
-msgid "Edit"
-msgstr "Bearbeiten"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:45
-msgid "taxonomy.term.create"
-msgstr "taxonomy.term.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:50
-msgid "taxonomy/term/organize"
-msgstr "taxonomy/term/organize"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:54
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/49/99/d5f2f541241b7575393c3aa6e3ab3e6fa66902825adc0b489edf4b6881a8.php:19
-msgid "Organize"
-msgstr "Organisieren"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:62
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:19
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:53
-msgid "event.log.get"
-msgstr "event.log.get"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:67
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:24
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:58
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:58
-msgid "event/history"
-msgstr "event/history"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:71
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:47
-msgid "History"
-msgstr "Bearbeitungsverlauf"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:79
-msgid "entity.create"
-msgstr "entity.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:79
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:26
-msgid "taxonomy.term.associate"
-msgstr "taxonomy.term.associate"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:85
-msgid "Add content"
-msgstr "Neuer Inhalt"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:98
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:43
-msgid "entity/create"
-msgstr "entity/create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:118
-msgid "taxonomy.term.associated.sort"
-msgstr "taxonomy.term.associated.sort"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:123
-msgid "taxonomy/term/sort-associated"
-msgstr "taxonomy/term/sort-associated"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:127
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:1
-msgid "Order content"
-msgstr "Inhalt sortieren"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:26
-msgid "taxonomy.term.dissociate"
-msgstr "taxonomy.term.dissociate"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:31
-msgid "entity/taxonomy/update"
-msgstr "entity/taxonomy/update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:36
-msgid "Update taxonomy"
-msgstr "Taxonomie bearbeiten"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:38
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:38
-msgid "I want to see the solution"
-msgstr "Ich möchte die Lösung sehen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:54
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:54
-msgid "I need a hint"
-msgstr "Ich brauche einen Hinweis"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:19
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:140
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:202
-msgid "flag.create"
-msgstr "flag.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:24
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:143
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:207
-msgid "flag/add"
-msgstr "flag/add"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:29
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/add.phtml:1
-msgid "Flag content"
-msgstr "Inhalt des Bitschalters"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/3c/4c/814fe0b84e872e4097f3563e1b3cbe6c0403686851dc0d2064582d9454f6.php:60
-msgid "discussion/discussion/start"
-msgstr "Diskussion/Diskussion/Start"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/41/d1/734d2b8ccb87c0bdb2560422e273e56b7294a40a68f3389c3e9a82ceca86.php:26
-msgid "related-content/manage"
-msgstr "related-content/manage"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/41/d1/734d2b8ccb87c0bdb2560422e273e56b7294a40a68f3389c3e9a82ceca86.php:31
-msgid "Manage related items"
-msgstr "Manage related items"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:26
-msgid "Reject revision"
-msgstr "Bearbeitung ablehnen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:31
-msgid "entity/repository/reject"
-msgstr "entity/repository/reject"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:37
-msgid "Please specify why you are rejecting the submission."
-msgstr "Bitte teile dem Bearbeiter mit, warum seine Änderung abgelehnt wurde."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:49
-msgid "Reject"
-msgstr "Ablehnen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:40
-msgid "Hint"
-msgstr "Hinweis"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:70
-msgid "Solution"
-msgstr "Lösung"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:87
-msgid ""
-"A solution has been created but no content has been added yet or it is "
-"pending approval."
-msgstr ""
-"Eine Lösung wurde erstellt, aber ihr noch kein Inhalt hinzugefügt oder noch "
-"nicht akzeptiert."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/46/91/255f94e52591462ccd8d9805852c6df41d87d0b74f0a82db842ed162f4c7.php:32
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f6/49/29464de8c98e149a83dd1923e2d167e29a77881ea40b26dfb286105d6564.php:32
-#, php-format
-msgid "Now view found for %s"
-msgstr "Now view found for %s"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:29
-msgid "entity.link.purge"
-msgstr "entity.link.purge"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:29
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:38
-msgid "entity.link.create"
-msgstr "entity.link.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:34
-msgid "entity/link/move"
-msgstr "entity/link/move"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:39
-#, php-format
-msgid "Change parent \"%s\""
-msgstr "Change parent \"%s\""
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/63/85/004f7be166b7cae80fbe5d8ff70fec6fed1757226b62320b58ac4cdd6050.php:19
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:23
-msgid "discussion.create"
-msgstr "discussion.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/63/85/004f7be166b7cae80fbe5d8ff70fec6fed1757226b62320b58ac4cdd6050.php:22
-msgid "Start a discussion"
-msgstr "Starte eine neue Diskussion"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:29
-msgid "Show logfile"
-msgstr "Verlauf anzeigen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:67
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:89
-msgid "uuid/restore"
-msgstr "uuid/restore"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:74
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:24
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:75
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:153
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:217
-msgid "uuid/trash"
-msgstr "uuid/trash"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/7d/da/d8a07a16782015be18febd4bb765e0933ce87ac4acdf630300b57b39201c.php:30
-#, php-format
-msgid "Template for %s not found"
-msgstr "Template for %s not found"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/91/9b/b1e9a0d9a242c82f09ad8ae1db8fd8eb8c7c339dbc9fc0798d2c50b7317d.php:26
-msgid ""
-"This taxonomy term is marked as <strong>trashed</strong>. Contents might be "
-"out of date or unmaintained."
-msgstr ""
-"Dieser Taxonomie-Punkt ist als <strong>gelöscht</strong>. Seine Inhalte "
-"könnten daher veraltet sein."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:19
-msgid "entity.trash"
-msgstr "entity.trash"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:29
-msgid "Move to trash"
-msgstr "In den Papierkorb verschieben"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/9c/94/081fbd4cb887fdbae4f45647a08f3ba036c7150d60c83d4e8dd63a3764a6.php:28
-msgid "taxonomy/term/get"
-msgstr "taxonomy/term/get"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:21
-msgid "entity.repository.history"
-msgstr "entity.repository.history"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:26
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:19
-msgid "entity/repository/history"
-msgstr "entity/repository/history"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:21
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:21
-msgid "entity.revision.create"
-msgstr "entity.revision.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:24
-msgid "I want to edit this"
-msgstr "Ich möchte das bearbeiten"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:26
-msgid "entity/repository/add-revision"
-msgstr "entity/repository/add-revision"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:24
-msgid "page.revision.create"
-msgstr "page.revision.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:29
-msgid "page/revision/create"
-msgstr "page/revision/create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:43
-msgid "page/revision/view-all"
-msgstr "page/revision/view-all"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:62
-msgid "Log"
-msgstr "Verlauf"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:79
-msgid "Trash"
-msgstr "Papierkorb"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:86
-msgid "page/revision/checkout"
-msgstr "page/revision/checkout"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:91
-msgid "Set as base revision"
-msgstr "Set as base revision"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:98
-msgid "page.update"
-msgstr "page.update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:103
-msgid "page/update"
-msgstr "page/update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:108
-msgid "Settigs"
-msgstr "Einstellungen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:71
-msgid "entity.revision.checkout"
-msgstr "entity.revision.checkout"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:80
-msgid "entity.revision.trash"
-msgstr "entity.revision.trash"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:86
-msgid "entity.revision.restore"
-msgstr "entity.revision.restore"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:114
-msgid "modals"
-msgstr "modals"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:34
-msgid "Start a new discussion"
-msgstr "Neue Diskussion starten"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:70
-msgid "There are no discussions on this topic yet."
-msgstr "Zu diesem Thema gibt es noch keine Diskussionen."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:48
-#, php-format
-msgid "Add %s"
-msgstr "%s hinzufügen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/df/73/c5f9c1de24d38034009e350f7dd0a442a88c76b6e97f8175d91325cf3655.php:38
-msgid "More"
-msgstr "Mehr"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/e8/4d/06ffa0315ea38e1b609de5eba51d90d92540a0e1a22c2356c69063ff3454.php:24
-msgid "Related taxonomies"
-msgstr "Themenverwandte Taxonomien"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:30
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:36
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/detail.phtml:3
-msgid "License"
-msgstr "Lizenz"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:46
-msgid "on"
-msgstr "on"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:62
-msgid "by"
-msgstr "by"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:74
-msgid "discussion.vote"
-msgstr "discussion.vote"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:98
-msgid "discussion/discussion/vote"
-msgstr "discussion/discussion/vote"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:126
-msgid "discussion.archive"
-msgstr "discussion.archive"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:129
-msgid "discussion/discussion/archive"
-msgstr "discussion/discussion/archive"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:150
-msgid "discussion.trash"
-msgstr "discussion.trash"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:158
-msgid "Do you really want to delete this discussion?"
-msgstr "Möchtest du diese Diskussion wirklich löschen?"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:214
-msgid "discussion.comment.trash"
-msgstr "discussion.comment.trash"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:222
-msgid "Do you really want to delete this comment?"
-msgstr "Willst du diesen Kommentar wirklich löschen?"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:246
-msgid "discussion.comment.create"
-msgstr "discussion.comment.create"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:21
-msgid "entity.license.update"
-msgstr "entity.license.update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:26
-msgid "entity/license/update"
-msgstr "entity/license/update"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:31
-msgid "Change license"
-msgstr "Lizenzierung ändern"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:19
-msgid "Discussions"
-msgstr "Diskussionen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:30
-msgid "discussion/discussions/get"
-msgstr "discussion/discussions/get"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:59
-msgid "Discussions from self and subtopics"
-msgstr "Diskussionen inklusive Unterthemen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/f5/6b276c280512b66e1aa074ddbe1f4a9c044aa6270d9ba86af34364ae205a.php:23
-#, php-format
-msgid "Welcome to %s"
-msgstr "Willkommen bei %s"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/data/twig/fe/f5/6b276c280512b66e1aa074ddbe1f4a9c044aa6270d9ba86af34364ae205a.php:29
-msgid "Subjects"
-msgstr "Fächer"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:32
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:68
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:49
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:39
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:66
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:27
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:27
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:27
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:32
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:23
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:29
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:30
+"X-Poedit-SearchPath-0: ./../module\n"
+"X-Poedit-SearchPath-1: ./../data/twig\n"
+
+#: ../module/Ads/src/Ads/Form/AdForm.php:31
+#: ../module/Blog/src/Blog/Form/CreatePostForm.php:67
+#: ../module/Blog/src/Blog/Form/UpdatePostForm.php:48
+#: ../module/Contexter/src/Contexter/Form/ContextForm.php:38
+#: ../module/Discussion/src/Discussion/Form/DiscussionForm.php:65
+#: ../module/Entity/src/Entity/Form/ArticleForm.php:29
+#: ../module/Entity/src/Entity/Form/ModuleForm.php:29
+#: ../module/Entity/src/Entity/Form/ModulePageForm.php:29
+#: ../module/Entity/src/Entity/Form/VideoForm.php:30
+#: ../module/License/src/License/Form/LicenseForm.php:32
+#: ../module/Page/src/Page/Form/RevisionForm.php:24
+#: ../module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:28
+#: ../module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:29
+#: ../module/RelatedContent/src/RelatedContent/Form/InternalForm.php:29
 msgid "Title:"
 msgstr "Titel:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:32
+#: ../module/Ads/src/Ads/Form/AdForm.php:32
+#: ../module/Page/src/Page/Form/RepositoryForm.php:31
+#: ../module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:30
 msgid "Url:"
 msgstr "URL:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:34
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:69
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:50
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/CommentForm.php:64
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:26
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseForm.php:26
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseGroupForm.php:26
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:27
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:45
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:27
+#: ../module/Ads/src/Ads/Form/AdForm.php:33
+#: ../module/Blog/src/Blog/Form/CreatePostForm.php:68
+#: ../module/Blog/src/Blog/Form/UpdatePostForm.php:49
+#: ../module/Discussion/src/Discussion/Form/CommentForm.php:63
+#: ../module/Entity/src/Entity/Form/ArticleForm.php:30
+#: ../module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:28
+#: ../module/Entity/src/Entity/Form/ModulePageForm.php:30
+#: ../module/Entity/src/Entity/Form/TextExerciseForm.php:28
+#: ../module/Entity/src/Entity/Form/TextExerciseGroupForm.php:28
+#: ../module/Entity/src/Entity/Form/TextSolutionForm.php:29
+#: ../module/Flag/src/Flag/Form/FlagForm.php:44
+#: ../module/License/src/License/Form/LicenseForm.php:33
+#: ../module/Page/src/Page/Form/RevisionForm.php:28
 msgid "Content:"
 msgstr "Inhalt:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:43
+#: ../module/Ads/src/Ads/Form/AdForm.php:42
 msgid "frequency"
 msgstr "Frequenz"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:43
-msgid "2"
-msgstr "2"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:47
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdPageForm.php:29
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:76
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:57
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:43
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/Controls.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:38
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ContainerForm.php:57
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/PageForm.php:55
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:71
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterKeyForm.php:35
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:70
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Form/TermForm.php:63
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:43
+#: ../module/Ads/src/Ads/Form/AdForm.php:46
+#: ../module/Ads/src/Ads/Form/AdPageForm.php:28
+#: ../module/Blog/src/Blog/Form/CreatePostForm.php:75
+#: ../module/Blog/src/Blog/Form/UpdatePostForm.php:56
+#: ../module/Contexter/src/Contexter/Form/ContextForm.php:42
+#: ../module/Entity/src/Entity/Form/Controls.php:28
+#: ../module/License/src/License/Form/LicenseForm.php:43
+#: ../module/Navigation/src/Navigation/Form/ContainerForm.php:57
+#: ../module/Navigation/src/Navigation/Form/PageForm.php:61
+#: ../module/Navigation/src/Navigation/Form/ParameterForm.php:71
+#: ../module/Navigation/src/Navigation/Form/ParameterKeyForm.php:35
+#: ../module/Page/src/Page/Form/RepositoryForm.php:70
+#: ../module/Page/src/Page/Form/RevisionForm.php:34
+#: ../module/Taxonomy/src/Taxonomy/Form/TermForm.php:62
+#: ../module/Ui/templates/editor/layout.phtml:43
 msgid "Save"
 msgstr "Speichern"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdPageForm.php:27
+#: ../module/Ads/src/Ads/Form/AdPageForm.php:26
 msgid "Page ID:"
 msgstr "Seiten ID:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentFieldset.php:29
+#: ../module/Attachment/src/Attachment/Form/AttachmentFieldset.php:28
 msgid "Attach file:"
 msgstr "Datei anhängen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentForm.php:31
+#: ../module/Attachment/src/Attachment/Form/AttachmentForm.php:30
 msgid "Set type:"
-msgstr "Dateityp:"
+msgstr "Typ wählen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentForm.php:34
+#: ../module/Attachment/src/Attachment/Form/AttachmentForm.php:33
 msgid "Upload"
 msgstr "Hochladen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:60
+#: ../module/Authentication/src/Authentication/Controller/AuthenticationController.php:60
 msgid "Your account has been activated, you may now log in."
 msgstr "Dein Konto wurde aktiviert. Du kannst dich jetzt anmelden."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:65
+#: ../module/Authentication/src/Authentication/Controller/AuthenticationController.php:65
 msgid ""
 "I couldn't find an account by that token. You can now try to re-activate "
 "your account."
 msgstr ""
-"I couldn't find an account by that token. You can now try to re-activate "
-"your account."
+"Es konnte kein Konto mit diesem Token gefunden werden. Du kannst jetzt "
+"versuchen, dein Konto zu reaktivieren."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:82
+#: ../module/Authentication/src/Authentication/Controller/AuthenticationController.php:83
 msgid ""
 "Your have been sent an activation email. Please check your spam folder as "
 "well."
@@ -673,11 +116,11 @@ msgstr ""
 "Wir haben dir eine Aktivierungsmail geschickt. Überprüfe gegebenenfalls "
 "deinen Spam-Ordner."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:119
+#: ../module/Authentication/src/Authentication/Controller/AuthenticationController.php:121
 msgid "Your password has successfully been changed."
 msgstr "Dein Passwort wurde erfolgreich geändert."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:227
+#: ../module/Authentication/src/Authentication/Controller/AuthenticationController.php:229
 msgid ""
 "You have been sent an email with instructions on how to restore your "
 "password! Please check your spam folder as well."
@@ -685,267 +128,265 @@ msgstr ""
 "Wir haben dir eine E-Mail mit Anweisungen geschickt, wie du dein Passwort "
 "zurücksetzen kannst! Überprüfe gegebenenfalls deinen Spam-Ordner."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Form/ActivateForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:34
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SelectUserForm.php:30
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SettingsForm.php:29
+#: ../module/Authentication/src/Authentication/Form/ActivateForm.php:27
+#: ../module/User/src/User/Form/Register.php:32
+#: ../module/User/src/User/Form/SelectUserForm.php:29
+#: ../module/User/src/User/Form/SettingsForm.php:28
 msgid "Email:"
 msgstr "E-Mail-Adresse:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Form/ActivateForm.php:30
+#: ../module/Authentication/src/Authentication/Form/ActivateForm.php:29
 msgid "Activate"
 msgstr "Freischalten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Controller/RoleController.php:150
+#: ../module/Authorization/src/Authorization/Controller/RoleController.php:150
 msgid "Role created."
 msgstr "Rolle erstellt."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:30
+#: ../module/Authorization/src/Authorization/Form/PermissionForm.php:30
 msgid "Permission:"
 msgstr "Berechtigung:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:39
+#: ../module/Authorization/src/Authorization/Form/PermissionForm.php:39
 msgid "Instance:"
 msgstr "Instanz:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:42
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/RoleForm.php:47
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/UserForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:34
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/button.phtml:38
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/default.phtml:36
+#: ../module/Authorization/src/Authorization/Form/PermissionForm.php:42
+#: ../module/Authorization/src/Authorization/Form/RoleForm.php:47
+#: ../module/Authorization/src/Authorization/Form/UserForm.php:28
+#: ../module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:30
+#: ../module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:33
+#: ../module/RelatedContent/src/RelatedContent/Form/InternalForm.php:32
+#: ../module/Ui/templates/contexter/helper/button.phtml:38
+#: ../module/Ui/templates/contexter/helper/default.phtml:35
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/RoleForm.php:44
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Term/src/Term/Form/TermFieldset.php:25
+#: ../module/Authorization/src/Authorization/Form/RoleForm.php:44
+#: ../module/Term/src/Term/Form/TermFieldset.php:24
 msgid "Name:"
 msgstr "Name:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/UserForm.php:25
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:33
+#: ../module/Authorization/src/Authorization/Form/UserForm.php:25
+#: ../module/User/src/User/Form/Register.php:31
 msgid "Username:"
 msgstr "Benutzername:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:74
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:55
+#: ../module/Blog/src/Blog/Form/CreatePostForm.php:73
+#: ../module/Blog/src/Blog/Form/UpdatePostForm.php:54
 msgid "Publish date:"
 msgstr "Veröffentlicht am:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:38
+#: ../module/Contexter/src/Contexter/Form/ContextForm.php:37
 msgid "Select a type:"
 msgstr "Wähle einen Typ:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:40
+#: ../module/Contexter/src/Contexter/Form/ContextForm.php:39
 msgid "Object-ID:"
 msgstr "Objekt-ID:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ParameterFieldset.php:26
+#: ../module/Contexter/src/Contexter/Form/ParameterFieldset.php:25
 msgid "Which parameters should be matched?"
-msgstr "Welche Parameter sollen zusammengefügt werden?"
+msgstr "Welche Parameter sollen beachtet werden?"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ParameterFieldset.php:49
+#: ../module/Contexter/src/Contexter/Form/ParameterFieldset.php:48
 msgid "<strong>"
 msgstr "<strong>"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/UrlForm.php:28
+#: ../module/Contexter/src/Contexter/Form/UrlForm.php:27
 msgid "Uri:"
-msgstr "URL:"
+msgstr "URI:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/UrlForm.php:30
+#: ../module/Contexter/src/Contexter/Form/UrlForm.php:29
 msgid "Select"
 msgstr "Auswählen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:150
+#: ../module/Discussion/src/Discussion/Controller/DiscussionController.php:149
 msgid "You have downvoted this comment."
 msgstr "Du hast diesen Kommentar bereits abgewertet."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:152
+#: ../module/Discussion/src/Discussion/Controller/DiscussionController.php:151
 msgid "You can't downvote this comment."
 msgstr "Du kannst diesen Kommentar nicht abwerten."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:156
+#: ../module/Discussion/src/Discussion/Controller/DiscussionController.php:155
 msgid "You have upvoted this comment."
 msgstr "Du hast diesen Kommentar bereits aufgewertet."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:158
+#: ../module/Discussion/src/Discussion/Controller/DiscussionController.php:157
 msgid "You can't upvote this comment."
 msgstr "Du kannst diesen Kommentar nicht aufwerten."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/CommentForm.php:67
+#: ../module/Discussion/src/Discussion/Form/CommentForm.php:66
 msgid "Comment"
 msgstr "Kommentar"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:67
+#: ../module/Discussion/src/Discussion/Form/DiscussionForm.php:66
 msgid "content:"
 msgstr "Inhalt:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:70
+#: ../module/Discussion/src/Discussion/Form/DiscussionForm.php:69
 msgid "Start discussion"
 msgstr "Diskussion starten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Controller/LinkController.php:50
+#: ../module/Entity/src/Entity/Controller/LinkController.php:49
 msgid "Your changes have been saved."
 msgstr "Deine Änderungen wurden gespeichert."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Controller/RepositoryController.php:56
+#: ../module/Entity/src/Entity/Controller/RepositoryController.php:53
 msgid ""
 "Your revision has been saved, it will be available once it get's approved"
 msgstr ""
 "Deine Überarbeitung wurde gespeichert. Sobald sie genehmigt wurde, ist sie "
 "verfügbar"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:30
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:29
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:32
+#: ../module/Entity/src/Entity/Form/ArticleForm.php:32
+#: ../module/Entity/src/Entity/Form/ModuleForm.php:31
+#: ../module/Entity/src/Entity/Form/VideoForm.php:34
 msgid "Reasoning:"
-msgstr "Begründung:"
+msgstr "Didaktische Überlegungen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:32
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:30
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseGroupForm.php:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:29
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:35
+#: ../module/Entity/src/Entity/Form/ArticleForm.php:35
+#: ../module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:30
+#: ../module/Entity/src/Entity/Form/ModuleForm.php:34
+#: ../module/Entity/src/Entity/Form/ModulePageForm.php:32
+#: ../module/Entity/src/Entity/Form/TextExerciseForm.php:30
+#: ../module/Entity/src/Entity/Form/TextExerciseGroupForm.php:30
+#: ../module/Entity/src/Entity/Form/TextSolutionForm.php:31
+#: ../module/Entity/src/Entity/Form/VideoForm.php:37
 msgid "Changes:"
 msgstr "Änderungen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:26
+#: ../module/Entity/src/Entity/Form/TextSolutionForm.php:28
 msgid "Hint:"
 msgstr "Hinweis:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:29
+#: ../module/Entity/src/Entity/Form/VideoForm.php:31
 msgid "Description:"
 msgstr "Beschreibung:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:30
+#: ../module/Entity/src/Entity/Form/VideoForm.php:32
 msgid "Video url:"
 msgstr "Video-URL:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Controller/FlagController.php:42
+#: ../module/Flag/src/Flag/Controller/FlagController.php:41
 msgid "The content has been flagged."
 msgstr "Der Inhalt wurde gekennzeichnet."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Controller/FlagController.php:77
+#: ../module/Flag/src/Flag/Controller/FlagController.php:76
 msgid "Your action was successfull."
 msgstr "Deine Aktion war erfolgreich."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:38
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ContainerForm.php:39
+#: ../module/Flag/src/Flag/Form/FlagForm.php:37
+#: ../module/Navigation/src/Navigation/Form/ContainerForm.php:39
 msgid "Type:"
 msgstr "Typ:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:48
+#: ../module/Flag/src/Flag/Form/FlagForm.php:47
 msgid "Report"
 msgstr "Bericht"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:34
+#: ../module/License/src/License/Form/LicenseForm.php:34
 msgid "License url:"
 msgstr "Lizenz-URL:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:35
+#: ../module/License/src/License/Form/LicenseForm.php:35
+msgid "Agreement:"
+msgstr "Vereinbarung:"
+
+#: ../module/License/src/License/Form/LicenseForm.php:39
 msgid "Icon url:"
 msgstr "Symbol-URL:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/UpdateLicenseForm.php:34
+#: ../module/License/src/License/Form/LicenseForm.php:40
+msgid "This is the default license for this instance."
+msgstr "Dies ist die Standard-Lizenz für diese Instanz."
+
+#: ../module/License/src/License/Form/UpdateLicenseForm.php:33
 msgid "Select a license:"
 msgstr "Wähle eine Lizenz:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/UpdateLicenseForm.php:37
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:34
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SettingsForm.php:31
+#: ../module/License/src/License/Form/UpdateLicenseForm.php:36
+#: ../module/User/src/User/Form/ChangePasswordForm.php:33
+#: ../module/User/src/User/Form/LostPassword.php:32
+#: ../module/User/src/User/Form/SettingsForm.php:30
 msgid "Update"
 msgstr "Änderungen speichern"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Markdown/src/Markdown/View/Helper/MarkdownHelper.php:48
+#: ../module/Markdown/src/Markdown/View/Helper/MarkdownHelper.php:48
 msgid "Rendering failed:"
 msgstr "Rendering fehlgeschlagen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:84
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:112
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:84
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:112
 msgid "The container was successfully created"
-msgstr "The container was successfully created"
+msgstr "Der Container wurde erfolgreich erstellt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:114
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:114
 msgid "The container could not be created (validation failed)"
-msgstr "The container could not be created (validation failed)"
+msgstr "Der Container konnte nicht erstellt werden"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:219
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:219
 msgid "The container was successfully removed"
-msgstr "The container was successfully removed"
+msgstr "Der Container wurde erfolgreich entfernt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:230
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:230
 msgid "The page was successfully removed"
 msgstr "Die Seite wurde erfolgreich entfernt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:241
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:241
 msgid "The parameter was successfully removed"
 msgstr "Der Parameter wurde erfolgreich gelöscht"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:257
+#: ../module/Navigation/src/Navigation/Controller/NavigationController.php:257
 msgid "The page was successfully updated"
 msgstr "Die Seite wurde erfolgreich geändert"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:259
-msgid "The page could not be updated"
-msgstr "Die Seite konnte nicht geändert werden"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:262
-msgid "No post data was sent - the page could not be updated"
-msgstr ""
-"Es wurden keine POST-Daten übertragen - die Seite konnte nicht geändert "
-"werden"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/PageForm.php:52
+#: ../module/Navigation/src/Navigation/Form/PageForm.php:58
 msgid "Position"
 msgstr "Position"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:40
+#: ../module/Navigation/src/Navigation/Form/ParameterForm.php:40
 msgid "Key:"
 msgstr "Schlüssel:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:47
+#: ../module/Navigation/src/Navigation/Form/ParameterForm.php:47
 msgid "Value:"
 msgstr "Wert:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Notification/src/Notification/Form/OptInFieldset.php:26
-msgid "Add to watchlist"
-msgstr "Benachrichtigungen über weitere Änderungen erhalten"
+#: ../module/Notification/src/Notification/Form/OptInFieldset.php:25
+msgid "Add to watchlist."
+msgstr "Benachrichtigungen zu diesem Inhalt bekommen."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Notification/src/Notification/Form/OptInFieldset.php:31
-msgid "Get email notifications as well"
-msgstr "Benachrichtigungen über weitere Änderungen ebenfalls per Mail erhalten"
+#: ../module/Notification/src/Notification/Form/OptInFieldset.php:30
+msgid "Receive notifications via email."
+msgstr "Benachrichtigungen auch per E-Mail erhalten."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:32
+#: ../module/Page/src/Page/Form/RepositoryForm.php:32
 msgid "Forum Id:"
 msgstr "Forum ID:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:31
+#: ../module/RelatedContent/src/RelatedContent/Form/InternalForm.php:30
 msgid "Reference:"
 msgstr "Referenz:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Search/src/Search/Form/SearchForm.php:30
+#: ../module/Search/src/Search/Form/SearchForm.php:30
 msgid "search"
 msgstr "Suchen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Controller/TermController.php:36
+#: ../module/Taxonomy/src/Taxonomy/Controller/TermController.php:35
 msgid "The node has been added successfully!"
 msgstr "Der Knoten wurde erfolgreich hinzugefügt!"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Controller/TermController.php:108
+#: ../module/Taxonomy/src/Taxonomy/Controller/TermController.php:107
 msgid "Your changes have been saved!"
 msgstr "Deine Änderungen wurden gespeichert!"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Form/TermForm.php:60
+#: ../module/Taxonomy/src/Taxonomy/Form/TermForm.php:59
 msgid "description:"
 msgstr "Beschreibung:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Controller/UserController.php:89
+#: ../module/User/src/User/Controller/UserController.php:88
 msgid ""
 "You have registered successfully and\n"
 "                     will soon receive an email with instructions on\n"
@@ -957,378 +398,1389 @@ msgstr ""
 "\n"
 "wie du deinen Account aktivieren kannst."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:30
+#: ../module/User/src/User/Form/ChangePasswordForm.php:28
 msgid "Current password:"
 msgstr "Aktuelles Passwort eingeben:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:31
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:30
+#: ../module/User/src/User/Form/ChangePasswordForm.php:29
+#: ../module/User/src/User/Form/LostPassword.php:29
 msgid "New password:"
 msgstr "Neues Passwort eingeben:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:32
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:37
+#: ../module/User/src/User/Form/ChangePasswordForm.php:30
+#: ../module/User/src/User/Form/Register.php:35
 msgid "Confirm password:"
 msgstr "Passwort wiederholen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:32
+#: ../module/User/src/User/Form/Login.php:30
 msgid "Email address:"
 msgstr "E-Mail-Adresse:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:33
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:36
+#: ../module/User/src/User/Form/Login.php:31
+#: ../module/User/src/User/Form/Register.php:34
 msgid "Password:"
 msgstr "Passwort eingeben:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:34
+#: ../module/User/src/User/Form/Login.php:32
 msgid "Remember me"
 msgstr "Eingeloggt bleiben"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:36
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/login.phtml:15
+#: ../module/User/src/User/Form/Login.php:35
+#: ../module/Ui/templates/authentication/login.phtml:15
 msgid "Login"
 msgstr "Login"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:31
+#: ../module/User/src/User/Form/LostPassword.php:30
 msgid "Repeat new password:"
 msgstr "Neues Passwort wiederholen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:35
+#: ../module/User/src/User/Form/Register.php:33
 msgid "Confirm email:"
 msgstr "E-Mail-Adresse wiederholen:"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:38
+#: ../module/User/src/User/Form/Register.php:36
 msgid "I've read and understood the terms of service."
 msgstr ""
 "Ich habe die Nutzungsbedingungen gelesen, verstanden und stimme ihnen zu."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:40
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/register.phtml:2
+#: ../module/User/src/User/Form/Register.php:39
+#: ../module/Ui/templates/user/user/register.phtml:2
 msgid "Sign up"
 msgstr "Registrieren"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SelectUserForm.php:32
+#: ../module/User/src/User/Form/SelectUserForm.php:31
 msgid "Restore"
 msgstr "Zurücksetzen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:33
+#: ../module/Uuid/src/Uuid/Controller/UuidController.php:32
 msgid "The content has been trashed."
 msgstr "Der Inhalt wurde in den Papierkorb verschoben."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:41
+#: ../module/Uuid/src/Uuid/Controller/UuidController.php:40
 msgid "The content has been restored."
 msgstr "Der Inhalt wurde wiederhergestellt."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:49
+#: ../module/Uuid/src/Uuid/Controller/UuidController.php:48
 msgid "The content has been removed."
 msgstr "Der Inhalt wurde entfernt."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/admin/home/index.phtml:12
+#: ../data/twig/02/9c/640721f38914053e84170ee1bf4dd8d20d6d4fdd1c285de8f4208dd34903.php:19
+#: ../data/twig/e1/bc/9ab27605a60f70685f7204a52b49c4cc144b63e98a453a7c8d8af5bf8b8e.php:19
+msgid "Update a page"
+msgstr "Aktualisieren einer Seite"
+
+#: ../data/twig/02/bd/90cbc37c8bb614bf539bec57d1892ccd1816c238a6c56a4c224cd57ad6ed.php:19
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:54
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:54
+#: ../data/twig/49/99/d5f2f541241b7575393c3aa6e3ab3e6fa66902825adc0b489edf4b6881a8.php:19
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:65
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:50
+msgid "Organize"
+msgstr "Organisieren"
+
+#: ../data/twig/05/7a/ecc08be959335b5a7e4b9075df03c7e33776f9ab22e7d43fb2b5d71b8d3a.php:19
+#: ../data/twig/bc/60/b9bf9dcf14d84206e42d2b3c614e47d714f99cce1269244fdeb6b5403217.php:19
+msgid "entity.link.order"
+msgstr "entity.link.order"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:28
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:28
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:39
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:59
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:24
+msgid "taxonomy.term.update"
+msgstr "taxonomy.term.update"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:33
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:33
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:44
+#: ../data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:52
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:62
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:29
+msgid "taxonomy/term/update"
+msgstr "taxonomy/term/update"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:37
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:29
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:37
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:60
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:60
+#: ../data/twig/50/9b/c5efd5f409699ab518b2f94ddc7fb6e027f8b6d1acfc42663347551707f6.php:31
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:48
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:33
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:33
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:29
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:33
+#: ../data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:31
+#: ../module/Ui/templates/editor/layout.phtml:21
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:45
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:19
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:45
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:56
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:22
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:41
+msgid "taxonomy.term.create"
+msgstr "taxonomy.term.create"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:50
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:50
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:61
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:46
+msgid "taxonomy/term/organize"
+msgstr "taxonomy/term/organize"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:62
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:45
+#: ../data/twig/13/35/d9fc443915d9f73914746f6c9c056f4d1ca7418469c83caabd0ea0c18267.php:19
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:62
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:73
+#: ../data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:19
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:58
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:53
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:45
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:53
+msgid "event.log.get"
+msgstr "event.log.get"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:67
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:48
+#: ../data/twig/13/35/d9fc443915d9f73914746f6c9c056f4d1ca7418469c83caabd0ea0c18267.php:24
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:67
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:78
+#: ../data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:24
+#: ../data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:58
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:71
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:63
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:58
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:48
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:58
+msgid "event/history"
+msgstr "event/history"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:71
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:40
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:71
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:82
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:67
+#: ../data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:31
+#: ../data/twig/b2/1b/f48ed1e335dbb2f9d7ba566b8e9ed3acaa795ddf324c4f84cf3d9c31d9a2.php:31
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:47
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:40
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:47
+msgid "History"
+msgstr "Bearbeitungsverlauf"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:79
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:79
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:90
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:75
+msgid "entity.create"
+msgstr "entity.create"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:79
+#: ../data/twig/19/52/14713e2bac2dd8082f84b9f1cc34a072738ec0504d87e35e92c37e8a7d71.php:26
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:79
+#: ../data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:26
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:90
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:75
+msgid "taxonomy.term.associate"
+msgstr "taxonomy.term.associate"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:85
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:85
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:96
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:81
+msgid "Add content"
+msgstr "Neuer Inhalt"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:98
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:98
+#: ../data/twig/4d/5b/ff78adae66fdc26aa6eb558977459b0b9a4f5079c780c62d2c7a14509edd.php:43
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:109
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:94
+#: ../data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:43
+msgid "entity/create"
+msgstr "entity/create"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:118
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:118
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:129
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:114
+msgid "taxonomy.term.associated.sort"
+msgstr "taxonomy.term.associated.sort"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:123
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:123
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:134
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:119
+msgid "taxonomy/term/sort-associated"
+msgstr "taxonomy/term/sort-associated"
+
+#: ../data/twig/07/39/b3efae8c3db4384c0ff28d1b6433346fb63cd06cea338bd46a8048180bcb.php:127
+#: ../data/twig/31/58/fc77c353f5a1d351c6827735da1c3d9b5b8953804cdb15ea688511f66b56.php:127
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:138
+#: ../data/twig/a2/92/9907c795f90b7374d19f74cec9c04dbda31faa9f14afb24e1a6838723605.php:123
+#: ../module/Ui/templates/taxonomy/term/order-associated.phtml:1
+msgid "Order content"
+msgstr "Inhalt sortieren"
+
+#: ../data/twig/07/fe/548741e2fb4e1028abbc77e2bf190d4f5b73a882ed943e23be3b7f627439.php:26
+#: ../data/twig/41/d1/734d2b8ccb87c0bdb2560422e273e56b7294a40a68f3389c3e9a82ceca86.php:26
+msgid "related-content/manage"
+msgstr "related-content/manage"
+
+#: ../data/twig/07/fe/548741e2fb4e1028abbc77e2bf190d4f5b73a882ed943e23be3b7f627439.php:31
+#: ../data/twig/41/d1/734d2b8ccb87c0bdb2560422e273e56b7294a40a68f3389c3e9a82ceca86.php:31
+msgid "Manage related items"
+msgstr "Zugehörige Inhalte verwalten"
+
+#: ../data/twig/08/03/053364fa33e3dfb06fea38965ba630aea047e3ba600fe592d969aeda735e.php:26
+#: ../data/twig/1b/30/14466ebda47d7fbb1b42d1ca100e8709cb695cbac7f2552792b25e2d1dd3.php:27
+#: ../data/twig/32/fd/87ef0e3c3560a670c4a381e38ef3bdfeda962bb1b4f3b557533cf0545194.php:39
+#: ../data/twig/5b/d1/bad4e34ee23b80f684c39129e6635032002c7fab895e3f2bae5b6d81cd3e.php:27
+#: ../data/twig/c1/64/a7eb891eb73d08eea0a7685696748fce25a57cc9748f23b11056a1bdc160.php:39
+#: ../data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:26
+msgid "license/detail"
+msgstr "Lizenzierung/Detail"
+
+#: ../data/twig/08/03/053364fa33e3dfb06fea38965ba630aea047e3ba600fe592d969aeda735e.php:30
+#: ../data/twig/08/03/053364fa33e3dfb06fea38965ba630aea047e3ba600fe592d969aeda735e.php:36
+#: ../data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:30
+#: ../data/twig/ed/f0/3b79a60e94d722cd37283f95054d038909f947f910182bcb5ad03324ba7e.php:36
+#: ../module/Ui/templates/license/detail.phtml:3
+msgid "License"
+msgstr "Lizenz"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:22
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:24
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:22
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:24
+msgid "page.revision.create"
+msgstr "page.revision.create"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:25
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:29
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:25
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:29
+msgid "page/revision/create"
+msgstr "page/revision/create"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:36
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:43
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:36
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:43
+msgid "page/revision/view-all"
+msgstr "page/revision/view-all"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:52
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:62
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:52
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:62
+msgid "Log"
+msgstr "Verlauf"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:62
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:70
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:70
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:153
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:217
+#: ../data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:74
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:96
+#: ../data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:24
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:75
+#: ../data/twig/cc/12/729502f898088349f9e191729af717c28db88b0f8b3bbd275aa3227801e2.php:24
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:62
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:75
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:153
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:217
+msgid "uuid/trash"
+msgstr "uuid/trash"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:66
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:75
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:75
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:79
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:66
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:79
+msgid "Trash"
+msgstr "Papierkorb"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:71
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:86
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:71
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:86
+msgid "page/revision/checkout"
+msgstr "page/revision/checkout"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:75
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:91
+#: ../data/twig/dc/2f/4dea44c584b0198623fdaffb0d1466dc724187d612a188c42a0d2077ad16.php:75
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:91
+msgid "Set as base revision"
+msgstr "Als aktuelle Version benutzen"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:82
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:90
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:90
+msgid "page.create"
+msgstr "page.create"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:85
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:55
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:55
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:103
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:103
+msgid "page/update"
+msgstr "page/update"
+
+#: ../data/twig/08/d0/924c7f77f6beb02b343903a4a7624a19f03149306d777eb4d7d2c420f8cd.php:90
+msgid "Edit page"
+msgstr "Seite bearbeiten"
+
+#: ../data/twig/0b/a5/977825321a55c69e45ddfa5f7aa59fab5f2783c79a81ccf714ae21d22b87.php:23
+#: ../data/twig/32/b9/ad6a118beaf722098190a460224ba3be56ccb0b94f6f5e5d3825e2ef5df8.php:23
+msgid "Start learning now!"
+msgstr "Lernen starten!"
+
+#: ../data/twig/0c/da/368325874cccd0cc452c515a7c0aa760232d95621debb98f8f017d43ac4c.php:101
+#: ../data/twig/93/e5/e2f735e4d3158f8062f9f7aee3010c9b284c75d2fb52376e321b08362fdd.php:103
+#: ../data/twig/a1/26/6b824ca2f4523a35f42203a09d4713261113345af7c300527a1c6ceea7b5.php:96
+#: ../data/twig/e2/74/4a31f066ec9797a4540bb619dd1750f60a59b19ce10b21366d18a1ecd931.php:109
+msgid "Exercises"
+msgstr "Aufgaben"
+
+#: ../data/twig/12/6a/5c5ea957a62338b2523e1806d65fef9fb3ba956e9319f1bcb8d4ec4f0344.php:31
+#: ../data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:72
+#: ../data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:72
+#: ../data/twig/d1/b7/8e25d72cea2bbc714208cb3181c7af7c38cc11ad498aa23c2778301295ce.php:31
+#: ../data/twig/e8/f2/61e4ea37eef09848d61318779d3aaca413e4dab88cd1089534f7cf47c283.php:72
+#: ../data/twig/fa/24/4742477ebe458b33d9259b7fb28f11cf2acaad41fcf45a3f10b9ab581efa.php:72
+msgid "I want to comment this"
+msgstr "Ich möchte das kommentieren"
+
+#: ../data/twig/13/35/d9fc443915d9f73914746f6c9c056f4d1ca7418469c83caabd0ea0c18267.php:29
+#: ../data/twig/76/8d/122859d05d051458e0e7ea0e77cf657d158dc9e8c455e9a0861646190fa5.php:29
+msgid "Show logfile"
+msgstr "Verlauf anzeigen"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:25
+#, php-format
+msgid "Revision #%s"
+msgstr "Revision Nr. %s"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:35
+#, php-format
+msgid "Current revision #%s"
+msgstr "Aktuelle Revision Nr. %s"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:56
+#: ../data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:71
+msgid "entity.revision.checkout"
+msgstr "entity.revision.checkout"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:59
+#: ../data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:31
+msgid "entity/repository/checkout"
+msgstr "entity/repository/checkout"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:69
+#: ../data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:80
+msgid "entity.revision.trash"
+msgstr "entity.revision.trash"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:72
+#: ../data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:31
+msgid "entity/repository/reject"
+msgstr "entity/repository/reject"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:77
+#: ../data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:86
+msgid "entity.revision.restore"
+msgstr "entity.revision.restore"
+
+#: ../data/twig/17/c4/dee74f1ae6c0fdeaded7f11a8c691b79b23cd2d6aed8daa661b2917be44f.php:80
+#: ../data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:67
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:83
+#: ../data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:89
+msgid "uuid/restore"
+msgstr "uuid/restore"
+
+#: ../data/twig/19/09/328bdb7c31653eb02217a005d276174119884a279d59692fce888c96dbdf.php:40
+#: ../data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:40
+msgid "Hint"
+msgstr "Hinweis"
+
+#: ../data/twig/19/09/328bdb7c31653eb02217a005d276174119884a279d59692fce888c96dbdf.php:70
+#: ../data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:70
+msgid "Solution"
+msgstr "Lösung"
+
+#: ../data/twig/19/52/14713e2bac2dd8082f84b9f1cc34a072738ec0504d87e35e92c37e8a7d71.php:26
+#: ../data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:26
+msgid "taxonomy.term.dissociate"
+msgstr "taxonomy.term.dissociate"
+
+#: ../data/twig/19/52/14713e2bac2dd8082f84b9f1cc34a072738ec0504d87e35e92c37e8a7d71.php:31
+#: ../data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:31
+msgid "entity/taxonomy/update"
+msgstr "entity/taxonomy/update"
+
+#: ../data/twig/19/52/14713e2bac2dd8082f84b9f1cc34a072738ec0504d87e35e92c37e8a7d71.php:36
+#: ../data/twig/33/ce/93d9ff382bdb9d27f6906b9fae2a26bc6bf189a38576c1cdb0d3265bbfba.php:36
+msgid "Update taxonomy"
+msgstr "Thema und/oder Lehrplan bearbeiten"
+
+#: ../data/twig/1b/30/14466ebda47d7fbb1b42d1ca100e8709cb695cbac7f2552792b25e2d1dd3.php:29
+#: ../data/twig/32/fd/87ef0e3c3560a670c4a381e38ef3bdfeda962bb1b4f3b557533cf0545194.php:41
+#: ../data/twig/5b/d1/bad4e34ee23b80f684c39129e6635032002c7fab895e3f2bae5b6d81cd3e.php:29
+#: ../data/twig/c1/64/a7eb891eb73d08eea0a7685696748fce25a57cc9748f23b11056a1bdc160.php:41
+msgid "What is that?"
+msgstr "Was bedeutet das?"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:35
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:35
+#: ../data/twig/7c/16/82eb3a5d160c8433a5c4c2997aebbbf0c85d0160e6b72aad9aceb433b8af.php:33
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:37
+msgid "taxonomy/term/create"
+msgstr "taxonomy/term/create"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:59
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:59
+msgid "taxonomy/term/order"
+msgstr "taxonomy/term/order"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:101
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:101
+msgid "taxonomy.term.sort"
+msgstr "taxonomy.term.sort"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:107
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:107
+msgid "Tools"
+msgstr "Werkzeuge"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:114
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:114
+#: ../module/Ui/templates/taxonomy/term/order-associated.phtml:14
+msgid "Sort"
+msgstr "Sortieren"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:120
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:120
+#: ../module/Ui/templates/taxonomy/term/order-associated.phtml:15
+msgid "Save new order"
+msgstr "Neue Reihenfolge speichern"
+
+#: ../data/twig/1b/d5/e8e8782ce72360bc333c53e71974829ed02c2ed739ca688d8d412998e213.php:126
+#: ../data/twig/2f/da/c18429e59df27cc59952272ba293edebf9bdbbe825a46be02b62b6433bd9.php:126
+#: ../module/Ui/templates/editor/layout.phtml:44
+#: ../module/Ui/templates/taxonomy/term/order-associated.phtml:16
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: ../data/twig/21/21/a88d0f45cb072a41d08922bf7a4f500baa1e1ef883c9f934cc8f9e7fb915.php:19
+#: ../data/twig/d8/19/25ebae25dbb038da29265f95edd9f7aff87d87e933e363a9a36c57d0c710.php:19
+msgid "Create a revision"
+msgstr "Revision erstellen"
+
+#: ../data/twig/21/a9/b1535a892d25b74d4ec9a25d3eaed51f16a65258f6c93afb69cb8550e962.php:22
+#: ../data/twig/22/c1/cea0789d71ef862855180b268bcc08e639ed0a7fdf20b5f0cd52ae89a16d.php:22
+#: ../data/twig/3c/cb/17de313977beaf76f285bacbda1dcdf97a733a37e2072dd7fca9bb046467.php:22
+#: ../data/twig/6a/74/01535b8ce4a79f9844f5e6089fb1233d14916675262133d24f115e59ecff.php:22
+#: ../data/twig/6a/b9/8bdde5dd4856c750faa081e4d78605c8d3c84f3feef02a21999076b5369d.php:22
+#: ../data/twig/7b/c6/c7b372af85ef2b53c48a9e3f493dff73148e9e50eb7e8853dcc6ed870688.php:22
+#: ../data/twig/86/be/f43abdc5e9f661ca614720e2817ead0fd045995b97ae4d134dd7d160e395.php:22
+#: ../data/twig/9a/2a/a5312a93a2d66a0d447c949124072c595e07cc74903504d744bd4202c564.php:22
+#: ../data/twig/9e/94/4c7a25a58377ac0f542db6d972cdb32c38489fa6481fbd744ad078605a57.php:22
+#: ../data/twig/a4/21/386440e550cce3eda15bb0d01ade7b73eb7045978f56012de58cbfab13a2.php:22
+#: ../data/twig/a9/51/c2dba5855ea4b06f8455b172e5a558d76def95d9aa95e20a9f4d49c8bf47.php:22
+#: ../data/twig/b9/fa/6e5a0d3d0a063b52671134696dc30d8738075034d05afdd2214858c66a45.php:22
+#: ../data/twig/d8/12/db473804c38531c6fb9f1af0847f6547f41729bf13cbf16a73fbbb145cfa.php:22
+#: ../data/twig/fb/c5/8b1264c8c95e587aa8f1d84aee12cdc9c421835c33067d910a156a548f30.php:22
+msgid "entity/page"
+msgstr "entity/page"
+
+#: ../data/twig/26/92/e290fdae0cb262dffb6ec19cf4b6e4752995ca0357b16548489b7ea9c309.php:19
+#: ../data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:19
+msgid "Discussions"
+msgstr "Diskussionen"
+
+#: ../data/twig/26/92/e290fdae0cb262dffb6ec19cf4b6e4752995ca0357b16548489b7ea9c309.php:30
+msgid "discussion/discussions"
+msgstr "discussion/discussions"
+
+#: ../data/twig/26/92/e290fdae0cb262dffb6ec19cf4b6e4752995ca0357b16548489b7ea9c309.php:59
+#: ../data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:59
+msgid "Discussions from self and subtopics"
+msgstr "Diskussionen inklusive Unterthemen"
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:28
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:28
+msgid ""
+"There are multiple recent revisions for this object. Please be aware that "
+"they may be of very different nature. Consider reviewing all of them before "
+"accepting or merging."
+msgstr ""
+"Es gibt mehrere Bearbeitungen für dieses Objekt. Bitte beachte, dass sich "
+"diese groß unterscheiden können. Überprüfe daher gegebenenfalls alle "
+"Bearbeitungen, bevor du eine akzeptierst oder zusammenführst."
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:39
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:39
+#: ../module/Ui/templates/flag/manage.phtml:5
+msgid "#"
+msgstr "#"
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:43
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:43
+msgid "Current"
+msgstr "Aktuell"
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:47
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:47
+msgid "Author"
+msgstr "Verfasser"
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:51
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:51
+#: ../module/Ui/templates/flag/detail.phtml:26
+#: ../module/Ui/templates/flag/manage.phtml:8
+msgid "Timestamp"
+msgstr "Zeitstempel"
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:74
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:74
+msgid "entity/repository/compare"
+msgstr "entity/repository/compare"
+
+#: ../data/twig/27/4e/bfa1b16bf9f0c8a234208cb61c492750bc74eac2dcb88247592183bdfd01.php:76
+#: ../data/twig/99/4a/c6004861ccb6225d2bddba42cbefce2489d93d3acc5809932ebf4b93da21.php:76
+msgid "show"
+msgstr "Anzeigen"
+
+#: ../data/twig/28/70/b68bcb99a786f3969c75d0a54c07d1d66050109b7bd3b3f23b8bb33d0969.php:33
+#: ../data/twig/28/ab/1b11b0303f4654f06778045f9e447884117b372fd17439883bc8cf9efcf2.php:33
+#: ../data/twig/4a/56/dc8b327e349150a9e2bf359d492fd6e8cc6d096374ada9e7560a2029cf72.php:30
+#: ../data/twig/64/5c/d29c3ce9e4f0442e2170704b1d5ce8af65b2bfbc535bfa7aa34c99fec48a.php:30
+msgid "Article"
+msgstr "Artikel"
+
+#: ../data/twig/29/c1/0458f5b6ec4570a2ef9bf0e3bda2ccdd89761501726a8a719ad41eda9d51.php:23
+#: ../data/twig/30/51/ca59e64ebb87ad2b28514e9e4fbea6168d8f4aa28c14640689609818e2c2.php:19
+#: ../data/twig/63/85/004f7be166b7cae80fbe5d8ff70fec6fed1757226b62320b58ac4cdd6050.php:19
+#: ../data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:23
+msgid "discussion.create"
+msgstr "discussion.create"
+
+#: ../data/twig/29/c1/0458f5b6ec4570a2ef9bf0e3bda2ccdd89761501726a8a719ad41eda9d51.php:34
+#: ../data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:34
+msgid "Start a new discussion"
+msgstr "Neue Diskussion starten"
+
+#: ../data/twig/29/c1/0458f5b6ec4570a2ef9bf0e3bda2ccdd89761501726a8a719ad41eda9d51.php:70
+#: ../data/twig/cf/03/3f76b2b5cf7963aad3aa9173b8f27daefc145d4e648e8c2a50bc376aa006.php:70
+msgid "There are no discussions on this topic yet."
+msgstr "Zu diesem Thema gibt es noch keine Diskussionen."
+
+#: ../data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:26
+msgid "Accept revision"
+msgstr "Bearbeitung akzeptieren"
+
+#: ../data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:37
+msgid "Please give feedback."
+msgstr "Bitte gebe dem Bearbeiter eine Rückmeldung."
+
+#: ../data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:45
+#: ../data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:45
+#: ../module/Ui/templates/layout/partials/default-modal.phtml:10
+msgid "Close"
+msgstr "Schließen"
+
+#: ../data/twig/2c/9f/e44ba711551c63b64c04d32dc0395792e81d25e422ef0e9405231a2e5ff5.php:49
+msgid "Accept"
+msgstr "Übernehmen"
+
+#: ../data/twig/30/51/ca59e64ebb87ad2b28514e9e4fbea6168d8f4aa28c14640689609818e2c2.php:22
+#: ../data/twig/63/85/004f7be166b7cae80fbe5d8ff70fec6fed1757226b62320b58ac4cdd6050.php:22
+msgid "Start a discussion"
+msgstr "Starte eine neue Diskussion"
+
+#: ../data/twig/30/71/f6ba5bca132e3e844ae9a0e5bd093c301d4e460479ee40bc4fe0d347b3e6.php:19
+#: ../data/twig/e8/f0/e9d79d3fb2719f995209f4bfca8d4cfc2817f1ef2b344acdacca3e437924.php:19
+msgid "Update term"
+msgstr "Begriff aktualisieren"
+
+#: ../data/twig/33/d0/0b9629e90644af52b8a3ac689b23fb6ae0de8be5bdeb655f807791aff691.php:26
+#: ../data/twig/a4/59/237b3daf095fcb7294fcb705ada8664ce5aed1a22989e9e7d3bf030ad555.php:26
+msgid "entity/link/order"
+msgstr "entity/link/order"
+
+#: ../data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:38
+#: ../data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:38
+#: ../data/twig/e8/f2/61e4ea37eef09848d61318779d3aaca413e4dab88cd1089534f7cf47c283.php:38
+#: ../data/twig/fa/24/4742477ebe458b33d9259b7fb28f11cf2acaad41fcf45a3f10b9ab581efa.php:38
+msgid "I want to see the solution"
+msgstr "Ich möchte die Lösung sehen"
+
+#: ../data/twig/33/db/afaad81adc9c16c8210ff80e0e504fd16a4ac4efb33dc0b7f9afaa166e91.php:54
+#: ../data/twig/3f/40/b3bae39f04fcbb1879fb57291cfca5d62f51bccd5a71ad24c678c37e6e13.php:54
+#: ../data/twig/e8/f2/61e4ea37eef09848d61318779d3aaca413e4dab88cd1089534f7cf47c283.php:54
+#: ../data/twig/fa/24/4742477ebe458b33d9259b7fb28f11cf2acaad41fcf45a3f10b9ab581efa.php:54
+msgid "I need a hint"
+msgstr "Ich brauche einen Hinweis"
+
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:19
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:19
+#: ../module/Ui/templates/navigation/container/get.phtml:17
+msgid "Pages"
+msgstr "Seiten"
+
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:31
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:31
+msgid "page/view"
+msgstr "page/view"
+
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:52
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:52
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:98
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:98
+msgid "page.update"
+msgstr "page.update"
+
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:67
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:67
+msgid "page.trash"
+msgstr "page.trash"
+
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:93
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:93
+msgid "page/create"
+msgstr "page/create"
+
+#: ../data/twig/35/80/73b05528773fbf29cfe8b197cf88a1898d59c0a2a65780c441417c4bd2ea.php:97
+#: ../data/twig/47/3b/419aee822193ef4c87841f9b0cd8f32b5dda1b44e9ac3361bc4804fb4812.php:97
+msgid "Create a new page"
+msgstr "Eine neue Seite erstellen"
+
+#: ../data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:19
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:140
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:202
+#: ../data/twig/bf/6d/e84ce4286d09b5249999d83cc8b4372137d955ca240c7085028d39cb933e.php:19
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:140
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:202
+msgid "flag.create"
+msgstr "flag.create"
+
+#: ../data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:24
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:143
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:207
+#: ../data/twig/bf/6d/e84ce4286d09b5249999d83cc8b4372137d955ca240c7085028d39cb933e.php:24
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:143
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:207
+msgid "flag/add"
+msgstr "flag/add"
+
+#: ../data/twig/35/8f/49baee49c7cb42bc67f79dd743926a31571512b822287a2399bbd49b4d06.php:29
+#: ../data/twig/bf/6d/e84ce4286d09b5249999d83cc8b4372137d955ca240c7085028d39cb933e.php:29
+#: ../module/Ui/templates/flag/add.phtml:1
+msgid "Flag content"
+msgstr "Inhalt des Bitschalters"
+
+#: ../data/twig/3c/4c/814fe0b84e872e4097f3563e1b3cbe6c0403686851dc0d2064582d9454f6.php:53
+msgid "discussion/discussion/start"
+msgstr "Diskussion/Diskussion/Start"
+
+#: ../data/twig/3c/4c/814fe0b84e872e4097f3563e1b3cbe6c0403686851dc0d2064582d9454f6.php:55
+msgid "Saving..."
+msgstr "Speichern..."
+
+#: ../data/twig/42/60/68853b1bc858bcce84dd5ed15593f61408cf189e53618eb4bd3eaefd40eb.php:30
+msgid "Text exercise"
+msgstr "Textaufgabe"
+
+#: ../data/twig/45/0a/55fe69386e96b016f44e119d3764fe43fe3c8fcb4ec58b6f12a2e14b3810.php:30
+#: ../data/twig/7d/da/d8a07a16782015be18febd4bb765e0933ce87ac4acdf630300b57b39201c.php:30
+#: ../data/twig/a0/55/49244214b4a4bf51062118cb2defa8bbfcc686864d23fe28905a178ea711.php:30
+#: ../data/twig/b9/17/88e5d538928c1d8ef6a3fa3a4bffd28133ee317e8a855e6aa36ec187e4a3.php:30
+#, php-format
+msgid "Template for %s not found"
+msgstr "Layout für %s nicht gefunden"
+
+#: ../data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:26
+msgid "Reject revision"
+msgstr "Bearbeitung ablehnen"
+
+#: ../data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:37
+msgid "Please specify why you are rejecting the submission."
+msgstr "Bitte teile dem Bearbeiter mit, warum seine Änderung abgelehnt wurde."
+
+#: ../data/twig/45/9d/c4786b697274a15924ef2b9f8603ba8ed5c658c920528d5c0b4ff6e449ac.php:49
+msgid "Reject"
+msgstr "Ablehnen"
+
+#: ../data/twig/46/71/137eac18c8c60ada3734ba2ab08e0016dbd96403dd9b80d6be9f0d657f4e.php:87
+msgid ""
+"A solution has been created but no content has been added yet or it is "
+"pending approval."
+msgstr ""
+"Eine Lösung wurde erstellt, aber ihr noch kein Inhalt hinzugefügt oder noch "
+"nicht akzeptiert."
+
+#: ../data/twig/46/91/255f94e52591462ccd8d9805852c6df41d87d0b74f0a82db842ed162f4c7.php:32
+#: ../data/twig/53/3f/f98023c3fa0591638f477783d1d6bef5bd392cb52c1b778ba3b024d39035.php:32
+#: ../data/twig/ce/f9/5e9ff33347493fd49c70a5958d20ff7fe008dcb7d72a83e449dd4f1ac43c.php:32
+#: ../data/twig/f6/49/29464de8c98e149a83dd1923e2d167e29a77881ea40b26dfb286105d6564.php:32
+#, php-format
+msgid "Now view found for %s"
+msgstr "Keine Ansicht für %s gefunden"
+
+#: ../data/twig/47/01/2f38e04f0c9daf0dc9a68327c3bf808ee8f9a472dbac1a40ff505c2f3e9e.php:26
+#: ../data/twig/6e/b1/9c2392d5e29405da4795c963cb73a528c312a1ea2cdb7241831f476997ee.php:26
+#: ../data/twig/91/9b/b1e9a0d9a242c82f09ad8ae1db8fd8eb8c7c339dbc9fc0798d2c50b7317d.php:26
+#: ../data/twig/f1/b0/b04765f09cfa572eb13a618b09913f2f1275d5b6f8796f82387a7df3c2e1.php:26
+msgid ""
+"This taxonomy term is marked as <strong>trashed</strong>. Contents might be "
+"out of date or unmaintained."
+msgstr ""
+"Dieser Taxonomie-Punkt ist als <strong>gelöscht</strong>. Seine Inhalte "
+"könnten daher veraltet sein."
+
+#: ../data/twig/4d/5b/ff78adae66fdc26aa6eb558977459b0b9a4f5079c780c62d2c7a14509edd.php:38
+#: ../data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:29
+#: ../data/twig/dc/73/62748f306707653a2642b9ebce716295f1f64193a14bf8820f0f6e52d4e4.php:29
+#: ../data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:38
+msgid "entity.link.create"
+msgstr "entity.link.create"
+
+#: ../data/twig/4d/5b/ff78adae66fdc26aa6eb558977459b0b9a4f5079c780c62d2c7a14509edd.php:48
+#: ../data/twig/de/22/85b4882456b5abb4526363d732a14365009001398eeb93aa6afd61e6b9b1.php:48
+#, php-format
+msgid "Add %s"
+msgstr "%s hinzufügen"
+
+#: ../data/twig/50/9b/c5efd5f409699ab518b2f94ddc7fb6e027f8b6d1acfc42663347551707f6.php:21
+#: ../data/twig/61/bd/0ca5888f84d0e1e5616f928138636b8471e34b1d3eb7ef71b0d8cd9e3457.php:21
+#: ../data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:21
+#: ../data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:21
+msgid "entity.revision.create"
+msgstr "entity.revision.create"
+
+#: ../data/twig/50/9b/c5efd5f409699ab518b2f94ddc7fb6e027f8b6d1acfc42663347551707f6.php:26
+#: ../data/twig/61/bd/0ca5888f84d0e1e5616f928138636b8471e34b1d3eb7ef71b0d8cd9e3457.php:28
+#: ../data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:28
+#: ../data/twig/ed/1d/605feca6b08894b4d08f7069603873ca1138543a8fa42386544e49eeb39b.php:26
+msgid "entity/repository/add-revision"
+msgstr "entity/repository/add-revision"
+
+#: ../data/twig/5f/79/a09daf8bf4ffdd15515d7fe3c471d30aed28343b4f822bb62ccd4bf354c6.php:19
+msgid "Create term"
+msgstr "Begriff hinzufügen"
+
+#: ../data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:29
+#: ../data/twig/dc/73/62748f306707653a2642b9ebce716295f1f64193a14bf8820f0f6e52d4e4.php:29
+msgid "entity.link.purge"
+msgstr "entity.link.purge"
+
+#: ../data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:34
+#: ../data/twig/dc/73/62748f306707653a2642b9ebce716295f1f64193a14bf8820f0f6e52d4e4.php:34
+msgid "entity/link/move"
+msgstr "entity/link/move"
+
+#: ../data/twig/5f/b1/d6ed2f79f810c7d4585c3a247f96e1b13543f36a53baa0231c800042fc7f.php:39
+#: ../data/twig/dc/73/62748f306707653a2642b9ebce716295f1f64193a14bf8820f0f6e52d4e4.php:39
+#, php-format
+msgid "Change parent \"%s\""
+msgstr "Elter \"%s\" ändern"
+
+#: ../data/twig/61/bd/0ca5888f84d0e1e5616f928138636b8471e34b1d3eb7ef71b0d8cd9e3457.php:24
+#: ../data/twig/b8/fc/5b3f1c54009428c1fdfad5f157850fa4458305ca71d428832eb5b76f3a2f.php:24
+msgid "I want to edit this"
+msgstr "Ich möchte das bearbeiten"
+
+#: ../data/twig/67/bf/bca3c33b1388f7eb8f63c083c59b09b1adae764798fcbcf808a553b14459.php:26
+msgid "Toggle navigation"
+msgstr "Navigation umschalten"
+
+#: ../data/twig/6d/2b/9aa619ea29fe1843586aa414c8ef4a560007dfa1ccf8f98d1f366adf01af.php:24
+#: ../data/twig/ea/eb/3738ef3032b7986a518582c860810ecf040cdb8f082e3a473ca083cff5fd.php:24
+msgid "Folders"
+msgstr "Ordner"
+
+#: ../data/twig/72/92/88d3f0320182f156ad846fca59661a141f25a90e2d4059004bcdaa9ba61e.php:30
+msgid "Text exercise group"
+msgstr "Textbasierte Aufgabengruppe"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:46
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:46
+msgid "on"
+msgstr "zu"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:62
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:62
+msgid "by"
+msgstr "von"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:74
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:74
+msgid "discussion.vote"
+msgstr "discussion.vote"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:98
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:98
+msgid "discussion/discussion/vote"
+msgstr "discussion/discussion/vote"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:126
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:126
+msgid "discussion.archive"
+msgstr "discussion.archive"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:129
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:129
+msgid "discussion/discussion/archive"
+msgstr "discussion/discussion/archive"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:150
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:150
+msgid "discussion.trash"
+msgstr "discussion.trash"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:158
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:158
+msgid "Do you really want to delete this discussion?"
+msgstr "Möchtest du diese Diskussion wirklich löschen?"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:214
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:214
+msgid "discussion.comment.trash"
+msgstr "discussion.comment.trash"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:222
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:222
+msgid "Do you really want to delete this comment?"
+msgstr "Willst du diesen Kommentar wirklich löschen?"
+
+#: ../data/twig/77/14/92a78799ac24a0cebb3b5a53b46a41f792ca17083273a6b2770c97e61f20.php:246
+#: ../data/twig/f2/08/3407482ed3ca0755de3de4e69dff36c8039a9cf211053badcb923fc9b814.php:246
+msgid "discussion.comment.create"
+msgstr "discussion.comment.create"
+
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:80
+msgid "taxonomy.term.restore"
+msgstr "taxonomy.term.restore"
+
+#: ../data/twig/89/85/ab8e55287b08da72bd8fee1f2f2bee05ad1c9d5f221355aceb31c97e330d.php:93
+msgid "taxonomy.term.trash"
+msgstr "taxonomy.term.trash"
+
+#: ../data/twig/90/5f/991d59856e8b4bbaee3a94200df5f443542d76bd042612d25c212264b24f.php:19
+msgid "Page settings"
+msgstr "Seiteneinstellungen"
+
+#: ../data/twig/92/73/56f184c83f90041ddfc572892add4dcce9288e3a185c3ae7f9791cb40af8.php:23
+#, php-format
+msgid "Welcome to %s"
+msgstr "Willkommen bei %s"
+
+#: ../data/twig/92/73/56f184c83f90041ddfc572892add4dcce9288e3a185c3ae7f9791cb40af8.php:29
+msgid "Subjects"
+msgstr "Fächer"
+
+#: ../data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:19
+#: ../data/twig/cc/12/729502f898088349f9e191729af717c28db88b0f8b3bbd275aa3227801e2.php:19
+msgid "entity.trash"
+msgstr "entity.trash"
+
+#: ../data/twig/94/43/56040c66bf882eedb10c23844cd190493099f0352ab0935d89890d5cc64b.php:29
+#: ../data/twig/cc/12/729502f898088349f9e191729af717c28db88b0f8b3bbd275aa3227801e2.php:29
+msgid "Move to trash"
+msgstr "In den Papierkorb verschieben"
+
+#: ../data/twig/9c/94/081fbd4cb887fdbae4f45647a08f3ba036c7150d60c83d4e8dd63a3764a6.php:28
+#: ../data/twig/fc/29/2a95f5ae38ae14a9f306ae023490dff21846160c00a5dc6aa1d7ecda01d8.php:28
+msgid "taxonomy/term/get"
+msgstr "taxonomy/term/get"
+
+#: ../data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:21
+#: ../data/twig/b2/1b/f48ed1e335dbb2f9d7ba566b8e9ed3acaa795ddf324c4f84cf3d9c31d9a2.php:21
+msgid "entity.repository.history"
+msgstr "entity.repository.history"
+
+#: ../data/twig/a2/da/52c1333c388e3eae10f00f7e0247ae6f9b8477e605402d1a5a9df0bf7f05.php:26
+#: ../data/twig/b2/1b/f48ed1e335dbb2f9d7ba566b8e9ed3acaa795ddf324c4f84cf3d9c31d9a2.php:26
+#: ../data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:19
+msgid "entity/repository/history"
+msgstr "entity/repository/history"
+
+#: ../data/twig/a7/30/52570c1e9df945b172f4440bcd1c74ac68a9cd69b108d8a5ba14ca5d90ed.php:19
+#: ../data/twig/e6/ff/f257a4496c1bf737bfa024245a2c4d5ab24ff8fc993b7ab5280081f2b468.php:19
+msgid "Create a page"
+msgstr "Seite erstellen"
+
+#: ../data/twig/a7/ec/6b28643d1db65e9945b144fad324fda6168701c59a70ebf951ebbf553840.php:30
+msgid "Grouped text exercise"
+msgstr "Textbasierte Gruppenaufgabe"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:23
+msgid "Manage related links"
+msgstr "Manage related links"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:32
+#: ../module/Ui/templates/license/manage.phtml:5
+#: ../module/Ui/templates/subject/entity/trash-bin.phtml:21
+#: ../module/Ui/templates/subject/entity/unrevised.phtml:5
+#: ../module/Ui/templates/uuid/recycle-bin.phtml:6
+msgid "Title"
+msgstr "Titel"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:41
+#: ../module/Ui/templates/license/manage.phtml:7
+msgid "Url"
+msgstr "URL"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:50
+#: ../module/Ui/templates/flag/detail.phtml:17
+#: ../module/Ui/templates/flag/manage.phtml:7
+#: ../module/Ui/templates/subject/entity/trash-bin.phtml:22
+#: ../module/Ui/templates/subject/entity/unrevised.phtml:6
+#: ../module/Ui/templates/uuid/recycle-bin.phtml:7
+msgid "Type"
+msgstr "Typ"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:59
+#: ../module/Ui/templates/license/manage.phtml:9
+#: ../module/Ui/templates/uuid/recycle-bin.phtml:8
+msgid "Actions"
+msgstr "Aktionen"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:66
+msgid "related-content/order"
+msgstr "related-content/order"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:117
+msgid "related.content.purge"
+msgstr "related.content.purge"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:124
+msgid "related-content/remove"
+msgstr "related-content/remove"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:145
+msgid "related.content.update"
+msgstr "related.content.update"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:165
+msgid "related.content.create"
+msgstr "related.content.create"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:170
+msgid "related-content/add-category"
+msgstr "related-content/add-category"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:172
+msgid "Add category"
+msgstr "Kategorie hinzufügen"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:176
+msgid "related-content/add-internal"
+msgstr "related-content/add-internal"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:178
+msgid "Add internal"
+msgstr "Internen Link hinzufügen"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:182
+msgid "related-content/add-external"
+msgstr "related-content/add-external"
+
+#: ../data/twig/b3/c8/2129823b09ba257246706eaf56f666e1ae0f79269be0cdf3fece1d008f12.php:184
+msgid "Add external"
+msgstr "Externen Link hinzufügen"
+
+#: ../data/twig/bb/86/0853ce932ad88d0f5260488a4c2a0f1a9acf6a0ab37a22ed1332af74aadb.php:108
+#: ../data/twig/dc/67/cb53b97a29a040453ecec16c60568a31e7bc55b39d31bbb1a363fb69aa70.php:108
+msgid "Settigs"
+msgstr "Einstellungen"
+
+#: ../data/twig/c1/fb/ed2624a14f0cf479bfced4a1b24c1865d98b33e3511465e02b311653f137.php:28
+#: ../data/twig/dd/8c/a86a2aed05b65871d627ac0a38bc72aac62ab42e8b8e99032863eed8aa26.php:28
+msgid "subject/taxonomy"
+msgstr "subject/taxonomy"
+
+#: ../data/twig/c2/cf/444517230e4b8635c4576746cad22b24a2bfaaf00d7ccce5e358577c628e.php:114
+msgid "modals"
+msgstr "modals"
+
+#: ../data/twig/c4/e6/3a19133bd40ef9dbf99023add4c883cc9698889f8ea199027a12933721d1.php:38
+#: ../data/twig/df/73/c5f9c1de24d38034009e350f7dd0a442a88c76b6e97f8175d91325cf3655.php:38
+msgid "More"
+msgstr "Mehr"
+
+#: ../data/twig/c6/3d/65793d1c27b286147feb7c653c075b3706beb3d4295a9aed03e928b5c7e6.php:21
+#: ../data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:21
+msgid "entity.license.update"
+msgstr "entity.license.update"
+
+#: ../data/twig/c6/3d/65793d1c27b286147feb7c653c075b3706beb3d4295a9aed03e928b5c7e6.php:26
+#: ../data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:26
+msgid "entity/license/update"
+msgstr "entity/license/update"
+
+#: ../data/twig/c6/3d/65793d1c27b286147feb7c653c075b3706beb3d4295a9aed03e928b5c7e6.php:31
+#: ../data/twig/fb/77/4d8bc17598cba775e2d70aa6461b57b6224a1dbb55250439ee4137e09552.php:31
+msgid "Change license"
+msgstr "Lizenz auswählen"
+
+#: ../data/twig/ce/da/6adb45614f380bfb9c226545a4ef8ec5ede71239feca2988f93ed7cde0fb.php:24
+#: ../data/twig/e8/4d/06ffa0315ea38e1b609de5eba51d90d92540a0e1a22c2356c69063ff3454.php:24
+msgid "Related taxonomies"
+msgstr "Zugehörige Themen"
+
+#: ../data/twig/e2/74/4a31f066ec9797a4540bb619dd1750f60a59b19ce10b21366d18a1ecd931.php:25
+msgid "Articles"
+msgstr "Artikel"
+
+#: ../data/twig/e2/74/4a31f066ec9797a4540bb619dd1750f60a59b19ce10b21366d18a1ecd931.php:27
+msgid "Videos"
+msgstr "Videos"
+
+#: ../data/twig/e2/74/4a31f066ec9797a4540bb619dd1750f60a59b19ce10b21366d18a1ecd931.php:29
+msgid "Courses"
+msgstr "Kurse"
+
+#: ../data/twig/fe/b5/11a3a31c4d6b191425a67b072f243e2e4930ed4af636c92a1dd2c40d5a3f.php:30
+msgid "discussion/discussions/get"
+msgstr "discussion/discussions/get"
+
+#: ../data/twig/fe/f5/6b276c280512b66e1aa074ddbe1f4a9c044aa6270d9ba86af34364ae205a.php:19
+msgid "frontpage_navigation"
+msgstr "frontpage_navigation"
+
+#: ../module/Ui/templates/admin/home/index.phtml:12
 msgid "Backend"
 msgstr "Backend"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/admin/home/index.phtml:15
+#: ../module/Ui/templates/admin/home/index.phtml:15
 msgid "Welcome to the backend. Explore the possiblities on the right!"
 msgstr "Willkommen im Backend."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/ads/helper/ads-helper.phtml:4
-msgid "Horizon"
-msgstr "Horizont"
+#: ../module/Ui/templates/ads/helper/ads-helper.phtml:4
+msgid "Broaden your horizon"
+msgstr "Horizont erweitern"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/activate.phtml:1
+#: ../module/Ui/templates/ads/helper/ads-helper.phtml:5
+msgid "What is this?"
+msgstr "Was ist das?"
+
+#: ../module/Ui/templates/authentication/activate.phtml:1
 msgid "Activate an account"
 msgstr "Account freischalten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/change-password.phtml:2
+#: ../module/Ui/templates/authentication/change-password.phtml:2
+#: ../module/Ui/templates/navigation/page/partial/tree.phtml:32
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/login.phtml:24
+#: ../module/Ui/templates/authentication/login.phtml:24
 #, php-format
 msgid "Did you forget your %spassword%s?"
 msgstr "%sPasswort vergessen%s?"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/reset-password/restore.phtml:1
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/reset-password/select.phtml:1
+#: ../module/Ui/templates/authentication/reset-password/restore.phtml:1
+#: ../module/Ui/templates/authentication/reset-password/select.phtml:1
 msgid "Restore password"
 msgstr "Passwort zurücksetzen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/create.phtml:2
+#: ../module/Ui/templates/authorization/role/create.phtml:2
 msgid "Create role"
 msgstr "Rolle erstellen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:16
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:17
-msgid "Username"
-msgstr "Benutzername"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:17
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/roles.phtml:12
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:15
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:18
+#: ../module/Ui/templates/authorization/role/roles.phtml:12
+#: ../module/Ui/templates/authorization/role/partial/users-table.phtml:17
+#: ../module/Ui/templates/user/user/profile.phtml:15
+#: ../module/Ui/templates/user/users/partial/users-table.phtml:18
 msgid "Roles"
 msgstr "Rollen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:18
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:19
-msgid "Last login"
-msgstr "Letzter Login"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:19
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:20
-msgid "Logins"
-msgstr "Anmeldungen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/permission/add.phtml:12
-msgid "Add permission"
-msgstr "Berechtigung hinzufügen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/roles.phtml:29
+#: ../module/Ui/templates/authorization/role/roles.phtml:29
 msgid "role"
 msgstr "Rolle"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:12
+#: ../module/Ui/templates/authorization/role/show.phtml:12
 msgid "Role"
 msgstr "Rolle"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:20
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/users.phtml:14
+#: ../module/Ui/templates/authorization/role/show.phtml:20
+#: ../module/Ui/templates/user/users/users.phtml:14
 msgid "Users"
 msgstr "Benutzer"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:47
+#: ../module/Ui/templates/authorization/role/show.phtml:47
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:58
+#: ../module/Ui/templates/authorization/role/show.phtml:58
 msgid "Global"
 msgstr "Global"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:70
+#: ../module/Ui/templates/authorization/role/show.phtml:70
 msgid "Inherits from"
 msgstr "Erbt von"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/add.phtml:12
+#: ../module/Ui/templates/authorization/role/partial/users-table.phtml:16
+#: ../module/Ui/templates/user/users/partial/users-table.phtml:17
+msgid "Username"
+msgstr "Benutzername"
+
+#: ../module/Ui/templates/authorization/role/partial/users-table.phtml:18
+#: ../module/Ui/templates/user/users/partial/users-table.phtml:19
+msgid "Last login"
+msgstr "Letzter Login"
+
+#: ../module/Ui/templates/authorization/role/partial/users-table.phtml:19
+#: ../module/Ui/templates/user/users/partial/users-table.phtml:20
+msgid "Logins"
+msgstr "Anmeldungen"
+
+#: ../module/Ui/templates/authorization/role/permission/add.phtml:12
+msgid "Add permission"
+msgstr "Berechtigung hinzufügen"
+
+#: ../module/Ui/templates/authorization/role/user/add.phtml:12
 msgid "Add user"
 msgstr "Benutzer hinzufügen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/partial.phtml:14
+#: ../module/Ui/templates/authorization/role/user/partial.phtml:14
 #, php-format
 msgid "User %s not found"
 msgstr "Benutzer %s wurde nicht gefunden"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/remove.phtml:12
+#: ../module/Ui/templates/authorization/role/user/remove.phtml:12
 msgid "Remove user"
 msgstr "Benutzer entfernen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/blogs.phtml:13
+#: ../module/Ui/templates/blog/blog/blogs.phtml:13
 msgid "Blogs"
 msgstr "Blogs"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/post/update.phtml:12
-msgid "Update a blog post"
-msgstr "Blogeintrag aktualisieren"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view-all.phtml:2
+#: ../module/Ui/templates/blog/blog/view-all.phtml:2
 msgid "Unpublished posts"
 msgstr "Unveröffentlichte Posts"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view-partial.phtml:13
+#: ../module/Ui/templates/blog/blog/view-partial.phtml:13
 msgid "unpublished"
 msgstr "Unveröffentlichte Blogeinträge"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view.phtml:24
+#: ../module/Ui/templates/blog/blog/view.phtml:24
 msgid "Blog"
 msgstr "Blog"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/form.phtml:12
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/url-form.phtml:12
-msgid "Add context"
-msgstr "Kontext hinzufügen"
+#: ../module/Ui/templates/blog/blog/post/update.phtml:12
+msgid "Update a blog post"
+msgstr "Blogeintrag aktualisieren"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/url-form.phtml:12
-msgid "Select uri"
-msgstr "URL auswählen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/button.phtml:23
-msgid "There is no help available for this page yet."
-msgstr "Für diese Seite gibt es noch keine Hilfe."
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:12
+#: ../module/Ui/templates/contexter/manage.phtml:12
 msgid "Manage context links"
 msgstr "Links im Kontext verwalten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:16
+#: ../module/Ui/templates/contexter/manage.phtml:16
 msgid "Link"
 msgstr "Link"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:17
+#: ../module/Ui/templates/contexter/manage.phtml:17
 msgid "Matching"
 msgstr "deckungsgleiche Parameter"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/license/update.phtml:1
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/update.phtml:1
+#: ../module/Ui/templates/contexter/add/form.phtml:12
+#: ../module/Ui/templates/contexter/add/url-form.phtml:12
+msgid "Add context"
+msgstr "Kontext hinzufügen"
+
+#: ../module/Ui/templates/contexter/add/url-form.phtml:12
+msgid "Select uri"
+msgstr "URL auswählen"
+
+#: ../module/Ui/templates/contexter/helper/button.phtml:23
+msgid "There is no help available for this page yet."
+msgstr "Für diese Seite gibt es noch keine Hilfe."
+
+#: ../module/Ui/templates/entity/license/update.phtml:1
+#: ../module/Ui/templates/license/update.phtml:1
 msgid "Update license"
 msgstr "Lizenz bearbeiten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/link/move.phtml:2
+#: ../module/Ui/templates/entity/link/move.phtml:2
 msgid "Move resource"
 msgstr "Bezugsquelle verschieben"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/repository/update-revision.phtml:1
+#: ../module/Ui/templates/entity/repository/update-revision.phtml:1
 msgid "Update revision"
 msgstr "Korrektur überarbeiten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/taxonomy/update.phtml:13
+#: ../module/Ui/templates/entity/taxonomy/update.phtml:13
 msgid "Assign a resource"
 msgstr "eine Quelle zuordnen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:6
+#: ../module/Ui/templates/error/403.phtml:6
 msgid "Forbidden"
 msgstr "Unzulässig"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:8
+#: ../module/Ui/templates/error/403.phtml:8
 msgid "It looks like you went somewhere you weren't supposed to be."
-msgstr "It looks like you went somewhere you weren't supposed to be."
+msgstr ""
+"Es scheint so, als wärest du wo hin gekommen, wo du nicht hättest hinkommen "
+"dürfen."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:11
+#: ../module/Ui/templates/error/403.phtml:11
 msgid "Take the blue pill and return home"
 msgstr "Nimm die blaue Pille und geh zurück auf Start."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:33
+#: ../module/Ui/templates/error/404.phtml:33
 msgid "The requested controller was unable to dispatch the request."
 msgstr "Der angeforderte Controller konnte die Anforderung nicht bearbeiten."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:37
+#: ../module/Ui/templates/error/404.phtml:37
 msgid ""
 "The requested controller could not be mapped to an existing controller class."
 msgstr ""
 "Der angeforderte Controller konnte nicht zu einer vorhandenen Controller-"
 "Klasse zugeordnet werden."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:41
+#: ../module/Ui/templates/error/404.phtml:41
 msgid "The requested controller was not dispatchable."
 msgstr "Der angeforderte Controller konnte nicht abgesendet werden."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:44
+#: ../module/Ui/templates/error/404.phtml:44
 msgid "The requested URL could not be matched by routing."
 msgstr "Die angeforderte URL konnte nicht zugeordnet werden."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:47
+#: ../module/Ui/templates/error/404.phtml:47
 msgid "We cannot determine at this time why a 404 was generated."
 msgstr ""
 "Im Moment können wir nicht festellen warum ein 404 Fehler aufgetreten ist."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:59
+#: ../module/Ui/templates/error/404.phtml:59
 msgid "Controller"
 msgstr "Controller"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:65
+#: ../module/Ui/templates/error/404.phtml:65
 #, php-format
 msgid "resolves to %s"
 msgstr "löst sich in %s"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:79
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:8
+#: ../module/Ui/templates/error/404.phtml:79
+#: ../module/Ui/templates/error/index.phtml:8
 msgid "Additional information"
 msgstr "Zusätzliche Informationen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:82
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:107
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:11
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:35
+#: ../module/Ui/templates/error/404.phtml:82
+#: ../module/Ui/templates/error/404.phtml:107
+#: ../module/Ui/templates/error/index.phtml:11
+#: ../module/Ui/templates/error/index.phtml:35
 msgid "File"
 msgstr "Datei"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:87
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:112
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:15
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:39
+#: ../module/Ui/templates/error/404.phtml:87
+#: ../module/Ui/templates/error/404.phtml:112
+#: ../module/Ui/templates/error/index.phtml:15
+#: ../module/Ui/templates/error/index.phtml:39
 msgid "Message"
 msgstr "Nachricht"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:91
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:116
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:19
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:43
+#: ../module/Ui/templates/error/404.phtml:91
+#: ../module/Ui/templates/error/404.phtml:116
+#: ../module/Ui/templates/error/index.phtml:19
+#: ../module/Ui/templates/error/index.phtml:43
 msgid "Stack trace"
 msgstr "Stapelüberwachung"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:101
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:29
+#: ../module/Ui/templates/error/404.phtml:101
+#: ../module/Ui/templates/error/index.phtml:29
 msgid "Previous exceptions"
 msgstr "Vorherige Ausnahmen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:1
+#: ../module/Ui/templates/error/index.phtml:1
 msgid "An error occurred"
 msgstr "Es ist ein Fehler aufgetreten."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:58
+#: ../module/Ui/templates/error/index.phtml:58
 msgid "No Exception available"
 msgstr "Keine Ausnahmen verfügbar"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/discussion/comment/create.phtml:4
-#, php-format
-msgid "%s commented \"%s\": %s"
-msgstr "%s hat \"%s\" kommentiert: %s"
+#: ../module/Ui/templates/event/history.phtml:1
+msgid "Event log"
+msgstr "Ereignisprotokoll"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/discussion/create.phtml:4
+#: ../module/Ui/templates/event/helper/event/discussion/create.phtml:4
 #, php-format
 msgid "%s started a new discussion \"%s\" on %s"
 msgstr "%s hat eine neue Diskussion %s auf %s gestartet"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/create.phtml:4
+#: ../module/Ui/templates/event/helper/event/discussion/comment/create.phtml:4
+#, php-format
+msgid "%s commented \"%s\": %s"
+msgstr "%s hat \"%s\" kommentiert: %s"
+
+#: ../module/Ui/templates/event/helper/event/entity/create.phtml:4
 #, php-format
 msgid "%s created a new %s: %s"
 msgstr "%s hat eine neue %s angelegt: %s"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/link/create.phtml:6
+#: ../module/Ui/templates/event/helper/event/entity/link/create.phtml:6
 #, php-format
 msgid "%s added %s to %s"
 msgstr "%s hat %s zu %s hinzugefügt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/add.phtml:5
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:5
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/reject.phtml:5
+#: ../module/Ui/templates/event/helper/event/entity/revision/add.phtml:5
+#: ../module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:5
+#: ../module/Ui/templates/event/helper/event/entity/revision/reject.phtml:5
 msgid "trashed content"
 msgstr "Der Inhalt ist im Papierkorb."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/add.phtml:9
+#: ../module/Ui/templates/event/helper/event/entity/revision/add.phtml:9
 #, php-format
 msgid "%s created a new version of %s"
 msgstr "%s hat eine neue Bearbeitung von %s erstellt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:10
+#: ../module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:10
 #, php-format
 msgid "%s checked out a new version of %s: \"%s\""
 msgstr "%s hat eine neue Bearbeitung %s akzeptiert: \"%s\""
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/reject.phtml:10
+#: ../module/Ui/templates/event/helper/event/entity/revision/reject.phtml:10
 #, php-format
 msgid "%s rejected a version of %s: \"%s\""
 msgstr "%s lehnte eine Bearbeitung von %s ab: \"%s\""
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/license/object/set.phtml:5
+#: ../module/Ui/templates/event/helper/event/license/object/set.phtml:5
 #, php-format
 msgid "%s changed the license of %s"
 msgstr "%s hat die Lizenz von %s geändert"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:8
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/link/create.phtml:9
+#: ../module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:8
+#: ../module/Ui/templates/user/notification/type/entity/link/create.phtml:9
 msgid "removed content"
 msgstr "Inhalt entfernt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:10
+#: ../module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:10
 #, php-format
 msgid "%s associated %s with taxonomy %s"
 msgstr "%s hat %s der Taxonomie %s zugeordnet"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/create.phtml:3
+#: ../module/Ui/templates/event/helper/event/taxonomy/term/create.phtml:3
 #, php-format
 msgid "%s created a new taxonomy term: <strong>\"%s\"</strong>"
 msgstr "%s erstellt eine neue Taxonomie-Formulierung: <strong>%s</strong>"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/parent/change.phtml:7
+#: ../module/Ui/templates/event/helper/event/taxonomy/term/update.phtml:3
+#, php-format
+msgid "%s updated a taxonomy term: <strong>\"%s\"</strong>"
+msgstr "%s hat den Taxonomie-Begriff <strong>\"%s\"</strong> aktualisiert"
+
+#: ../module/Ui/templates/event/helper/event/taxonomy/term/parent/change.phtml:7
 #, php-format
 msgid ""
 "%s changed <i>\"%s\"'s</i> parent from <strong>\"%s\"</strong> to <strong>"
@@ -1337,93 +1789,71 @@ msgstr ""
 "%s hat <i>\"%s\"</i> Ursache von <strong>\"%s\"</strong> zu <strong>\"%s\"</"
 "strong> geändert"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/update.phtml:3
-#, php-format
-msgid "%s updated a taxonomy term: <strong>\"%s\"</strong>"
-msgstr "%s hat den Taxonomie-Begriff <strong>\"%s\"</strong> aktualisiert"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/uuid/restore.phtml:3
+#: ../module/Ui/templates/event/helper/event/uuid/restore.phtml:3
 #, php-format
 msgid "%s restored \"%s\""
 msgstr "%s hat \"%s\" wiederhergestellt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/uuid/trash.phtml:3
+#: ../module/Ui/templates/event/helper/event/uuid/trash.phtml:3
 #, php-format
 msgid "%s trashed \"%s\""
 msgstr "%s hat \"%s\" in den Papierkorb verschoben"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/history.phtml:1
-msgid "Event log"
-msgstr "Ereignisprotokoll"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:5
+#: ../module/Ui/templates/flag/detail.phtml:5
 msgid "Flag detail"
 msgstr "Details des Bitschalters"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:8
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:6
+#: ../module/Ui/templates/flag/detail.phtml:8
+#: ../module/Ui/templates/flag/manage.phtml:6
 msgid "Object"
 msgstr "Objekt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:17
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:7
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:22
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:6
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:7
-msgid "Type"
-msgstr "Typ"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:35
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:9
+#: ../module/Ui/templates/flag/detail.phtml:35
+#: ../module/Ui/templates/flag/manage.phtml:9
 msgid "Reporter"
 msgstr "Reporter"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:44
+#: ../module/Ui/templates/flag/detail.phtml:44
 msgid "Content"
 msgstr "Inhalt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:1
+#: ../module/Ui/templates/flag/manage.phtml:1
 msgid "Manage flags"
 msgstr "Flags verwalten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/default-modal.phtml:11
+#: ../module/Ui/templates/layout/partials/default-modal.phtml:11
 msgid "Okay"
 msgstr "Okay"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/search.phtml:2
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/search/form.phtml:1
-msgid "Search"
-msgstr "Suchen"
+#: ../module/Ui/templates/layout/partials/search.phtml:2
+msgid "Search in math"
+msgstr "In Mathematik suchen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/add.phtml:1
+#: ../module/Ui/templates/layout/partials/search.phtml:8
+msgid ""
+"Search for terms like <em>trigonometry</em>, <em>fractions</em> or "
+"<em>precalculus</em>"
+msgstr ""
+"Suche zum Beispiel nach <em>Nullstellen</em>, <em>Euklidische Theorie</em>, "
+"<em>Abituraufgaben</em> oder deinem <em>Bundesland</em>"
+
+#: ../module/Ui/templates/license/add.phtml:1
 msgid "Add license"
 msgstr "Lizenz hinzufügen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:1
+#: ../module/Ui/templates/license/manage.phtml:1
 msgid "Manage licenses"
 msgstr "Lizenzen verwalten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:5
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:21
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:5
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:6
-msgid "Title"
-msgstr "Titel"
+#: ../module/Ui/templates/license/manage.phtml:6
+msgid "Default"
+msgstr "Standard"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:6
-msgid "Url"
-msgstr "URL"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:7
+#: ../module/Ui/templates/license/manage.phtml:8
 msgid "Icon"
 msgstr "Symbol"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:8
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:8
-msgid "Actions"
-msgstr "Aktionen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:22
+#: ../module/Ui/templates/license/manage.phtml:24
 msgid ""
 "Caution, deleting a license has serious consequences. You are going to "
 "delete a great amount of content, you need to know exactly what you are "
@@ -1433,14 +1863,14 @@ msgstr ""
 "eine große Menge an Inhalt zu löschen, du solltest genau wissen was du tust. "
 "Das Löschen kann nicht rückgängig gemacht werden!"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:22
+#: ../module/Ui/templates/license/manage.phtml:24
 msgid ""
 "DANGER: You are going to delete all contents associated with this license!"
 msgstr ""
 "ACHTUNG! Du bist dabei alle Inhalte, die mit der Lizenz verbunden sind zu "
 "löschen!"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/notification/body.phtml:6
+#: ../module/Ui/templates/mailman/messages/notification/body.phtml:6
 #, php-format
 msgid ""
 "Hello %s,<br>\n"
@@ -1459,7 +1889,7 @@ msgstr ""
 " %s\n"
 "</ul>"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/register/body.phtml:2
+#: ../module/Ui/templates/mailman/messages/register/body.phtml:2
 #, php-format
 msgid ""
 "Hello %s,\n"
@@ -1480,7 +1910,7 @@ msgstr ""
 "\n"
 " dein%s Team. "
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/restore-password/body.phtml:2
+#: ../module/Ui/templates/mailman/messages/restore-password/body.phtml:2
 #, php-format
 msgid ""
 "Hi %s,\n"
@@ -1497,81 +1927,87 @@ msgstr ""
 "\n"
 "%s"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/restore-password/subject.phtml:1
+#: ../module/Ui/templates/mailman/messages/restore-password/subject.phtml:1
 #, php-format
 msgid "Restore your password on %s"
 msgstr "Stelle dein Passwort auf %s wieder her"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/create.phtml:1
-msgid "Create container"
-msgstr "Create container"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:3
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/containers.phtml:1
+#: ../module/Ui/templates/navigation/containers.phtml:1
+#: ../module/Ui/templates/navigation/container/get.phtml:3
 msgid "Manage navigation"
 msgstr "Navigation verwalten"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:4
-msgid "Information"
-msgstr "Information"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:7
-msgid "Instance: "
-msgstr "Instanz:"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:10
-msgid "Name: "
-msgstr "Name:"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:15
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:28
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:32
-msgid "page"
-msgstr "Seite"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:17
-msgid "Pages"
-msgstr "Seiten"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/containers.phtml:11
+#: ../module/Ui/templates/navigation/containers.phtml:11
 msgid "container"
 msgstr "container"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:24
-msgid "parameter"
-msgstr "Parameter"
+#: ../module/Ui/templates/navigation/container/create.phtml:1
+msgid "Create container"
+msgstr "Container erstellen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/create.phtml:1
+#: ../module/Ui/templates/navigation/container/get.phtml:4
+msgid "Information"
+msgstr "Information"
+
+#: ../module/Ui/templates/navigation/container/get.phtml:7
+msgid "Instance: "
+msgstr "Instanz:"
+
+#: ../module/Ui/templates/navigation/container/get.phtml:10
+msgid "Name: "
+msgstr "Name:"
+
+#: ../module/Ui/templates/navigation/container/get.phtml:15
+msgid "page"
+msgstr "Seite"
+
+#: ../module/Ui/templates/navigation/page/partial/tree.phtml:24
+msgid "Add parameter"
+msgstr "Parameter hinzufügen"
+
+#: ../module/Ui/templates/navigation/page/partial/tree.phtml:28
+msgid "Add page"
+msgstr "Seite hinzufügen"
+
+#: ../module/Ui/templates/navigation/page/partial/tree.phtml:36
+msgid "Remove page"
+msgstr "Seite entfernen"
+
+#: ../module/Ui/templates/navigation/parameter/create.phtml:1
 msgid "Create parameter"
 msgstr "Parameter erstellen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/create.phtml:5
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/update.phtml:5
+#: ../module/Ui/templates/navigation/parameter/create.phtml:5
+#: ../module/Ui/templates/navigation/parameter/update.phtml:5
 msgid "Key"
 msgstr "Schlüssel"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/key/create.phtml:1
-msgid "Create parameter key"
-msgstr "Parameter Schlüssel erstellen"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/update.phtml:1
+#: ../module/Ui/templates/navigation/parameter/update.phtml:1
 msgid "Update parameter"
 msgstr "Parameter aktualisieren"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/search/results.phtml:1
+#: ../module/Ui/templates/navigation/parameter/key/create.phtml:1
+msgid "Create parameter key"
+msgstr "Parameter Schlüssel erstellen"
+
+#: ../module/Ui/templates/search/form.phtml:1
+msgid "Search"
+msgstr "Suchen"
+
+#: ../module/Ui/templates/search/results.phtml:1
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:15
+#: ../module/Ui/templates/subject/entity/trash-bin.phtml:15
 msgid "Trashed learning resources"
 msgstr "gelöschte Lernressourcen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:23
+#: ../module/Ui/templates/subject/entity/trash-bin.phtml:23
 msgid "Action"
 msgstr "Aktion"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:38
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:26
+#: ../module/Ui/templates/subject/entity/trash-bin.phtml:38
+#: ../module/Ui/templates/uuid/recycle-bin.phtml:26
 msgid ""
 "Do you really want to purge this item? It and all references to it will be "
 "lost forever!"
@@ -1579,107 +2015,107 @@ msgstr ""
 "Möchtest du wirklich diese Datei löschen? Die Datei und alle Verweise darauf "
 "werden unwiderruflich gelöscht."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:1
+#: ../module/Ui/templates/subject/entity/unrevised.phtml:1
 msgid "Unrevised learning resources"
-msgstr "nicht überarbeitete Lernressourcen"
+msgstr "Nicht überprüfte Bearbeitungen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/upload/form.phtml:2
+#: ../module/Ui/templates/upload/form.phtml:2
 msgid "Upload a file"
 msgstr "Datei hochladen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notification.phtml:11
+#: ../module/Ui/templates/user/notification/notification.phtml:11
 #, php-format
 msgid "Event %s, User %s, Uuid %s"
 msgstr "Ereignis %s, Benutzer %s, Uuid %s"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notifications.phtml:4
+#: ../module/Ui/templates/user/notification/notifications.phtml:4
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notifications.phtml:13
+#: ../module/Ui/templates/user/notification/notifications.phtml:13
 msgid "You have no notifications."
 msgstr "Du hast keine Benachrichtigungen."
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/discussion/comment/create.phtml:7
-#, php-format
-msgid "<strong>%s</strong> commented on discussion \"%s\": \"%s\""
-msgstr "<strong>%s</strong> hat die Diskussion \"%s\" kommentiert: \"%s\""
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/discussion/create.phtml:7
+#: ../module/Ui/templates/user/notification/type/discussion/create.phtml:7
 #, php-format
 msgid "<strong>%s</strong> started a discussion on \"%s\": <i>\"%s\"</i>"
 msgstr ""
 "<strong>%s</strong> hat eine Diskussion  über \"%s\" gestartet: <i>\"%s\"</i>"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/link/create.phtml:14
+#: ../module/Ui/templates/user/notification/type/discussion/comment/create.phtml:7
+#, php-format
+msgid "<strong>%s</strong> commented on discussion \"%s\": \"%s\""
+msgstr "<strong>%s</strong> hat die Diskussion \"%s\" kommentiert: \"%s\""
+
+#: ../module/Ui/templates/user/notification/type/entity/link/create.phtml:14
 #, php-format
 msgid "<strong>%s</strong> added %s to %s"
 msgstr "<strong>%s</strong> hat %s zu %s hinzugefügt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/add.phtml:9
+#: ../module/Ui/templates/user/notification/type/entity/revision/add.phtml:9
 #, php-format
 msgid "<strong>%s</strong> edited %s"
 msgstr "<strong>%s</strong> hat %s bearbeitet"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/checkout.phtml:10
+#: ../module/Ui/templates/user/notification/type/entity/revision/checkout.phtml:10
 #, php-format
 msgid "<strong>%s</strong> accepted a revision of %s"
 msgstr "<strong>%s</strong> hat eine Bearbeitung von %s akzeptiert"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/reject.phtml:6
+#: ../module/Ui/templates/user/notification/type/entity/revision/reject.phtml:6
 #, php-format
 msgid "<strong>%s</strong> rejectect a revision of %s: %s"
 msgstr "<strong>%s</strong> hat eine Bearbeitung von %s abgelehnt: %s"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/associate.phtml:6
+#: ../module/Ui/templates/user/notification/type/taxonomy/term/associate.phtml:6
 #, php-format
 msgid "<strong>%s</strong> associated %s with %s"
-msgstr "<strong>%s</strong> associated %s with %s"
+msgstr "<strong>%s</strong> hat %s mit %s verknüpft"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/parent/change.phtml:8
-#, php-format
-msgid "<strong>%s</strong> changed parent of %s from %s to %s"
-msgstr "<strong>%s</strong> changed parent of %s from %s to %s"
-
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/update.phtml:4
+#: ../module/Ui/templates/user/notification/type/taxonomy/term/update.phtml:4
 #, php-format
 msgid "<strong>%s</strong> updated %s"
 msgstr "<strong>%s</strong> hat %s bearbeitet"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/uuid/restore.phtml:5
+#: ../module/Ui/templates/user/notification/type/taxonomy/term/parent/change.phtml:8
+#, php-format
+msgid "<strong>%s</strong> changed parent of %s from %s to %s"
+msgstr "<strong>%s</strong> hat den Elter von %s von %s zu %s geändert"
+
+#: ../module/Ui/templates/user/notification/type/uuid/restore.phtml:5
 #, php-format
 msgid "<strong>%s</strong> restored %s"
 msgstr "<strong>%s</strong> hat %s wiederhergestellt"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/uuid/trash.phtml:5
+#: ../module/Ui/templates/user/notification/type/uuid/trash.phtml:5
 #, php-format
 msgid "<strong>%s</strong> trashed %s"
 msgstr "<strong>%s</strong> hat %s gelöscht"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:1
+#: ../module/Ui/templates/user/user/profile.phtml:1
 msgid "Profile"
 msgstr "Profil"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:5
+#: ../module/Ui/templates/user/user/profile.phtml:5
 msgid "Last seen"
 msgstr "zuletzt angesehen"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:30
+#: ../module/Ui/templates/user/user/profile.phtml:30
 msgid "Activity log"
 msgstr "Aktivitätsprotokoll"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/settings.phtml:2
+#: ../module/Ui/templates/user/user/settings.phtml:2
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/settings.phtml:6
+#: ../module/Ui/templates/user/user/settings.phtml:6
 msgid "Change your password"
 msgstr "Passwort ändern"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:1
+#: ../module/Ui/templates/uuid/recycle-bin.phtml:1
 msgid "Uuid recycle bin"
 msgstr "Papierkorb"
 
-#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:5
+#: ../module/Ui/templates/uuid/recycle-bin.phtml:5
 msgid "ID"
 msgstr "ID"

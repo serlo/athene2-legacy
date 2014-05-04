@@ -1,44 +1,48 @@
 {% set entities = term.getAssociated('entities') %}
-{% if term.findChildrenByTrashed(false).count() %}
+{% set children = [] %}
+{% for child in term.findChildrenByTrashed(false) %}
+    {% if child.getType().getName() in ['topic-folder' , 'curriculum-topic-folder'] %}
+        {% set children = children | merge([ child ]) %}
+    {% endif %}
+{% endfor %}
+{% if children %}
     <h4><span class="glyphicon glyphicon-folder-open"></span> {{ translate('Folders') }}</h4>
     <hr>
     <div class="panel-group" id="accordion{{ term.getId() }}">
-        {% for child in term.findChildrenByTrashed(false) %}
-            {% if child.getType().getName() in ['topic-folder' , 'curriculum-topic-folder'] %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ term.getId() }}" href="#branch{{ child.getId() }}">
-                                {{ child.getName() }}
-                            </a>
-                        </h4>
+        {% for child in children %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ term.getId() }}" href="#branch{{ child.getId() }}">
+                            {{ child.getName() }}
+                        </a>
+                    </h4>
+                </div>
+                <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
+                    <div class="list-group-item edit-control hidden">
+                        {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
                     </div>
-                    <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
-                        <div class="list-group-item edit-control hidden">
-                            {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
+                    {% if child.getDescription() %}
+                        <div class="list-group-item">
+                            <strong>
+                                {{ child.getDescription() }}
+                            </strong>
                         </div>
-                        {% if child.getDescription() %}
-                            <div class="list-group-item">
-                                <strong>
-                                    {{ child.getDescription() }}
-                                </strong>
-                            </div>
-                        {% endif %}
-                        {% for entity in child.getAssociated('entities') if not entity.getTrashed() %}
-                            <div class="list-group-item">
-                                <div class="row">
-                                    <div class="col-xs-1">
-                                        <strong>{{ loop.index }}.</strong>
-                                    </div>
-                                    <div class="col-xs-11">
-                                        {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
-                                    </div>
+                    {% endif %}
+                    {% for entity in child.getAssociated('entities') if not entity.getTrashed() %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <strong>{{ loop.index }}.</strong>
+                                </div>
+                                <div class="col-xs-11">
+                                    {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endif %}
+            </div>
         {% endfor %}
     </div>
 {% endif %}

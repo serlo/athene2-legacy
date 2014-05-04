@@ -31,7 +31,8 @@ class InstanceManagerFactory implements FactoryInterface
         $objectManager        = $this->getEntityManager($serviceLocator);
         $classResolver        = $this->getClassResolver($serviceLocator);
         $authorizationService = $this->getAuthorizationService($serviceLocator);
-        $instance             = new InstanceManager($authorizationService, $classResolver, $objectManager);
+        $options              = $serviceLocator->get('Instance\Options\InstanceOptions');
+        $instance             = new InstanceManager($authorizationService, $classResolver, $options, $objectManager);
 
         return $instance;
     }

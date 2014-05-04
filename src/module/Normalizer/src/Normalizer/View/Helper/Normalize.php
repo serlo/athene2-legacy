@@ -9,7 +9,6 @@
  */
 namespace Normalizer\View\Helper;
 
-use Exception;
 use Normalizer\NormalizerAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 
@@ -29,9 +28,10 @@ class Normalize extends AbstractHelper
     {
         try {
             $this->normalize($object);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
+
         return true;
     }
 

@@ -54,6 +54,7 @@ class Normalizer implements NormalizerInterface
                 return $normalized;
             }
         }
+
         throw new Exception\RuntimeException(sprintf('No strategy found for "%s"', get_class($object)));
     }
 }
