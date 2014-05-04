@@ -17,7 +17,7 @@ class TrackingHelperOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $code;
+    protected $code = '';
 
     /**
      * @return string
