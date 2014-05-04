@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-    <?php  echo $this->headTitle($this->titleHead)->setAutoEscape(false); ?>
+    <?php echo $this->headTitle($this->brand()->getBrand(true))->setSeparator(' - '); ?>
     <?php echo $this->headLink(); ?>
     <?php echo $this->headStyle(); ?>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
