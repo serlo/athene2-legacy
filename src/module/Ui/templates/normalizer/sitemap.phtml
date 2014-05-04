@@ -5,6 +5,6 @@
             <url>
                 <loc><?php echo $this->normalize()->toUrl($object, true); ?><?php //echo $this->url('uuid/get', ['uuid' => $object->getId()], ['force_canonical' => true], false, true); ?></loc>
             </url>
-        <?php die(); endif; ?>
+        <?php endif; ?>
     <?php endforeach; ?>
 </urlset>
