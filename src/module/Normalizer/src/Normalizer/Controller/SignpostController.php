@@ -21,12 +21,6 @@ class SignpostController extends AbstractActionController
 {
     use NormalizerAwareTrait, UuidManagerAwareTrait;
 
-    public function refAction(){
-        $this->redirect()->toRoute('uuid/get', ['uuid' => $this->params('object')]);
-        $this->getResponse()->setStatusCode(301);
-        return false;
-    }
-
     public function indexAction()
     {
         $object      = $this->getUuidManager()->getUuid($this->params('uuid'));
@@ -37,7 +31,9 @@ class SignpostController extends AbstractActionController
         $url         = $this->url()->fromRoute($routeName, $routeParams);
 
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            return $this->redirect()->toUrl($url);
+            $response = $this->redirect()->toUrl($url);
+            $this->getResponse()->setStatusCode(301);
+            return $response;
         }
 
         $router  = $this->getServiceLocator()->get('Router');
@@ -74,5 +70,12 @@ class SignpostController extends AbstractActionController
         $view->setTemplate('normalizer/ref');
         $view->setTerminal(true);
         return $view;
+    }
+
+    public function refAction()
+    {
+        $this->redirect()->toRoute('uuid/get', ['uuid' => $this->params('object')]);
+        $this->getResponse()->setStatusCode(301);
+        return false;
     }
 }

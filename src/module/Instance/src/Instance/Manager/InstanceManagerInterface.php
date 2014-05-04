@@ -27,6 +27,12 @@ interface InstanceManagerInterface
     public function findInstanceByName($name);
 
     /**
+     * @param string $subDomain
+     * @return InstanceInterface
+     */
+    public function findInstanceBySubDomain($subDomain);
+
+    /**
      * @return InstanceInterface
      */
     public function getDefaultInstance();
