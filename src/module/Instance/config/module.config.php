@@ -69,6 +69,7 @@ return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Manager\InstanceManager' => __NAMESPACE__ . '\Factory\InstanceManagerFactory',
+            __NAMESPACE__ . '\Options\InstanceOptions' => __NAMESPACE__ . '\Factory\InstanceOptionsFactory'
             // Required in case of upgrade to zf 2.3
             //'Zend\I18n\Translator\TranslatorInterface' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ]
