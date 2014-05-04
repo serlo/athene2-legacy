@@ -95,6 +95,25 @@ class InstanceManager implements InstanceManagerInterface
         return $instance;
     }
 
+    public function findInstanceBySubDomain($subDomain)
+    {
+        if (!is_string($subDomain)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($subDomain)));
+        }
+
+        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
+        $criteria  = ['subdomain' => $subDomain];
+        $instance  = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
+
+        if (!is_object($instance)) {
+            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $subDomain));
+        }
+
+        $this->assertGranted('instance.get', $instance);
+
+        return $instance;
+    }
+
     /**
      * @return AbstractContainer
      */
@@ -161,8 +180,8 @@ class InstanceManager implements InstanceManagerInterface
         }
 
         if (!$this->requestInstance) {
-            $subDomain = explode('.', $_SERVER['HTTP_HOST'])[0];
-            $this->requestInstance = $this->findInstanceByName($subDomain);
+            $subDomain             = explode('.', $_SERVER['HTTP_HOST'])[0];
+            $this->requestInstance = $this->findInstanceBySubDomain($subDomain);
         }
 
         return $this->requestInstance;

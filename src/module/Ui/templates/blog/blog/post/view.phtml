@@ -2,6 +2,11 @@
 <?php $blogUrl = $this->normalize()->toUrl($blog); ?>
 <article>
     <header class="page-header">
+        <ul class="nav nav-pills pull-left">
+            <li>
+                <a href="<?php echo $blogUrl;?>"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            </li>
+        </ul>
         <h1>
             <?php echo $this->post->getTitle(); ?>
             <small>
@@ -14,10 +19,4 @@
         </h1>
     </header>
     <?php echo $this->markdown()->toHtml($this->post->getContent()); ?>
-    <hr/>
-    <footer>
-        <nav>
-            <?php echo $this->translate(sprintf('&#8592 Return to %s', "<a href=\"{$blogUrl}\">{$blog->getName()}</a>")); ?>
-        </nav>
-    </footer>
 </article>
