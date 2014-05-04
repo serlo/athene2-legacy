@@ -1,10 +1,10 @@
 <?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <?php foreach($this->objects as $object): ?>
-        <?php //if($this->normalize()->possible($object)): ?>
+        <?php if($this->normalize()->possible($object)): ?>
             <url>
-                <loc><?php //echo $this->normalize()->toUrl($object, true); ?><?php echo $this->url('uuid/get', ['uuid' => $object->getId()], ['force_canonical' => true], false, true); ?></loc>
+                <loc><?php echo $this->normalize()->toUrl($object, true); ?><?php //echo $this->url('uuid/get', ['uuid' => $object->getId()], ['force_canonical' => true], false, true); ?></loc>
             </url>
-        <?php //endif; ?>
+        <?php die(); endif; ?>
     <?php endforeach; ?>
 </urlset>
