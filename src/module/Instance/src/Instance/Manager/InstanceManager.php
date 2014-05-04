@@ -176,7 +176,7 @@ class InstanceManager implements InstanceManagerInterface
     protected function getInstanceFromDomain()
     {
         if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
-            throw new Exception\RuntimeException('No domain set.');
+            return $this->getDefaultInstance();
         }
 
         if (!$this->requestInstance) {
