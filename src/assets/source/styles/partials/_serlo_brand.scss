@@ -23,8 +23,13 @@
     top: -4px;
     left: 85px;
     margin: 0;
-    &>* {
-      display: none;
+    &>sup {
+      position: absolute;
+      right: -18px;
+      top: -3px;
+      &>small {
+        font-size: 40%;
+      }
     }
   }
 }

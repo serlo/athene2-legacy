@@ -11,6 +11,7 @@ namespace Normalizer\Strategy;
 
 use Attachment\Entity\AttachmentInterface;
 use Attachment\Entity\ContainerInterface;
+use Normalizer\Exception\RuntimeException;
 
 class AttachmentStrategy extends AbstractStrategy
 {
@@ -22,34 +23,33 @@ class AttachmentStrategy extends AbstractStrategy
         return $this->object;
     }
 
+    public function isValid($object)
+    {
+        return $object instanceof ContainerInterface;
+    }
+
+    protected function getContent()
+    {
+        return $this->getFile()->getLocation();
+    }
+
+    protected function getFile()
+    {
+        $file = $this->getObject()->getFiles()->current();
+        if (!is_object($file)) {
+            throw new RuntimeException('No files have been attached');
+        }
+        return $file;
+    }
+
     protected function getId()
     {
         return $this->getObject()->getId();
     }
 
-    protected function getTitle()
-    {
-        return $this->getObject()->getFirstFile()->getFilename();
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getFirstFile()->getDateTime();
-    }
-
-    protected function getContent()
-    {
-        return $this->getObject()->getFirstFile()->getLocation();
-    }
-
     protected function getPreview()
     {
-        return $this->getObject()->getFirstFile()->getLocation();
-    }
-
-    protected function getType()
-    {
-        return $this->getObject()->getType();
+        return $this->getFile()->getLocation();
     }
 
     protected function getRouteName()
@@ -64,8 +64,18 @@ class AttachmentStrategy extends AbstractStrategy
         ];
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof ContainerInterface;
+        return $this->getFile()->getDateTime();
+    }
+
+    protected function getTitle()
+    {
+        return $this->getFile()->getFilename();
+    }
+
+    protected function getType()
+    {
+        return $this->getObject()->getType();
     }
 }

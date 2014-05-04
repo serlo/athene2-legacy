@@ -1,6 +1,9 @@
 {% set entities = term.getAssociated('entities') %}
 {% set entities = entity().getVisible(entities) %}
 {% set types = entity().asTypeCollection(entities) %}
+{% set trans_articles = translate('Articles') %}
+{% set trans_videos = translate('Videos') %}
+{% set trans_courses = translate('Courses') %}
 <div>
     {% for i in 0..2 %}
         {% set type = cycle(['article', 'video', 'course'], i) %}
@@ -8,7 +11,7 @@
             <div class="row">
             <div class="col-xs-12">
                 <h4>
-                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Courses'], i)) }}
+                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ cycle([trans_articles, trans_videos, trans_courses], i) }}
                 </h4>
                 <hr>
             </div>

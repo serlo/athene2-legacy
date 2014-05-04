@@ -28,6 +28,7 @@ return [
         ],
     ],
     'assetic_configuration' => [
+        'debug' => false,
         'buildOnRequest' => false
     ],
     'log' => [

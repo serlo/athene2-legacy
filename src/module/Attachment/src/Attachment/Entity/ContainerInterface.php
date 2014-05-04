@@ -11,6 +11,7 @@ namespace Attachment\Entity;
 
 use Instance\Entity\InstanceAwareInterface;
 use Type\Entity\TypeAwareInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface ContainerInterface extends InstanceAwareInterface, TypeAwareInterface
 {
@@ -20,7 +21,7 @@ interface ContainerInterface extends InstanceAwareInterface, TypeAwareInterface
     public function getId();
 
     /**
-     * @return FileInterface[]
+     * @return FileInterface[]|Collection
      */
     public function getFiles();
 

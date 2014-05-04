@@ -8,22 +8,25 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace Instance\Factory;
 
-return [
-    'zfctwig' => [
-        'environment_options' => [
-            'debug' => true,
-            'strict_variables' => true,
-            'autoescape' => false
-        ],
-    ],
-    'assetic_configuration' => [
-        'debug' => true,
-        'buildOnRequest' => true
-    ],
-    'strokercache' => array(
-        'storage_adapter' => array(
-            'name' => 'Zend\Cache\Storage\Adapter\Apc',
-        )
-    )
-];
+use Common\Factory\AbstractOptionsFactory;
+
+class InstanceOptionsFactory extends AbstractOptionsFactory
+{
+    /**
+     * @return string
+     */
+    protected function getClassName()
+    {
+        return 'Instance\Options\InstanceOptions';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getKeyName()
+    {
+        return 'instance';
+    }
+}

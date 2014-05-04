@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Instance\Exception;
+use Instance\Options\InstanceOptions;
 use Zend\Session\AbstractContainer;
 use Zend\Session\Container;
 use ZfcRbac\Service\AuthorizationService;
@@ -38,18 +39,26 @@ class InstanceManager implements InstanceManagerInterface
     protected $container;
 
     /**
-     * @var int
+     * @var InstanceOptions
      */
-    private $defaultInstance = 1;
+    protected $options;
 
+    /**
+     * @param AuthorizationService   $authorizationService
+     * @param ClassResolverInterface $classResolver
+     * @param InstanceOptions        $options
+     * @param ObjectManager          $objectManager
+     */
     public function __construct(
         AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
+        InstanceOptions $options,
         ObjectManager $objectManager
     ) {
         $this->setAuthorizationService($authorizationService);
         $this->classResolver = $classResolver;
         $this->objectManager = $objectManager;
+        $this->options       = $options;
     }
 
     public function findAllInstances()
@@ -100,12 +109,7 @@ class InstanceManager implements InstanceManagerInterface
 
     public function getDefaultInstance()
     {
-        return $this->getInstance($this->defaultInstance);
-    }
-
-    public function setDefaultInstance($id)
-    {
-        $this->defaultInstance = $id;
+        return $this->getInstance($this->options->getDefault());
     }
 
     public function getInstance($id)
@@ -123,21 +127,21 @@ class InstanceManager implements InstanceManagerInterface
 
     public function getInstanceFromRequest()
     {
-        /*if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
-            $this->requestInstance = $this->getDefaultInstance();
+        if ($this->options->getUseCookie()) {
+            return $this->getInstanceFromCookie();
         }
+        return $this->getInstanceFromDomain();
+    }
 
-        if (!$this->requestInstance) {
-            $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+    public function switchInstance($id)
+    {
+        $instance  = $this->getInstance($id);
+        $container = $this->getContainer();
+        $container->offsetSet('instance', $instance->getId());
+    }
 
-            try {
-                $this->requestInstance = $this->findInstanceByName($subdomain);
-            } catch (Exception\InstanceNotFoundException $e) {
-                $this->requestInstance = $this->getDefaultInstance();
-            }
-        }
-
-        return $this->requestInstance;*/
+    protected function getInstanceFromCookie()
+    {
 
         if (!is_object($this->requestInstance)) {
             $container = $this->getContainer();
@@ -147,14 +151,20 @@ class InstanceManager implements InstanceManagerInterface
                 $this->requestInstance = $this->getInstance($container->offsetGet('instance'));
             }
         }
-
         return $this->requestInstance;
     }
 
-    public function switchInstance($id)
+    protected function getInstanceFromDomain()
     {
-        $instance  = $this->getInstance($id);
-        $container = $this->getContainer();
-        $container->offsetSet('instance', $instance->getId());
+        if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
+            throw new Exception\RuntimeException('No domain set.');
+        }
+
+        if (!$this->requestInstance) {
+            $subDomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+            $this->requestInstance = $this->findInstanceByName($subDomain);
+        }
+
+        return $this->requestInstance;
     }
 }

@@ -69,6 +69,21 @@ return [
             ]
         ]
     ],
+    'console'        => [
+        'router' => [
+            'routes' => [
+                'sitemap' => [
+                    'options' => [
+                        'route'    => 'sitemap',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\Controller\SitemapController',
+                            'action'     => 'index'
+                        ]
+                    ]
+                ],
+            ]
+        ],
+    ],
     'router'       => [
         'routes' => [
             'normalizer' => [

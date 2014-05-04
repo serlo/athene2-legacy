@@ -8,10 +8,36 @@ return [
         'name'        => '<h1 id="serlo-brand">Serlo <sup><small>beta</small></sup></h1>',
         'slogan'      => 'Freie Bildung.',
         'description' => 'Serlo bietet SchülerInnen professionelle Lernplattform mit didaktisch wertvolle Lernmaterialien.',
-        'logo' => '<span id="serlo-logo">V</span>'
+        'logo'        => '<span id="serlo-logo">V</span>'
     ],
     'mailman'            => [
         'sender'   => 'no-reply@serlo.org',
         'location' => 'http://ptr.serlo.org'
+    ],
+    'instance'           => [
+        'use_cookie' => false
+    ],
+    'tracking'           => [
+        'code' => '<script type="text/javascript">var _gaq = _gaq || [];_gaq.push([\'_setAccount\', \'UA-20283862-1\']);
+                     _gaq.push([\'_trackPageview\']);
+                     _gaq.push([\'_gat._anonymizeIp\']);
+                     _gaq.push([\'_trackPageLoadTime\']);
+
+                     window.onbeforeunload = function (e) {
+                       e = e || window.event;
+                       if (e) {
+                         _gaq.push([\'_trackPageview\', window.location.pathname]);
+                        return null;
+                       }
+                       _gaq.push([\'_trackPageview\', window.location.pathname]);
+                       return null;
+                     };
+
+                     window.setTimeout(\'_gaq.push([\\\'_trackEvent\\\', \\\'NoBounce\\\', \\\'Over 30 seconds\\\'])\',30000);
+                     (function() {
+                       var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
+                       ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
+                       var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
+                     })();</script>'
     ]
 ];

@@ -8,22 +8,30 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace Ui\Options;
 
-return [
-    'zfctwig' => [
-        'environment_options' => [
-            'debug' => true,
-            'strict_variables' => true,
-            'autoescape' => false
-        ],
-    ],
-    'assetic_configuration' => [
-        'debug' => true,
-        'buildOnRequest' => true
-    ],
-    'strokercache' => array(
-        'storage_adapter' => array(
-            'name' => 'Zend\Cache\Storage\Adapter\Apc',
-        )
-    )
-];
+use Zend\Stdlib\AbstractOptions;
+
+class TrackingHelperOptions extends AbstractOptions
+{
+    /**
+     * @var string
+     */
+    protected $code = '';
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+}

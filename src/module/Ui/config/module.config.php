@@ -63,7 +63,8 @@ return [
             'brand'      => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\BrandHelperOptions');
                     return new Brand($config);
-                }
+                },
+            'tracking'   => __NAMESPACE__ . '\Factory\TrackingFactory'
         ],
         'invokables' => [
             'timeago'         => 'Ui\View\Helper\Timeago',
@@ -84,6 +85,7 @@ return [
                     return $service;
                 },
             __NAMESPACE__ . '\Options\BrandHelperOptions'      => __NAMESPACE__ . '\Factory\BrandHelperOptionsFactory',
+            __NAMESPACE__ . '\Options\TrackingHelperOptions'   => __NAMESPACE__ . '\Factory\TrackingHelperOptionsFactory',
             __NAMESPACE__ . '\Options\PageHeaderHelperOptions' => __NAMESPACE__ . '\Factory\PageHeaderHelperOptionsFactory',
         ],
         'invokables' => [
