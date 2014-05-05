@@ -10,7 +10,11 @@
  */
 namespace Normalizer\Controller;
 
+use Blog\Entity\PostInterface;
+use Entity\Entity\EntityInterface;
 use Instance\Manager\InstanceManagerInterface;
+use Page\Entity\PageRepositoryInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -40,7 +44,9 @@ class SitemapController extends AbstractActionController
         $objects  = $this->uuidManager->findUuidsByInstance($instance);
         $objects  = $objects->filter(
             function (UuidInterface $object) {
-                return !$object->isTrashed();
+                $isGood = $object instanceof TaxonomyTermInterface || $object instanceof PageRepositoryInterface;
+                $isGood = $isGood || $object instanceof EntityInterface || $object instanceof PostInterface;
+                return $isGood && !$object->isTrashed();
             }
         );
         $view     = new ViewModel(['objects' => $objects]);
@@ -49,4 +55,3 @@ class SitemapController extends AbstractActionController
         return $view;
     }
 }
- 
