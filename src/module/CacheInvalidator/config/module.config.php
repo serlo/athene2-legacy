@@ -22,38 +22,30 @@ return [
         'listens' => [
             'Taxonomy\Manager\TaxonomyManager'     => [
                 'create' => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
                 'update' => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ]
             ],
             'Navigation\Manager\NavigationManager' => [
                 'page.create'      => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
                 'page.update'      => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
                 'page.remove'      => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
                 'parameter.create' => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
                 'parameter.update' => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
                 'parameter.remove' => [
-                    'Navigation\Storage\Storage',
-                    'StrokerCache\Storage\CacheStorage'
+                    'Navigation\Storage\Storage'
                 ],
             ]
         ]
