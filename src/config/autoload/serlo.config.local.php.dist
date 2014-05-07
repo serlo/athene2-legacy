@@ -7,7 +7,7 @@ return [
     'brand'              => [
         'name'        => '<h1 id="serlo-brand">Serlo <sup><small>beta</small></sup></h1>',
         'slogan'      => 'Freie Bildung.',
-        'description' => 'Serlo bietet SchülerInnen eine professionelle Lernplattform mit didaktisch wertvollen Lernmaterialien.',
+        'description' => '"Serlo ist eine kostenlose Plattform mit freien Lernmaterialien, die alle mitgestalten können.',
         'logo'        => '<span id="serlo-logo">V</span>'
     ],
     'mailman'            => [
@@ -21,17 +21,7 @@ return [
         'code' => '<script type="text/javascript">var _gaq = _gaq || [];_gaq.push([\'_setAccount\', \'UA-20283862-1\']);
                      _gaq.push([\'_trackPageview\']);
                      _gaq.push([\'_gat._anonymizeIp\']);
-                     _gaq.push([\'_trackPageLoadTime\']);
-
-                     window.onbeforeunload = function (e) {
-                       e = e || window.event;
-                       if (e) {
-                         _gaq.push([\'_trackPageview\', window.location.pathname]);
-                        return null;
-                       }
-                       _gaq.push([\'_trackPageview\', window.location.pathname]);
-                       return null;
-                     };
+                     _gaq.push(['_setDomainName', 'serlo.org']);
 
                      window.setTimeout(\'_gaq.push([\\\'_trackEvent\\\', \\\'NoBounce\\\', \\\'Over 30 seconds\\\'])\',30000);
                      (function() {
