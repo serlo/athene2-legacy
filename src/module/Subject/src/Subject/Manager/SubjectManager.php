@@ -14,7 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Entity\Entity\EntityInterface;
 use Instance\Entity\InstanceInterface;
-use Normalizer\Entity\NormalizedInterface;
 use Normalizer\Normalizer;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
@@ -90,7 +89,6 @@ class SubjectManager implements SubjectManagerInterface
         $this->iterEntities($entities, $collection, 'isRevised');
         $iterator = $collection->getIterator();
         $iterator->ksort();
-        $iterator->ksort();
         $collection = new ArrayCollection(iterator_to_array($iterator));
         $this->storage->setItem($key, $collection);
         return $collection;
@@ -105,7 +103,7 @@ class SubjectManager implements SubjectManagerInterface
     {
         if ($entity->isUnrevised() && !$collection->contains($entity)) {
             $normalized = $this->normalizer->normalize($entity->getHead());
-            $collection->set(- $normalized->getTimestamp()->getTimestamp(), $normalized);
+            $collection->set(-$normalized->getTimestamp()->getTimestamp(), $normalized);
         }
     }
 

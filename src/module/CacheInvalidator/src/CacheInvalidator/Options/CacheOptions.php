@@ -19,6 +19,27 @@ class CacheOptions extends AbstractOptions
     protected $listens = [];
 
     /**
+     * @var array
+     */
+    protected $invalidators = [];
+
+    /**
+     * @return array
+     */
+    public function getInvalidators()
+    {
+        return $this->invalidators;
+    }
+
+    /**
+     * @param array $invalidators
+     */
+    public function setInvalidators(array $invalidators)
+    {
+        $this->invalidators = $invalidators;
+    }
+
+    /**
      * @return array
      */
     public function getListens()

@@ -12,13 +12,14 @@
 namespace CacheInvalidator\Invalidator;
 
 use Zend\EventManager\Event;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
-interface InvalidatorInterface extends ServiceLocatorAwareInterface
+interface InvalidatorInterface
 {
     /**
-     * @param Event $e
+     * @param Event  $e
+     * @param string $class
+     * @param string $event
      * @return void
      */
-    public function invalidate(Event $e);
+    public function invalidate(Event $e, $class, $event);
 }

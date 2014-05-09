@@ -73,11 +73,11 @@ class EntityRevisionStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getObject()->get('title');
+        return $this->getObject()->get('title') ? : $this->object->getId();
     }
 
     protected function getType()
     {
-        return $this->getObject()->getRepository()->getType()->getName() . 'Revision';
+        return $this->getObject()->getRepository()->getType()->getName();
     }
 }

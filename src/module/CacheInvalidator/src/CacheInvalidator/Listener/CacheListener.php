@@ -1,9 +1,8 @@
 <?php
 namespace CacheInvalidator\Listener;
 
-use CacheInvalidator\Manager\InvalidatorManager;
+use CacheInvalidator\Invalidator\InvalidatorManager;
 use CacheInvalidator\Options\CacheOptions;
-use Zend\Cache\Storage\StorageInterface;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
@@ -32,8 +31,7 @@ class CacheListener Implements SharedListenerAggregateInterface
      */
     public function __construct(CacheOptions $cacheOptions, InvalidatorManager $strategyManager)
     {
-        $this->cacheOptions   = $cacheOptions;
-        //$this->serviceLocator = $serviceLocator;
+        $this->cacheOptions    = $cacheOptions;
         $this->strategyManager = $strategyManager;
     }
 
@@ -49,10 +47,10 @@ class CacheListener Implements SharedListenerAggregateInterface
                 $events->attach(
                     $class,
                     $event,
-                    function (Event $e) use ($class, $invalidators, $strategyManager) {
+                    function (Event $e) use ($class, $event, $invalidators, $strategyManager) {
                         foreach ($invalidators as $invalidator) {
                             $invalidator = $strategyManager->get($invalidator);
-                            $invalidator->invalidate($e);
+                            $invalidator->invalidate($e, $class, $event);
                         }
                     }
                 );

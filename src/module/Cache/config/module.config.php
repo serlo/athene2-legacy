@@ -12,15 +12,6 @@
 namespace Cache;
 
 return [
-    'service_manager' => array(
-        'factories' => array(
-            'StrokerCache\Listener\CacheListener'              => 'StrokerCache\Factory\CacheListenerFactory',
-            'StrokerCache\Options\ModuleOptions'               => 'StrokerCache\Factory\ModuleOptionsFactory',
-            'strokerCache\Service\CacheService'                => 'StrokerCache\Factory\CacheServiceFactory',
-            'StrokerCache\Storage\CacheStorage'                => 'StrokerCache\Factory\CacheStorageFactory',
-            'StrokerCache\Strategy\CacheStrategyPluginManager' => 'StrokerCache\Factory\CacheStrategyPluginManagerFactory',
-        ),
-    ),
     'strokercache' => [
         'id_generator' => 'fulluri'
     ]
