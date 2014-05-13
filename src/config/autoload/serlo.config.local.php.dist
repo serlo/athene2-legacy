@@ -12,13 +12,13 @@ return [
     ],
     'mailman'            => [
         'sender'   => 'no-reply@serlo.org',
-        'location' => 'http://ptr.serlo.org'
+        'location' => 'http://www.serlo.org'
     ],
     'instance'           => [
         'use_cookie' => false
     ],
     'tracking'           => [
-        'code' => '
+        'code' => <<<EOL
 <script type="text/javascript">
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -31,6 +31,7 @@ function timeElapsed(){visitTookTime=true;sendNoBounce()}
 function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;dataLayer.push({event:"GAEvent",eventCategory:"NoBounce",eventAction:"Time spent and page scrolled"})}}
 setTimeout("timeElapsed()",3e4);
 window.addEventListener?window.addEventListener("scroll",testScroll,false):window.attachEvent("onScroll",testScroll);
-</script>'
+</script>
+EOL
     ]
 ];
