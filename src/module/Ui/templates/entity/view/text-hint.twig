@@ -1,0 +1,19 @@
+{% set revision = entity.getCurrentRevision() %}
+<article class="panel-group">
+    <section class="{{ collapse is defined ? 'collapse' : '' }} panel panel-default" id="hint-{{ entity.getId() }}">
+        <div class="panel-body">
+            <strong>
+                <ul class="nav nav-pills">
+                    {% include 'entity/view/partials/actions/small-essential' %}
+                </ul>
+                <span class="glyphicon glyphicon-question-sign"></span>
+                {{ translate('Hint') }}
+            </strong>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                {{ markdown().toHtml(revision.get('hint')) | raw }}
+            </div>
+        </div>
+    </section>
+</article>
