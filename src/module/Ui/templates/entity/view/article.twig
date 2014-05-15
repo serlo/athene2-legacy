@@ -1,7 +1,9 @@
 {% set revision = entity.getCurrentRevision() %}
+{% set content = markdown().toHtml(revision.get('content')) %}
+{% set tmp = headMeta().setProperty('description', preview(content)) %}
 <article>
     <section>
-        {{ markdown().toHtml(revision.get('content')) | raw }}
+        {{ content }}
     </section>
     <hr>
     {% include 'entity/view/partials/license' %}

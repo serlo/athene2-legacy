@@ -1,3 +1,5 @@
+{% set description = markdown().toHtml(entity.getCurrentRevision().get('description')) %}
+{% set tmp = headMeta().setProperty('description', preview(description)) %}
 <article>
 	<section>
         {% set id = entity.getCurrentRevision().get('content') %}
@@ -5,7 +7,7 @@
         </iframe>
     </section>
     <section>
-        {{ markdown().toHtml(entity.getCurrentRevision().get('description')) }}
+        {{ description }}
     </section>
     <hr>
     {% include 'entity/view/partials/license' %}

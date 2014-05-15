@@ -71,7 +71,8 @@ return [
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
             'toAlpha'         => 'Ui\View\Helper\ToAlpha',
-            'diff'            => 'Ui\View\Helper\DiffHelper'
+            'diff'            => 'Ui\View\Helper\DiffHelper',
+            'preview'            => 'Ui\View\Helper\PreviewHelper'
         ]
     ],
     'page_header_helper'    => [],

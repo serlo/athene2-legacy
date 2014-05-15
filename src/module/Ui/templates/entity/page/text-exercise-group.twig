@@ -1,8 +1,12 @@
+{% set title = entity.getId() %}
+{% set tmp = headTitle(title) %}
+{% set tmp = headTitle(translate('Text exercise group')) %}
+{% set tmp = headMeta().setProperty('keywords', metadata().keywords(entity)) %}
 <div class="page-header">
     <div class="pull-right btn-group">
         {% include 'entity/view/partials/actions/toggle-controls' %}
         {{ contexter().renderButton() }}
     </div>
-    <h1>{{ entity.getId() }} <small>{{ translate('Text exercise group') }}</small></h1>
+    <h1>{{ title }} <small>{{ translate('Text exercise group') }}</small></h1>
 </div>
 {% include 'entity/view/default' %}
