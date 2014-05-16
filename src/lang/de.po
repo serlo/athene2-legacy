@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: serlo\n"
 "POT-Creation-Date: 2014-05-04 12:40+0100\n"
-"PO-Revision-Date: 2014-05-04 12:43+0100\n"
+"PO-Revision-Date: 2014-05-16 21:49+0100\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -219,7 +219,7 @@ msgstr "Du kannst diesen Kommentar nicht aufwerten."
 
 #: ../module/Discussion/src/Discussion/Form/CommentForm.php:66
 msgid "Comment"
-msgstr "Kommentar"
+msgstr "Kommentieren"
 
 #: ../module/Discussion/src/Discussion/Form/DiscussionForm.php:66
 msgid "content:"
@@ -1087,7 +1087,7 @@ msgstr "flag/add"
 #: ../data/twig/bf/6d/e84ce4286d09b5249999d83cc8b4372137d955ca240c7085028d39cb933e.php:29
 #: ../module/Ui/templates/flag/add.phtml:1
 msgid "Flag content"
-msgstr "Inhalt des Bitschalters"
+msgstr "Inhalt melden"
 
 #: ../data/twig/3c/4c/814fe0b84e872e4097f3563e1b3cbe6c0403686851dc0d2064582d9454f6.php:53
 msgid "discussion/discussion/start"
@@ -1145,7 +1145,7 @@ msgid ""
 "This taxonomy term is marked as <strong>trashed</strong>. Contents might be "
 "out of date or unmaintained."
 msgstr ""
-"Dieser Taxonomie-Punkt ist als <strong>gelöscht</strong>. Seine Inhalte "
+"Dieser Begriff ist als <strong>gelöscht</strong> markiert. Seine Inhalte "
 "könnten daher veraltet sein."
 
 #: ../data/twig/4d/5b/ff78adae66fdc26aa6eb558977459b0b9a4f5079c780c62d2c7a14509edd.php:38

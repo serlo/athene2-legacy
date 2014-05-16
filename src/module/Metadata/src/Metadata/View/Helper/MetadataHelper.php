@@ -10,10 +10,11 @@
  */
 namespace Metadata\View\Helper;
 
+use Common\Filter\PreviewFilter;
+use Metadata\Entity\MetadataInterface;
 use Metadata\Manager\MetadataManagerInterface;
 use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
-use Metadata\Entity\MetadataInterface;
 
 class MetadataHelper extends AbstractHelper
 {
@@ -42,7 +43,7 @@ class MetadataHelper extends AbstractHelper
      * @param UuidInterface $object
      * @param array         $keys
      * @param string        $separator
-     * @return string
+     * @return $this
      */
     public function keywords(UuidInterface $object, array $keys = [], $separator = ', ')
     {
@@ -56,12 +57,17 @@ class MetadataHelper extends AbstractHelper
             $metadata = $this->metadataManager->findMetadataByObject($object);
         }
 
-        foreach($metadata as $object){
+        foreach ($metadata as $object) {
             /* @var $object MetadataInterface */
             $data[] = $object->getValue();
         }
 
-        return implode($data, $separator);
+        $filter = new PreviewFilter(250);
+        $data   = implode($data, $separator);
+        $data   = $filter->filter($data);
+        $this->getView()->headMeta()->setProperty('keywords', $data);
+
+        return $this;
     }
 }
  

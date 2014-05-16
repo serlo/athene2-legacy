@@ -9,6 +9,7 @@
  */
 namespace Ui\View\Helper;
 
+use Instance\Manager\InstanceManagerInterface;
 use Ui\Options\BrandHelperOptions;
 use Zend\View\Helper\AbstractHelper;
 
@@ -20,16 +21,19 @@ class Brand extends AbstractHelper
     protected $options;
 
     /**
-     * @param BrandHelperOptions $brandHelperOptions
+     * @var InstanceManagerInterface
      */
-    public function __construct(BrandHelperOptions $brandHelperOptions)
-    {
-        $this->options = $brandHelperOptions;
-    }
+    protected $instanceManager;
 
-    public function getLogo()
+    /**
+     * @param BrandHelperOptions       $brandHelperOptions
+     * @param InstanceManagerInterface $instanceManager
+     */
+    public function __construct(BrandHelperOptions $brandHelperOptions, InstanceManagerInterface $instanceManager)
     {
-        return $this->options->getLogo();
+        $key                   = $instanceManager->getInstanceFromRequest()->getName();
+        $this->instanceManager = $instanceManager;
+        $this->options         = $brandHelperOptions->getInstance($key);
     }
 
     /**
@@ -54,6 +58,30 @@ class Brand extends AbstractHelper
     }
 
     /**
+     * @return string
+     */
+    public function getHeadTitle()
+    {
+        return $this->options->getHeadTitle();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->options->getDescription();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->options->getLogo();
+    }
+
+    /**
      * @param bool $stripTags
      * @return string
      */
@@ -64,13 +92,5 @@ class Brand extends AbstractHelper
         }
 
         return $this->options->getSlogan();
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->options->getDescription();
     }
 }

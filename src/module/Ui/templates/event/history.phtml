@@ -1,2 +1,6 @@
-<?php echo $this->pageHeader('Event log')->setSubtitle($this->id)->render(); ?>
-<?php echo $this->events()->renderObjectLog($this->id); ?>
+<?php
+echo $this->pageHeader('Event log')->setSubtitle($this->id)->setBacklink(
+    $this->url('uuid/get', ['uuid' => $this->id])
+)->render();
+
+echo $this->events()->renderObjectLog($this->id);
