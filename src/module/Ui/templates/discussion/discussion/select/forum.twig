@@ -1,7 +1,11 @@
 {% set id = random(100000) %}
 {% if terms.count() %}
-    {% if not isChild %}
-        {{ translate('You\'re almost done. Please choose an appropriate forum for your discussion.') }}
+    {% if isChild is not defined or not isChild %}
+        <p>
+            <strong>
+                {{ translate('Please select an appropriate forum for your discussion. Choosing the right forum helps others to find your discussion faster and to answer you quicker. Thank you!') }}
+            </strong>
+        </p>
     {% endif %}
     <div class="panel-group" id="fs{{ id }}">
         {% for term in terms if not term.isTrashed() %}
@@ -21,6 +25,7 @@
                             {{ term.getName() }}
                         {% endif %}
                     </h4>
+                    <small><em>{{ term.getDescription() }}</em></small>
                 </div>
                 {% if term.hasChildren() %}
                     <div id="fsc{{ id ~ term.getId() }}" class="panel-collapse collapse">
