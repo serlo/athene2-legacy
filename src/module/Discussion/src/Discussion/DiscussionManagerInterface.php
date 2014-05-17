@@ -39,6 +39,12 @@ interface DiscussionManagerInterface extends Flushable
     public function findDiscussionsOn(UuidInterface $uuid);
 
     /**
+     * @param Collection $collection
+     * @return Collection
+     */
+    public function sortDiscussions(Collection $collection);
+
+    /**
      * Returns a comment
      *
      * @param int $id

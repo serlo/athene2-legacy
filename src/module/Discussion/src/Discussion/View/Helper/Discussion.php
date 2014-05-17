@@ -13,6 +13,7 @@ use Discussion\Entity\CommentInterface;
 use Discussion\Exception\RuntimeException;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
+use Doctrine\Common\Collections\Collection;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Form\TermForm;
 use Uuid\Entity\UuidInterface;
@@ -190,6 +191,11 @@ class Discussion extends AbstractHelper
     {
         $this->object = $object;
         return $this;
+    }
+
+    public function sortDiscussions(Collection $collection)
+    {
+        return $this->discussionManager->sortDiscussions($collection);
     }
 
     protected function getDefaultConfig()

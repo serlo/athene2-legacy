@@ -10,6 +10,7 @@
 </div>
 {% if forum %}
     {% set discussions = forum.getAssociatedRecursive('comments', ['forum']) %}
+    {% set discussions = discussion().sortDiscussions(discussions) %}
     <ul class="list-group discussions">
         {% for discussion in discussions if not discussion.isTrashed() %}
             <li class="list-group-item">

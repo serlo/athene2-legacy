@@ -41,7 +41,8 @@ i18n.en = {
     "Could not load injection" : "",
     "You\'re almost done!" : "",
     "Show overview" : "",
-    "Show %d contents for \"%s\"" : ""
+    "Show %d contents for \"%s\"" : "",
+    "Abort": ""
 };
 
 return i18n;

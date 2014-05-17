@@ -17,6 +17,7 @@ use Common\Traits\ObjectManagerAwareTrait;
 use Discussion\Entity\CommentInterface;
 use Discussion\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
@@ -123,6 +124,24 @@ class DiscussionManager implements DiscussionManagerInterface
     public function getDiscussion($id)
     {
         return $this->getComment($id);
+    }
+
+    public function sortDiscussions(Collection $collection)
+    {
+        $array = $collection->toArray();
+        uasort(
+            $array,
+            function (CommentInterface $a, CommentInterface $b) {
+                $votesA = $a->countUpVotes() - $a->countDownVotes();
+                $votesB = $b->countUpVotes() - $b->countDownVotes();
+                if ($votesA == $votesB) {
+                    return $a->getId() < $b->getId() ? 1 : -1;
+                }
+                return $votesA < $votesB ? 1 : -1;
+            }
+        );
+        array_unique($array);
+        return new ArrayCollection($array);
     }
 
     public function startDiscussion(FormInterface $form)

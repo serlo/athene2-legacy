@@ -76,18 +76,20 @@
             <div class="discussion-text">
                 {{ comment.getContent() | nl2br }}
             </div>
-            <div class="discussion-action btn-group pull-right">
-                {% if isGranted('flag.create', discussion) %}
-                    <a class="btn btn-xs btn-default"
-                       href="{{ url('flag/add', {'id': discussion.getId()}) }}">
-                        <span class="glyphicon glyphicon-flag"></span> </a>
-                {% endif %}
-                {% if isGranted('discussion.comment.trash', discussion) %}
-                    <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
-                       class="btn btn-xs btn-default dialog"
-                       data-content="{{ translate('Do you really want to delete this comment?') }}">
-                        <span class="glyphicon glyphicon-trash"></span> </a>
-                {% endif %}
+            <div class="clearfix">
+                <div class="discussion-action btn-group pull-right">
+                    {% if isGranted('flag.create', discussion) %}
+                        <a class="btn btn-xs btn-default"
+                           href="{{ url('flag/add', {'id': discussion.getId()}) }}">
+                            <span class="glyphicon glyphicon-flag"></span> </a>
+                    {% endif %}
+                    {% if isGranted('discussion.comment.trash', discussion) %}
+                        <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
+                           class="btn btn-xs btn-default dialog"
+                           data-content="{{ translate('Do you really want to delete this comment?') }}">
+                            <span class="glyphicon glyphicon-trash"></span> </a>
+                    {% endif %}
+                </div>
             </div>
         </li>
     {% endfor %}
