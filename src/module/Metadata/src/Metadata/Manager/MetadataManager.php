@@ -10,8 +10,11 @@
 namespace Metadata\Manager;
 
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Persistence\ObjectManager;
 use Metadata\Exception;
+use Uuid\Entity\UuidInterface;
 
 class MetadataManager implements MetadataManagerInterface
 {
@@ -19,7 +22,13 @@ class MetadataManager implements MetadataManagerInterface
 
     protected $inMemoryKeys = [];
 
-    public function addMetadata(\Uuid\Entity\UuidInterface $object, $key, $value)
+    public function __construct(ClassResolverInterface $classResolver, ObjectManager $objectManager)
+    {
+        $this->classResolver = $classResolver;
+        $this->objectManager = $objectManager;
+    }
+
+    public function addMetadata(UuidInterface $object, $key, $value)
     {
         if (!is_string($key)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -58,14 +67,14 @@ class MetadataManager implements MetadataManagerInterface
         return $entity;
     }
 
-    public function findMetadataByObject(\Uuid\Entity\UuidInterface $object)
+    public function findMetadataByObject(UuidInterface $object)
     {
         $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
         $criteria  = ['object' => $object->getId()];
         return $this->getObjectManager()->getRepository($className)->findBy($criteria);
     }
 
-    public function findMetadataByObjectAndKey(\Uuid\Entity\UuidInterface $object, $key)
+    public function findMetadataByObjectAndKey(UuidInterface $object, $key)
     {
         if (!is_string($key)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -83,7 +92,7 @@ class MetadataManager implements MetadataManagerInterface
         return $this->getObjectManager()->getRepository($className)->findBy($criteria);
     }
 
-    public function findMetadataByObjectAndKeyAndValue(\Uuid\Entity\UuidInterface $object, $key, $value)
+    public function findMetadataByObjectAndKeyAndValue(UuidInterface $object, $key, $value)
     {
         if (!is_string($key)) {
             throw new Exception\InvalidArgumentException(sprintf(

@@ -9,6 +9,7 @@
  */
 namespace Discussion\View\Helper;
 
+use Discussion\Entity\CommentInterface;
 use Discussion\Exception\RuntimeException;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
@@ -104,7 +105,13 @@ class Discussion extends AbstractHelper
 
     public function getDiscussions(UuidInterface $object)
     {
-        return $this->getDiscussionManager()->findDiscussionsOn($object);
+        $discussions = $this->getDiscussionManager()->findDiscussionsOn($object);
+        $discussions = $discussions->filter(
+            function (CommentInterface $comment) {
+                return !$comment->isTrashed();
+            }
+        );
+        return $discussions;
     }
 
     public function getForm($type, UuidInterface $object, TaxonomyTermInterface $forum = null)

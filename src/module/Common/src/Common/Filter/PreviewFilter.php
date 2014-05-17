@@ -26,23 +26,48 @@ class PreviewFilter implements FilterInterface
      */
     protected $length;
 
-    public function __construct($length = 150, $append = '...')
+    /**
+     * @param int    $length
+     * @param string $append
+     */
+    public function __construct($length = 150, $append = ' ...')
     {
         $this->length = $length;
         $this->append = $append;
     }
 
+    /**
+     * @param string $value
+     * @return string
+     */
     public function filter($value)
     {
-        $appendLength = strlen($this->append);
-        $length       = $this->length - $appendLength;
-        $stripTags    = new StripTags();
-        $value        = $stripTags->filter($value);
+        $value     = trim($value);
+        $stripTags = new StripTags();
+        $value     = $stripTags->filter($value);
+        $length    = $this->length;
 
-        if (strlen($value) > $length) {
-            $value = substr($value, 0, $length) . $this->append;
+        if (strlen($value) <= $length) {
+            return $value;
         }
 
-        return $value;
+        $appendLength = strlen($this->append);
+        $length       = $length - $appendLength;
+        $words        = explode(' ', $value);
+        $return       = '';
+
+        foreach ($words as $word) {
+            $word = trim($word);
+            if (strlen($return . ' ' . $word) > $length) {
+                break;
+            }
+            $return .= ' ' . $word;
+        }
+
+        if (strlen(trim($return)) < 1) {
+            return substr($value, 0, $length) . $this->append;
+        }
+
+        return trim($return) . $this->append;
     }
 }

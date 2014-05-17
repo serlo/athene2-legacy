@@ -14,86 +14,43 @@ use Zend\Stdlib\AbstractOptions;
 class BrandHelperOptions extends AbstractOptions
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $name = 'Athene2';
+    protected $instances = [];
 
     /**
-     * @var string
+     * @param string $key
+     * @return BrandHelperInstanceOptions
      */
-    protected $slogan = 'The Learning Resources Management System';
-
-    /**
-     * @var string
-     */
-    protected $description = 'Manage your learning resources, easy, fast and reliable.';
-
-    /**
-     * @var string
-     */
-    protected $logo = 'Logo html here';
-
-    /**
-     * @return string
-     */
-    public function getLogo()
+    public function getInstance($key)
     {
-        return $this->logo;
+        $key = strtolower($key);
+
+        if (!isset($this->instances[$key])) {
+            $this->instances[$key] = [];
+        }
+
+        if (!is_object($this->instances[$key])) {
+            $options               = $this->instances[$key];
+            $this->instances[$key] = new BrandHelperInstanceOptions($options);
+        }
+
+        return $this->instances[$key];
     }
 
     /**
-     * @param string $logo
+     * @return array
      */
-    public function setLogo($logo)
+    public function getInstances()
     {
-        $this->logo = $logo;
+        return $this->instances;
     }
 
     /**
-     * @return string
+     * @param array $instances
      */
-    public function getDescription()
+    public function setInstances(array $instances)
     {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = (string)$description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlogan()
-    {
-        return $this->slogan;
-    }
-
-    /**
-     * @param string $slogan
-     */
-    public function setSlogan($slogan)
-    {
-        $this->slogan = $slogan;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+        $this->instances = $instances;
     }
 }

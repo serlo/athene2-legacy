@@ -99,14 +99,11 @@ class PageHeader extends AbstractHelper
     public function render($setHeadTitle = true)
     {
         if ($setHeadTitle) {
-            $delimiter = $this->options->getDelimiter();
-            if (strlen($this->subtext) > 0) {
-                $headTitle = $this->text . $delimiter . $this->subtext . $delimiter . $this->options->getBrand();
-            } else {
-                $headTitle = $this->text . $delimiter . $this->options->getBrand();
-            }
             $filter = new StripTags();
-            $this->getView()->headTitle($filter->filter($headTitle));
+            $this->getView()->headTitle($filter->filter($this->text));
+            if (!empty($this->subtext)) {
+                $this->getView()->headTitle($filter->filter($this->subtext));
+            }
         }
 
         return $this->getView()->partial(

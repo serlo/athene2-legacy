@@ -9,14 +9,12 @@
     {% endfor %}
 </div>
 {% if forum %}
-        <h2>{{ translate(forum.getName()) }} <small>{{ translate('Discussions from self and subtopics') }}</small></h2>
-        <hr>
-        <ul class="timeline">
-            {% set discussions = forum.getAssociatedRecursive('comments', ['forum']) %}
-            {% for discussion in discussions if not discussion.isTrashed() %}
-                <li>
-                    {% include 'discussion/discussion/show' with {'discussion': discussion} %}
-                </li>
-            {% endfor %}
-        </ul>
+    {% set discussions = forum.getAssociatedRecursive('comments', ['forum']) %}
+    <ul class="list-group discussions">
+        {% for discussion in discussions if not discussion.isTrashed() %}
+            <li class="list-group-item">
+                {% include 'discussion/discussion/show' with {'discussion': discussion} %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}

@@ -11,6 +11,7 @@ namespace Metadata\Manager;
 
 use Metadata\Entity;
 use Uuid\Entity\UuidInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface MetadataManagerInterface
 {
@@ -23,13 +24,13 @@ interface MetadataManagerInterface
 
     /**
      * @param int $id
-     * @return self
+     * @return void
      */
     public function removeMetadata($id);
 
     /**
      * @param UuidInterface $object
-     * @return Entity\MetadataInterface[]
+     * @return Entity\MetadataInterface[]|Collection
      */
     public function findMetadataByObject(UuidInterface $object);
 
@@ -37,14 +38,14 @@ interface MetadataManagerInterface
      * @param UuidInterface $object
      * @param string        $key
      * @param string        $value
-     * @return Entity\MetadataInterface
+     * @return Entity\MetadataInterface|Collection
      */
     public function addMetadata(UuidInterface $object, $key, $value);
 
     /**
      * @param UuidInterface $object
      * @param string        $key
-     * @return Entity\MetadataInterface[]
+     * @return Entity\MetadataInterface[]|Collection
      */
     public function findMetadataByObjectAndKey(UuidInterface $object, $key);
 

@@ -8,24 +8,23 @@
 namespace Metadata;
 
 return [
-    'class_resolver' => [
+    'class_resolver'  => [
         __NAMESPACE__ . '\Entity\MetadataInterface'    => __NAMESPACE__ . '\Entity\Metadata',
         __NAMESPACE__ . '\Entity\MetadataKeyInterface' => __NAMESPACE__ . '\Entity\MetadataKey'
     ],
-    'di'             => [
+    'view_helpers'    => [
+        'factories' => [
+            'metadata' => __NAMESPACE__ . '\Factory\MetadataHelperFactory'
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Manager\MetadataManager' => __NAMESPACE__ . '\Factory\MetadataManagerFactory'
+        ]
+    ],
+    'di'              => [
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Manager\MetadataManager'          => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ],
-                    'setObjectManager'  => [
-                        'required' => true
-                    ],
-                    'setClassResolver'  => [
-                        'required' => true
-                    ]
-                ],
                 __NAMESPACE__ . '\Listener\TaxonomyManagerListener' => [
                     'setMetadataManager' => [
                         'required' => true
@@ -39,7 +38,7 @@ return [
             ]
         ]
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

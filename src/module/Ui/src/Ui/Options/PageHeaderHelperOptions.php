@@ -16,11 +16,6 @@ class PageHeaderHelperOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $brand = 'Athene2';
-
-    /**
-     * @var string
-     */
     protected $delimiter = ' - ';
     /**
      * @var string
@@ -41,22 +36,6 @@ class PageHeaderHelperOptions extends AbstractOptions
     public function setTemplate($template)
     {
         $this->template = $template;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBrand()
-    {
-        return $this->brand;
-    }
-
-    /**
-     * @param string $brand
-     */
-    public function setBrand($brand)
-    {
-        $this->brand = $brand;
     }
 
     /**

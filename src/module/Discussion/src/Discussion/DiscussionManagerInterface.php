@@ -14,20 +14,19 @@ use Discussion\Entity\CommentInterface;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 use Zend\Form\FormInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface DiscussionManagerInterface extends Flushable
 {
     /**
      * @param FormInterface $form
-     *
      * @return CommentInterface
      */
     public function commentDiscussion(FormInterface $form);
 
     /**
      * @param InstanceInterface $instance
-     *
-     * @return CommentInterface[]
+     * @return CommentInterface[]|Collection
      */
     public function findDiscussionsByInstance(InstanceInterface $instance);
 
@@ -35,8 +34,7 @@ interface DiscussionManagerInterface extends Flushable
      * Finds discussions on a uuid
      *
      * @param UuidInterface $uuid
-     *
-     * @return CommentInterface[]
+     * @return CommentInterface[]|Collection
      */
     public function findDiscussionsOn(UuidInterface $uuid);
 
@@ -44,21 +42,18 @@ interface DiscussionManagerInterface extends Flushable
      * Returns a comment
      *
      * @param int $id
-     *
      * @return CommentInterface
      */
     public function getComment($id);
 
     /**
      * @param FormInterface $form
-     *
      * @return CommentInterface
      */
     public function startDiscussion(FormInterface $form);
 
     /**
      * @param int $commentId
-     *
      * @return void
      */
     public function toggleArchived($commentId);

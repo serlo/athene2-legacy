@@ -9,7 +9,6 @@
  */
 namespace Ui;
 
-use Ui\View\Helper\Brand;
 use Ui\View\Helper\PageHeader;
 use Zend\Mvc\Application;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -60,10 +59,7 @@ return [
                     $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\PageHeaderHelperOptions');
                     return new PageHeader($config);
                 },
-            'brand'      => function ($helperPluginManager) {
-                    $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\BrandHelperOptions');
-                    return new Brand($config);
-                },
+            'brand'      => __NAMESPACE__ . '\Factory\BrandHelperFactory',
             'tracking'   => __NAMESPACE__ . '\Factory\TrackingFactory'
         ],
         'invokables' => [
@@ -71,10 +67,10 @@ return [
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
             'toAlpha'         => 'Ui\View\Helper\ToAlpha',
-            'diff'            => 'Ui\View\Helper\DiffHelper'
+            'diff'            => 'Ui\View\Helper\DiffHelper',
+            'preview'         => 'Ui\View\Helper\PreviewHelper'
         ]
     ],
-    'page_header_helper'    => [],
     'service_manager'       => [
         'factories'  => [
             'Ui\Renderer\PhpDebugRenderer'                     => function (ServiceLocatorInterface $sm) {
