@@ -36,6 +36,7 @@ class RepositoryController extends AbstractController
         if (!$entity) {
             return false;
         }
+
         $this->assertGranted('entity.revision.create', $entity);
 
         /* @var $form \Zend\Form\Form */
@@ -69,6 +70,7 @@ class RepositoryController extends AbstractController
         if (!$entity) {
             return false;
         }
+
         $this->assertGranted('entity.revision.checkout', $entity);
 
         $repository = $this->getRepositoryManager()->getRepository($entity);
@@ -82,7 +84,6 @@ class RepositoryController extends AbstractController
     public function compareAction()
     {
         $entity = $this->getEntity();
-
         if (!$entity) {
             $this->getResponse()->setStatusCode(404);
             return false;
@@ -109,7 +110,11 @@ class RepositoryController extends AbstractController
 
     public function historyAction()
     {
-        $entity          = $this->getEntity();
+        $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
+
         $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
         $this->assertGranted('entity.repository.history', $entity);
         $view = new ViewModel([
@@ -127,6 +132,7 @@ class RepositoryController extends AbstractController
         if (!$entity) {
             return false;
         }
+
         $this->assertGranted('entity.revision.trash', $entity);
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $reason     = $this->params()->fromPost('reason', '');
@@ -174,7 +180,7 @@ class RepositoryController extends AbstractController
     /**
      * @param EntityInterface $entity
      * @param string          $id
-     * @return \Versioning\Entity\RevisionInterface NULL
+     * @return \Versioning\Entity\RevisionInterface null
      */
     protected function getRevision(EntityInterface $entity, $id = null)
     {
