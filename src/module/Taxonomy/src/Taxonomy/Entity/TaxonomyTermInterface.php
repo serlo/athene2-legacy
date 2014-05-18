@@ -58,6 +58,13 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
     public function getAssociated($association);
 
     /**
+     * @param string $association
+     * @param array  $allowedTaxonomies
+     * @return TaxonomyTermAwareInterface[]|Collection
+     */
+    public function getAssociatedRecursive($association, array $allowedTaxonomies = []);
+
+    /**
      * @return Collection|TaxonomyTermInterface[]
      */
     public function getChildren();

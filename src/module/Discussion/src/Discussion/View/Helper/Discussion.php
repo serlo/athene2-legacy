@@ -164,6 +164,23 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
+    public function getForumDiscussions(TaxonomyTermInterface $forum, $recursive = true)
+    {
+        if ($recursive) {
+            $collection = $forum->getAssociatedRecursive('comments', ['forum', 'forum-category']);
+        } else {
+            $collection = $forum->getAssociated('comments');
+        }
+
+        $collection = $collection->filter(
+            function (CommentInterface $comment) {
+                return !$comment->isTrashed();
+            }
+        );
+
+        return $this->sortDiscussions($collection);
+    }
+
     public function getObject()
     {
         return $this->object;

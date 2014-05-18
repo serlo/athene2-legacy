@@ -10,14 +10,14 @@
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
                     <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to see the solution') }}">
-                        <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#solution-{{ solution.getId() }}">
+                        <a data-toggle="collapse" href="#solution-{{ solution.getId() }}">
                             <span class="glyphicon glyphicon-ok-circle"></span>
                         </a>
                     </li>
                 {% endif %}
                 {% if(hint) %}
                     <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I need a hint') }}">
-                        <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#hint-{{ solution.getId() }}">
+                        <a data-toggle="collapse" href="#hint-{{ hint.getId() }}">
                             <span class="glyphicon glyphicon-question-sign"></span>
                         </a>
                     </li>

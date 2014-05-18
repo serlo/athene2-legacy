@@ -15,23 +15,46 @@ use Zend\Stdlib\AbstractOptions;
 class TrackingHelperOptions extends AbstractOptions
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $code = '';
+    protected $instances = [];
 
     /**
-     * @return string
+     * @var TrackingHelperInstanceOptions[]
      */
-    public function getCode()
+    protected $options = [];
+
+    /**
+     * @param $name
+     * @return TrackingHelperInstanceOptions
+     */
+    public function getInstance($name)
     {
-        return $this->code;
+        if (!isset($this->instances[$name])) {
+            $this->instances[$name] = [];
+        }
+
+        if (!is_object($this->instances[$name])) {
+            $options                = $this->instances[$name];
+            $this->instances[$name] = new TrackingHelperInstanceOptions($options);
+        }
+
+        return $this->instances[$name];
     }
 
     /**
-     * @param string $code
+     * @return array
      */
-    public function setCode($code)
+    public function getInstances()
     {
-        $this->code = $code;
+        return $this->instances;
+    }
+
+    /**
+     * @param array $instances
+     */
+    public function setInstances(array $instances)
+    {
+        $this->instances = $instances;
     }
 }

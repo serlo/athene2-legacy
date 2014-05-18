@@ -87,7 +87,9 @@ class DiscussionManager implements DiscussionManagerInterface
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
         $discussions      = $objectRepository->findAll(['instance' => $instance->getId()]);
-        return new ArrayCollection($discussions);
+
+        $collection = new ArrayCollection($discussions);
+        return $this->sortDiscussions($collection);
     }
 
     public function findDiscussionsOn(UuidInterface $uuid, $archived = null)
@@ -104,7 +106,8 @@ class DiscussionManager implements DiscussionManagerInterface
             $this->assertGranted('discussion.get', $discussion);
         }
 
-        return new ArrayCollection($discussions);
+        $collection = new ArrayCollection($discussions);
+        return $this->sortDiscussions($collection);
     }
 
     public function getComment($id)
@@ -134,9 +137,17 @@ class DiscussionManager implements DiscussionManagerInterface
             function (CommentInterface $a, CommentInterface $b) {
                 $votesA = $a->countUpVotes() - $a->countDownVotes();
                 $votesB = $b->countUpVotes() - $b->countDownVotes();
+
+                if ($a->getArchived() && !$b->getArchived()) {
+                    return 1;
+                } elseif (!$a->getArchived() && $b->getArchived()) {
+                    return -1;
+                }
+
                 if ($votesA == $votesB) {
                     return $a->getId() < $b->getId() ? 1 : -1;
                 }
+
                 return $votesA < $votesB ? 1 : -1;
             }
         );
