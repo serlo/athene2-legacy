@@ -656,6 +656,10 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L,NC]
+
+RewriteRule ^uploads/([0-9]+\.[a-zA-Z]+)$ http://de.serlo.org/uploads/legacy/$1 [R=302,L,NC]
+RewriteRule ^uploads/([0-9]+\_.+)$ http://de.serlo.org/uploads/legacy/$1 [R=302,L,NC]
+
 # The following rewrites all other queries to index.php. The
 # condition ensures that if you are using Apache aliases to do
 # mass virtual hosting, the base path will be prepended to
