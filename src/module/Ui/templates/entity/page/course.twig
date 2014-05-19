@@ -3,7 +3,6 @@
 {% set tmp = headTitle(translate('Course')) %}
 {% set tmp = headMeta().setProperty('og:title', title) %}
 {% set tmp = headMeta().setProperty('og:type', translate('article')) %}
-{% set tmp = headMeta().setProperty('keywords', metadata().keywords(entity)) %}
 <div class="page-header">
     <div class="pull-right btn-group">
         {% include 'entity/view/partials/actions/toggle-controls' %}
