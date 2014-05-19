@@ -1,8 +1,8 @@
 {% set revision = entity.getCurrentRevision() %}
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
-<article>
+<article itemscope itemtype="http://schema.org/ScholarlyArticle">
     <section class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-7" itemprop="articleBody">
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
         <div class="col-sm-5">
@@ -30,7 +30,7 @@
             </ul>
         </div>
     </section>
-    <div class="collapse" id="discussions-{{ entity.getId() }}">
+    <div class="collapse" id="discussions-{{ entity.getId() }}" itemprop="comment">
         {{ discussion(entity).render() }}
     </div>
     {% if solution %}

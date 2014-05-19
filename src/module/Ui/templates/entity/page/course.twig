@@ -4,15 +4,17 @@
 {% set tmp = headMeta().setProperty('og:title', title) %}
 {% set tmp = headMeta().setProperty('og:type', translate('article')) %}
 {% set tmp = headMeta().setProperty('keywords', metadata().keywords(entity)) %}
-<div class="page-header">
-    <div class="pull-right btn-group">
-        {% include 'entity/view/partials/actions/toggle-controls' %}
-        {{ contexter().renderButton() }}
+<div itemscope itemtype="http://schema.org/ScholarlyArticle">
+    <div class="page-header">
+        <div class="pull-right btn-group">
+            {% include 'entity/view/partials/actions/toggle-controls' %}
+            {{ contexter().renderButton() }}
+        </div>
+        <h1><span itemprop=”articleBody”>{{ title }}</span> <small>{{ translate('Course') }}</small></h1>
+        {% include 'entity/view/partials/actions/big' %}
     </div>
-    <h1>{{ title }} <small>{{ translate('Course') }}</small></h1>
-    {% include 'entity/view/partials/actions/big' %}
+    {% include 'entity/view/default' %}
 </div>
-{% include 'entity/view/default' %}
 {% set taxonomy = include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()}) %}
 {% set temp = registry().add('rnav', taxonomy) %}
 {% set temp = registry().add('rnav', related(entity)) %}
