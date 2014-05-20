@@ -9,8 +9,11 @@
  */
 namespace Normalizer\View\Helper;
 
+use Common\Filter\PreviewFilter;
 use Normalizer\NormalizerAwareTrait;
 use Zend\View\Helper\AbstractHelper;
+use Zend\View\Helper\HeadMeta;
+use Zend\View\Helper\HeadTitle;
 
 class Normalize extends AbstractHelper
 {
@@ -22,6 +25,33 @@ class Normalize extends AbstractHelper
             return $this;
         }
         return $this->normalize($object);
+    }
+
+    public function headMeta($object)
+    {
+        /* @var $meta HeadMeta */
+        $meta       = $this->getView()->plugin('headMeta');
+        $filter     = new PreviewFilter(152);
+        $normalized = $this->normalize($object);
+        $title      = $normalized->getTitle();
+        $content    = $normalized->getContent();
+        $preview    = $filter->filter($title . ': ' . $content);
+        $meta->setProperty('og:title', $title);
+        $meta->setProperty('description', $preview);
+
+        return $this;
+    }
+
+    public function headTitle($object)
+    {
+        /* @var $headTitle HeadTitle */
+        $headTitle  = $this->getView()->plugin('headTitle');
+        $normalized = $this->normalize($object);
+        $title      = $normalized->getTitle();
+        $headTitle($title);
+
+        return $this;
+
     }
 
     public function possible($object)

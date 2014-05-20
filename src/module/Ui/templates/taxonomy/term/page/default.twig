@@ -1,4 +1,4 @@
-{% set tmp = headTitle(term.getName()) %}
+{{ normalizer().headTitle(term).headMeta(term) }}
 <div class="page-header">
     <div class="pull-right btn-group">
         {% include 'taxonomy/term/templates/partials/controls' %}

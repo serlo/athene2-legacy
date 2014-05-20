@@ -5,13 +5,13 @@
         <iframe type="text/html" width="640" height="390" src="http://www.youtube.com/embed/{{ (id|split('?v='))|slice(1)|join }}?html5=1" frameborder="0">
         </iframe>
     </section>
-    <section>
+    <section itemprop="description">
         {{ description }}
     </section>
     <hr>
     {% include 'entity/view/partials/license' %}
 	<hr>
-    <section class="hidden" id="discussion-{{ entity.getId() }}" itemprop="comment">
+    <section class="hidden" id="discussion-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
     </section>
 </article>

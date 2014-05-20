@@ -1,13 +1,13 @@
 {% set revision = entity.getCurrentRevision() %}
 {% set content = markdown().toHtml(revision.get('content')) %}
 <article>
-    <section itemprop=”articleBody”>
+    <section>
         {{ content }}
     </section>
     <hr>
     {% include 'entity/view/partials/license' %}
     <hr>
-    <section class="hidden" id="discussion-{{ entity.getId() }}" itemprop="comment">
+    <section class="hidden" id="discussion-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
     </section>
 </article>

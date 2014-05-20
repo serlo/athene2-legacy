@@ -1,19 +1,16 @@
-{% set title = entity.getCurrentRevision().get('title') %}
-{% set tmp = headTitle(title) %}
-{% set tmp = headTitle(translate('Course')) %}
-{% set tmp = headMeta().setProperty('og:title', title) %}
-{% set tmp = headMeta().setProperty('og:type', translate('article')) %}
-{% set tmp = headMeta().setProperty('keywords', metadata().keywords(entity)) %}
-<div itemscope itemtype="http://schema.org/ScholarlyArticle">
+{{ normalizer().headMeta(entity).headTitle(entity) }}
+<div itemscope itemtype="http://schema.org/Article">
     <div class="page-header">
         <div class="pull-right btn-group">
             {% include 'entity/view/partials/actions/toggle-controls' %}
             {{ contexter().renderButton() }}
         </div>
-        <h1><span itemprop=”articleBody”>{{ title }}</span> <small>{{ translate('Course') }}</small></h1>
+        <h1><span itemprop=”name”>{{ entity.getCurrentRevision().get('title') }}</span> <small>{{ translate('Course') }}</small></h1>
         {% include 'entity/view/partials/actions/big' %}
     </div>
-    {% include 'entity/view/default' %}
+    <div itemprop="articleBody">
+        {% include 'entity/view/default' %}
+    </div>
 </div>
 {% set taxonomy = include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()}) %}
 {% set temp = registry().add('rnav', taxonomy) %}
