@@ -16,11 +16,6 @@ class Module
         'CacheInvalidator\Listener\CacheListener'
     ];
 
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
     public function getAutoloaderConfig()
     {
         $autoloader = [];
@@ -41,6 +36,11 @@ class Module
         }
 
         return $autoloader;
+    }
+
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
     }
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)

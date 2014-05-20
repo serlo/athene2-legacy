@@ -6,6 +6,7 @@ use Alias\AliasManagerInterface;
 use Common\Traits\ObjectManagerAwareTrait;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
+use Page\Exception\PageNotFoundException;
 use Page\Form\RepositoryForm;
 use Page\Form\RevisionForm;
 use Page\Manager\PageManagerAwareTrait;
@@ -56,6 +57,10 @@ class IndexController extends AbstractActionController
     {
         $id             = $this->params('revision');
         $pageRepository = $this->getPageRepository();
+        if (!$pageRepository) {
+            return $this->notFound();
+        }
+
         $this->getRepositoryManager()->getRepository($pageRepository)->checkoutRevision($id);
         $this->getPageManager()->flush();
         return $this->redirect()->toReferer();
@@ -97,6 +102,9 @@ class IndexController extends AbstractActionController
         $form = $this->revisionForm;
         $id   = $this->params('revision');
         $page = $this->getPageRepository();
+        if (!$page) {
+            return $this->notFound();
+        }
         $this->assertGranted('page.revision.create', $page);
 
         if ($id != null) {
@@ -125,8 +133,12 @@ class IndexController extends AbstractActionController
 
     public function getPageRepository()
     {
-        $id = $this->params('page');
-        return $this->getPageManager()->getPageRepository($id);
+        try {
+            $id = $this->params('page');
+            return $this->getPageManager()->getPageRepository($id);
+        } catch (PageNotFoundException $e) {
+            return false;
+        }
     }
 
     public function indexAction()
@@ -142,6 +154,10 @@ class IndexController extends AbstractActionController
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $page     = $this->getPageRepository();
+        if (!$page) {
+            return $this->notFound();
+        }
+
         $alias    = $this->getAliasManager()->findAliasByObject($page)->getAlias();
         $form     = $this->repositoryForm;
 
@@ -176,8 +192,16 @@ class IndexController extends AbstractActionController
     public function viewAction()
     {
         $pageRepository = $this->getPageRepository();
-        $revision       = $pageRepository->hasCurrentRevision() ? $pageRepository->getCurrentRevision() : null;
-        $view           = new ViewModel(['revision' => $revision, 'page' => $pageRepository]);
+        if (!$pageRepository) {
+            return $this->notFound();
+        }
+
+        $revision = $pageRepository->hasCurrentRevision() ? $pageRepository->getCurrentRevision() : null;
+        if (!$revision) {
+            return $this->notFound();
+        }
+
+        $view = new ViewModel(['revision' => $revision, 'page' => $pageRepository]);
 
         $this->assertGranted('page.get', $pageRepository);
         $view->setTemplate('page/revision/view');
@@ -201,6 +225,10 @@ class IndexController extends AbstractActionController
     public function viewRevisionsAction()
     {
         $pageRepository = $this->getPageRepository();
+        if (!$pageRepository) {
+            return $this->notFound();
+        }
+
         $revisions      = $pageRepository->getRevisions();
         $view           = new ViewModel(['revisions' => $revisions, 'page' => $pageRepository]);
 
@@ -208,5 +236,11 @@ class IndexController extends AbstractActionController
         $view->setTemplate('page/revisions');
 
         return $view;
+    }
+
+    protected function notFound()
+    {
+        $this->getResponse()->setStatusCode(404);
+        return false;
     }
 }

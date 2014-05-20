@@ -77,7 +77,7 @@ class SubjectManager implements SubjectManagerInterface
         return $collection;
     }
 
-    public function getUnrevisedEntities(TaxonomyTermInterface $term)
+    public function getUnrevisedRevisions(TaxonomyTermInterface $term)
     {
         $key = hash('sha256', serialize($term));
         if ($this->storage->hasItem($key)) {
@@ -87,6 +87,9 @@ class SubjectManager implements SubjectManagerInterface
         $entities   = $this->getEntities($term);
         $collection = new ArrayCollection();
         $this->iterEntities($entities, $collection, 'isRevised');
+        $iterator = $collection->getIterator();
+        $iterator->ksort();
+        $collection = new ArrayCollection(iterator_to_array($iterator));
         $this->storage->setItem($key, $collection);
         return $collection;
     }
@@ -99,8 +102,8 @@ class SubjectManager implements SubjectManagerInterface
     protected function isRevised(EntityInterface $entity, Collection $collection)
     {
         if ($entity->isUnrevised() && !$collection->contains($entity)) {
-            $normalized = $this->normalizer->normalize($entity);
-            $collection->add($normalized);
+            $normalized = $this->normalizer->normalize($entity->getHead());
+            $collection->set(-$normalized->getTimestamp()->getTimestamp(), $normalized);
         }
     }
 

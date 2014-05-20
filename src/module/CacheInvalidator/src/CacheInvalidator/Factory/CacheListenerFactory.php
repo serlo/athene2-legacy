@@ -18,7 +18,8 @@ class CacheListenerFactory implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options  = $serviceLocator->get('CacheInvalidator\Options\CacheOptions');
-        return new CacheListener($options, $serviceLocator);
+        $options            = $serviceLocator->get('CacheInvalidator\Options\CacheOptions');
+        $invalidatorManager = $serviceLocator->get('CacheInvalidator\Invalidator\InvalidatorManager');
+        return new CacheListener($options, $invalidatorManager);
     }
 }

@@ -9,7 +9,6 @@
  */
 namespace Normalizer\Strategy;
 
-use Common\Filter\PreviewFilter;
 use Normalizer\Entity\Normalized;
 use Normalizer\Exception\RuntimeException;
 
@@ -23,6 +22,11 @@ abstract class AbstractStrategy implements StrategyInterface
         return $this->object;
     }
 
+    public function setObject($object)
+    {
+        $this->object = $object;
+    }
+
     public function normalize($object)
     {
         if (!$this->isValid($object)) {
@@ -32,15 +36,10 @@ abstract class AbstractStrategy implements StrategyInterface
             ));
         }
 
+
         $this->setObject($object);
-
-        $preview = $this->getPreview();
-        $filter  = new PreviewFilter();
-        $preview = $filter->filter($preview);
-
+        $preview   = $this->getPreview();
         $title     = $this->getTitle();
-        $filter    = new PreviewFilter(200, '...');
-        $title     = $filter->filter($title);
         $timestamp = $this->getTimestamp() ? $this->getTimestamp() : new \DateTime();
 
         $normalized = new Normalized();
@@ -54,13 +53,6 @@ abstract class AbstractStrategy implements StrategyInterface
         $normalized->setId($this->getId());
 
         return $normalized;
-    }
-
-    public function setObject($object)
-    {
-        $this->object = $object;
-
-        return $this;
     }
 
     /**

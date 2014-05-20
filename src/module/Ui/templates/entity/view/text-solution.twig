@@ -1,5 +1,5 @@
 {% set revision = entity.getCurrentRevision() %}
-<article class="panel-group">
+<article class="panel-group" itemscope itemtype="http://schema.org/ScholarlyArticle">
     {% if(revision and revision.get('hint')) %}
         <section class="collapse panel panel-default" id="hint-{{ entity.getId() }}">
             <div class="panel-body">
@@ -29,7 +29,7 @@
             </strong>
         </div>
         <div class="list-group">
-            <div class="list-group-item">
+            <div class="list-group-item" itemprop="articleBody">
                 {% if revision %}
                     {{ markdown().toHtml(revision.get('content')) | raw }}
                 {% elseif not entity.getHead() %}

@@ -46,7 +46,7 @@ class SitemapController extends AbstractActionController
             function (UuidInterface $object) {
                 $isGood = $object instanceof TaxonomyTermInterface || $object instanceof PageRepositoryInterface;
                 $isGood = $isGood || $object instanceof EntityInterface || $object instanceof PostInterface;
-                return $isGood && !$object->isTrashed();
+                return !$object->isTrashed() && $isGood;
             }
         );
         $view     = new ViewModel(['objects' => $objects]);

@@ -1,6 +1,6 @@
-<article>
+<article itemscope itemtype="http://schema.org/ScholarlyArticle">
     <section class="row">
-        <div class="col-md-8">
+        <div class="col-md-8" itemprop="articleBody">
             {{ markdown().toHtml(entity.getCurrentRevision().get('content')) }}
         </div>
         <div class="col-md-4">
