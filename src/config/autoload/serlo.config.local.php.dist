@@ -1,22 +1,14 @@
 <?php
 return [
-    'brand'    => [
-        'instances' => [
-            'deutsch' => [
-                'name'        => '<div id="serlo-brand">Serlo <sup><small>beta</small></sup></div>',
-                'slogan'      => 'Freie Bildung.',
-                'description' => 'Serlo ist eine kostenlose Plattform mit freien Lernmaterialien, die alle mitgestalten können.',
-                'logo'        => '<span id="serlo-logo">V</span>',
-                'head_title'  => 'Serlo.org'
-            ],
-            'english' => [
-                'name'        => '<div id="serlo-brand">Serlo <sup><small>beta</small></sup></div>',
-                'slogan'      => 'Open Education.',
-                'description' => 'Serlo is a free service with open educational resources, which anyone can contribute to.',
-                'logo'        => '<span id="serlo-logo">V</span>',
-                'head_title'  => 'Learn at Serlo.org'
-            ]
-        ]
+    'page_header_helper' => [
+        'brand'     => 'www.serlo.org',
+        'delimiter' => ' - '
+    ],
+    'brand'              => [
+        'name'        => '<h1 id="serlo-brand">Serlo <sup><small>beta</small></sup></h1>',
+        'slogan'      => 'Freie Bildung.',
+        'description' => '"Serlo ist eine kostenlose Plattform mit freien Lernmaterialien, die alle mitgestalten können.',
+        'logo'        => '<span id="serlo-logo">V</span>'
     ],
     'mailman'            => [
         'sender'   => 'no-reply@serlo.org',

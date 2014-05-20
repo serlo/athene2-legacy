@@ -40,7 +40,7 @@ interface SubjectManagerInterface
      * @param TaxonomyTermInterface $subject
      * @return EntityInterface[]
      */
-    public function getUnrevisedEntities(TaxonomyTermInterface $subject);
+    public function getUnrevisedRevisions(TaxonomyTermInterface $subject);
 
     /**
      * @param TaxonomyTermInterface $subject

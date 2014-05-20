@@ -2,10 +2,10 @@
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
 <article itemscope itemtype="http://schema.org/ScholarlyArticle">
     <section class="row">
-        <div class="col-md-6" itemprop=”articleBody”>
+        <div class="col-xs-6">
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
-        <div class="col-md-6">
+        <div class="col-xs-6">
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
                     <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to see the solution') }}">

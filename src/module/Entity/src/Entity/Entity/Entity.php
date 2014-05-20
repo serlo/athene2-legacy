@@ -127,8 +127,6 @@ class Entity extends Uuid implements EntityInterface
     public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
-
-        return $this;
     }
 
     public function getHead()

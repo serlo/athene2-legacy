@@ -16,7 +16,6 @@ return array(
                 'StrokerCache\Strategy\RouteName' => array(
                     'routes' => array(
                         'taxonomy/term/get',
-                        'alias',
                         'entity/page',
                         'page/view',
                         'sitemap'
