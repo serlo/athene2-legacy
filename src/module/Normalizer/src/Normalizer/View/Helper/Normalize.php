@@ -38,7 +38,7 @@ class Normalize extends AbstractHelper
         $normalized  = $this->normalize($object);
         $title       = $normalized->getTitle();
         $content     = $normalized->getPreview();
-        $content     = $markdown->toHtml($content, false);
+        $content     = $markdown->toHtml($content);
         $description = $content ? $title . ': ' . $content : '';
         $preview     = $filter->filter($description);
         $meta->setProperty('og:title', $title);
