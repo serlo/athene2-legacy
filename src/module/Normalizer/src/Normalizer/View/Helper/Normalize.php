@@ -10,6 +10,7 @@
 namespace Normalizer\View\Helper;
 
 use Common\Filter\PreviewFilter;
+use Markdown\View\Helper\MarkdownHelper;
 use Normalizer\NormalizerAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\HeadMeta;
@@ -30,12 +31,16 @@ class Normalize extends AbstractHelper
     public function headMeta($object)
     {
         /* @var $meta HeadMeta */
-        $meta       = $this->getView()->plugin('headMeta');
-        $filter     = new PreviewFilter(152);
-        $normalized = $this->normalize($object);
-        $title      = $normalized->getTitle();
-        $content    = $normalized->getContent();
-        $preview    = $filter->filter($title . ': ' . $content);
+        $meta = $this->getView()->plugin('headMeta');
+        /* @var $markdown MarkdownHelper */
+        $markdown    = $this->getView()->plugin('markdown');
+        $filter      = new PreviewFilter(152);
+        $normalized  = $this->normalize($object);
+        $title       = $normalized->getTitle();
+        $content     = $normalized->getPreview();
+        $content     = $markdown->toHtml($content);
+        $description = $content ? $title . ': ' . $content : '';
+        $preview     = $filter->filter($description);
         $meta->setProperty('og:title', $title);
         $meta->setProperty('description', $preview);
 

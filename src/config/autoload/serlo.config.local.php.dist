@@ -1,21 +1,29 @@
 <?php
 return [
-    'page_header_helper' => [
-        'brand'     => 'www.serlo.org',
-        'delimiter' => ' - '
-    ],
-    'brand'              => [
-        'name'        => '<h1 id="serlo-brand">Serlo <sup><small>beta</small></sup></h1>',
-        'slogan'      => 'Freie Bildung.',
-        'description' => '"Serlo ist eine kostenlose Plattform mit freien Lernmaterialien, die alle mitgestalten können.',
-        'logo'        => '<span id="serlo-logo">V</span>'
+    'brand'    => [
+        'instances' => [
+            'deutsch' => [
+                'name'        => '<div id="serlo-brand">Serlo <sup><small>beta</small></sup></div>',
+                'slogan'      => 'Freie Bildung.',
+                'description' => 'Serlo ist eine kostenlose Plattform mit freien Lernmaterialien, die alle mitgestalten können.',
+                'logo'        => '<span id="serlo-logo">V</span>',
+                'head_title'  => 'Lerne auf serlo.org'
+            ],
+            'english' => [
+                'name'        => '<div id="serlo-brand">Serlo <sup><small>beta</small></sup></div>',
+                'slogan'      => 'Open Education.',
+                'description' => 'Serlo is a free service with open educational resources, which anyone can contribute to.',
+                'logo'        => '<span id="serlo-logo">V</span>',
+                'head_title'  => 'Learn at serlo.org'
+            ]
+        ]
     ],
     'mailman'            => [
         'sender'   => 'no-reply@serlo.org',
         'location' => 'http://www.serlo.org'
     ],
     'instance'           => [
-        'use_cookie' => false
+        'use_cookie' => true
     ],
     'tracking'           => [
         'code' => <<<EOL
@@ -25,12 +33,7 @@ return [
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-20283862-1', 'serlo.org');ga('set', 'anonymizeIp', true);ga('send', 'pageview');
-var visitTookTime = false;var didScroll = false;var bounceSent = false;var scrollCount=0;
-function testScroll(){++scrollCount;if(scrollCount==2){didScroll=true}sendNoBounce()}
-function timeElapsed(){visitTookTime=true;sendNoBounce()}
-function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;dataLayer.push({event:"GAEvent",eventCategory:"NoBounce",eventAction:"Time spent and page scrolled"})}}
-setTimeout("timeElapsed()",3e4);
-window.addEventListener?window.addEventListener("scroll",testScroll,false):window.attachEvent("onScroll",testScroll);
+var visitTookTime = false;var didScroll = false;var bounceSent = false;function testScroll(){++scrollCount;if(scrollCount==2){didScroll=true}sendNoBounce()}function timeElapsed(){visitTookTime=true;sendNoBounce()}function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;ga("send","event","bounce","resist","User scrolled and spent 30 seconds on page.")}}setTimeout("timeElapsed()",3e4);window.addEventListener?window.addEventListener("scroll",testScroll,false):window.attachEvent("onScroll",testScroll);var scrollCount=0
 </script>
 EOL
     ]

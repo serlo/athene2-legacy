@@ -15,7 +15,7 @@ $html = array();
 foreach ($this->container as $page) {
     $html[] = '<div class="row">';
     $html[] = '<div class="col-xs-5">';
-    $html[] = '<h4 class="is-bold">' . $page->getLabel() . '</h4>';
+    $html[] = '<div class="label">' . $page->getLabel() . '</div>';
     $html[] = '</div>';
     $html[] = '<div class="col-xs-7">';
 

@@ -58,7 +58,7 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getPreview()
     {
-        return $this->getField('summary', 'content');
+        return $this->getField('summary', 'description', 'content');
     }
 
     protected function getRouteName()
