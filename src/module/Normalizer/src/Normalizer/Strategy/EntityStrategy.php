@@ -32,23 +32,34 @@ class EntityStrategy extends AbstractStrategy
         return $this->getField('content');
     }
 
-    protected function getField($field, $fallback = null)
+    protected function getField($field)
     {
-        if ($this->getObject()->hasCurrentRevision()) {
-            $revision = $this->getObject()->getCurrentRevision();
-        } elseif (is_object($this->getObject()->getHead())) {
-            $revision = $this->getObject()->getHead();
-        } else {
-            return $this->getObject()->getId();
+        $entity = $this->getObject();
+        $id     = $entity->getId();
+
+        if (is_array($field)) {
+            $fields = $field;
+            $value  = '';
+            foreach ($fields as $field) {
+                $value = $this->getField((string)$field);
+                if ($value && $value != $id) {
+                    break;
+                }
+            }
+
+            return $value ? : $id;
         }
 
-        if ($revision->get($field) !== null) {
-            return $revision->get($field);
-        } elseif ($fallback !== null && $revision->get($fallback) !== null) {
-            return $revision->get($fallback);
-        } else {
-            return $this->getObject()->getId();
+
+        $revision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : $entity->getHead();
+
+        if (!$revision) {
+            return $id;
         }
+
+        $value = $revision->get($field);
+
+        return $value ? : $id;
     }
 
     protected function getId()
@@ -58,7 +69,7 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getPreview()
     {
-        return $this->getField('summary', 'description', 'content');
+        return $this->getField(['summary', 'description', 'content']);
     }
 
     protected function getRouteName()
@@ -80,7 +91,7 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getField('title', 'id');
+        return $this->getField(['title', 'id']);
     }
 
     protected function getType()

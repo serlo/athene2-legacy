@@ -12,7 +12,6 @@
         {% include 'entity/view/default' %}
     </div>
 </div>
-{% include 'entity/view/default' %}
 {% set taxonomy = include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()}) %}
 {% set temp = registry().add('rnav', taxonomy) %}
 {% set temp = registry().add('rnav', related(entity)) %}
