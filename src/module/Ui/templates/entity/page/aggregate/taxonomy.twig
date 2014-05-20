@@ -4,7 +4,7 @@
             <strong>{{ translate('Related taxonomies') }}</strong>
         </li>
         {% for term in terms if term.getTaxonomy.getName() in ['topic', 'topic-folder'] %}
-           <li>{{ normalize().toAnchor(term) }}</li>
+           <li itemprop="relatedLink">{{ normalize().toAnchor(term) }}</li>
         {% endfor %}
     </ul>
 </div>

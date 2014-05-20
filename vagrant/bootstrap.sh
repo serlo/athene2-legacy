@@ -114,6 +114,13 @@ echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> 
 crontab cron
 rm cron
 
+# Php hacks
+sudo sed -i "s/\;pcre\.backtrack\_limit=100000/pcre\.backtrack\_limit=10000/" /etc/php5/cli/php.ini
+sudo sed -i "s/\;pcre\.backtrack\_limit=100000/pcre\.backtrack\_limit=10000/" /etc/php5/apache2/php.ini
+sudo sed -i "s/\memory\_limit=128M/memory\_limit=512M/" /etc/php5/apache2/php.ini
+sudo sed -i "s/\upload\_max\_filesize = .*M/upload\_max\_filesize = 128M/" /etc/php5/apache2/php.ini
+sudo sed -i "s/\post\_max\_size = .*M/post\_max\_size = 128M/" /etc/php5/apache2/php.ini
+
 sudo su - www-data -c "(cd /var/www/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar install)"
 
 chmod +x /home/vagrant/bin/*

@@ -1,4 +1,4 @@
-{% set tmp = headTitle(revision.getTitle()) %}
+{% do normalize().headMeta(revision).headTitle(revision) %}
 <div class="page-header">
     <div class="pull-right">
         {% include 'page/partials/controls' %}

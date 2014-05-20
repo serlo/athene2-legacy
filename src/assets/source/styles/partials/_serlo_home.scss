@@ -11,9 +11,14 @@
       margin-top: 0px;
     }
 
+    h1.description {
+      font-size: inherit;
+      margin-top: 0px;
+    }
+
     .home-nav {
-      &>div {
-        &>a {
+      & > div {
+        & > a {
           background-color: $themeColor;
           color: $white;
           padding: 15px 0;
@@ -21,6 +26,10 @@
           &:hover, &:active, &:focus {
             background-color: darken($themeColor, 10%);
             text-decoration: none;
+          }
+          & h2 {
+            font-size: inherit;
+            margin: 0;
           }
         }
 

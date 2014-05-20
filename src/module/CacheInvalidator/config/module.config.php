@@ -14,38 +14,58 @@ namespace CacheInvalidator;
 return [
     'service_manager'   => [
         'factories' => [
-            __NAMESPACE__ . '\Listener\CacheListener' => __NAMESPACE__ . '\Factory\CacheListenerFactory',
-            __NAMESPACE__ . '\Options\CacheOptions'   => __NAMESPACE__ . '\Factory\CacheOptionsFactory'
+            __NAMESPACE__ . '\Listener\CacheListener'         => __NAMESPACE__ . '\Factory\CacheListenerFactory',
+            __NAMESPACE__ . '\Invalidator\InvalidatorManager' => __NAMESPACE__ . '\Factory\InvalidatorManagerFactory',
+            __NAMESPACE__ . '\Options\CacheOptions'           => __NAMESPACE__ . '\Factory\CacheOptionsFactory'
         ]
     ],
     'cache_invalidator' => [
-        'listens' => [
+        'invalidators' => [
+            'factories' => [
+                __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator' => __NAMESPACE__ . '\Factory\NavigationStorageInvalidatorFactory',
+                __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'    => __NAMESPACE__ . '\Factory\StrokerStorageInvalidatorFactory'
+            ]
+        ],
+        'listens'      => [
+            'Versioning\RepositoryManager'         => [
+                'checkout' => [
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
+                ]
+            ],
             'Taxonomy\Manager\TaxonomyManager'     => [
                 'create' => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
                 'update' => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ]
             ],
             'Navigation\Manager\NavigationManager' => [
                 'page.create'      => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
                 'page.update'      => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
                 'page.remove'      => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
                 'parameter.create' => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
                 'parameter.update' => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
                 'parameter.remove' => [
-                    'Navigation\Storage\Storage'
+                    __NAMESPACE__ . '\Invalidator\NavigationStorageInvalidator',
+                    __NAMESPACE__ . '\Invalidator\StrokerStorageInvalidator'
                 ],
             ]
         ]
