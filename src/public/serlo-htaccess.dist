@@ -7,6 +7,9 @@ RewriteRule ^wiki/article/view/math/(.*) http://de.serlo.org/math/wiki/article/v
 RewriteRule ^wiki/article/view/Math/(.*) http://de.serlo.org/math/wiki/article/view/$1 [R=301,L,NC]
 RewriteRule ^wiki/article/view/mathe/(.*) http://de.serlo.org/math/wiki/article/view/$1 [R=301,L,NC]
 RewriteRule ^wiki/article/view/Mathe/(.*) http://de.serlo.org/math/wiki/article/view/$1 [R=301,L,NC]
+RewriteRule ^mathe/terme-ausmultiplizieren-t4/terme-zusammenfassen-t4/$ http://de.serlo.org/mathe/terme-und-gleichungen/terme-und-variablen/zusammenfassen-ausmultiplizieren-faktorisieren/terme-zusammenfassen/24496 [R=301,L,NC]
+RewriteRule ^mathe/terme-ausmultiplizieren-t4/terme-faktorisieren-t4/$ http://de.serlo.org/mathe/terme-und-gleichungen/terme-und-variablen/zusammenfassen-ausmultiplizieren-faktorisieren/terme-faktorisieren/24492 [R=301,L,NC]
+RewriteRule ^mathe/terme-ausmultiplizieren-t4/cramersche-regell/$ http://de.serlo.org/mathe/terme-und-gleichungen/gleichungssysteme/cramersche-regel/24469 [R=301,L,NC]
 
 RewriteRule ^math/exercises/topics/show/Geometrie$ http://de.serlo.org/1288 [R=301,L,NC]
 RewriteRule ^math/exercises/topics/show/Analysis$ http://de.serlo.org/1289 [R=301,L,NC]

@@ -26,7 +26,7 @@ class Vote implements VoteInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    protected $id;
+    protected $id = "asdf";
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -51,8 +51,6 @@ class Vote implements VoteInterface
     public function setVote($vote)
     {
         $this->vote = $vote;
-
-        return $this;
     }
 
     public function getUser()
@@ -73,14 +71,10 @@ class Vote implements VoteInterface
     public function setUser(UserInterface $user)
     {
         $this->user = $user;
-
-        return $this;
     }
 
     public function setComment(CommentInterface $comment)
     {
         $this->comment = $comment;
-
-        return $this;
     }
 }
