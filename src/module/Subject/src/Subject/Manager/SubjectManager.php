@@ -103,7 +103,7 @@ class SubjectManager implements SubjectManagerInterface
     {
         if ($entity->isUnrevised() && !$collection->contains($entity)) {
             $normalized = $this->normalizer->normalize($entity->getHead());
-            $collection->set(-$normalized->getTimestamp()->getTimestamp(), $normalized);
+            $collection->set($normalized->getMetadata()->getCreationDate()->getTimestamp(), $normalized);
         }
     }
 
