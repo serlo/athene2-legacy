@@ -20,24 +20,30 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
 use Instance\Entity\InstanceInterface;
+use Instance\Entity\InstanceProviderInterface;
 
-class InstanceEntityManager extends EntityManager
+class InstanceAwareEntityManager extends EntityManager
 {
 
     /**
-     * @var    InstanceInterface
+     * @var InstanceInterface
      */
-    protected $tenant;
+    protected $instance;
 
     /**
-     * @var    string        Multi tenant repository class
+     * @var string
      */
-    protected $multiTenantRepositoryClass;
+    protected $instanceAwareRepositoryClassName = 'Instance\Repository\InstanceAwareRepository';
 
     /**
-     * @var    string        Multi tenant filtering field
+     * @var string
      */
-    protected $tenantField;
+    protected $instanceProviderRepositoryClassName = 'Instance\Repository\InstanceProviderRepository';
+
+    /**
+     * @var string
+     */
+    protected $instanceField = 'instance';
 
     /**
      * Return self instead of hardcoded EntityManager
@@ -65,43 +71,39 @@ class InstanceEntityManager extends EntityManager
     }
 
     /**
-     * Sets the default  multi tenant repo class
-     *
-     * @param    string        Classname to use
+     * {@inheritDoc}
      */
-    public function setMultiTenantRepositoryClass($class)
+    public function find($entityName, $id, $lockMode = null, $lockVersion = null)
     {
-        $this->multiTenantRepositoryClass = $class;
-    }
-
-    public function setTenantField($field)
-    {
-        $this->tenantField = $field;
+        $entity = parent::find($entityName, $id, $lockMode, $lockVersion);
+        if ($entity instanceof InstanceProviderInterface) {
+            if ($entity->getInstance() === $this->getInstance()) {
+                return $entity;
+            }
+            return null;
+        }
+        return $entity;
     }
 
     /**
-     * Gets the active Tenant
-     *
-     * @return    TenantInterface
+     * @return InstanceInterface
      */
-    public function getTenant()
+    public function getInstance()
     {
-        return $this->tenant;
+        return $this->instance;
     }
 
     /**
-     * Brings the Tenant into scope
-     *
-     * @param    TenantInterface
+     * @param InstanceInterface $instance
      */
-    public function setTenant(InstanceInterface $tenant)
+    public function setInstance(InstanceInterface $instance)
     {
-        $this->tenant = $tenant;
+        $this->instance = $instance;
     }
 
     /**
-     * Check if $entity implements MultiTenantInterface
-     * If it does, return MultiTenantEntityRepository
+     * Check if $entity implements InstanceProviderInterface
+     * If it does, return InstanceAwareEntityRepository
      * {@inheritDoc}
      */
     public function getRepository($entityName)
@@ -113,21 +115,19 @@ class InstanceEntityManager extends EntityManager
 
         $metadata                  = $this->getClassMetadata($entityName);
         $customRepositoryClassName = $metadata->customRepositoryClassName;
+        $instanceProviderInterface = 'Instance\\Entity\\InstanceProviderInterface';
+        $instanceAwareInterface    = 'Instance\\Entity\\InstanceAwareInterface';
 
         if ($customRepositoryClassName !== null) {
             $repository = new $customRepositoryClassName($this, $metadata);
-            if ($this->tenant and $metadata->reflClass->implementsInterface(
-                    'Instance\\Entity\\InstanceProviderInterface'
-                )
-            ) {
-                $repository->setTenantField($this->tenantField);
+            if ($this->instance && $metadata->reflClass->implementsInterface($instanceAwareInterface)) {
+                $repository->setInstanceField($this->instanceField);
             }
-        } elseif ($this->tenant and $metadata->reflClass->implementsInterface(
-                'Instance\\Entity\\InstanceProviderInterface'
-            )
-        ) {
-            $repository = new $this->multiTenantRepositoryClass($this, $metadata);
-            $repository->setTenantField($this->tenantField);
+        } elseif ($this->instance && $metadata->reflClass->implementsInterface($instanceAwareInterface)) {
+            $repository = new $this->instanceAwareRepositoryClassName($this, $metadata);
+            $repository->setInstanceField($this->instanceField);
+        } elseif ($this->instance && $metadata->reflClass->implementsInterface($instanceProviderInterface)) {
+            $repository = new $this->instanceProviderRepositoryClassName($this, $metadata);
         } else {
             $repository = new EntityRepository($this, $metadata);
         }
@@ -135,6 +135,21 @@ class InstanceEntityManager extends EntityManager
         $this->repositories[$entityName] = $repository;
 
         return $repository;
+    }
+
+    /**
+     * Sets the default  multi tenant repo class
+     *
+     * @param    string        Classname to use
+     */
+    public function setInstanceAwareRepositoryClassName($class)
+    {
+        $this->instanceAwareRepositoryClassName = $class;
+    }
+
+    public function setInstanceField($field)
+    {
+        $this->instanceField = $field;
     }
 }
  
