@@ -1,6 +1,5 @@
 {% set title = entity.getId() %}
-{% set tmp = headTitle(title) %}
-{% set tmp = headTitle(translate('Text exercise group')) %}
+{% do headTitle(title) %}
 <div class="page-header">
     <div class="pull-right btn-group">
         {% include 'entity/view/partials/actions/toggle-controls' %}

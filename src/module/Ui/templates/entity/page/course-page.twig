@@ -1,5 +1,4 @@
 {% set title = entity.getCurrentRevision().get('title') %}
 {% set tmp = headTitle(title) %}
-{% set tmp = headTitle(translate('Module page')) %}
 {{ pageHeader(title).setSubtitle('Module page').append(contexter().renderButton()).render() }}
 {% include 'entity/view/default' %}

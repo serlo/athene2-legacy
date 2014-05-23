@@ -1,6 +1,6 @@
 <article>
     <section class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-8" itemprop="articleBody">
             {{ markdown().toHtml(entity.getCurrentRevision().get('content')) }}
         </div>
         <div class="col-xs-4">

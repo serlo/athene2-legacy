@@ -41,7 +41,7 @@ class TaxonomyTermStrategy extends AbstractStrategy
 
     protected function getPreview()
     {
-        return $this->getObject()->getName();
+        return $this->getObject()->getDescription();
     }
 
     protected function getRouteName()

@@ -1,12 +1,11 @@
 {% set description = markdown().toHtml(entity.getCurrentRevision().get('description')) %}
-{% set tmp = headMeta().setProperty('description', preview(description)) %}
 <article>
 	<section>
         {% set id = entity.getCurrentRevision().get('content') %}
         <iframe type="text/html" width="640" height="390" src="http://www.youtube.com/embed/{{ (id|split('?v='))|slice(1)|join }}?html5=1" frameborder="0">
         </iframe>
     </section>
-    <section>
+    <section itemprop="description">
         {{ description }}
     </section>
     <hr>

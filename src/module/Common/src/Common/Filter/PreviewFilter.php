@@ -68,6 +68,11 @@ class PreviewFilter implements FilterInterface
             return substr($value, 0, $length) . $this->append;
         }
 
-        return trim($return) . $this->append;
+        $return = trim($return) . $this->append;
+        $return = preg_replace('/[\$\%]/i', '', $return); // Remove LaTeX Stuff
+        // Remove Newlines and Backslashes and trim whitespaces
+        $return = preg_replace('/[\n\\\\]/i', ' ', $return);
+        $return = preg_replace('/[\s]{2,}/i', ' ', $return);
+        return $return;
     }
 }

@@ -50,7 +50,9 @@ class EntityRevisionStrategy extends AbstractStrategy
 
     protected function getPreview()
     {
-        return $this->getObject()->get('content');
+        $description = $this->getObject()->get('description');
+        $description = $description ? : $this->getObject()->get('content');
+        return $description;
     }
 
     protected function getRouteName()

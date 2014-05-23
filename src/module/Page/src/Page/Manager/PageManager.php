@@ -132,13 +132,14 @@ class PageManager implements PageManagerInterface
 
         $className      = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
         $pageRepository = $this->getObjectManager()->find($className, $id);
-        $this->assertGranted('page.get', $pageRepository);
 
         if (!is_object($pageRepository)) {
             throw new PageNotFoundException(sprintf('Page Repository "%d" not found.', $id));
         } elseif ($pageRepository->isTrashed()) {
             throw new PageNotFoundException(sprintf('Page Repository "%d" is trashed.', $id));
         }
+
+        $this->assertGranted('page.get', $pageRepository);
 
         return $pageRepository;
     }

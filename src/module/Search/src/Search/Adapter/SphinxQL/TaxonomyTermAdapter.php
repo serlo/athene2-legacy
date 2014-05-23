@@ -15,7 +15,7 @@ use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
 class TaxonomyTermAdapter extends AbstractSphinxAdapter
 {
-    use TaxonomyManagerAwareTrait, NormalizerAwareTrait;
+    use TaxonomyManagerAwareTrait, NormalizerAwareTrait, InstanceManagerAwareTrait;
 
     protected $types = [
         'topic',
@@ -35,14 +35,15 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
 
     protected function searchTypes($query, $type)
     {
+        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
         $container = new Result\Container();
         $container->setName($type);
 
         $spinxQuery = $this->forge();
         $spinxQuery->select('name', 'id', 'type')->from('taxonomyTermIndex')->match(
-                'name',
-                $spinxQuery->escapeMatch($query) . '*'
-            );
+            'name',
+            $spinxQuery->escapeMatch($query) . '*'
+        )->where('instance', $instance->getId());
 
         /**
          * TODO use 64bit PHP (which isn't supported on windows)
@@ -54,7 +55,7 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
 
         foreach ($results as $result) {
             if ($result['type'] == $type) {
-                $term = $this->getTaxonomyManager()->getTerm($result['id']);
+                $term           = $this->getTaxonomyManager()->getTerm($result['id']);
                 $resultInstance = new Result\Result();
                 $resultInstance->setName($result['name']);
                 $resultInstance->setId($result['id']);

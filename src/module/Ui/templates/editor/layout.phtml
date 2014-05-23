@@ -46,6 +46,9 @@ echo $this->doctype();
         </div>
     </section>
     <?php echo $this->partial('layout/partials/default-modal'); ?>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <?php echo $this->headScript(); ?>
+    <?php echo $this->inlineScript(); ?>
     <?php echo $this->tracking(); ?>
 </body>
 </html>

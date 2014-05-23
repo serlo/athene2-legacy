@@ -1,9 +1,9 @@
 {% set revision = entity.getCurrentRevision() %}
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
 {% set hint = entity.getChildren('link', 'text-hint').first() %}
-<article>
+<article itemscope itemtype="http://schema.org/ScholarlyArticle">
     <section class="row">
-        <div class="col-xs-7">
+        <div class="col-sm-7" itemprop="articleBody">
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
         <div class="col-xs-5">
