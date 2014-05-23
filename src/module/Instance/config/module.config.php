@@ -11,12 +11,15 @@
 namespace Instance;
 
 return [
-    'zfc_rbac'        => [
+    'zfc_rbac'           => [
         'assertion_map' => [
             'instance.get' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
-    'router'          => [
+    'doctrine_factories' => [
+        'entitymanager' => __NAMESPACE__ . '\Factory\InstanceAwareEntityManagerFactory',
+    ],
+    'router'             => [
         'routes' => [
             'instance' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
@@ -40,7 +43,7 @@ return [
             ]
         ]
     ],
-    'doctrine'        => [
+    'doctrine'           => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -56,17 +59,17 @@ return [
             ]
         ]
     ],
-    'view_helpers'    => [
+    'view_helpers'       => [
         'factories' => [
             'instance' => __NAMESPACE__ . '\Factory\InstanceHelperFactory'
         ]
     ],
-    'controllers'     => [
+    'controllers'        => [
         'factories' => [
             __NAMESPACE__ . '\Controller\InstanceController' => __NAMESPACE__ . '\Factory\InstanceControllerFactory'
         ]
     ],
-    'service_manager' => [
+    'service_manager'    => [
         'factories' => [
             __NAMESPACE__ . '\Manager\InstanceManager' => __NAMESPACE__ . '\Factory\InstanceManagerFactory',
             __NAMESPACE__ . '\Options\InstanceOptions' => __NAMESPACE__ . '\Factory\InstanceOptionsFactory'
@@ -74,14 +77,14 @@ return [
             //'Zend\I18n\Translator\TranslatorInterface' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ]
     ],
-    'di'              => [
+    'di'                 => [
         'instance' => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\InstanceManagerInterface' => __NAMESPACE__ . '\Manager\InstanceManager'
             ],
         ]
     ],
-    'class_resolver'  => [
+    'class_resolver'     => [
         __NAMESPACE__ . '\Entity\InstanceInterface' => __NAMESPACE__ . '\Entity\Instance',
     ]
 ];

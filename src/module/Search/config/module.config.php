@@ -41,13 +41,16 @@ return [
         'definition'          => [
             'class' => [
                 __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter'       => [
-                    'setConnection'    => [
+                    'setConnection'      => [
                         'required' => true
                     ],
-                    'setEntityManager' => [
+                    'setEntityManager'   => [
                         'required' => true
                     ],
-                    'setNormalizer'    => [
+                    'setNormalizer'      => [
+                        'required' => true
+                    ],
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -59,6 +62,9 @@ return [
                         'required' => true
                     ],
                     'setNormalizer'      => [
+                        'required' => true
+                    ],
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],

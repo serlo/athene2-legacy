@@ -9,12 +9,14 @@
  */
 namespace Search\Adapter\SphinxQL;
 
+use Entity\Manager\EntityManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Normalizer\NormalizerAwareTrait;
 use Search\Result;
 
 class EntityAdapter extends AbstractSphinxAdapter
 {
-    use \Entity\Manager\EntityManagerAwareTrait, NormalizerAwareTrait;
+    use EntityManagerAwareTrait, NormalizerAwareTrait, InstanceManagerAwareTrait;
 
     protected $types = ['article', 'video', 'course'];
 
@@ -30,11 +32,15 @@ class EntityAdapter extends AbstractSphinxAdapter
 
     protected function searchTypes($query, $type)
     {
+        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
         $container = new Result\Container();
         $container->setName($type);
 
         $spinxQuery = $this->forge();
-        $spinxQuery->select('eid')->from('entityIndex')->match('value', $query . '*')->match('type', $type);
+        $spinxQuery->select('eid')->from('entityIndex')->match('value', $query . '*')->match('type', $type)->where(
+            'instance',
+            $instance->getId()
+        );
         $results   = $spinxQuery->execute();
         $processed = [];
 

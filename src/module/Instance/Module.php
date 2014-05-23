@@ -9,6 +9,7 @@
  */
 namespace Instance;
 
+use Instance\Manager\InstanceAwareEntityManager;
 use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\Mvc\ModuleRouteListener;
@@ -70,6 +71,11 @@ class Module
         $translator->setFallbackLocale('en');
 
         $app->getEventManager()->attach('route', [$this, 'onPreRoute'], 4);
+
+        $entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
+        if($entityManager instanceof InstanceAwareEntityManager){
+            $entityManager->setInstance($instance);
+        }
     }
 
     public function onPreRoute(MvcEvent $e)

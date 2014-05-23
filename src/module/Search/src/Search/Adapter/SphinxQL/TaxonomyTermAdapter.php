@@ -1,22 +1,23 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license    LGPL-3.0
- * @license    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
 namespace Search\Adapter\SphinxQL;
 
+use Instance\Entity\InstanceAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Normalizer\NormalizerAwareTrait;
 use Search\Result;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
 class TaxonomyTermAdapter extends AbstractSphinxAdapter
 {
-    use TaxonomyManagerAwareTrait, NormalizerAwareTrait;
+    use TaxonomyManagerAwareTrait, NormalizerAwareTrait, InstanceManagerAwareTrait;
 
     protected $types = [
         'topic',
@@ -36,13 +37,15 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
 
     protected function searchTypes($query, $type)
     {
+        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
         $container = new Result\Container();
         $container->setName($type);
 
         $spinxQuery = $this->forge();
-        $spinxQuery->select('name', 'id', 'type')
-            ->from('taxonomyTermIndex')
-            ->match('name', $spinxQuery->escapeMatch($query) . '*');
+        $spinxQuery->select('name', 'id', 'type')->from('taxonomyTermIndex')->match(
+            'name',
+            $spinxQuery->escapeMatch($query) . '*'
+        )->where('instance', $instance->getId());
 
         /**
          * TODO use 64bit PHP (which isn't supported on windows)
@@ -53,8 +56,8 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
         $results = $spinxQuery->execute();
 
         foreach ($results as $result) {
-            if($result['type'] == $type){
-                $term = $this->getTaxonomyManager()->getTerm($result['id']);
+            if ($result['type'] == $type) {
+                $term           = $this->getTaxonomyManager()->getTerm($result['id']);
                 $resultInstance = new Result\Result();
                 $resultInstance->setName($result['name']);
                 $resultInstance->setId($result['id']);
