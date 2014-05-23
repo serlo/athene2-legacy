@@ -94,13 +94,6 @@
     border-bottom: none;
   }
 
-  .nav-head {
-    margin-top: 0;
-    padding: 7px 0;
-    @include theme-font(700);
-    font-size: 18px;
-  }
-
   .row {
     border-top: 1px solid $lighterGray;
   }
