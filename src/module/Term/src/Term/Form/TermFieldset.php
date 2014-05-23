@@ -21,7 +21,7 @@ class TermFieldset extends Fieldset implements InputFilterProviderInterface
     {
         parent::__construct('term');
         
-        $this->add((new Text('name'))->setLabel('Name:'));
+        $this->add((new Text('name'))->setAttribute('id', 'term[name]')->setLabel('Name:'));
     }
 
     public function getInputFilterSpecification()

@@ -108,6 +108,18 @@ return [
                 '@styles',
                 '@editor_styles'
             ],
+            'taxonomy/term/create'                 => [
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ],
+            'taxonomy/term/update'                 => [
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ],
             'license/update'                 => [
                 '@libs',
                 '@editor_scripts',
