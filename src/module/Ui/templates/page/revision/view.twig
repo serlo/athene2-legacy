@@ -1,6 +1,12 @@
 {% if revision %}
-    {% include 'page/partials/head' %}
-    {{ markdown().toHtml(revision.getContent()) }}
+    <article itemscope itemtype="http://schema.org/Article">
+        <header>
+            {% include 'page/partials/head' %}
+        </header>
+        <section itemprop="articleBody">
+            {{ markdown().toHtml(revision.getContent()) }}
+        </section>
+    </article>
 {% endif %}
 <hr>
 <section class="row">
