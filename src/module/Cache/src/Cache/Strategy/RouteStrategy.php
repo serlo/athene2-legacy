@@ -10,7 +10,6 @@
 namespace Cache\Strategy;
 
 use StrokerCache\Strategy\Route;
-use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\MvcEvent;
 use User\Manager\UserManager;
 
