@@ -33,8 +33,10 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
 
         /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */
         foreach ($this->getObject()->getTaxonomyTerms() as $term) {
-            $path = $term->slugify('root');
-            break;
+            if (in_array($term->getType()->getName(), ['topic', 'topic-folder'])) {
+                $path = $term->slugify('root');
+                break;
+            }
         }
 
         $normalized = $this->getNormalizer()->normalize($this->getObject());
@@ -50,11 +52,6 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
         ];
     }
 
-    protected function validObject($object)
-    {
-        $this->isValid($object);
-    }
-
     public function getTranslator()
     {
         return $this->getServiceLocator()->get('translator');
@@ -62,5 +59,10 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
 
     protected function isValid(EntityInterface $object)
     {
+    }
+
+    protected function validObject($object)
+    {
+        $this->isValid($object);
     }
 }
