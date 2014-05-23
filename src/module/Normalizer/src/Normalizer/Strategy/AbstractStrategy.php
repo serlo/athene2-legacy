@@ -38,22 +38,26 @@ abstract class AbstractStrategy implements StrategyInterface
 
 
         $this->setObject($object);
-        $preview   = $this->getPreview();
-        $title     = $this->getTitle();
-        $timestamp = $this->getTimestamp() ? $this->getTimestamp() : new \DateTime();
 
-        $normalized = new Normalized();
-        $normalized->setTitle($title);
-        $normalized->setTimestamp($timestamp);
-        $normalized->setContent($this->getContent());
-        $normalized->setPreview($preview);
-        $normalized->setType($this->getType());
-        $normalized->setRouteName($this->getRouteName());
-        $normalized->setRouteParams($this->getRouteParams());
-        $normalized->setId($this->getId());
+        $normalized = new Normalized([
+            'title'       => $this->getTitle(),
+            'content'     => $this->getContent(),
+            'type'        => $this->getType(),
+            'routeName'   => $this->getRouteName(),
+            'routeParams' => $this->getRouteParams(),
+            'id'          => $this->getId(),
+            'metadata'    => [
+                'timestamp' => $this->getTimestamp()
+            ]
+        ]);
 
         return $normalized;
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getContent();
 
     /**
      * @return int
@@ -63,27 +67,7 @@ abstract class AbstractStrategy implements StrategyInterface
     /**
      * @return string
      */
-    abstract protected function getTitle();
-
-    /**
-     * @return string
-     */
-    abstract protected function getTimestamp();
-
-    /**
-     * @return string
-     */
-    abstract protected function getContent();
-
-    /**
-     * @return string
-     */
     abstract protected function getPreview();
-
-    /**
-     * @return string
-     */
-    abstract protected function getType();
 
     /**
      * @return string
@@ -94,4 +78,19 @@ abstract class AbstractStrategy implements StrategyInterface
      * @return string
      */
     abstract protected function getRouteParams();
+
+    /**
+     * @return string
+     */
+    abstract protected function getTimestamp();
+
+    /**
+     * @return string
+     */
+    abstract protected function getTitle();
+
+    /**
+     * @return string
+     */
+    abstract protected function getType();
 }

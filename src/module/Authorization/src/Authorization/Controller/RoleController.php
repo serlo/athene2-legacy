@@ -25,6 +25,7 @@ use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use ZfcRbac\Exception\UnauthorizedException;
 
 class RoleController extends AbstractActionController
 {
@@ -211,6 +212,7 @@ class RoleController extends AbstractActionController
 
     public function rolesAction()
     {
+        $this->assertGranted('authorization.role.create');
         $roles = $this->getRoleService()->findAllRoles();
         $view  = new ViewModel(['roles' => $roles]);
         $view->setTemplate('authorization/role/roles');
@@ -220,6 +222,12 @@ class RoleController extends AbstractActionController
 
     public function showAction()
     {
+        if (!($this->isGranted('authorization.role.revoke.permission') || $this->isGranted(
+                'authorization.role.grant.permission'
+            ))
+        ) {
+            throw new UnauthorizedException;
+        }
         $role = $this->params('role');
         $role = $this->getRoleService()->getRole($role);
 

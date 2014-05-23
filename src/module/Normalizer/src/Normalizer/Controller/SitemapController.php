@@ -40,6 +40,19 @@ class SitemapController extends AbstractActionController
 
     public function indexAction()
     {
+        $view = new ViewModel();
+        $this->getResponse()->getHeaders()->addHeaders(
+            [
+                'Content-Type' => 'text/html'
+            ]
+        );
+        $view->setTemplate('normalizer/sitemap');
+        $view->setTerminal(true);
+        return $view;
+    }
+
+    public function uuidAction()
+    {
         $instance = $this->instanceManager->getInstanceFromRequest();
         $objects  = $this->uuidManager->findUuidsByInstance($instance);
         $objects  = $objects->filter(
@@ -49,8 +62,13 @@ class SitemapController extends AbstractActionController
                 return !$object->isTrashed() && $isGood;
             }
         );
-        $view     = new ViewModel(['objects' => $objects]);
-        $view->setTemplate('normalizer/sitemap');
+        $view = new ViewModel(['objects' => $objects]);
+        $this->getResponse()->getHeaders()->addHeaders(
+            [
+                'Content-Type' => 'text/html'
+            ]
+        );
+        $view->setTemplate('normalizer/sitemap-uuid');
         $view->setTerminal(true);
         return $view;
     }

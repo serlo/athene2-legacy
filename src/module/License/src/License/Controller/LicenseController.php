@@ -32,6 +32,7 @@ class LicenseController extends AbstractActionController
 
     public function manageAction()
     {
+        $this->assertGranted('license.create');
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $licenses = $this->getLicenseManager()->findLicensesByInstance($instance);
         $view     = new ViewModel(['licenses' => $licenses]);

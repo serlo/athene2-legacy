@@ -10,6 +10,7 @@
 namespace Taxonomy\Controller;
 
 use Zend\View\Model\ViewModel;
+use ZfcRbac\Exception\UnauthorizedException;
 
 class TermController extends AbstractController
 {
@@ -75,9 +76,9 @@ class TermController extends AbstractController
 
         $associations = $term->getAssociated($association);
         $view         = new ViewModel([
-            'term'         => $term,
+            'term' => $term,
             'associations' => $associations,
-            'association'  => $association
+            'association' => $association
         ]);
         $view->setTemplate('taxonomy/term/order-associated');
         return $view;
@@ -86,6 +87,13 @@ class TermController extends AbstractController
     public function organizeAction()
     {
         $term = $this->getTerm();
+        if (!($this->assertGranted('taxonomy.term.create', $term) || $this->assertGranted(
+                'taxonomy.term.update',
+                $term
+            ))
+        ) {
+            throw new UnauthorizedException;
+        }
         $view = new ViewModel(['term' => $term]);
         $view->setTemplate('taxonomy/term/organize');
         return $view;

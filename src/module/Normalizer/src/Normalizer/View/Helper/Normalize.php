@@ -31,16 +31,10 @@ class Normalize extends AbstractHelper
     public function headMeta($object)
     {
         /* @var $meta HeadMeta */
-        $meta = $this->getView()->plugin('headMeta');
-        /* @var $markdown MarkdownHelper */
-        $markdown    = $this->getView()->plugin('markdown');
-        $filter      = new PreviewFilter(152);
-        $normalized  = $this->normalize($object);
-        $title       = $normalized->getTitle();
-        $content     = $normalized->getPreview();
-        $content     = $markdown->toHtml($content);
-        $description = $content ? $title . ': ' . $content : '';
-        $preview     = $filter->filter($description);
+        $meta       = $this->getView()->plugin('headMeta');
+        $normalized = $this->normalize($object);
+        $title      = $normalized->getTitle();
+        $preview    = $this->toPreview($object);
         $meta->setProperty('og:title', $title);
         $meta->setProperty('description', $preview);
 
@@ -78,7 +72,16 @@ class Normalize extends AbstractHelper
 
     public function toPreview($object)
     {
-        return $this->normalize($object)->getPreview();
+        /* @var $markdown MarkdownHelper */
+        $markdown    = $this->getView()->plugin('markdown');
+        $normalized  = $this->normalize($object);
+        $filter      = new PreviewFilter(152);
+        $content     = $normalized->getContent();
+        $content     = $markdown->toHtml($content);
+        $title       = $normalized->getTitle();
+        $description = $content ? $title . ': ' . $content : '';
+        $preview     = $filter->filter($description);
+        return $preview;
     }
 
     public function toTitle($object)
