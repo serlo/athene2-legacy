@@ -21,4 +21,5 @@ if (count($this->errorMessages)) {
     }
 }
 echo $this->form()->render($this->form);
-echo sprintf($this->translate('Did you forget your %spassword%s?'), '<a href="'.$this->url('authentication/password/restore').'">', '</a>');
+echo "<p>".sprintf($this->translate('Are you new here? %sSign up%s!'), '<a href="'.$this->url('user/register').'">', '</a>')."</p>";
+echo "<p>".sprintf($this->translate('Did you forget your %spassword%s?'), '<a href="'.$this->url('authentication/password/restore').'">', '</a>')."</p>";

@@ -105,7 +105,7 @@ class AdsManager implements AdsManagerInterface
         $adPage = $this->getObjectManager()
             ->getRepository($className)
             ->findOneBy(array(
-            'instance_id' => $instance
+            'instance' => $instance
         ));
         if (! is_object($adPage)) {
             return null;
@@ -119,7 +119,7 @@ class AdsManager implements AdsManagerInterface
 
     public function findShuffledAds(InstanceInterface $instance, $number)
     {
-        $sql = 'SELECT * FROM ad WHERE  `instance_id` =' . $instance->getId() . ' ORDER BY RAND( ) * frequency DESC LIMIT ' . $number;
+        $sql = 'SELECT * FROM ad WHERE `instance_id` =' . $instance->getId() . ' ORDER BY RAND( ) * frequency DESC LIMIT ' . $number;
         $stmt = $this->getObjectManager()
             ->getConnection()
             ->prepare($sql);
