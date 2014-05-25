@@ -136,8 +136,9 @@ class AliasManager implements AliasManagerInterface
     {
         /* @var $entity Entity\AliasInterface */
         $criteria = ['uuid' => $uuid->getId()];
-        $order    = ['timestamp' => 'desc'];
-        $entity   = $this->getAliasRepository()->findOneBy($criteria, $order);
+        $order    = ['timestamp' => 'DESC'];
+        $results  = $this->getAliasRepository()->findBy($criteria, $order);
+        $entity   = current($results);
 
         if (!is_object($entity)) {
             throw new Exception\AliasNotFoundException();
@@ -165,9 +166,10 @@ class AliasManager implements AliasManagerInterface
             return $item;
         }
 
-        $params = ['source' => $source, 'instance' => $instance->getId()];
-        $order  = ['timestamp' => 'desc'];
-        $entity = $this->getAliasRepository()->findOneBy($params, $order);
+        $criteria = ['source' => $source, 'instance' => $instance->getId()];
+        $order    = ['timestamp' => 'DESC'];
+        $results  = $this->getAliasRepository()->findBy($criteria, $order);
+        $entity   = current($results);
 
         if (!is_object($entity)) {
             // Set it to null so we know that this doesn't exist
@@ -186,8 +188,9 @@ class AliasManager implements AliasManagerInterface
     {
         /* @var $entity Entity\AliasInterface */
         $criteria = ['alias' => $alias, 'instance' => $instance->getId()];
-        $order    = ['timestamp' => 'desc'];
-        $entity   = $this->getAliasRepository()->findOneBy($criteria, $order);
+        $order    = ['timestamp' => 'DESC'];
+        $results  = $this->getAliasRepository()->findBy($criteria, $order);
+        $entity   = current($results);
 
         if (!is_object($entity)) {
             throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
@@ -227,8 +230,9 @@ class AliasManager implements AliasManagerInterface
 
         /* @var $entity Entity\AliasInterface */
         $criteria = ['alias' => $alias, 'instance' => $instance->getId()];
-        $order    = ['timestamp' => 'desc'];
-        $entity   = $this->getAliasRepository()->findOneBy($criteria, $order);
+        $order    = ['timestamp' => 'DESC'];
+        $results  = $this->getAliasRepository()->findBy($criteria, $order);
+        $entity   = current($results);
 
         if (!is_object($entity)) {
             $this->storage->setItem($key, self::CACHE_NONEXISTENT);
@@ -274,7 +278,7 @@ class AliasManager implements AliasManagerInterface
     {
         $className = $this->getEntityClassName();
         $criteria  = ['alias' => $alias];
-        $order     = ['timestamp' => 'desc'];
+        $order     = ['timestamp' => 'DESC'];
         $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order);
 
         $inMemory = [];
