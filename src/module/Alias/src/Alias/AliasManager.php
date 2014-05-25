@@ -166,7 +166,7 @@ class AliasManager implements AliasManagerInterface
         }
 
         $params = ['source' => $source, 'instance' => $instance->getId()];
-        $order  = ['id' => 'desc'];
+        $order  = ['timestamp' => 'desc'];
         $entity = $this->getAliasRepository()->findOneBy($params, $order);
 
         if (!is_object($entity)) {
