@@ -42,7 +42,7 @@ class Normalize extends AbstractHelper
         $description = $content ? $title . ': ' . $content : '';
         $preview     = $filter->filter($description);
         $meta->setProperty('og:title', $title);
-        $meta->setProperty('description', $preview);
+        $meta->appendName('description', $preview);
 
         return $this;
     }
