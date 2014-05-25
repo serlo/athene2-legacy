@@ -186,7 +186,8 @@ class AliasManager implements AliasManagerInterface
     {
         /* @var $entity Entity\AliasInterface */
         $criteria = ['alias' => $alias, 'instance' => $instance->getId()];
-        $entity   = $this->getAliasRepository()->findOneBy($criteria);
+        $order    = ['timestamp' => 'desc'];
+        $entity   = $this->getAliasRepository()->findOneBy($criteria, $order);
 
         if (!is_object($entity)) {
             throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
@@ -226,7 +227,8 @@ class AliasManager implements AliasManagerInterface
 
         /* @var $entity Entity\AliasInterface */
         $criteria = ['alias' => $alias, 'instance' => $instance->getId()];
-        $entity   = $this->getAliasRepository()->findOneBy($criteria);
+        $order    = ['timestamp' => 'desc'];
+        $entity   = $this->getAliasRepository()->findOneBy($criteria, $order);
 
         if (!is_object($entity)) {
             $this->storage->setItem($key, self::CACHE_NONEXISTENT);
@@ -272,7 +274,8 @@ class AliasManager implements AliasManagerInterface
     {
         $className = $this->getEntityClassName();
         $criteria  = ['alias' => $alias];
-        $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+        $order     = ['timestamp' => 'desc'];
+        $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order);
 
         $inMemory = [];
         foreach ($this->inMemoryAliases as $memoryAlias) {
