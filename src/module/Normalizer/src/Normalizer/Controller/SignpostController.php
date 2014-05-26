@@ -10,6 +10,7 @@
  */
 namespace Normalizer\Controller;
 
+use Normalizer\Exception\RuntimeException;
 use Normalizer\NormalizerAwareTrait;
 use Uuid\Exception\NotFoundException;
 use Uuid\Manager\UuidManagerAwareTrait;
@@ -17,7 +18,6 @@ use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
-use ZfcRbac\Exception\UnauthorizedException;
 
 class SignpostController extends AbstractActionController
 {
@@ -36,9 +36,10 @@ class SignpostController extends AbstractActionController
         $routeName   = $normalized->getRouteName();
         $routeParams = $normalized->getRouteParams();
         $type        = $normalized->getType();
-        $url         = $this->url()->fromRoute($routeName, $routeParams);
+        $url         = $this->url()->fromRoute($routeName, $routeParams, null, null, false);
 
         if (!$this->getRequest()->isXmlHttpRequest()) {
+            $url      = $this->url()->fromRoute($routeName, $routeParams);
             $response = $this->redirect()->toUrl($url);
             $this->getResponse()->setStatusCode(301);
             return $response;
