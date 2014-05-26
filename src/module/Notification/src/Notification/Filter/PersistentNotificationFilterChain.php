@@ -11,7 +11,6 @@
 namespace Notification\Filter;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Event\Filter\PersistentEventLogFilterChain;
 use Zend\Filter\FilterChain;
 
 class PersistentNotificationFilterChain extends FilterChain
@@ -21,7 +20,8 @@ class PersistentNotificationFilterChain extends FilterChain
      */
     public function __construct(ObjectManager $objectManager)
     {
+        parent::__construct();
+        $this->attach(new PersistentParameterFilter($objectManager));
         $this->attach(new PersistentEmptyFilter($objectManager));
-        $this->attach(new PersistentEventLogFilterChain($objectManager));
     }
 }

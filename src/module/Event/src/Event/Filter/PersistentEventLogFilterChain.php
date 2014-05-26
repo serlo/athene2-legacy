@@ -20,6 +20,7 @@ class PersistentEventLogFilterChain extends FilterChain
      */
     public function __construct(ObjectManager $objectManager)
     {
+        parent::__construct();
         $this->attach(new PersistentParameterFilter($objectManager));
     }
 }

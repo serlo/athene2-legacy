@@ -40,30 +40,25 @@ class PersistentEmptyFilter implements FilterInterface
      */
     public function filter($value)
     {
+        $passes = function (NotificationInterface $notification) {
+            if ($notification->getEvents()->count() == 0) {
+                $this->objectManager->remove($notification);
+                $this->objectManager->persist($notification);
+                return false;
+            }
+
+            return true;
+        };
+
         if ($value instanceof Collection) {
-            return $value->filter([$this, 'passes']);
+            return $value->filter($passes);
         } elseif (is_array($value)) {
-            return array_filter($value, [$this, 'passes']);
+            return array_filter($value, $passes);
         } else {
             throw new Exception\RuntimeException(sprintf(
                 'Expected Collection or array but got %s',
                 is_object($value) ? get_class($value) : gettype($value)
             ));
         }
-    }
-
-    /**
-     * @param NotificationInterface $notification
-     * @return bool
-     */
-    protected function passes(NotificationInterface $notification)
-    {
-        if ($notification->getEvents()->count() == 0) {
-            $this->objectManager->remove($notification);
-            $this->objectManager->persist($notification);
-            return false;
-        }
-
-        return true;
     }
 }

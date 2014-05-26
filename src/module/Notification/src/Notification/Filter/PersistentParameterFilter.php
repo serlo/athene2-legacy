@@ -8,28 +8,27 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Event\Filter;
+namespace Notification\Filter;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Event\Entity\EventLogInterface;
-use Event\Entity\EventParameterUuid;
+use Notification\Entity\NotificationInterface;
 use Zend\Filter\Exception;
 use Zend\Filter\FilterInterface;
 
 class PersistentParameterFilter implements FilterInterface
 {
     /**
-     * @var ObjectManager
+     * @var \Event\Filter\PersistentParameterFilter
      */
-    protected $objectManager;
+    protected $filter;
 
     /**
      * @param ObjectManager $objectManager
      */
     public function __construct(ObjectManager $objectManager)
     {
-        $this->objectManager = $objectManager;
+        $this->filter = new \Event\Filter\PersistentParameterFilter($objectManager);
     }
 
     /**
@@ -41,15 +40,9 @@ class PersistentParameterFilter implements FilterInterface
      */
     public function filter($value)
     {
-        $passes        = function (EventLogInterface $eventLog) {
-            foreach ($eventLog->getParameters() as $parameter) {
-                if ($parameter->getValue() === null) {
-                    $this->objectManager->remove($eventLog);
-                    $this->objectManager->flush($eventLog);
-                    return false;
-                }
-            }
-
+        $passes = function (NotificationInterface $notification) {
+            $events = $notification->getEvents();
+            $this->filter->filter($events);
             return true;
         };
 

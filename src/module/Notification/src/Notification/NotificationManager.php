@@ -19,8 +19,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Event\Entity\EventLogInterface;
 use Notification\Entity\NotificationInterface;
 use Notification\Filter\PersistentNotificationFilterChain;
-use Notification\Validator\NotificationValidatorChain;
-use Notification\Validator\ParametersExistValidator;
 use User\Entity\UserInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
