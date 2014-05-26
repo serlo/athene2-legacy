@@ -12,7 +12,7 @@ namespace Notification;
 use Notification\View\Helper\Notification;
 
 return [
-    'view_helpers'   => [
+    'view_helpers'    => [
         'factories' => [
             'notifications' => function ($sm) {
                     $helper = new Notification();
@@ -27,7 +27,7 @@ return [
                 },
         ]
     ],
-    'router'         => [
+    'router'          => [
         'routes' => [
             'notification' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
@@ -52,12 +52,17 @@ return [
             ]
         ]
     ],
-    'class_resolver' => [
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\NotificationManager' => __NAMESPACE__ . '\Factory\NotificationManagerFactory',
+        ]
+    ],
+    'class_resolver'  => [
         __NAMESPACE__ . '\Entity\NotificationEventInterface' => __NAMESPACE__ . '\Entity\NotificationEvent',
         __NAMESPACE__ . '\Entity\NotificationInterface'      => __NAMESPACE__ . '\Entity\Notification',
         __NAMESPACE__ . '\Entity\SubscriptionInterface'      => __NAMESPACE__ . '\Entity\Subscription'
     ],
-    'di'             => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\WorkerController',
             __NAMESPACE__ . '\Controller\NotificationController'
@@ -82,17 +87,6 @@ return [
                         'required' => true
                     ],
                     'setObjectManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\NotificationManager'                => [
-                    'setClassResolver'  => [
-                        'required' => true
-                    ],
-                    'setObjectManager'  => [
-                        'required' => true
-                    ],
-                    'setServiceLocator' => [
                         'required' => true
                     ]
                 ],
@@ -128,7 +122,7 @@ return [
             ]
         ]
     ],
-    'console'        => [
+    'console'         => [
         'router' => [
             'routes' => [
                 'notification-worker' => [
@@ -143,7 +137,7 @@ return [
             ]
         ],
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
