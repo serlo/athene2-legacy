@@ -11,11 +11,13 @@
 namespace Normalizer\Controller;
 
 use Normalizer\NormalizerAwareTrait;
+use Uuid\Exception\NotFoundException;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
+use ZfcRbac\Exception\UnauthorizedException;
 
 class SignpostController extends AbstractActionController
 {
@@ -23,7 +25,13 @@ class SignpostController extends AbstractActionController
 
     public function indexAction()
     {
-        $object      = $this->getUuidManager()->getUuid($this->params('uuid'));
+        try {
+            $object = $this->getUuidManager()->getUuid($this->params('uuid'));
+        } catch (NotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
         $normalized  = $this->getNormalizer()->normalize($object);
         $routeName   = $normalized->getRouteName();
         $routeParams = $normalized->getRouteParams();
