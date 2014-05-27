@@ -64,7 +64,7 @@ class AttachmentStrategy extends AbstractStrategy
         ];
     }
 
-    protected function getTimestamp()
+    protected function getCreationDate()
     {
         return $this->getFile()->getDateTime();
     }

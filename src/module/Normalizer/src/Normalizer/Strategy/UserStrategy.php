@@ -52,7 +52,7 @@ class UserStrategy extends AbstractStrategy
         return ['id' => $this->getObject()->getId()];
     }
 
-    protected function getTimestamp()
+    protected function getCreationDate()
     {
         return $this->getObject()->getDate();
     }
