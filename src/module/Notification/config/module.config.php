@@ -25,6 +25,14 @@ return [
 
                     return $helper;
                 },
+            'subscribe'     => __NAMESPACE__ . '\Factory\SubscribeFactory'
+        ]
+    ],
+    'zfctwig'               => [
+        'helper_manager' => [
+            'factories' => [
+                'subscribe'     => __NAMESPACE__ . '\Factory\SubscribeFactory'
+            ]
         ]
     ],
     'router'          => [
@@ -60,7 +68,7 @@ return [
                 ],
                 'may_terminate' => false,
                 'child_routes'  => [
-                    'subscribe' => [
+                    'subscribe'   => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route'    => '/subscribe/:object/:email',

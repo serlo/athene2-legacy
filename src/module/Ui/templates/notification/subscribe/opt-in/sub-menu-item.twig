@@ -1,0 +1,7 @@
+<li class="dropdown-submenu">
+    <a tabindex="-1" href="#"><span class="glyphicon glyphicon-eye-open"></span> {{ 'Subscribe' | trans }}</a>
+    <ul class="dropdown-menu">
+        <li><a href="{{ url('subscription/subscribe', {'object': object, 'email': 0}) }}"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ 'Notifications' | trans }}</a></li>
+        <li><a href="{{ url('subscription/subscribe', {'object': object, 'email': 1}) }}"><span class="glyphicon glyphicon-envelope"></span> {{ 'Notifications and emails' | trans }}</a></li>
+    </ul>
+</li>

@@ -10,6 +10,7 @@
                     </a>
                 </li>
             {% endif %}
+            {{ subscribe(term).menuItem() }}
             {% if isGranted('taxonomy.term.create', term) %}
                 <li>
                     <a href="{{ url('taxonomy/term/organize', {'term': term.getId()}) }}">
