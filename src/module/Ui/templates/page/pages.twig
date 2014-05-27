@@ -6,7 +6,9 @@
                 {% if(page.hasCurrentRevision()) %}
                     {{ page.getCurrentRevision().getTitle() }}
                 {% else %}
-                    translate('No revision checked out yet.')
+                    {% trans %}
+                        No revision checked out yet.
+                    {% endtrans %}
                 {% endif %}
             </a>
             <hr>

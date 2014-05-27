@@ -23,7 +23,7 @@
                 <span class="sortable-handle"></span>
                 <div class="sortable-item-inner row">
                     <div class="col-md-{{ col }}">
-                        {% trans %}{{ related.getTitle() }}{% endtrans %}
+                        {{ related.getTitle()  | trans }}
                     </div>
                     <div class="col-md-{{ col }}">
                         {% if related.getUrl() %}
@@ -31,7 +31,7 @@
                         {% endif %}
                     </div>
                     <div class="col-md-{{ col }}">
-                        {% trans %}{{ related.getType() }}{% endtrans %}
+                        {{ related.getType()  | trans }}
                     </div>
                     {% if isGranted('related.content.purge', container) %}
                         <div class="col-md-{{ col }}">

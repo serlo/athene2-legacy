@@ -8,7 +8,7 @@
                         <li class="active"><a href="#source{{ field.getName() }}" data-toggle="tab">{% trans %} Source {% endtrans %}</a></li>
                         <li><a href="#preview{{ field.getId() }}" data-toggle="tab">{% trans %} Preview {% endtrans %}</a></li>
                     </ul>
-                    <h4>{% trans %}{{ field.getName() }}{% endtrans %}</h4>
+                    <h4>{{ field.getName()  | trans }}</h4>
                 </div>
                 <div class="panel-body">
                     <div class="tab-content">

@@ -33,7 +33,7 @@
                         {% for type in subject().getOptions(subject).getAllowedEntities() %}
                             <li>
                                 <a href="{{ url('entity/create', {'type': type}, {'query': {'taxonomy': {'term': term.getId() }}}) }}">
-                                    {% trans %}{{ type }}{% endtrans %}
+                                    {{ type  | trans }}
                                 </a>
                             </li>
                         {% endfor %}

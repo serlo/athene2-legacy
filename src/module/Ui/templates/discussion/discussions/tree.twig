@@ -10,10 +10,10 @@
                         <a href="{{ url('discussion/discussions/get', {'id': subforum.getId()}) }}">
                                 {% set discussions = discussion().getForumDiscussions(subforum, false) %}
                                 <span class="badge pull-right">{{ discussions.count() }}</span>
-                            {% trans %}{{ subforum.getName() }}{% endtrans %}
+                            {{ subforum.getName() | trans }}
                         </a>
                     {% else %}
-                        {% trans %}{{ subforum.getName() }}{% endtrans %}
+                        {{ subforum.getName() | trans }}
                     {% endif %}
                 </div>
                 {% if subforum.getType().getName() == 'forum-category' %}
