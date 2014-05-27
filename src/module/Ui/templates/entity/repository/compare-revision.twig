@@ -5,10 +5,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <ul class="nav nav-pills pull-right">
-                        <li class="active"><a href="#source{{ field.getName() }}" data-toggle="tab">{{ translate('Source') }}</a></li>
-                        <li><a href="#preview{{ field.getId() }}" data-toggle="tab">{{ translate('Preview') }}</a></li>
+                        <li class="active"><a href="#source{{ field.getName() }}" data-toggle="tab">{% trans %} Source {% endtrans %}</a></li>
+                        <li><a href="#preview{{ field.getId() }}" data-toggle="tab">{% trans %} Preview {% endtrans %}</a></li>
                     </ul>
-                    <h4>{{ translate(field.getName()) }}</h4>
+                    <h4>{{ field.getName()  | trans }}</h4>
                 </div>
                 <div class="panel-body">
                     <div class="tab-content">

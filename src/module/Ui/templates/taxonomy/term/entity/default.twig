@@ -2,5 +2,8 @@
 {% if template %}
     {{ template }}
 {% else %}
-    {{ translate('Template for %s not found') | format(entity.getType().getName()) }}
+    {% set name = entity.getType().getName() %}
+    {% trans %}
+        Template for {{ name }} not found.
+    {% endtrans %}
 {% endif %}

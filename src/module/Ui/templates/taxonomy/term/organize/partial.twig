@@ -35,17 +35,17 @@
     {% if isChild == false and isGranted('taxonomy.term.sort', term) %}
     <div class="panel panel-default clearfix">
         <div class="panel-heading">
-            <h5 class="panel-title">{{ translate('Tools') }}</h5>
+            <h5 class="panel-title">{% trans %} Tools {% endtrans %}</h5>
         </div>
         <div class="sortable-actions pull-right panel-body">
             <button class="btn btn-default sortable-activate-action">
-                {{ translate('Sort') }}
+                {% trans %} Sort {% endtrans %}
             </button>
             <button class="btn btn-success sortable-save-action is-hidden">
-                {{ translate('Save new order') }}
+                {% trans %} Save new order {% endtrans %}
             </button>
             <button class="btn btn-default sortable-abort-action is-hidden">
-                {{ translate('Cancel') }}
+                {% trans %} Cancel {% endtrans %}
             </button>
         </div>
     </div>

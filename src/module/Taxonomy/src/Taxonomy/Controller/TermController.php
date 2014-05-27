@@ -88,10 +88,10 @@ class TermController extends AbstractController
     public function organizeAction()
     {
         $term = $this->getTerm();
-        if (!($this->assertGranted('taxonomy.term.create', $term) || $this->assertGranted(
+        if ($this->assertGranted('taxonomy.term.create', $term) || $this->assertGranted(
                 'taxonomy.term.update',
                 $term
-            ))
+            )
         ) {
             throw new UnauthorizedException;
         }

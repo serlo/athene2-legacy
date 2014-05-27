@@ -89,6 +89,21 @@ class Normalize extends AbstractHelper
         return $this->normalize($object)->getTitle();
     }
 
+    public function toCreationDate($object)
+    {
+        return $this->normalize($object)->getMetadata()->getCreationDate();
+    }
+
+    public function toLastModified($object)
+    {
+        return $this->normalize($object)->getMetadata()->getLastModified();
+    }
+
+    public function toAuthor($object)
+    {
+        return $this->normalize($object)->getMetadata()->getAuthor();
+    }
+
     public function toType($object)
     {
         return $this->normalize($object)->getType();
