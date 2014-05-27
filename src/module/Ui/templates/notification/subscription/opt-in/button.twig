@@ -1,11 +1,11 @@
 <div class="btn-group">
-    <button type="button" class="btn btn-primary">{{ translate('Subscribe') }}</button>
+    <button type="button" class="btn btn-primary">{{ 'Subscribe' | trans }}</button>
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         <span class="caret"></span>
-        <span class="sr-only">{{ translate('Toggle dropdown') }}</span>
+        <span class="sr-only">{{ 'Toggle dropdown' | trans }}</span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="{{ url('subscription/subscribe', {'object': object}) }}">{{ translate('Receive notifications') }}</a></li>
-        <li><a href="#">{{ translate('Receive email notifications as well') }}</a></li>
+        <li><a href="{{ url('subscription/subscribe', {'object': object}) }}">{{ 'Subscribe via  notifications' | trans }}</a></li>
+        <li><a href="#">{{ 'Subscribe via notifications and emails' | trans }}</a></li>
     </ul>
 </div>

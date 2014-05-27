@@ -15,6 +15,9 @@ return [
         'environment_options' => [
             'cache' => __DIR__ . '/../../data/twig'
         ],
+        'extensions' => [
+            'Twig_Extensions_Extension_I18n',
+        ]
     ],
     'doctrine'        => [
         'entitymanager' => [
