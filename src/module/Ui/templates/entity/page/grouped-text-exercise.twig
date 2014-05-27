@@ -6,6 +6,6 @@
         {% include 'entity/view/partials/actions/toggle-controls' %}
         {{ contexter().renderButton() }}
     </div>
-    <h1>{{ title }} <small>{{ translate('Grouped text exercise') }}</small></h1>
+    <h1>{{ title }} <small>{% trans %} Grouped text exercise {% endtrans %}</small></h1>
 </div>
 {% include 'entity/view/default' %}

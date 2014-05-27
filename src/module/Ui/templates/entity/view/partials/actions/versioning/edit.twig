@@ -3,7 +3,7 @@
     <li>
         <a href="{{ url('entity/repository/add-revision', {'entity': entity.getId()}) }}">
             <span class="glyphicon glyphicon-pencil"></span>
-            {{ translate('Edit') }}
+            {% trans %} Edit {% endtrans %}
         </a>
     </li>
 {% endif %}

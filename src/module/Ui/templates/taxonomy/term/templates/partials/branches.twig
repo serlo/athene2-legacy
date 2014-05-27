@@ -6,7 +6,7 @@
     {% endif %}
 {% endfor %}
 {% if children %}
-    <h4><span class="glyphicon glyphicon-folder-open"></span> {{ translate('Folders') }}</h4>
+    <h4><span class="glyphicon glyphicon-folder-open"></span> {% trans %} Folders {% endtrans %}</h4>
     <hr>
     <div class="panel-group" id="accordion{{ term.getId() }}">
         {% for child in children %}

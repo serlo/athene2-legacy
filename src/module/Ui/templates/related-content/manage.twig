@@ -3,16 +3,16 @@
 {{ pageHeader('Manage related links').setSubtitle(normalize().toTitle(container.getObject())).setBackLink(normalize().toUrl(container.getObject())).append(contexter().renderButton('right')) }}
 <div class="row">
     <div class="col-md-{{ col }}">
-        <strong>{{ translate('Title') }}</strong>
+        <strong>{% trans %} Title {% endtrans %}</strong>
     </div>
     <div class="col-md-{{ col }}">
-        <strong>{{ translate('Url') }}</strong>
+        <strong>{% trans %} Url {% endtrans %}</strong>
     </div>
     <div class="col-md-{{ col }}">
-        <strong>{{ translate('Type') }}</strong>
+        <strong>{% trans %} Type {% endtrans %}</strong>
     </div>
     <div class="col-md-{{ col }}">
-        <strong>{{ translate('Actions') }}</strong>
+        <strong>{% trans %} Actions {% endtrans %}</strong>
     </div>
 </div>
 <hr>
@@ -63,9 +63,9 @@
         <div class="col-xs-6">
             {% if isGranted('related.content.create', container) %}
                 <div class="btn-group">
-                    <a class="btn btn-success btn-sm" href="{{ url('related-content/add-category', {'id': container.getId()}) }}">{{ translate('Add category') }}</a>
-                    <a class="btn btn-success btn-sm" href="{{ url('related-content/add-internal', {'id': container.getId()}) }}">{{ translate('Add internal') }}</a>
-                    <a class="btn btn-success btn-sm" href="{{ url('related-content/add-external', {'id': container.getId()}) }}">{{ translate('Add external') }}</a>
+                    <a class="btn btn-success btn-sm" href="{{ url('related-content/add-category', {'id': container.getId()}) }}">{% trans %} Add category {% endtrans %}</a>
+                    <a class="btn btn-success btn-sm" href="{{ url('related-content/add-internal', {'id': container.getId()}) }}">{% trans %} Add internal {% endtrans %}</a>
+                    <a class="btn btn-success btn-sm" href="{{ url('related-content/add-external', {'id': container.getId()}) }}">{% trans %} Add external {% endtrans %}</a>
                 </div>
             {% endif %}
         </div>

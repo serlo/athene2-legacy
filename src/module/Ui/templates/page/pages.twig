@@ -14,13 +14,13 @@
                 {% if isGranted('page.update', page) %}
                     <a class="btn btn-xs btn-default" href="{{ url('page/update', {'page': page.getId()}) }}">
                         <span class="glyphicon glyphicon-edit"></span>
-                        {{ translate('Edit') }}
+                        {% trans %} Edit {% endtrans %}
                     </a>
                 {% endif %}
                 {% if isGranted('page.trash', page) %}
                     <a class="btn btn-xs btn-default" href="{{ url('uuid/trash', {'id': page.getId()}) }}">
                         <span class="glyphicon glyphicon-trash"></span>
-                        {{ translate('Trash') }}
+                        {% trans %} Trash {% endtrans %}
                     </a>
                 {% endif %}
             </div>
@@ -28,7 +28,7 @@
     {% endfor %}
     {% if isGranted('page.create') %}
         <a class="list-group-item" href="{{ url('page/create') }}">
-            <span class="glyphicon glyphicon-plus"></span> {{ translate('Create a new page') }}
+            <span class="glyphicon glyphicon-plus"></span> {% trans %} Create a new page {% endtrans %}
         </a>
     {% endif %}
 </div>

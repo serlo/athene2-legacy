@@ -2,7 +2,7 @@
 <div class="panel panel-default discussions">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-comment"></span>
-        <h3 class="panel-title">{{ translate('Discussions') }}</h3>
+        <h3 class="panel-title">{% trans %} Discussions {% endtrans %}</h3>
         <span class="label label-info">{{ discussions.count() }}</span>
     </div>
     <div class="panel-body">
@@ -12,7 +12,7 @@
                 <li class="list-group-item">
                     <div class="discussion-head">
                         <strong>
-                            {{ translate('Start a new discussion') }}
+                            {% trans %} Start a new discussion {% endtrans %}
                         </strong>
                     </div>
                     <div class="discussion-text">
@@ -27,7 +27,7 @@
             {% else %}
                 <li class="list-group-item">
                     <div class="discussion-text">
-                        <span class="text-muted">{{ translate('There are no discussions on this topic yet.') }}</span>
+                        <span class="text-muted">{% trans %} There are no discussions on this topic yet. {% endtrans %}</span>
                     </div>
                 </li>
             {% endfor %}

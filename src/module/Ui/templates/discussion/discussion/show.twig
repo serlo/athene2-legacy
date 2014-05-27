@@ -10,13 +10,13 @@
         </strong>
         {% if discussion.getArchived() %}
             <small class="text-muted">
-                {{ translate('archived') }}
+                {% trans %} archived {% endtrans %}
             </small>
         {% endif %}
         <div class="mic-info">
-            {{ translate('On') }} {{ normalize().toAnchor(discussion.getObject()) }}
+            {% trans %} On {% endtrans %} {{ normalize().toAnchor(discussion.getObject()) }}
             <!-- <small>({{ normalize().toType(discussion.getObject()) }})</small> -->
-            {{ translate('by') }} <span itemprop="creator" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ normalize().toAnchor(discussion.getAuthor()) }}</span></span>
+            {% trans %} by {% endtrans %} <span itemprop="creator" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ normalize().toAnchor(discussion.getAuthor()) }}</span></span>
             <span class="glyphicon glyphicon-time"></span> <span itemprop="dateCreated">{{ timeago().render(discussion.getTimestamp()) }}</span>
         </div>
     </header>
@@ -59,7 +59,7 @@
                     {% if isGranted('discussion.trash', discussion) %}
                         <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
                            class="btn btn-xs btn-default dialog"
-                           data-content="{{ translate('Do you really want to delete this discussion?') }}">
+                           data-content="{% trans %} Do you really want to delete this discussion? {% endtrans %}">
                             <span class="glyphicon glyphicon-trash"></span> </a>
                     {% endif %}
                 </div>
@@ -72,7 +72,7 @@
                         <article itemtype="http://schema.org/Comment" itemscope>
                             <header class="discussion-head">
                                 <div class="mic-info">
-                                    {{ translate('by') }} <span itemprop="creator" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ normalize().toAnchor(comment.getAuthor()) }}</span></span>
+                                    {% trans %} by {% endtrans %} <span itemprop="creator" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ normalize().toAnchor(comment.getAuthor()) }}</span></span>
                                     <span class="glyphicon glyphicon-time"></span> <span itemprop="dateCreated">{{ timeago().render(comment.getTimestamp()) }}</span>
                                 </div>
                             </header>
@@ -89,7 +89,7 @@
                                     {% if isGranted('discussion.comment.trash', discussion) %}
                                         <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
                                            class="btn btn-xs btn-default dialog"
-                                           data-content="{{ translate('Do you really want to delete this comment?') }}">
+                                           data-content="{% trans %} Do you really want to delete this comment? {% endtrans %}">
                                             <span class="glyphicon glyphicon-trash"></span> </a>
                                     {% endif %}
                                 </div>
@@ -100,7 +100,7 @@
                 {% if not discussion.getArchived() and isGranted('discussion.comment.create', discussion) %}
                     <li class="list-group-item">
                         <p>
-                            <strong>{{ translate('Answer discussion:') }}</strong>
+                            <strong>{% trans %} Answer discussion: {% endtrans %}</strong>
                         </p>
                         {{ form().render(discussion().getForm('comment', discussion)) }}
                     </li>

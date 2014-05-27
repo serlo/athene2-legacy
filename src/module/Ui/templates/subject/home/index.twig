@@ -1,5 +1,5 @@
 {{ pageHeader(subject.getName()).render() }}
-{{ translate('Start learning now!') }}
+{% trans %} Start learning now! {% endtrans %}
 <div class="row">
     {% set scopes = subject().getOptions(subject).getAllowedTaxonomies() %}
     <?php  ?>
