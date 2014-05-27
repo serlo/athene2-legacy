@@ -49,6 +49,36 @@ return [
                         ]
                     ],
                 ]
+            ],
+            'subscription' => [
+                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'options'       => [
+                    'route'    => '',
+                    'defaults' => [
+                        'controller' => 'Notification\Controller\SubscriptionController',
+                    ]
+                ],
+                'may_terminate' => false,
+                'child_routes'  => [
+                    'subscribe' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/subscribe/:object/:email',
+                            'defaults' => [
+                                'action' => 'subscribe'
+                            ]
+                        ]
+                    ],
+                    'unsubscribe' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/unsubscribe/:object',
+                            'defaults' => [
+                                'action' => 'unsubscribe'
+                            ]
+                        ]
+                    ],
+                ]
             ]
         ]
     ],
