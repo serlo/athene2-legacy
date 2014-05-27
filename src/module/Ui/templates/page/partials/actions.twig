@@ -7,6 +7,10 @@
                         <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
                     </a>
                 </li>
+            {% else %}
+                <li>
+		    Du musst dich <a href="/user/register" class=""><i class="glyphicon glyphicon-new-window"></i>Registrieren</a>, um die Inhalte dieser Seite cearbeiten zu dürfen.
+		</li>	
             {% endif %}
             <li>
                 <a href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
