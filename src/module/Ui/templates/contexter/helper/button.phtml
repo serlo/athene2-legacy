@@ -13,7 +13,7 @@
 <?php $router = $this->router; ?>
 <?php if ($router->hasAdapter()): ?>
     <div class="btn-group<?php echo $this->float ? ' pull-' . $this->float : ''; ?>">
-        <button class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown">
+        <button class="dropdown-toggle btn btn-primary <?php echo $this->class; ?>" type="button" data-toggle="dropdown">
             <strong>?</strong>
             <span class="caret"></span>
         </button>

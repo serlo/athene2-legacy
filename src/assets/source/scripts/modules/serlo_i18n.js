@@ -21,9 +21,10 @@ i18n.de = {
     "No results found for \"%s\"." : "Keine Ergebnisse für \"%s\" gefunden.",
     "Illegal injection found" : "",
     "Could not load injection" : "",
-    "Select a forum for your discussion." : "Bitte wähle ein Forum für diese Diskussion aus.",
+    "You\'re almost done!" : "Du hast es fast geschafft!",
     "Show overview" : "Übersicht anzeigen",
-    "Show %d contents for \"%s\"" : ""
+    "Show %d contents for \"%s\"" : "",
+    "Abort": "Abbrechen"
 };
 
 i18n.en = {
@@ -38,9 +39,10 @@ i18n.en = {
     "No results found for \"%s\"." : "",
     "Illegal injection found" : "",
     "Could not load injection" : "",
-    "Select a forum for your discussion." : "",
+    "You\'re almost done!" : "",
     "Show overview" : "",
-    "Show %d contents for \"%s\"" : ""
+    "Show %d contents for \"%s\"" : "",
+    "Abort": ""
 };
 
 return i18n;

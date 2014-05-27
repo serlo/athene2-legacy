@@ -23,12 +23,12 @@ class AdsController extends AbstractActionController
     use \User\Manager\UserManagerAwareTrait;
     use \Ads\Manager\AdsManagerAwareTrait;
     use \Attachment\Manager\AttachmentManagerAwareTrait;
-    use\Page\Manager\PageManagerAwareTrait;
+    use \Page\Manager\PageManagerAwareTrait;
 
     public function indexAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $this->assertGranted('ad.get', $instance);
+        $this->assertGranted('ad.create', $instance);
         $ads  = $this->getAdsManager()->findAllAds($instance);
         $view = new ViewModel([
             'ads' => $ads

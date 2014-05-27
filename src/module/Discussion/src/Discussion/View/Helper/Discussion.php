@@ -9,9 +9,11 @@
  */
 namespace Discussion\View\Helper;
 
+use Discussion\Entity\CommentInterface;
 use Discussion\Exception\RuntimeException;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
+use Doctrine\Common\Collections\Collection;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Form\TermForm;
 use Uuid\Entity\UuidInterface;
@@ -104,7 +106,13 @@ class Discussion extends AbstractHelper
 
     public function getDiscussions(UuidInterface $object)
     {
-        return $this->getDiscussionManager()->findDiscussionsOn($object);
+        $discussions = $this->getDiscussionManager()->findDiscussionsOn($object);
+        $discussions = $discussions->filter(
+            function (CommentInterface $comment) {
+                return !$comment->isTrashed();
+            }
+        );
+        return $discussions;
     }
 
     public function getForm($type, UuidInterface $object, TaxonomyTermInterface $forum = null)
@@ -156,6 +164,23 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
+    public function getForumDiscussions(TaxonomyTermInterface $forum, $recursive = true)
+    {
+        if ($recursive) {
+            $collection = $forum->getAssociatedRecursive('comments', ['forum', 'forum-category']);
+        } else {
+            $collection = $forum->getAssociated('comments');
+        }
+
+        $collection = $collection->filter(
+            function (CommentInterface $comment) {
+                return !$comment->isTrashed();
+            }
+        );
+
+        return $this->sortDiscussions($collection);
+    }
+
     public function getObject()
     {
         return $this->object;
@@ -183,6 +208,11 @@ class Discussion extends AbstractHelper
     {
         $this->object = $object;
         return $this;
+    }
+
+    public function sortDiscussions(Collection $collection)
+    {
+        return $this->discussionManager->sortDiscussions($collection);
     }
 
     protected function getDefaultConfig()

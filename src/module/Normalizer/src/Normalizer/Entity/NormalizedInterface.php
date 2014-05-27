@@ -11,6 +11,10 @@ namespace Normalizer\Entity;
 
 interface NormalizedInterface
 {
+    /**
+     * @return Metadata
+     */
+    public function getMetadata();
 
     /**
      * @return string
@@ -26,16 +30,6 @@ interface NormalizedInterface
      * @return string
      */
     public function getTitle();
-
-    /**
-     * @return \DateTime
-     */
-    public function getTimestamp();
-
-    /**
-     * @return string
-     */
-    public function getPreview();
 
     /**
      * @return string

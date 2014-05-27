@@ -9,10 +9,14 @@
  */
 namespace Normalizer\Entity;
 
-use DateTime;
+use Zend\Stdlib\AbstractOptions;
 
-class Normalized implements NormalizedInterface
+class Normalized extends AbstractOptions implements NormalizedInterface
 {
+    /**
+     * @var MetadataInterface|array
+     */
+    protected $metadata;
 
     /**
      * @var string
@@ -37,16 +41,6 @@ class Normalized implements NormalizedInterface
     /**
      * @var string
      */
-    protected $preview;
-
-    /**
-     * @var DateTime
-     */
-    protected $timestamp;
-
-    /**
-     * @var string
-     */
     protected $content;
 
     /**
@@ -59,43 +53,32 @@ class Normalized implements NormalizedInterface
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     * @return void
-     */
     public function setContent($content)
     {
         $this->content = $content;
     }
 
-    /**
-     * @return int
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    public function getPreview()
+    public function getMetadata()
     {
-        return $this->preview;
+        if (!is_object($this->metadata)) {
+            $this->metadata = new Metadata($this->metadata);
+        }
+        return $this->metadata;
     }
 
-    /**
-     * @param string $preview
-     * @return void
-     */
-    public function setPreview($preview)
+    public function setMetadata(array $metadata)
     {
-        $this->preview = $preview;
+        $this->metadata = $metadata;
     }
 
     public function getRouteName()
@@ -103,10 +86,6 @@ class Normalized implements NormalizedInterface
         return $this->routeName;
     }
 
-    /**
-     * @param string $routeName
-     * @return void
-     */
     public function setRouteName($routeName)
     {
         $this->routeName = $routeName;
@@ -117,27 +96,9 @@ class Normalized implements NormalizedInterface
         return $this->routeParams;
     }
 
-    /**
-     * @param multitype : $routeParams
-     * @return void
-     */
     public function setRouteParams($routeParams)
     {
         $this->routeParams = $routeParams;
-    }
-
-    public function getTimestamp()
-    {
-        return $this->timestamp;
-    }
-
-    /**
-     * @param DateTime $timestamp
-     * @return void
-     */
-    public function setTimestamp(DateTime $timestamp)
-    {
-        $this->timestamp = $timestamp;
     }
 
     public function getTitle()
@@ -145,10 +106,6 @@ class Normalized implements NormalizedInterface
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return void
-     */
     public function setTitle($title)
     {
         $this->title = $title;

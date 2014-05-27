@@ -1,28 +1,29 @@
 {% set revision = entity.getCurrentRevision() %}
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
+{% set hint = entity.getChildren('link', 'text-hint').first() %}
 <article itemscope itemtype="http://schema.org/ScholarlyArticle">
     <section class="row">
         <div class="col-sm-7" itemprop="articleBody">
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
-        <div class="col-sm-5">
+        <div class="col-xs-5">
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
-                    <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to see the solution') }}">
-                        <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#solution-{{ solution.getId() }}">
+                    <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to see the solution {% endtrans %}">
+                        <a data-toggle="collapse" href="#solution-{{ solution.getId() }}">
                             <span class="glyphicon glyphicon-ok-circle"></span>
                         </a>
                     </li>
-                    {% if solution.hasCurrentRevision() and solution.getCurrentRevision().get('hint') %}
-                        <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I need a hint') }}">
-                            <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#hint-{{ solution.getId() }}">
-                                <span class="glyphicon glyphicon-question-sign"></span>
-                            </a>
-                        </li>
-                    {% endif %}
                 {% endif %}
-                <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to comment this') }}">
-                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
+                {% if(hint) %}
+                    <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I need a hint {% endtrans %}">
+                        <a data-toggle="collapse" href="#hint-{{ hint.getId() }}">
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to comment this {% endtrans %}">
+                    <a data-toggle="collapse" href="#discussions-{{ entity.getId() }}">
                         <span class="glyphicon glyphicon-comment"></span>
                     </a>
                 </li>
@@ -30,10 +31,17 @@
             </ul>
         </div>
     </section>
-    <div class="collapse" id="discussions-{{ entity.getId() }}">
+    <section class="collapse" id="discussions-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
-    </div>
+    </section>
+    {% if hint %}
+        <section>
+            {% include 'entity/view/default' with {'entity': hint, 'collapse': true} only %}
+        </section>
+    {% endif %}
     {% if solution %}
-        {% include 'entity/view/default' with {'entity': solution} only %}
+        <section>
+            {% include 'entity/view/default' with {'entity': solution, 'collapse': true} only %}
+        </section>
     {% endif %}
 </article>

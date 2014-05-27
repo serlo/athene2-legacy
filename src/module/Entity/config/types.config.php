@@ -26,6 +26,9 @@ return [
                         'children' => [
                             'text-solution' => [
                                 'multiple' => false
+                            ],
+                            'text-hint'          => [
+                                'multiple' => false
                             ]
                         ]
                     ],
@@ -66,6 +69,9 @@ return [
                         'children' => [
                             'text-solution' => [
                                 'multiple' => false
+                            ],
+                            'text-hint'          => [
+                                'multiple' => false
                             ]
                         ],
                         'parents'  => [
@@ -82,7 +88,6 @@ return [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextSolutionForm',
                         'fields' => [
-                            'hint',
                             'content',
                             'changes'
                         ]
@@ -116,6 +121,27 @@ return [
                     'taxonomy'        => [],
                     'related_content' => []
                 ],
+            ],
+            'text-hint'                  => [
+                'components' => [
+                    'repository' => [
+                        'form'   => __NAMESPACE__ . '\Form\TextHintForm',
+                        'fields' => [
+                            'content'
+                        ]
+                    ],
+                    'link'       => [
+                        'parents' => [
+                            'text-exercise'         => [
+                                'multiple' => false
+                            ],
+                            'grouped-text-exercise' => [
+                                'multiple' => false
+                            ]
+                        ]
+                    ],
+                    'license'    => []
+                ]
             ],
             'article'               => [
                 'components' => [

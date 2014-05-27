@@ -56,7 +56,7 @@ class PageRevisionStrategy extends AbstractStrategy
         ];
     }
 
-    protected function getTimestamp()
+    protected function getCreationDate()
     {
         return $this->getObject()->getDate();
     }

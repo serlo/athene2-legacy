@@ -2,7 +2,7 @@
     <li>
         <a href="{{ url('event/history', {'id': entity.getId()}) }}">
             <span class="glyphicon glyphicon-hdd"></span>
-            {{ translate('Show logfile') }}
+            {% trans %} Show logfile {% endtrans %}
         </a>
     </li>
 {% endif %}

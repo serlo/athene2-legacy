@@ -10,12 +10,15 @@
  */
 namespace Ui\Factory;
 
+use Instance\Factory\InstanceManagerFactoryTrait;
 use Ui\View\Helper\Tracking;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class TrackingFactory implements FactoryInterface
 {
+    use InstanceManagerFactoryTrait;
+
     /**
      * Create service
      *
@@ -24,7 +27,9 @@ class TrackingFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options = $serviceLocator->getServiceLocator()->get('Ui\Options\TrackingHelperOptions');
-        return new Tracking($options);
+        $serviceLocator  = $serviceLocator->getServiceLocator();
+        $options         = $serviceLocator->get('Ui\Options\TrackingHelperOptions');
+        $instanceManager = $this->getInstanceManager($serviceLocator);
+        return new Tracking($instanceManager, $options);
     }
 }

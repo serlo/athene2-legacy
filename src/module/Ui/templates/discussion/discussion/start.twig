@@ -1,5 +1,5 @@
 {% if isGranted('discussion.create') %}
-    <h4>{{ translate('Start a discussion') }}</h4>
+    <h4>{% trans %} Start a discussion {% endtrans %}</h4>
     <hr>
     {{ form().render(form, null) }}
 {% endif %}

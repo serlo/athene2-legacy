@@ -144,6 +144,7 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $this->assertGranted('page.create', $instance);
         $pages    = $this->getPageManager()->findAllRepositories($instance);
         $view     = new ViewModel(['pages' => $pages]);
         $view->setTemplate('page/pages');

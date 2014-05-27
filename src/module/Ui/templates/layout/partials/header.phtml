@@ -13,7 +13,7 @@
 <header id="header">
     <?php echo $this->partial('layout/partials/top-bar'); ?>
 
-    <div id="subject-nav">
+    <nav id="subject-nav">
         <a id="brand-link" href="<?php echo $this->url('home'); ?>">
             <?php echo $this->brand()->getLogo(); ?>
             <?php echo $this->brand()->getBrand(); ?>
@@ -43,5 +43,5 @@
             </div>
         </div>
         <div class="slogan"><?php echo $this->translate($this->brand()->getSlogan()); ?></div>
-    </div>
+    </nav>
 </header>

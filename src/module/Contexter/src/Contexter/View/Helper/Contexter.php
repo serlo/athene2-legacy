@@ -46,7 +46,7 @@ class Contexter extends AbstractHelper
         }
     }
 
-    public function renderButton($float = null)
+    public function renderButton($float = null, $class = 'btn-primary')
     {
         if (is_object($this->getRouter()->getRouteMatch())) {
             $matches   = $this->getRouter()->match();
@@ -58,7 +58,8 @@ class Contexter extends AbstractHelper
                     'router'  => $this->getRouter(),
                     'matches' => $matches,
                     'url'     => $url,
-                    'float'   => $float
+                    'float'   => $float,
+                    'class'   => $class,
                 ]
             );
         }

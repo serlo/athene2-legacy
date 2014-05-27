@@ -62,8 +62,8 @@ class DiscussionForm extends AbstractForm
             ]
         );
         $this->add(new Hidden('terms'));
-        $this->add((new Text('title'))->setLabel('Title:'));
-        $this->add((new Textarea('content'))->setLabel('content:'));
+        $this->add((new Text('title'))->setAttribute('placeholder', 'Title'));
+        $this->add((new Textarea('content'))->setAttribute('placeholder', 'Content'));
         $this->add(new OptInFieldset());
         $this->add(
             (new Submit('submit'))->setValue('Start discussion')->setAttribute('class', 'btn btn-success pull-right')

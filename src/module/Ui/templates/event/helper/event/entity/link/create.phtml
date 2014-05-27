@@ -2,5 +2,10 @@
 $event = $this->event;
 $user = $this->normalize()->toAnchor($event->getActor());
 $object = $this->normalize()->toAnchor($event->getObject());
-$parent = $this->normalize()->toAnchor($event->getParameter('parent'));
+$parent = $event->getParameter('parent');
+if($parent){
+    $parent = $this->normalize()->toAnchor($parent);
+} else {
+    $parent = $this->translate('a removed content');
+}
 echo sprintf($this->translate('%s added %s to %s'), $user, $object, $parent);

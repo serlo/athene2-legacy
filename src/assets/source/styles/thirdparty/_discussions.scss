@@ -1,0 +1,66 @@
+.discussions {
+  & .panel-body {
+    padding: 0px;
+  }
+
+  & .list-group {
+    margin-bottom: 0;
+  }
+
+  & .panel-title {
+    display: inline
+  }
+
+  & .label-info {
+    float: right;
+  }
+
+  & li.list-group-item {
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+
+    & .form-group {
+      margin: 0 0 5px 0;
+    }
+
+    .archived-toggle span:after {
+      font-family: 'Glyphicons Halflings';
+      content: "\e113";
+    }
+
+    .archived-toggle.collapsed span:after {
+      content: "\e114";
+    }
+  }
+
+  & li.list-group-item:hover {
+    background-color: rgba(86, 61, 124, .1);
+    & .discussion-action {
+      visibility: visible;
+    }
+  }
+
+  & .mic-info {
+    color: #666666;
+    font-size: 11px;
+  }
+
+  & .discussion-action {
+    margin: 5px 0;
+    visibility: hidden;
+  }
+
+  & .discussion-head {
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+
+  & .discussion-text {
+  }
+
+  & .btn-block {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+}

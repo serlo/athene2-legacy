@@ -1,11 +1,11 @@
-<article itemscope itemtype="http://schema.org/ScholarlyArticle">
+<article>
     <section class="row">
-        <div class="col-md-8" itemprop="articleBody">
+        <div class="col-xs-8" itemprop="articleBody">
             {{ markdown().toHtml(entity.getCurrentRevision().get('content')) }}
         </div>
-        <div class="col-md-4">
+        <div class="col-xs-4">
             <ul class="nav nav-pills pull-right">
-                <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to comment this') }}">
+                <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to comment this {% endtrans %}">
                     <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
                         <span class="glyphicon glyphicon-comment"></span>
                     </a>
@@ -14,9 +14,9 @@
             </ul>
         </div>
     </section>
-    <div class="collapse" id="discussions-{{ entity.getId() }}">
+    <section class="collapse" id="discussions-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
-    </div>
+    </section>
     {% set index = 0 %}
     {% for child in entity.getChildren('link', 'grouped-text-exercise') if not child.isTrashed() and child.hasCurrentRevision() %}
         <section class="row">

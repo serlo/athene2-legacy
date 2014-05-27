@@ -49,11 +49,12 @@ class EntityAdapter extends AbstractSphinxAdapter
                 $processed[] = $result['eid'];
                 $entity      = $this->getEntityManager()->getEntity($result['eid']);
                 $result      = new Result\Result();
-                $result->setName($this->getNormalizer()->normalize($entity)->getTitle());
+                $normalized = $this->getNormalizer()->normalize($entity);
+                $result->setName($normalized->getTitle());
                 $result->setId($entity->getId());
                 $result->setObject($entity);
-                $result->setRouteName($this->getNormalizer()->normalize($entity)->getRouteName());
-                $result->setRouteParams($this->getNormalizer()->normalize($entity)->getRouteParams());
+                $result->setRouteName($normalized->getRouteName());
+                $result->setRouteParams($normalized->getRouteParams());
                 $container->addResult($result);
             }
         }

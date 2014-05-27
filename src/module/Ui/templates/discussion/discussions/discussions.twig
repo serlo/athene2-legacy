@@ -1,0 +1,8 @@
+{% set discussions = discussion().getForumDiscussions(forum, false) %}
+<ul class="list-group discussions">
+    {% for discussion in discussions %}
+        <li class="list-group-item">
+            {% include 'discussion/discussion/show' with {'discussion': discussion} %}
+        </li>
+    {% endfor %}
+</ul>

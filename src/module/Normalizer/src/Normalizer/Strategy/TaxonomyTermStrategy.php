@@ -90,7 +90,7 @@ class TaxonomyTermStrategy extends AbstractStrategy
         throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
     }
 
-    protected function getTimestamp()
+    protected function getCreationDate()
     {
         return new DateTime();
     }

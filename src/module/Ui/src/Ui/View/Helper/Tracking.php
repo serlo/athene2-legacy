@@ -10,6 +10,7 @@
  */
 namespace Ui\View\Helper;
 
+use Instance\Manager\InstanceManagerInterface;
 use Ui\Options\TrackingHelperOptions;
 use Zend\View\Helper\AbstractHelper;
 
@@ -21,11 +22,20 @@ class Tracking extends AbstractHelper
     protected $options;
 
     /**
-     * @param TrackingHelperOptions $options
+     * @var InstanceManagerInterface
      */
-    public function __construct(TrackingHelperOptions $options)
+    protected $instanceManager;
+
+    /**
+     * @param InstanceManagerInterface $instanceManager
+     * @param TrackingHelperOptions    $options
+     */
+    public function __construct(InstanceManagerInterface $instanceManager, TrackingHelperOptions $options)
     {
-        $this->options = $options;
+        $this->instanceManager = $instanceManager;
+        $instance              = $instanceManager->getInstanceFromRequest();
+        $name                  = strtolower($instance->getName());
+        $this->options         = $options->getInstance($name);
     }
 
     /**

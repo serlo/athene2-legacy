@@ -15,7 +15,7 @@ return [
         'assertion_map' => [
             'flag.create' => 'Authorization\Assertion\RequestInstanceAssertion',
             'flag.get'    => 'Authorization\Assertion\InstanceAssertion',
-            'flag.remove' => 'Authorization\Assertion\InstanceAssertion',
+            'flag.purge' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'flag'            => [

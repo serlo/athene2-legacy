@@ -1,5 +1,5 @@
 {% if term.getDescription() %}
     <p>
-        {{ term.getDescription() | nl2br }}
+        {{ markdown().toHtml(term.getDescription()) }}
     </p>
 {% endif %}

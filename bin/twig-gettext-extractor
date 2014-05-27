@@ -1,0 +1,85 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * This file is part of the Twig Gettext utility.
+ *
+ *  (c) Саша Стаменковић <umpirsky@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * Extracts translations from twig templates.
+ *
+ * @author Саша Стаменковић <umpirsky@gmail.com>
+ */
+
+if (file_exists($a = __DIR__.'/../src/autoload.php')) {
+    require_once $a;
+} else {
+    require_once __DIR__.'/../src/vendor/autoload.php';
+}
+
+$twig = new Twig_Environment(new Twig\Gettext\Loader\Filesystem('/'), array(
+    'cache'       => '/tmp/cache/'.uniqid(),
+    'auto_reload' => true
+));
+$twig->addExtension(new Symfony\Bridge\Twig\Extension\TranslationExtension(
+    new Symfony\Component\Translation\Translator(null)
+));
+$twig->addExtension(new Twig_Extensions_Extension_I18n());
+$twig->addExtension(new Symfony\Bridge\Twig\Extension\RoutingExtension(
+    new Twig\Gettext\Routing\Generator\UrlGenerator()
+));
+$twig->addExtension(new Symfony\Bridge\Twig\Extension\FormExtension(
+    new Symfony\Bridge\Twig\Form\TwigRenderer(
+        new Symfony\Bridge\Twig\Form\TwigRendererEngine()
+    )
+));
+// You can add more extensions here.
+
+$twig->addFunction(new \Twig_SimpleFunction('translate', true));
+$twig->addFunction(new \Twig_SimpleFunction('formLabel', true));
+$twig->addFunction(new \Twig_SimpleFunction('formInput', true));
+$twig->addFunction(new \Twig_SimpleFunction('formElementErrors', true));
+$twig->addFunction(new \Twig_SimpleFunction('formCaptcha', true));
+$twig->addFunction(new \Twig_SimpleFunction('formHidden', true));
+$twig->addFunction(new \Twig_SimpleFunction('pageHeader', true));
+$twig->addFunction(new \Twig_SimpleFunction('isGranted', true));
+$twig->addFunction(new \Twig_SimpleFunction('notifications', true));
+$twig->addFunction(new \Twig_SimpleFunction('normalize', true));
+$twig->addFunction(new \Twig_SimpleFunction('horizon', true));
+$twig->addFunction(new \Twig_SimpleFunction('timeago', true));
+$twig->addFunction(new \Twig_SimpleFunction('headMeta', true));
+$twig->addFunction(new \Twig_SimpleFunction('headTitle', true));
+$twig->addFunction(new \Twig_SimpleFunction('discussion', true));
+$twig->addFunction(new \Twig_SimpleFunction('contexter', true));
+$twig->addFunction(new \Twig_SimpleFunction('diff', true));
+$twig->addFunction(new \Twig_SimpleFunction('markdown', true));
+$twig->addFunction(new \Twig_SimpleFunction('registry', true));
+$twig->addFunction(new \Twig_SimpleFunction('placeholder', true));
+$twig->addFunction(new \Twig_SimpleFunction('entity', true));
+$twig->addFunction(new \Twig_SimpleFunction('subject', true));
+$twig->addFunction(new \Twig_SimpleFunction('taxonomy', true));
+$twig->addFunction(new \Twig_SimpleFunction('related', true));
+$twig->addFunction(new \Twig_SimpleFunction('toAlpha', true));
+$twig->addFunction(new \Twig_SimpleFunction('navigation', true));
+
+array_shift($_SERVER['argv']);
+$addTemplate = false;
+
+$extractor = new Twig\Gettext\Extractor($twig);
+
+foreach ($_SERVER['argv'] as $arg) {
+    if ('--files' == $arg) {
+        $addTemplate = true;
+    } else if ($addTemplate) {
+        $extractor->addTemplate(getcwd().DIRECTORY_SEPARATOR.$arg);
+    } else {
+        $extractor->addGettextParameter($arg);
+    }
+}
+
+$extractor->extract();

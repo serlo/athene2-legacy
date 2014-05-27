@@ -96,7 +96,7 @@ class FlagManager implements FlagManagerInterface
     public function removeFlag($id)
     {
         $flag = $this->getFlag($id);
-        $this->assertGranted('flag.remove', $flag);
+        $this->assertGranted('flag.purge', $flag);
         $this->getObjectManager()->remove($flag);
     }
 
