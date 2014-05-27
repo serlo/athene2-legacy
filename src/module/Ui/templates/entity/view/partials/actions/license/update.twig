@@ -3,7 +3,7 @@
     <li>
         <a href="{{ url('entity/license/update', {'entity': entity.getId()}) }}">
             <span class="glyphicon glyphicon-leaf"></span>
-            {{ translate('Change license') }}
+            {% trans %} Change license {% endtrans %}
         </a>
     </li>
 {% endif %}

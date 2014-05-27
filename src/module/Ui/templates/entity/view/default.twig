@@ -3,5 +3,8 @@
 {% if template %}
     {{ template | raw }}
 {% else %}
-    {{ translate('Now view found for %s')|format(entity.getType().getName()) }}
+    {% set name = entity.getType().getName() %}
+    {% trans %}
+        Now view found for {{ name }}
+    {% endtrans %}
 {% endif %}

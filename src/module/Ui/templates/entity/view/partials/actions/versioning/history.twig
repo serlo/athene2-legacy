@@ -3,7 +3,7 @@
     <li>
         <a href="{{ url('entity/repository/history', {'entity': entity.getId()}) }}">
             <span class="glyphicon glyphicon-time"></span>
-            {{ translate('History') }}
+            {% trans %} History {% endtrans %}
             {% if entity.isUnrevised() %}
                 <span class="label label-warning">{{ entity.countUnrevised() }}</span>
             {% endif %}

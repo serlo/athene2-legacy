@@ -7,7 +7,7 @@
                     {% include 'entity/view/partials/actions/small-essential' %}
                 </ul>
                 <span class="glyphicon glyphicon-ok-circle"></span>
-                {{ translate('Solution') }}
+                {% trans %} Solution {% endtrans %}
             </strong>
         </div>
         <div class="list-group">
@@ -15,7 +15,7 @@
                 {% if revision %}
                     {{ markdown().toHtml(revision.get('content')) | raw }}
                 {% elseif not entity.getHead() %}
-                    {{ translate('A solution has been created but no content has been added yet or it is pending approval.') }}
+                    {% trans %} A solution has been created but no content has been added yet or it is pending approval. {% endtrans %}
                 {% endif %}
             </div>
         </div>

@@ -3,7 +3,7 @@
     <li>
         <a href="{{ url('related-content/manage', {'id': entity.getId()}) }}">
             <span class="glyphicon glyphicon-link"></span>
-            {{ translate('Manage related items') }}
+            {% trans %} Manage related items {% endtrans %}
         </a>
     </li>
 {% endif %}

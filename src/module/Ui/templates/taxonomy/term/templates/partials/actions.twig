@@ -6,34 +6,34 @@
             {% if isGranted('taxonomy.term.update', term) %}
                 <li>
                     <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">
-                        <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
+                        <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
                     </a>
                 </li>
             {% endif %}
             {% if isGranted('taxonomy.term.create', term) %}
                 <li>
                     <a href="{{ url('taxonomy/term/organize', {'term': term.getId()}) }}">
-                        <span class="glyphicon glyphicon-th-list"></span> {{ translate('Organize') }}
+                        <span class="glyphicon glyphicon-th-list"></span> {% trans %} Organize {% endtrans %}
                     </a>
                 </li>
             {% endif %}
             {% if isGranted('event.log.get', term) %}
                 <li>
                     <a href="{{ url('event/history', {'id': term.getId()}) }}">
-                        <span class="glyphicon glyphicon-time"></span> {{ translate('History') }}
+                        <span class="glyphicon glyphicon-time"></span> {% trans %} History {% endtrans %}
                     </a>
                 </li>
             {% endif %}
             {% if taxonomy().getOptions(term).isAssociationAllowed('Entity\\Entity\\EntityInterface') and isGranted('entity.create', term) and isGranted('taxonomy.term.associate', term) %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-file"></span> {{ translate('Add content') }} <span class="caret"></span>
+                        <span class="glyphicon glyphicon-file"></span> {% trans %} Add content {% endtrans %} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         {% for type in subject().getOptions(subject).getAllowedEntities() %}
                             <li>
                                 <a href="{{ url('entity/create', {'type': type}, {'query': {'taxonomy': {'term': term.getId() }}}) }}">
-                                    {{ translate(type) }}
+                                    {{ type  | trans }}
                                 </a>
                             </li>
                         {% endfor %}
@@ -43,7 +43,7 @@
             {% if isGranted('taxonomy.term.associated.sort', term) %}
                 <li>
                     <a href="{{ url('taxonomy/term/sort-associated', {'association': 'entities', 'term': term.getId()}) }}">
-                        <span class="glyphicon glyphicon-sort"></span> {{ translate('Order content') }}
+                        <span class="glyphicon glyphicon-sort"></span> {% trans %} Order content {% endtrans %}
                     </a>
                 </li>
             {% endif %}
