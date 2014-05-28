@@ -131,7 +131,6 @@ class AuthenticationController extends AbstractActionController
             'messages' => $messages
         ]);
 
-        $this->layout('layout/1-col');
         $view->setTemplate('authentication/change-password');
 
         return $view;

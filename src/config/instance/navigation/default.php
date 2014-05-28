@@ -12,10 +12,10 @@ return [
     'navigation' => [
         'default' => [
             'restricted' => [
-                'label' => 'Backend',
-                'uri'   => '#',
+                'label'         => 'Backend',
+                'uri'           => '#',
                 'needsIdentity' => true,
-                'pages' => [
+                'pages'         => [
                     [
                         'label' => 'Home',
                         'icon'  => 'home',
@@ -176,8 +176,19 @@ return [
                         'visible' => false
                     ],
                     [
-                        'route'   => 'user/profile',
-                        'visible' => false
+                        'route' => 'user/settings',
+                        'label' => 'Settings',
+                        'icon'  => 'wrench'
+                    ],
+                    [
+                        'route' => 'authentication/password/change',
+                        'label' => 'Update password',
+                        'icon'  => 'lock'
+                    ],
+                    [
+                        'uri' => 'authentication/password/change',
+                        'label' => 'Subscriptions',
+                        'icon'  => 'eye-open'
                     ]
                 ]
             ],
