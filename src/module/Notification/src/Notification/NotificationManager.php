@@ -10,12 +10,15 @@
 namespace Notification;
 
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Event\Entity\EventLogInterface;
 use Notification\Entity\NotificationInterface;
+use Notification\Filter\PersistentNotificationFilterChain;
 use User\Entity\UserInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
@@ -23,6 +26,18 @@ class NotificationManager implements NotificationManagerInterface
 {
     use ClassResolverAwareTrait, ObjectManagerAwareTrait;
     use FlushableTrait;
+
+    /**
+     * @var PersistentNotificationFilterChain
+     */
+    protected $persistentNotificationFilterChain;
+
+    public function __construct(ClassResolverInterface $classResolver, ObjectManager $objectManager)
+    {
+        $this->classResolver                     = $classResolver;
+        $this->objectManager                     = $objectManager;
+        $this->persistentNotificationFilterChain = new PersistentNotificationFilterChain($objectManager);
+    }
 
     public function createNotification(UserInterface $user, EventLogInterface $log)
     {
@@ -51,19 +66,8 @@ class NotificationManager implements NotificationManagerInterface
         $criteria      = ['user' => $user->getId()];
         $order         = ['id' => 'desc'];
         $notifications = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order);
-        $collection    = new ArrayCollection;
-
-        /* @var $notification NotificationInterface */
-        foreach ($notifications as $notification) {
-            if ($notification->getEvents()->count() < 1) {
-                $this->objectManager->remove($notification);
-                $this->objectManager->flush($notification);
-                continue;
-            }
-            $collection->add($notification);
-        }
-
-        return $collection;
+        $collection    = new ArrayCollection($notifications);
+        return $this->persistentNotificationFilterChain->filter($collection);
     }
 
     public function markRead(UserInterface $user)

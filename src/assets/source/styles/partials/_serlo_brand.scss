@@ -13,25 +13,17 @@
 #subject-nav {
   #serlo-logo {
     position: absolute;
-    top: -48px;
+    top: -56px;
     left: 20px;
     font-size: 50px;
   }
 
   #serlo-brand {
     position: absolute;
-    top: -4px;
+    top: -9px;
     left: 85px;
     margin: 0;
     font-size: 36px;
-    &>sup {
-      position: absolute;
-      right: -18px;
-      top: -3px;
-      &>small {
-        font-size: 40%;
-      }
-    }
   }
 }
 

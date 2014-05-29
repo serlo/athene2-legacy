@@ -12,7 +12,7 @@ namespace Notification;
 use Notification\View\Helper\Notification;
 
 return [
-    'view_helpers'   => [
+    'view_helpers'    => [
         'factories' => [
             'notifications' => function ($sm) {
                     $helper = new Notification();
@@ -25,11 +25,19 @@ return [
 
                     return $helper;
                 },
+            'subscribe'     => __NAMESPACE__ . '\Factory\SubscribeFactory'
         ]
     ],
-    'router'         => [
+    'zfctwig'         => [
+        'helper_manager' => [
+            'factories' => [
+                'subscribe' => __NAMESPACE__ . '\Factory\SubscribeFactory'
+            ]
+        ]
+    ],
+    'router'          => [
         'routes' => [
-            'notification' => [
+            'notification'  => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'options'       => [
                     'route'    => '/notification',
@@ -49,18 +57,83 @@ return [
                         ]
                     ],
                 ]
+            ],
+            'subscription'  => [
+                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'options'       => [
+                    'route'    => '',
+                    'defaults' => [
+                        'controller' => 'Notification\Controller\SubscriptionController',
+                    ]
+                ],
+                'may_terminate' => false,
+                'child_routes'  => [
+                    'subscribe'   => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/subscribe/:object/:email',
+                            'defaults' => [
+                                'action' => 'subscribe'
+                            ]
+                        ]
+                    ],
+                    'unsubscribe' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/unsubscribe/:object',
+                            'defaults' => [
+                                'action' => 'unsubscribe'
+                            ]
+                        ]
+                    ],
+                    'update' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/subscription/update/:object/:email',
+                            'defaults' => [
+                                'action' => 'update'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'subscriptions' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route'    => '/subscriptions',
+                    'defaults' => [
+                        'controller' => 'Notification\Controller\SubscriptionController',
+                    ]
+                ],
+                'child_routes' => [
+                    'manage' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/manage',
+                            'defaults' => [
+                                'action' => 'manage'
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]
     ],
-    'class_resolver' => [
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\NotificationManager' => __NAMESPACE__ . '\Factory\NotificationManagerFactory',
+        ]
+    ],
+    'class_resolver'  => [
         __NAMESPACE__ . '\Entity\NotificationEventInterface' => __NAMESPACE__ . '\Entity\NotificationEvent',
         __NAMESPACE__ . '\Entity\NotificationInterface'      => __NAMESPACE__ . '\Entity\Notification',
         __NAMESPACE__ . '\Entity\SubscriptionInterface'      => __NAMESPACE__ . '\Entity\Subscription'
     ],
-    'di'             => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\WorkerController',
-            __NAMESPACE__ . '\Controller\NotificationController'
+            __NAMESPACE__ . '\Controller\NotificationController',
+            __NAMESPACE__ . '\Controller\SubscriptionController'
         ],
         'definition'          => [
             'class' => [
@@ -82,17 +155,6 @@ return [
                         'required' => true
                     ],
                     'setObjectManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\NotificationManager'                => [
-                    'setClassResolver'  => [
-                        'required' => true
-                    ],
-                    'setObjectManager'  => [
-                        'required' => true
-                    ],
-                    'setServiceLocator' => [
                         'required' => true
                     ]
                 ],
@@ -128,7 +190,7 @@ return [
             ]
         ]
     ],
-    'console'        => [
+    'console'         => [
         'router' => [
             'routes' => [
                 'notification-worker' => [
@@ -143,7 +205,7 @@ return [
             ]
         ],
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

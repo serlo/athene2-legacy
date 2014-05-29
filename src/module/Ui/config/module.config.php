@@ -30,6 +30,10 @@ return [
             'invokables' => [
                 'partial' => 'Zend\View\Helper\Partial',
             ],
+            'factories' => [
+                'brand'      => __NAMESPACE__ . '\Factory\BrandHelperFactory',
+                'tracking'   => __NAMESPACE__ . '\Factory\TrackingFactory'
+            ]
         ]
     ],
     'view_manager'          => [

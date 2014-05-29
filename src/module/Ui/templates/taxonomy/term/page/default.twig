@@ -1,12 +1,11 @@
 {% do normalize().headMeta(term).headTitle(term) %}
-<div class="page-header">
-    <div class="pull-right btn-group">
-        {% include 'taxonomy/term/templates/partials/controls' %}
-        {{ contexter().renderButton() }}
+{% set template = 'taxonomy/term/page/' ~ term.getTaxonomy().getName() %}
+{% set template = include(template, ignore_missing = true) %}
+{% if template %}
+    {{ template | raw }}
+{% else %}
+    <div class="page-header">
+        <h1>{{ term.getName() }}</h1>
     </div>
-    <h1>{{ term.getName() }}</h1>
-    <div class="edit-control hidden">
-        {% include 'taxonomy/term/templates/partials/actions' %}
-    </div>
-</div>
-{% include 'taxonomy/term/templates/default' %}
+    {% include 'taxonomy/term/templates/default' %}
+{% endif %}

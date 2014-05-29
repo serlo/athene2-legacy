@@ -4,6 +4,7 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 {% include 'entity/view/partials/actions/versioning/edit' %}
+                {{ subscribe(entity).menuItem() }}
                 {% include 'entity/view/partials/actions/versioning/history' %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -9,11 +9,12 @@
  */
 namespace Notification;
 
+use Common\ObjectManager\Flushable;
 use Notification\Entity\SubscriptionInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
-interface SubscriptionManagerInterface
+interface SubscriptionManagerInterface extends Flushable
 {
 
     /**
@@ -22,15 +23,44 @@ interface SubscriptionManagerInterface
      */
     public function findSubscriptionsByUuid(UuidInterface $uuid);
 
+    /**
+     * @param UserInterface $user
+     * @return SubscriptionInterface[]
+     */
+    public function findSubscriptionsByUser(UserInterface $user);
+
+    /**
+     * @return bool
+     */
     public function hasSubscriptions();
 
+    /**
+     * @param UserInterface $user
+     * @param UuidInterface $object
+     * @return bool
+     */
     public function isUserSubscribed(UserInterface $user, UuidInterface $object);
 
     /**
      * @param UserInterface $user
      * @param UuidInterface $object
      * @param bool          $notifyMailman
-     * @return self
+     * @return void
+     */
+    public function update(UserInterface $user, UuidInterface $object, $notifyMailman);
+
+    /**
+     * @param UserInterface $user
+     * @param UuidInterface $object
+     * @param bool          $notifyMailman
+     * @return void
      */
     public function subscribe(UserInterface $user, UuidInterface $object, $notifyMailman);
+
+    /**
+     * @param UserInterface $user
+     * @param UuidInterface $object
+     * @return void
+     */
+    public function unSubscribe(UserInterface $user, UuidInterface $object);
 }

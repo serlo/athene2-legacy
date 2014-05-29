@@ -10,7 +10,7 @@
 namespace Alias;
 
 return [
-    'alias_manager'   => [
+    'alias_manager'      => [
         'aliases' => [
             'blogPost'     => [
                 'tokenize' => 'blog/{category}/{title}',
@@ -29,10 +29,15 @@ return [
             ]
         ]
     ],
-    'class_resolver'  => [
+    'controller_plugins' => [
+        'factories' => [
+            'url' => __NAMESPACE__ . '\Factory\UrlPluginFactory',
+        ]
+    ],
+    'class_resolver'     => [
         __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
     ],
-    'router'          => [
+    'router'             => [
         'routes' => [
             'alias' => [
                 'type'     => 'Common\Router\Slashable',
@@ -50,7 +55,7 @@ return [
             ],
         ]
     ],
-    'service_manager' => [
+    'service_manager'    => [
         'factories' => [
             __NAMESPACE__ . '\Options\ManagerOptions'             => __NAMESPACE__ . '\Factory\ManagerOptionsFactory',
             __NAMESPACE__ . '\AliasManager'                       => __NAMESPACE__ . '\Factory\AliasManagerFactory',
@@ -62,7 +67,7 @@ return [
             __NAMESPACE__ . '\Storage\AliasStorage'               => __NAMESPACE__ . '\Factory\AliasStorageFactory'
         ]
     ],
-    'di'              => [
+    'di'                 => [
         'allowed_controllers' => [
             'Alias\Controller\AliasController'
         ],
@@ -84,7 +89,7 @@ return [
             ]
         ]
     ],
-    'doctrine'        => [
+    'doctrine'           => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -100,7 +105,7 @@ return [
             ]
         ]
     ],
-    'view_helpers'    => [
+    'view_helpers'       => [
         'factories' => [
             'url'   => __NAMESPACE__ . '\Factory\UrlHelperFactory',
             'alias' => __NAMESPACE__ . '\Factory\AliasHelperFactory'

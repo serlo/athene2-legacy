@@ -119,7 +119,7 @@ class AdsManager implements AdsManagerInterface
 
     public function findShuffledAds(InstanceInterface $instance, $number)
     {
-        $sql = 'SELECT * FROM ad WHERE `instance_id` =' . $instance->getId() . ' ORDER BY RAND( ) * frequency DESC LIMIT ' . $number;
+        $sql = 'SELECT * FROM ad WHERE `instance_id` =' . (int)$instance->getId() . ' ORDER BY RAND( ) * frequency DESC LIMIT ' . (int)$number;
         $stmt = $this->getObjectManager()
             ->getConnection()
             ->prepare($sql);
