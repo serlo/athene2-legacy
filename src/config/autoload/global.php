@@ -51,7 +51,6 @@ return [
         'factories' => [
             'doctrine.cache.apccache' => function ($sm) {
                     $cache = new \Doctrine\Common\Cache\ApcCache();
-
                     return $cache;
                 },
         ]

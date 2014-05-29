@@ -29,10 +29,11 @@ return [
         'helper_manager' => [
             'invokables' => [
                 'partial' => 'Zend\View\Helper\Partial',
+                'encrypt' => 'Ui\View\Helper\Encrypt',
             ],
-            'factories' => [
-                'brand'      => __NAMESPACE__ . '\Factory\BrandHelperFactory',
-                'tracking'   => __NAMESPACE__ . '\Factory\TrackingFactory'
+            'factories'  => [
+                'brand'    => __NAMESPACE__ . '\Factory\BrandHelperFactory',
+                'tracking' => __NAMESPACE__ . '\Factory\TrackingFactory'
             ]
         ]
     ],
@@ -67,6 +68,7 @@ return [
             'tracking'   => __NAMESPACE__ . '\Factory\TrackingFactory'
         ],
         'invokables' => [
+            'encrypt'         => 'Ui\View\Helper\Encrypt',
             'timeago'         => 'Ui\View\Helper\Timeago',
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
@@ -112,13 +114,13 @@ return [
                 '@styles',
                 '@editor_styles'
             ],
-            'taxonomy/term/create'                 => [
+            'taxonomy/term/create'           => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'
             ],
-            'taxonomy/term/update'                 => [
+            'taxonomy/term/update'           => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',

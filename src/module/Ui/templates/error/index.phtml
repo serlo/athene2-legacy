@@ -6,10 +6,11 @@
 
 <iframe width="700" height="394" src="//www.youtube-nocookie.com/embed/Ktbhw0v186Q?rel=0" frameborder="0" allowfullscreen></iframe>
 
-<?php if (isset($this->display_exceptions) && $this->display_exceptions): ?>
+<hr/>
+
+<?php ob_start(); ?>
 
 <?php if(isset($this->exception) && $this->exception instanceof Exception): ?>
-<hr/>
 <div class="well">
 <h2><?php echo $this->translate('Additional information') ?>:</h2>
 <h3><?php echo get_class($this->exception); ?></h3>
@@ -67,4 +68,17 @@
 
 <?php endif ?>
 
-<?php endif ?>
+<?php
+
+$output = ob_get_contents();
+
+ob_end_clean();
+
+if (isset($this->display_exceptions) && $this->display_exceptions){
+    echo $output;
+} else {
+    echo '<p>'.$this->translate('Read the following, if you\'re really good with computers:').'</p>';
+    echo '<textarea rows="50" class="form-control">';
+    echo $this->encrypt($output);
+    echo '</textarea>';
+}
