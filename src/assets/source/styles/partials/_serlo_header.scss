@@ -14,13 +14,12 @@
     padding-right: 15px;
 
     cursor: pointer;
-    border-bottom: 1px solid transparent;
 
     line-height: 40px;
     font-size: 35px;
 
     color: $themeColor;
-    background: #EEE;
+    background: #F2F2F2;
 
     z-index: 12;
 
@@ -29,7 +28,7 @@
     &:hover,
     &:focus {
       text-decoration: none;
-      border-color: #B1B1B1;
+      background: #F9F9F9;
     }
   }
 
@@ -100,13 +99,13 @@
 }
 
 .slogan {
-  @include theme-font();
+  @include theme-font(600);
   position: relative;
-  top: -8px;
+  top: -5px;
 
   width: 180px;
   
-  color: $darkerGray;
+  color: $grayDark;
   font-size: 0.9em;
   text-align: right;
 }
