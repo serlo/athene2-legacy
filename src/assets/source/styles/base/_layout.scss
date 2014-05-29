@@ -85,7 +85,7 @@ body {
     position: relative;
     z-index: $sideElementZIndex;
 
-    transition: 0.3s transform 0s;
+    // transition: 0.3s transform 0s;
 
     &.visible {
 
@@ -274,7 +274,7 @@ body {
     background-color: $white;
 
     z-index: 1;
-    transition: 0.3s transform 0s;
+    // transition: 0.3s transform 0s;
 
     .navbar {
         min-height: 0;

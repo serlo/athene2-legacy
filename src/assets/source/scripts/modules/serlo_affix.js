@@ -15,7 +15,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
 
     defaultOptions = {
-        stickToSelector: '#content'
+        stickToSelector: '#content-layout'
     };
 
     affixQueue.elements = [];
@@ -71,7 +71,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
     throttledPositioning = _.throttle(function () {
         affixQueue.each(positionElements);
-    }, 560, {
+    }, 60, {
         leading: false
     });
 
@@ -79,10 +79,10 @@ define(['jquery', 'underscore'], function ($, _) {
         scrollTop = $('body,html').scrollTop();
         windowHeight = window.outerHeight || $(window).height();
 
-        stickToTop = $stickTo.first().offset().top;
+        stickToTop = $stickTo.offset().top;
         stickToHeight = $stickTo.height();
 
-        throttledPositioning();
+        affixQueue.each(positionElements);
     }
 
     $(window)
