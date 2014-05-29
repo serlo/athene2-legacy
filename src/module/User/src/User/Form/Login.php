@@ -27,8 +27,8 @@ class Login extends Form
         $filter = new InputFilter();
         $this->setInputFilter($filter);
 
-        $this->add((new Text('email'))->setLabel('Email address:'));
-        $this->add((new Password('password'))->setLabel('Password:'));
+        $this->add((new Text('email'))->setLabel('Email address:')->setAttribute('placeholder', 'Email'));
+        $this->add((new Password('password'))->setLabel('Password:')->setAttribute('placeholder', 'Password'));
         $this->add((new Checkbox('remember'))->setLabel('Remember me')->setChecked(true));
 
         $this->add(

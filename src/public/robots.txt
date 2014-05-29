@@ -12,3 +12,5 @@ Disallow: /uuid/recycle-bin
 Disallow: /navigation/
 Disallow: /authorization/
 Disallow: /pages
+Disallow: /index.php/
+Disallow: /index.php

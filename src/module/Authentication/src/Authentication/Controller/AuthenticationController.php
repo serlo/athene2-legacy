@@ -131,7 +131,6 @@ class AuthenticationController extends AbstractActionController
             'messages' => $messages
         ]);
 
-        $this->layout('layout/1-col');
         $view->setTemplate('authentication/change-password');
 
         return $view;
@@ -183,7 +182,8 @@ class AuthenticationController extends AbstractActionController
 
         $view = new ViewModel([
             'form'          => $form,
-            'errorMessages' => $messages
+            'errorMessages' => $messages,
+            'redir'         => $this->params()->fromQuery('redir')
         ]);
 
         $view->setTemplate('authentication/login');

@@ -6,19 +6,16 @@
 <br>
 
 <div class="jumbotron">
-    <h1>Where am I?</h1>
+    <h1><?php echo $this->translate('That page does not exist!'); ?></h1>
 
-    <p>You seem lost.</p>
+    <p><?php echo $this->translate('It seems like we can\'t find the page you were looking for. Try checking the URL for errors, then hit the refresh button on your browser.'); ?></p>
 
-    <p>There is only one way out.</p>
-
-    <p><a href="<?php echo $this->url('home'); ?>" class="btn btn-primary btn-lg" role="button">Take the blue pill</a>
+    <p><a href="<?php echo $this->url('home'); ?>" class="btn btn-primary btn-lg" role="button"><?php echo $this->translate('Okay.'); ?></a>
     </p>
 
     <p></p>
 </div>
 
-<h3>I prefer the red one.</h3>
 <div class="well">
     <strong>
         <?php echo $this->message ?>
