@@ -9,6 +9,7 @@
  */
 namespace Search\Adapter\SphinxQL;
 
+use Instance\Manager\InstanceManagerAwareTrait;
 use Normalizer\NormalizerAwareTrait;
 use Search\Result;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;

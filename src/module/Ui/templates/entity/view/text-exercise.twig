@@ -9,20 +9,20 @@
         <div class="col-xs-5">
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
-                    <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to see the solution') }}">
+                    <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to see the solution {% endtrans %}">
                         <a data-toggle="collapse" href="#solution-{{ solution.getId() }}">
                             <span class="glyphicon glyphicon-ok-circle"></span>
                         </a>
                     </li>
                 {% endif %}
                 {% if(hint) %}
-                    <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I need a hint') }}">
+                    <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I need a hint {% endtrans %}">
                         <a data-toggle="collapse" href="#hint-{{ hint.getId() }}">
                             <span class="glyphicon glyphicon-question-sign"></span>
                         </a>
                     </li>
                 {% endif %}
-                <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to comment this') }}">
+                <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to comment this {% endtrans %}">
                     <a data-toggle="collapse" href="#discussions-{{ entity.getId() }}">
                         <span class="glyphicon glyphicon-comment"></span>
                     </a>

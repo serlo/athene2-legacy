@@ -72,7 +72,7 @@ class PageRepositoryStrategy extends AbstractStrategy
         ];
     }
 
-    protected function getTimestamp()
+    protected function getCreationDate()
     {
         $revision = $this->getRevision();
         if ($revision) {

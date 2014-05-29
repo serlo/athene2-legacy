@@ -55,7 +55,7 @@ class CommentStrategy extends AbstractStrategy
         ];
     }
 
-    protected function getTimestamp()
+    protected function getCreationDate()
     {
         return $this->getObject()->getTimestamp();
     }

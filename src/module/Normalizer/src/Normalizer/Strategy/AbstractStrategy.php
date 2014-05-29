@@ -47,7 +47,7 @@ abstract class AbstractStrategy implements StrategyInterface
             'routeParams' => $this->getRouteParams(),
             'id'          => $this->getId(),
             'metadata'    => [
-                'timestamp' => $this->getTimestamp()
+                'creationDate' => $this->getCreationDate()
             ]
         ]);
 
@@ -82,7 +82,7 @@ abstract class AbstractStrategy implements StrategyInterface
     /**
      * @return string
      */
-    abstract protected function getTimestamp();
+    abstract protected function getCreationDate();
 
     /**
      * @return string

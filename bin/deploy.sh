@@ -11,4 +11,4 @@ cd ../../
 php composer.phar update
 cd  src && php public/index.php assetic build
 pm2 status
-rm data/* -R
+rm data/* -Rf

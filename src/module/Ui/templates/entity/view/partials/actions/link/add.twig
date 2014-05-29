@@ -8,7 +8,9 @@
             <li>
                 <a href="{{ url('entity/create', {'type': type}, {'query': {'link': {'type': 'link', 'child': entity.getId()}}}) }}">
                     <span class="glyphicon glyphicon-plus"></span>
-                    {{ translate('Add %s') | format(type) }}
+                    {% trans %}
+                        Add {{ type }}
+                    {% endtrans %}
                 </a>
             <li>
         {% endif %}

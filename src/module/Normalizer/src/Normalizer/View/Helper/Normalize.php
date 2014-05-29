@@ -36,7 +36,7 @@ class Normalize extends AbstractHelper
         $title      = $normalized->getTitle();
         $preview    = $this->toPreview($object);
         $meta->setProperty('og:title', $title);
-        $meta->setProperty('description', $preview);
+        $meta->appendName('description', $preview);
 
         return $this;
     }
@@ -87,6 +87,21 @@ class Normalize extends AbstractHelper
     public function toTitle($object)
     {
         return $this->normalize($object)->getTitle();
+    }
+
+    public function toCreationDate($object)
+    {
+        return $this->normalize($object)->getMetadata()->getCreationDate();
+    }
+
+    public function toLastModified($object)
+    {
+        return $this->normalize($object)->getMetadata()->getLastModified();
+    }
+
+    public function toAuthor($object)
+    {
+        return $this->normalize($object)->getMetadata()->getAuthor();
     }
 
     public function toType($object)
