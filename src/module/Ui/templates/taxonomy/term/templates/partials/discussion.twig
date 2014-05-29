@@ -1,8 +1,4 @@
 <div class="hidden" id="discussion-{{ term.getId() }}">
     <hr>
-    <div class="panel">
-        <div class="panel-body">
-            {{ discussion(term).render() }}
-        </div>
-    </div>
+    {{ discussion(term).render() }}
 </div>

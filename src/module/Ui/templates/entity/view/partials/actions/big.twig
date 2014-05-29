@@ -1,30 +1,24 @@
 {% set options = entity().getOptions(entity) %}
 <div class="edit-control hidden">
-    <nav class="navbar navbar-light" role="navigation">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                {% include 'entity/view/partials/actions/versioning/edit' %}
-                {{ subscribe(entity).menuItem() }}
-                {% include 'entity/view/partials/actions/versioning/history' %}
+    <nav class="nav nav-pills" role="navigation">
+        {% include 'entity/view/partials/actions/versioning/edit' %}
+        {{ subscribe(entity).menuItem() }}
+        {% include 'entity/view/partials/actions/versioning/history' %}
+        <li class="dropdown pull-right">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {% trans %} More {% endtrans %}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                {% include 'entity/view/partials/actions/link/add' %}
+                {% include 'entity/view/partials/actions/link/update' %}
+                {% include 'entity/view/partials/actions/taxonomy/update' %}
+                {% include 'entity/view/partials/actions/related-content/manage' %}
+                {% include 'entity/view/partials/actions/license/update' %}
+                {% include 'entity/view/partials/actions/flag/create' %}
+                {% include 'entity/view/partials/actions/event/history' %}
+                {% include 'entity/view/partials/actions/trash' %}
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {% trans %} More {% endtrans %}
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% include 'entity/view/partials/actions/link/add' %}
-                        {% include 'entity/view/partials/actions/link/update' %}
-                        {% include 'entity/view/partials/actions/taxonomy/update' %}
-                        {% include 'entity/view/partials/actions/related-content/manage' %}
-                        {% include 'entity/view/partials/actions/license/update' %}
-                        {% include 'entity/view/partials/actions/flag/create' %}
-                        {% include 'entity/view/partials/actions/event/history' %}
-                        {% include 'entity/view/partials/actions/trash' %}
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        </li>
     </nav>
 </div>

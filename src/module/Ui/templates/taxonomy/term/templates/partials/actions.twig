@@ -1,16 +1,20 @@
 {% set subject = term.findAncestorByTypeName('subject') %}
 {% set entities = term.getAssociated('entities') %}
-<nav class="navbar navbar-light" role="navigation">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav">
-            {% if isGranted('taxonomy.term.update', term) %}
-                <li>
-                    <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">
-                        <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
-                    </a>
-                </li>
-            {% endif %}
-            {{ subscribe(term).menuItem() }}
+<nav class="nav nav-pills" role="navigation">
+    {% if isGranted('taxonomy.term.update', term) %}
+        <li>
+            <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">
+                <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
+            </a>
+        </li>
+    {% endif %}
+    {{ subscribe(term).menuItem() }}
+    <li class="dropdown pull-right">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {% trans %} More {% endtrans %}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
             {% if isGranted('taxonomy.term.create', term) %}
                 <li>
                     <a href="{{ url('taxonomy/term/organize', {'term': term.getId()}) }}">
@@ -26,9 +30,9 @@
                 </li>
             {% endif %}
             {% if taxonomy().getOptions(term).isAssociationAllowed('Entity\\Entity\\EntityInterface') and isGranted('entity.create', term) and isGranted('taxonomy.term.associate', term) %}
-                <li class="dropdown">
+                <li class="dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-file"></span> {% trans %} Add content {% endtrans %} <span class="caret"></span>
+                        <span class="glyphicon glyphicon-file"></span> {% trans %} Add content {% endtrans %}
                     </a>
                     <ul class="dropdown-menu">
                         {% for type in subject().getOptions(subject).getAllowedEntities() %}
@@ -49,5 +53,5 @@
                 </li>
             {% endif %}
         </ul>
-    </div>
+    </li>
 </nav>

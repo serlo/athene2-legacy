@@ -7,10 +7,9 @@
         {% if types.get(type) %}
             <div class="row">
             <div class="col-xs-12">
-                <h4>
+                <h4 class="is-group-headline">
                     <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ cycle(['Articles' | trans, 'Videos' | trans, 'Courses' | trans], i) }}
                 </h4>
-                <hr>
             </div>
             {% set index = 0 %}
             {% for link in types.get(type) %}
@@ -31,10 +30,9 @@
 
     {% if types.get('text-exercise') or types.get('text-exercise-group') %}
         <!-- Rest -->
-        <h4>
+        <h4 class="is-group-headline">
             <span class="glyphicon glyphicon-ok"></span> {% trans %} Exercises {% endtrans %}
         </h4>
-        <hr>
         {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
                 <div class="row">
                     <div class="col-xs-1">

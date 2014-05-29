@@ -1,13 +1,18 @@
-<nav class="navbar navbar-light" role="navigation">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav">
-            {% if isGranted('page.revision.create', page) %}
-                <li>
-                    <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}">
-                        <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
-                    </a>
-                </li>
-            {% endif %}
+<nav class="nav nav-pills" role="navigation">
+    {% if isGranted('page.revision.create', page) %}
+        <li>
+            <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}">
+                <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
+            </a>
+        </li>
+    {% endif %}
+    {{ subscribe(page).menuItem() }}
+    <li class="dropdown pull-right">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {% trans %} More {% endtrans %}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
             <li>
                 <a href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
                     <span class="glyphicon glyphicon-time"></span> {% trans %} History {% endtrans %}
@@ -41,5 +46,5 @@
                 </li>
             {% endif %}
         </ul>
-    </div>
+    </li>
 </nav>
