@@ -10,12 +10,14 @@
  */
 namespace Notification\Controller;
 
-use Authorization\Service\AuthorizationService;
+use Notification\Exception\RuntimeException;
 use Notification\SubscriptionManagerInterface;
 use Uuid\Exception\NotFoundException;
 use Uuid\Manager\UuidManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 use ZfcRbac\Exception\UnauthorizedException;
+use ZfcRbac\Service\AuthorizationService;
 
 class SubscriptionController extends AbstractActionController
 {
@@ -45,6 +47,19 @@ class SubscriptionController extends AbstractActionController
         $this->authorizationService = $authorizationService;
     }
 
+    public function manageAction()
+    {
+        if ($this->authorizationService->getIdentity() === null) {
+            throw new UnauthorizedException;
+        }
+
+        $user          = $this->authorizationService->getIdentity();
+        $subscriptions = $this->subscriptionManager->findSubscriptionsByUser($user);
+        $view          = new ViewModel(['subscriptions' => $subscriptions]);
+        $view->setTemplate('notification/subscription/manage');
+        return $view;
+    }
+
     public function subscribeAction()
     {
         if (!$this->authorizationService->getIdentity()) {
@@ -65,6 +80,32 @@ class SubscriptionController extends AbstractActionController
         $this->subscriptionManager->subscribe($user, $object, $email);
         $this->subscriptionManager->flush();
         $this->flashMessenger()->addSuccessMessage('You are now receiving notifications for this content.');
+        return $this->redirect()->toReferer();
+    }
+
+    public function updateAction()
+    {
+        if (!$this->authorizationService->getIdentity()) {
+            throw new UnauthorizedException;
+        }
+
+        $object = $this->params('object');
+        $email  = $this->params('email', false);
+        $user   = $this->authorizationService->getIdentity();
+
+        try {
+            $object = $this->uuidManager->getUuid($object);
+            $this->subscriptionManager->update($user, $object, $email);
+            $this->subscriptionManager->flush();
+            $this->flashMessenger()->addSuccessMessage('Your subscription has been updated successfully.');
+        } catch (NotFoundException $e) {
+            $this->flashMessenger()->addErrorMessage('The object you are trying to subscribe to does not exist.');
+        } catch (RuntimeException $e) {
+            $this->flashMessenger()->addErrorMessage(
+                'You can\'t update your subscription because you did not subscribe to this object.'
+            );
+        }
+
         return $this->redirect()->toReferer();
     }
 

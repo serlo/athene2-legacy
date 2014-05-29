@@ -24,6 +24,12 @@ interface SubscriptionManagerInterface extends Flushable
     public function findSubscriptionsByUuid(UuidInterface $uuid);
 
     /**
+     * @param UserInterface $user
+     * @return SubscriptionInterface[]
+     */
+    public function findSubscriptionsByUser(UserInterface $user);
+
+    /**
      * @return bool
      */
     public function hasSubscriptions();
@@ -34,6 +40,14 @@ interface SubscriptionManagerInterface extends Flushable
      * @return bool
      */
     public function isUserSubscribed(UserInterface $user, UuidInterface $object);
+
+    /**
+     * @param UserInterface $user
+     * @param UuidInterface $object
+     * @param bool          $notifyMailman
+     * @return void
+     */
+    public function update(UserInterface $user, UuidInterface $object, $notifyMailman);
 
     /**
      * @param UserInterface $user

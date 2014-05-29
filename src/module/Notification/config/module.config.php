@@ -28,16 +28,16 @@ return [
             'subscribe'     => __NAMESPACE__ . '\Factory\SubscribeFactory'
         ]
     ],
-    'zfctwig'               => [
+    'zfctwig'         => [
         'helper_manager' => [
             'factories' => [
-                'subscribe'     => __NAMESPACE__ . '\Factory\SubscribeFactory'
+                'subscribe' => __NAMESPACE__ . '\Factory\SubscribeFactory'
             ]
         ]
     ],
     'router'          => [
         'routes' => [
-            'notification' => [
+            'notification'  => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'options'       => [
                     'route'    => '/notification',
@@ -58,7 +58,7 @@ return [
                     ],
                 ]
             ],
-            'subscription' => [
+            'subscription'  => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'options'       => [
                     'route'    => '',
@@ -86,6 +86,35 @@ return [
                             ]
                         ]
                     ],
+                    'update' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/subscription/update/:object/:email',
+                            'defaults' => [
+                                'action' => 'update'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'subscriptions' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route'    => '/subscriptions',
+                    'defaults' => [
+                        'controller' => 'Notification\Controller\SubscriptionController',
+                    ]
+                ],
+                'child_routes' => [
+                    'manage' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/manage',
+                            'defaults' => [
+                                'action' => 'manage'
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ]
@@ -103,7 +132,8 @@ return [
     'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\WorkerController',
-            __NAMESPACE__ . '\Controller\NotificationController'
+            __NAMESPACE__ . '\Controller\NotificationController',
+            __NAMESPACE__ . '\Controller\SubscriptionController'
         ],
         'definition'          => [
             'class' => [

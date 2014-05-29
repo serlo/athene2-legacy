@@ -1,8 +1,8 @@
 <li class="dropdown">
     <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-trigger="ping" data-href="<?php echo $this->url('notification/read'); ?>">
-        <span class="glyphicon glyphicon-exclamation-sign"></span>
-        <?php echo $this->translate('Notifications'); ?>
+        <span class="glyphicon glyphicon-bell"></span>
         <?php $seen = $this->notifications()->getSeen($this->notifications); ?>
+        <?php echo $this->translate('Notifications'); ?>
         <?php if($seen->count()): ?>
             <span class="label label-info"><?php echo $seen->count(); ?></span>
         <?php endif; ?>

@@ -182,7 +182,8 @@ class AuthenticationController extends AbstractActionController
 
         $view = new ViewModel([
             'form'          => $form,
-            'errorMessages' => $messages
+            'errorMessages' => $messages,
+            'redir'         => $this->params()->fromQuery('redir')
         ]);
 
         $view->setTemplate('authentication/login');

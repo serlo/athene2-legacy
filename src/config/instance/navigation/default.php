@@ -186,7 +186,7 @@ return [
                         'icon'  => 'lock'
                     ],
                     [
-                        'uri' => 'authentication/password/change',
+                        'route' => 'subscriptions/manage',
                         'label' => 'Subscriptions',
                         'icon'  => 'eye-open'
                     ]
