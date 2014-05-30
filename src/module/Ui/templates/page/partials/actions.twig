@@ -9,7 +9,7 @@
                 </li>
             {% else %}
                 <li>
-		    Du musst dich <a href="/user/register" class=""><i class="glyphicon glyphicon-new-window"></i>Registrieren</a>, um die Inhalte dieser Seite cearbeiten zu dürfen.
+		    {{translate('pleaseRegister')}} {{url('user/register')}}
 		</li>	
             {% endif %}
             <li>
