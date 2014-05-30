@@ -2119,3 +2119,6 @@ msgstr "Papierkorb"
 #: ../module/Ui/templates/uuid/recycle-bin.phtml:5
 msgid "ID"
 msgstr "ID"
+
+msgid "pleaseRegister"
+msgstr "Du musst dich anmelden, um auf der Seite mitarbeiten zu können.
