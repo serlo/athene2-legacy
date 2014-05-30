@@ -7,6 +7,10 @@
                         <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
                     </a>
                 </li>
+            {% else %}
+                <li>
+		    {{translate('pleaseRegister')}} {{url('user/register')}}
+		</li>	
             {% endif %}
             <li>
                 <a href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
