@@ -5,8 +5,4 @@
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
     </li>
-{% elseif  isGranted('entity.revision.create') == false%}
-                <li>
-		    {{translate('pleaseRegister')}} {{url('user/register')}}
-		</li>	
 {% endif %}

@@ -6,8 +6,4 @@
             {% trans %} Edit {% endtrans %}
         </a>
     </li>
-{% elseif  isGranted('entity.revision.create') == false%}
-                <li>
-		    {{translate('pleaseRegister')}} {{url('user/register')}}
-		</li>	
 {% endif %}
