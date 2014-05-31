@@ -66,6 +66,11 @@ $twig->addFunction(new \Twig_SimpleFunction('taxonomy', true));
 $twig->addFunction(new \Twig_SimpleFunction('related', true));
 $twig->addFunction(new \Twig_SimpleFunction('toAlpha', true));
 $twig->addFunction(new \Twig_SimpleFunction('navigation', true));
+$twig->addFunction(new \Twig_SimpleFunction('formElement', true));
+$twig->addFunction(new \Twig_SimpleFunction('paginationControl', true));
+$twig->addFunction(new \Twig_SimpleFunction('subscribe', true));
+$twig->addFunction(new \Twig_SimpleFunction('eventLog', true));
+$twig->addFunction(new \Twig_SimpleFunction('partial', true));
 
 array_shift($_SERVER['argv']);
 $addTemplate = false;
