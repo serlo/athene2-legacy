@@ -1,0 +1,33 @@
+{{ pageHeader(user.getUsername()).setSubtitle('profile') }}
+{% if user.getLastLogin() %}
+    <div class="row">
+        <div class="col-md-4">
+            <strong>{{ 'Last seen' | trans }}</strong>
+        </div>
+        <div class="col-md-8">
+            {{ timeago().format(user.getLastLogin()) }}
+        </div>
+    </div>
+    <hr>
+{% endif %}
+<div class="row">
+    <div class="col-md-2">
+        <strong>{{ 'Roles' | trans }}</strong>
+    </div>
+    <div class="col-md-3">
+        <ul>
+            {% for role in user.getRoles() %}
+                <li>{{ role.getName() }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-2">
+        <strong>{{ 'Log' | trans }}</strong>
+    </div>
+    <div class="col-md-10">
+        {{ eventLog().renderUserLog(user.getId()) }}
+    </div>
+</div>
