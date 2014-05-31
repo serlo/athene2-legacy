@@ -44,8 +44,8 @@ class PersistentParameterFilter implements FilterInterface
         $passes        = function (EventLogInterface $eventLog) {
             foreach ($eventLog->getParameters() as $parameter) {
                 if ($parameter->getValue() === null) {
-                    $this->objectManager->remove($eventLog);
-                    $this->objectManager->flush($eventLog);
+                    //$this->objectManager->remove($eventLog);
+                    //$this->objectManager->flush($eventLog);
                     return false;
                 }
             }

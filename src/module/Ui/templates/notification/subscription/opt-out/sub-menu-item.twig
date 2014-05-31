@@ -1,3 +1,15 @@
-<li>
-    <a href="{{ url('subscription/unsubscribe', {'object': object}) }}"><span class="glyphicon glyphicon-eye-close"></span> {{ 'Unsubscribe' | trans }}</a>
-</li>
+{% if emailsActive %}
+    <li class="dropdown-submenu">
+        <a tabindex="-1" href="#">
+            <span class="glyphicon glyphicon-eye-close"></span> {{ 'Unsubscribe' | trans }} <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{{ url('subscription/update', {'object': object, 'email': 0}) }}">{{ 'Unsubscribe emails only' | trans }}</a></li>
+            <li><a href="{{ url('subscription/unsubscribe', {'object': object}) }}">{{ 'Unubscribe' | trans }}</a></li>
+        </ul>
+    </li>
+{% else %}
+    <li>
+        <a href="{{ url('subscription/unsubscribe', {'object': object}) }}"><span class="glyphicon glyphicon-eye-close"></span> {{ 'Unsubscribe' | trans }}</a>
+    </li>
+{% endif %}

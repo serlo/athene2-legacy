@@ -172,8 +172,9 @@ return [
                         'visible' => false
                     ],
                     [
-                        'route'   => 'user/me',
-                        'visible' => false
+                        'route' => 'user/me',
+                        'label' => 'Profile',
+                        'icon'  => 'user'
                     ],
                     [
                         'route' => 'user/settings',

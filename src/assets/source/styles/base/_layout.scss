@@ -191,7 +191,7 @@ body {
     width: $contentWidth;
     // For Now
     min-height: 670px;
-    padding: 0 $contentPadding;
+    padding: 0 $contentPadding $contentPadding;
 
     float: left;
     box-sizing: content-box;

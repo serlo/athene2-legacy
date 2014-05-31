@@ -23,8 +23,6 @@ class TaxonomyController extends AbstractController
         if (!$entity) {
             return false;
         }
-        $this->assertGranted('taxonomy.term.associate', $entity);
-        $this->assertGranted('taxonomy.term.dissociate', $entity);
 
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);

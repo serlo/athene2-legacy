@@ -25,6 +25,13 @@ interface SubscriptionManagerInterface extends Flushable
 
     /**
      * @param UserInterface $user
+     * @param UuidInterface $object
+     * @return SubscriptionInterface
+     */
+    public function findSubscription(UserInterface $user, UuidInterface $object);
+
+    /**
+     * @param UserInterface $user
      * @return SubscriptionInterface[]
      */
     public function findSubscriptionsByUser(UserInterface $user);

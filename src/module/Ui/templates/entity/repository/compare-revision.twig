@@ -1,5 +1,12 @@
-{{ pageHeader(normalize().toTitle(entity)).setSubtitle(revision.getId()).append(contexter().renderButton('right')).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
+{% set subtitle %}
+<small>
+    {{ timeago().render(revision.getTimestamp()) }} {{ 'by' | trans }} {{ normalize().toAnchor(revision.getAuthor()) }}
+</small>
+{% endset %}
+{{ pageHeader(normalize().toTitle(revision)).setSubtitle(subtitle).append(contexter().renderButton('right')).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
 <article class="panel-group">
+    <div class="clearfix">
+    </div>
     {% if currentRevision and revision is not sameas(currentRevision) %}
         {% for field in revision.getFields() %}
             <div class="panel panel-default">

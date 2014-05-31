@@ -51,6 +51,17 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $this->objectManager->persist($subscription);
     }
 
+    public function findSubscription(UserInterface $user, UuidInterface $object)
+    {
+        $className    = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
+        $criteria     = [
+            'user'   => $user->getId(),
+            'object' => $object->getId()
+        ];
+        $subscription = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
+        return $subscription;
+    }
+
     public function isUserSubscribed(UserInterface $user, UuidInterface $object)
     {
         $className    = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
@@ -84,7 +95,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
             $entity = new $class();
             $entity->setSubscriber($user);
             $entity->setSubscribedObject($object);
-            $entity->setNotifyMailman($notifyMailman === true);
+            $entity->setNotifyMailman($notifyMailman);
             $this->getObjectManager()->persist($entity);
         }
     }

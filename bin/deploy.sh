@@ -9,6 +9,6 @@ bower update
 grunt build
 cd ../../
 cd  src && php public/index.php assetic build
-rm data/* -Rf
+rm data/twig data/zfc* -Rf
 pm2 status
 php composer.phar update
