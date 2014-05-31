@@ -54,7 +54,7 @@ class Subscription implements SubscriptionInterface
 
     public function setNotifyMailman($notifyMailman)
     {
-        $this->notifyMailman = $notifyMailman === true;
+        $this->notifyMailman = (bool) $notifyMailman;
     }
 
     public function setSubscriber(UserInterface $user)

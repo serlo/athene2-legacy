@@ -1,49 +1,50 @@
-<nav class="navbar navbar-light" role="navigation">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav">
-            {% if isGranted('page.revision.create', page) %}
-                <li>
-                    <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}">
-                        <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
-                    </a>
-                </li>
-            {% else %}
-                <li>
-		    {{translate('pleaseRegister')}} {{url('user/register')}}
-		</li>	
-            {% endif %}
+<nav class="nav nav-pills" role="navigation">
+    {% if isGranted('page.revision.create', page) %}
+        <li>
+            <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}">
+                <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
+            </a>
+        </li>
+    {% endif %}
+    {{ subscribe(page).menuItem() }}
+    <li class="dropdown pull-right">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {% trans %} More {% endtrans %}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
             <li>
                 <a href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
-                    <span class="glyphicon glyphicon-time"></span> {{ translate('History') }}
+                    <span class="glyphicon glyphicon-time"></span> {% trans %} History {% endtrans %}
                 </a>
             </li>
             {% if isGranted('event.log.get', page) %}
                 <li>
-                    <a href="{{ url('event/history', {'id': page.getId()}) }}"> <span
-                                class="glyphicon glyphicon-hdd"></span> {{ translate('Log') }}
+                    <a href="{{ url('event/history/object', {'id': page.getId()}) }}"> <span
+                                class="glyphicon glyphicon-tasks"></span> {% trans %} Log {% endtrans %}
                     </a>
                 </li>
             {% endif %}
             {% if page.getCurrentRevision() is not same as (revision) %}
                 <li>
                     <a href="{{ url('uuid/trash', {'id': revision.getId()}) }}" class="btn btn-link">
-                        <span class="glyphicon glyphicon-trash"></span> {{ translate('Trash') }}
+                        <span class="glyphicon glyphicon-trash"></span> {% trans %} Trash {% endtrans %}
                     </a>
                 </li>
                 <li>
                     <a href="{{ url('page/revision/checkout', {'page': page.getId(), 'revision': revision.getId()}) }}"
                        class="btn btn-link">
-                        <span class="glyphicon glyphicon-ok"> {{ translate('Set as base revision') }} </a>
+                        <span class="glyphicon glyphicon-ok"> {% trans %} Set as base revision {% endtrans %} </a>
                 </li>
             {% endif %}
             {% if isGranted('page.update', page) %}
                 <li>
                     <a href="{{ url('page/update', {'page': page.getId()}) }}">
                         <span class="glyphicon glyphicon-cog"></span>
-                        {{ translate('Settigs') }}
+                        {% trans %} Settigs {% endtrans %}
                     </a>
                 </li>
             {% endif %}
         </ul>
-    </div>
+    </li>
 </nav>

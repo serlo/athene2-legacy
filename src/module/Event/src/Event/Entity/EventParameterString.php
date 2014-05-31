@@ -32,9 +32,11 @@ class EventParameterString
     protected $eventParameter;
 
     /**
+     * Do not change the default value or filtering will remove these events!
+     *
      * @ORM\Column(type="string")
      */
-    protected $value;
+    protected $value = '';
 
     public function __construct(EventParameter $eventParameter, $value)
     {

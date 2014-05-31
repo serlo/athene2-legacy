@@ -1,0 +1,7 @@
+{% set user       = normalize().toAnchor(event.getActor()) %}
+{% set revision   = normalize().toAnchor(event.getObject()) %}
+{% set repository = normalize().toAnchor(event.getParameter('repository')) %}
+{% set reason = event.getParameter('reason') %}
+{% trans %}
+    {{ user }} rejected a revision of {{ repository }}: "{{ reason }}"
+{% endtrans %}

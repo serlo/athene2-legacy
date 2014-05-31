@@ -1,7 +1,8 @@
 // uncomment the following line to include twitter bootstrap
 @import "base/variables";
-@import "base/bootstrap-override";
+@import "base/bootstrap-var-override";
 @import "sass-bootstrap/lib/bootstrap";
+@import "base/bootstrap-css-override";
 
 @import "modules/mixins";
 
@@ -13,6 +14,7 @@
 @import "modules/modes";
 @import "modules/grid_boxes";
 @import "modules/diff";
+@import "modules/dropdown";
 
 @import "base/layout";
 
@@ -34,6 +36,7 @@
 
 @import "thirdparty/datepicker";
 @import "thirdparty/timeline";
+@import "thirdparty/discussions";
 
 @import "modules/states";
 

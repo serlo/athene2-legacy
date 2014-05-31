@@ -10,16 +10,18 @@ define(['jquery', 'underscore'], function ($, _) {
         stickToHeight,
         stickToTop,
         defaultOptions,
+        throttledPositioning,
         windowHeight = window.outerHeight || $(window).height();
 
 
     defaultOptions = {
-        stickToSelector: '#content'
+        stickToSelector: '#content-layout'
     };
 
     affixQueue.elements = [];
 
     affixQueue.append = function ($elem) {
+        $elem.offsetTop = $elem.offset().top;
         this.elements.push($elem);
     };
 
@@ -30,7 +32,7 @@ define(['jquery', 'underscore'], function ($, _) {
     function positionElements($elem) {
         var cssProp = {},
             scrollTop = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0),
-            top = $elem[0].offsetTop,
+            top = $elem.offsetTop,
             height = $elem[0].clientHeight,
             targetTop;
 
@@ -56,29 +58,34 @@ define(['jquery', 'underscore'], function ($, _) {
         // Apply Styles
         if (useCssTransforms) {
             cssProp.transform = 'translateY(' + targetTop + 'px)';
+            $elem.css(cssProp);
+            // cssProp.top = targetTop + 'px';
         } else {
             cssProp.top = targetTop + 'px';
-        }
 
-        $elem.css(cssProp);
+            $elem.animate(cssProp, {
+                queue: false
+            });
+        }
     }
+
+    throttledPositioning = _.throttle(function () {
+        affixQueue.each(positionElements);
+    }, 60, {
+        leading: false
+    });
 
     function affixOnScroll() {
         scrollTop = $('body,html').scrollTop();
         windowHeight = window.outerHeight || $(window).height();
 
-        stickToTop = $stickTo[0].offsetTop;
+        stickToTop = $stickTo.offset().top;
         stickToHeight = $stickTo.height();
 
         affixQueue.each(positionElements);
     }
 
-    // function affixOnWindowResize() {
-    //     affixQueue.each()
-    // }
-
     $(window)
-        // .resize(_.throttle(affixOnWindowResize, 300))
         .scroll(affixOnScroll);
 
 

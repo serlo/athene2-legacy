@@ -29,7 +29,7 @@ class AdPage implements AdPageInterface
      * 
      * @var InstanceInterface
      */
-    protected $instance_id;
+    protected $instance;
 
     /**
      * @ORM\Id 
@@ -46,7 +46,7 @@ class AdPage implements AdPageInterface
      */
     public function getInstance()
     {
-        return $this->instance_id;
+        return $this->instance;
     }
 
     /**
@@ -55,7 +55,7 @@ class AdPage implements AdPageInterface
      */
     public function setInstance(InstanceInterface $instance)
     {
-        $this->instance_id = $instance;
+        $this->instance = $instance;
     }
 
     public function getPageRepository()

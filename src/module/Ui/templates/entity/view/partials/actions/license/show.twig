@@ -2,8 +2,8 @@
 {% if options.hasComponent('license') %}
     <li>
         <a href="{{ url('license/detail', {'id': entity.getLicense().getId()}) }}">
-            <img class="license-intext" alt="{{ translate('License') }}" src="{{ entity.getLicense().getIconHref() }}">
-            {{ translate('License') }}
+            <img class="license-intext" alt="{% trans %} License {% endtrans %}" src="{{ entity.getLicense().getIconHref() }}">
+            {% trans %} License {% endtrans %}
         </a>
     </li>
 {% endif %}

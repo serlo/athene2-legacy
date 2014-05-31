@@ -20,6 +20,9 @@ return [
             )
         )
     ),
+    'view_manager' => [
+        'display_exceptions' => false
+    ],
     'zfctwig' => [
         'environment_options' => [
             'debug' => false,

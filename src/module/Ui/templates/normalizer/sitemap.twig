@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {% for object in objects if normalize().possible(object) %}
-        <url>
-            <loc>{{ normalize().toUrl(object, true) }}</loc>
-        </url>
-    {% endfor %}
-</urlset>
+{{ navigation('navigation').sitemap().setFormatOutput(true) }}
+{{ navigation('top_left_navigation').sitemap().setFormatOutput(true) }}
+{{ navigation('top_center_navigation').sitemap().setFormatOutput(true) }}
+{{ navigation('footer_navigation').sitemap().setFormatOutput(true) }}

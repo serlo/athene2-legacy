@@ -23,8 +23,6 @@ class TaxonomyController extends AbstractController
         if (!$entity) {
             return false;
         }
-        $this->assertGranted('taxonomy.term.associate', $entity);
-        $this->assertGranted('taxonomy.term.dissociate', $entity);
 
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
@@ -38,7 +36,7 @@ class TaxonomyController extends AbstractController
                     if ($added == 1) {
                         $this->getTaxonomyManager()->associateWith($termId, $entity);
                         $event = 'addToTerm';
-                    } elseif ($added == 0) {
+                    } else {
                         $this->getTaxonomyManager()->removeAssociation($termId, $entity);
                         $event = 'removeFromTerm';
                     }

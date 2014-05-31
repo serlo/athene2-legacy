@@ -9,7 +9,6 @@
  */
 namespace Search\Adapter\SphinxQL;
 
-use Instance\Entity\InstanceAwareTrait;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Normalizer\NormalizerAwareTrait;
 use Search\Result;
@@ -62,8 +61,9 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
                 $resultInstance->setName($result['name']);
                 $resultInstance->setId($result['id']);
                 $resultInstance->setObject($term);
-                $resultInstance->setRouteName($this->getNormalizer()->normalize($term)->getRouteName());
-                $resultInstance->setRouteParams($this->getNormalizer()->normalize($term)->getRouteParams());
+                $normalized = $this->getNormalizer()->normalize($term);
+                $resultInstance->setRouteName($normalized->getRouteName());
+                $resultInstance->setRouteParams($normalized->getRouteParams());
                 $container->addResult($resultInstance);
             }
         }

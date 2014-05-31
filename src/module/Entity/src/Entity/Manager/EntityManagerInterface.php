@@ -9,10 +9,11 @@
  */
 namespace Entity\Manager;
 
+use Common\ObjectManager\Flushable;
 use Entity\Entity\EntityInterface;
 use Instance\Entity\InstanceInterface;
 
-interface EntityManagerInterface
+interface EntityManagerInterface extends Flushable
 {
 
     /**

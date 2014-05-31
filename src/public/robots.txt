@@ -3,5 +3,14 @@ Disallow: /page/revision/revisions/
 Disallow: /page/revision/revision/
 Disallow: /entity/repository/history/
 Disallow: /entity/repository/compare/
+Disallow: /backend
+Disallow: /users
+Disallow: /horizon
+Disallow: /flag
+Disallow: /license
+Disallow: /uuid/recycle-bin
+Disallow: /navigation/
+Disallow: /authorization/
+Disallow: /pages
 Disallow: /index.php/
 Disallow: /index.php

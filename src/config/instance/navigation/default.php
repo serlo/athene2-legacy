@@ -12,189 +12,208 @@ return [
     'navigation' => [
         'default' => [
             'restricted' => [
-                'label' => 'Backend',
-                'uri' => '#',
-                'pages' => [
+                'label'         => 'Backend',
+                'uri'           => '#',
+                'needsIdentity' => true,
+                'pages'         => [
                     [
                         'label' => 'Home',
-                        'icon' => 'home',
+                        'icon'  => 'home',
                         'route' => 'backend'
                     ],
-                    
                     [
                         'label' => 'Pages',
                         'route' => 'pages',
-                        'icon' => 'paperclip',
+                        'icon'  => 'paperclip',
                         'pages' => [
                             [
-                                'route' => 'page/create',
+                                'route'   => 'page/create',
                                 'visible' => false
                             ],
                             [
-                                'route' => 'page/update',
+                                'route'   => 'page/update',
                                 'visible' => false
                             ]
                         ]
                     ],
                     [
                         'label' => 'Taxonomy',
-                        'uri' => '#',
-                        'icon' => 'book',
+                        'route' => 'taxonomy/term/organize-all',
+                        'icon'  => 'book',
                         'pages' => [
                             [
-                                'label' => 'Manage taxonomies',
-                                'route' => 'taxonomy/term/organize-all',
-                                'pages' => [
-                                    [
-                                        'route' => 'taxonomy/term/action',
-                                        'visible' => false
-                                    ],
-                                    [
-                                        'route' => 'taxonomy/term/create',
-                                        'visible' => false
-                                    ],
-                                    [
-                                        'route' => 'taxonomy/term/update',
-                                        'visible' => false
-                                    ],
-                                    [
-                                        'route' => 'taxonomy/term/sort-associated',
-                                        'visible' => false
-                                    ]
-                                ]
+                                'route'   => 'taxonomy/term/action',
+                                'visible' => false
+                            ],
+                            [
+                                'route'   => 'taxonomy/term/create',
+                                'visible' => false
+                            ],
+                            [
+                                'route'   => 'taxonomy/term/update',
+                                'visible' => false
+                            ],
+                            [
+                                'route'   => 'taxonomy/term/sort-associated',
+                                'visible' => false
                             ]
                         ]
                     ],
                     [
                         'label' => 'Authorization',
-                        'icon' => 'lock',
+                        'icon'  => 'lock',
                         'route' => 'authorization/roles'
                     ],
                     [
                         'label' => 'Navigation',
-                        'icon' => 'list-alt',
+                        'icon'  => 'list-alt',
                         'route' => 'navigation/manage',
                         'pages' => [
                             [
-                                'route' => 'navigation/container/get',
+                                'route'   => 'navigation/container/get',
                                 'visible' => false
                             ],
                             [
-                                'route' => 'navigation/page/get',
+                                'route'   => 'navigation/page/get',
                                 'visible' => false
                             ]
                         ]
                     ],
                     [
                         'label' => 'Users',
-                        'icon' => 'user',
+                        'icon'  => 'user',
                         'route' => 'users',
                         'pages' => [
                             [
-                                'route' => 'authorization/role/show',
+                                'route'   => 'authorization/role/show',
                                 'visible' => false
                             ]
                         ]
                     ],
                     [
                         'label' => 'Recycle bin',
-                        'icon' => 'trash',
+                        'icon'  => 'trash',
                         'route' => 'uuid/recycle-bin'
                     ],
                     [
                         'label' => 'Flags',
-                        'icon' => 'flag',
+                        'icon'  => 'flag',
                         'route' => 'flag/manage',
                         'pages' => [
                             [
-                                'route' => 'flag/detail',
+                                'route'   => 'flag/detail',
                                 'visible' => false
                             ]
                         ]
                     ],
                     [
                         'label' => 'Licenses',
-                        'icon' => 'tags',
+                        'icon'  => 'tags',
                         'route' => 'license/manage',
                         'pages' => [
                             [
-                                'route' => 'license/add',
+                                'route'   => 'license/add',
                                 'visible' => false
                             ],
                             [
-                                'route' => 'license/update',
+                                'route'   => 'license/update',
                                 'visible' => false
                             ]
                         ]
                     ],
-                    
                     [
                         'label' => 'Horizon',
-                        'icon' => 'globe',
+                        'icon'  => 'globe',
                         'route' => 'ads',
                         'pages' => [
                             [
-                                'route' => 'ads/add',
+                                'route'   => 'ads/add',
                                 'visible' => false
                             ],
                             [
-                                'route' => 'ads/ad/edit',
+                                'route'   => 'ads/ad/edit',
                                 'visible' => false
                             ]
                         ]
                     ]
                 ]
-            ]
-            ,
-            'blog' => [
+            ],
+            'blog'       => [
                 'label' => 'Blog',
                 'route' => 'blog',
                 'pages' => [
                     [
                         'label' => 'Blogs',
                         'route' => 'blog',
-                        'icon' => 'home',
+                        'icon'  => 'home',
                         'pages' => [
                             [
-                                'route' => 'blog/post/create',
+                                'route'   => 'blog/post/create',
                                 'visible' => false
                             ],
                             [
-                                'route' => 'blog/post/view',
+                                'route'   => 'blog/post/view',
                                 'visible' => false
                             ]
                         ]
                     ]
                 ]
             ],
-            'me' => [
-                'label' => 'Me',
-                'uri' => '#',
+            'event'         => [
+                'label' => 'Log',
+                'uri'   => '#',
                 'pages' => [
                     [
-                        'route' => 'user/login',
+                        'route' => 'event/history/object',
                         'visible' => false
                     ],
                     [
-                        'route' => 'user/register',
+                        'route' => 'event/history/all',
+                        'label' => 'Logs',
+                        'icon'  => 'tasks'
+                    ]
+                ]
+            ],
+            'me'         => [
+                'label' => 'Me',
+                'uri'   => '#',
+                'pages' => [
+                    [
+                        'route'   => 'user/login',
+                        'visible' => false
+                    ],
+                    [
+                        'route'   => 'user/register',
                         'visible' => false
                     ],
                     [
                         'route' => 'user/me',
-                        'visible' => false
+                        'label' => 'Profile',
+                        'icon'  => 'user'
                     ],
                     [
-                        'route' => 'user/profile',
-                        'visible' => false
+                        'route' => 'user/settings',
+                        'label' => 'Settings',
+                        'icon'  => 'wrench'
+                    ],
+                    [
+                        'route' => 'authentication/password/change',
+                        'label' => 'Update password',
+                        'icon'  => 'lock'
+                    ],
+                    [
+                        'route' => 'subscriptions/manage',
+                        'label' => 'Subscriptions',
+                        'icon'  => 'eye-open'
                     ]
                 ]
             ],
-            'home' => [
+            'home'       => [
                 'label' => 'Home',
                 'route' => 'home',
                 'pages' => [
                     [
-                        'route' => 'home',
+                        'route'   => 'home',
                         'visible' => false
                     ]
                 ]

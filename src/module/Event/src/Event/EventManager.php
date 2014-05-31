@@ -12,10 +12,12 @@ namespace Event;
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
+use Common\Paginator\DoctrinePaginatorFactory;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Event\Exception;
+use Event\Filter\PersistentEventLogFilterChain;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 use ZfcRbac\Exception\UnauthorizedException;
@@ -26,16 +28,29 @@ class EventManager implements EventManagerInterface
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
     use AuthorizationAssertionTrait;
 
+    /**
+     * @var array
+     */
     protected $inMemoryEvents = [];
+
+    /**
+     * @var array
+     */
     protected $inMemoryParameterNames = [];
+
+    /**
+     * @var PersistentEventLogFilterChain
+     */
+    protected $persistentEventLogFilterChain;
 
     public function __construct(
         AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
         ObjectManager $objectManager
     ) {
-        $this->objectManager = $objectManager;
-        $this->classResolver = $classResolver;
+        $this->objectManager                 = $objectManager;
+        $this->persistentEventLogFilterChain = new PersistentEventLogFilterChain($objectManager);
+        $this->classResolver                 = $classResolver;
         $this->setAuthorizationService($authorizationService);
     }
 
@@ -52,6 +67,8 @@ class EventManager implements EventManagerInterface
         $repository = $this->getObjectManager()->getRepository($className);
         $results    = $repository->findBy(['actor' => $userId], ['id' => 'desc']);
         $collection = new ArrayCollection($results);
+
+        $collection = $this->persistentEventLogFilterChain->filter($collection);
 
         foreach ($collection as $result) {
             $this->assertGranted('event.log.get', $result);
@@ -98,7 +115,29 @@ class EventManager implements EventManagerInterface
         rsort($collection);
         $collection = new ArrayCollection($collection);
 
-        return $collection;
+        return $this->persistentEventLogFilterChain->filter($collection);
+    }
+
+    public function findTypeByName($name)
+    {
+
+        // Avoid MySQL duplicate entry on consecutive checks without flushing.
+        if (array_key_exists($name, $this->inMemoryEvents)) {
+            return $this->inMemoryEvents[$name];
+        }
+
+        $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
+        $event     = $this->getObjectManager()->getRepository($className)->findOneBy(['name' => $name]);
+        /* @var $event Entity\EventInterface */
+
+        if (!is_object($event)) {
+            $event = new $className();
+            $event->setName($name);
+            $this->getObjectManager()->persist($event);
+            $this->inMemoryEvents[$name] = $event;
+        }
+
+        return $event;
     }
 
     public function getEvent($id)
@@ -110,6 +149,16 @@ class EventManager implements EventManagerInterface
         }
         $this->assertGranted('event.log.get', $event);
         return $event;
+    }
+
+    public function findAll($page, $limit = 100)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
+        $dql       = 'SELECT e FROM ' . $className . ' e ' . 'ORDER BY e.id DESC';
+        $paginator = new DoctrinePaginatorFactory($this->objectManager);
+        $paginator = $paginator->createPaginator($dql, $page, $limit);
+        $paginator->setFilter($this->persistentEventLogFilterChain);
+        return $paginator;
     }
 
     public function logEvent(
@@ -142,28 +191,6 @@ class EventManager implements EventManagerInterface
         $this->getObjectManager()->persist($log);
 
         return $log;
-    }
-
-    public function findTypeByName($name)
-    {
-
-        // Avoid MySQL duplicate entry on consecutive checks without flushing.
-        if (array_key_exists($name, $this->inMemoryEvents)) {
-            return $this->inMemoryEvents[$name];
-        }
-
-        $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
-        $event     = $this->getObjectManager()->getRepository($className)->findOneBy(['name' => $name]);
-        /* @var $event Entity\EventInterface */
-
-        if (!is_object($event)) {
-            $event = new $className();
-            $event->setName($name);
-            $this->getObjectManager()->persist($event);
-            $this->inMemoryEvents[$name] = $event;
-        }
-
-        return $event;
     }
 
     /**

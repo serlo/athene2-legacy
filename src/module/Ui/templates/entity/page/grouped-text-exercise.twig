@@ -1,11 +1,11 @@
-{% set title = entity.getId() %}
-{% set tmp = headTitle(title) %}
-{% set tmp = headTitle(translate('Grouped text exercise')) %}
+{% do headTitle(entity.getId()) %}
+{% set subtitle = 'Grouped text exercise' | trans %}
+{% do headTitle(subtitle) %}
 <div class="page-header">
     <div class="pull-right btn-group">
         {% include 'entity/view/partials/actions/toggle-controls' %}
         {{ contexter().renderButton() }}
     </div>
-    <h1>{{ title }} <small>{{ translate('Grouped text exercise') }}</small></h1>
+    <h1>{{ title }} <small>{% trans %} Grouped text exercise {% endtrans %}</small></h1>
 </div>
 {% include 'entity/view/default' %}

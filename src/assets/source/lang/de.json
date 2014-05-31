@@ -10,7 +10,8 @@
     "No results found for \"%s\"." : "Keine Ergebnisse für \"%s\" gefunden.",
     "Illegal injection found" : "",
     "Could not load injection" : "",
-    "Select a forum for your discussion." : "Bitte wähle ein Forum für diese Diskussion aus.",
+    "You\'re almost done!" : "Du hast es fast geschafft!",
     "Show overview" : "Übersicht anzeigen",
-    "Show %d contents for \"%s\"" : ""
+    "Show %d contents for \"%s\"" : "",
+    "Abort": "Abbrechen"
 }

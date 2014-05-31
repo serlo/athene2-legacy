@@ -18,12 +18,6 @@ return [
                 'needsIdentity' => true
             ],
             [
-                'label'         => 'Settings',
-                'route'         => 'user/settings',
-                'icon'          => 'wrench',
-                'needsIdentity' => true
-            ],
-            [
                 'label'         => 'Sign up',
                 'route'         => 'user/register',
                 'icon'          => 'new-window',

@@ -1,13 +1,9 @@
 {% set options = entity().getOptions(entity) %}
-{% if options.hasComponent('repository') and isGranted('entity.revision.create', entity) %}
+{% if options.hasComponent('repository') %}
     <li>
         <a href="{{ url('entity/repository/add-revision', {'entity': entity.getId()}) }}">
             <span class="glyphicon glyphicon-pencil"></span>
-            {{ translate('Edit') }}
+            {% trans %} Edit {% endtrans %}
         </a>
     </li>
-{% elseif  isGranted('entity.revision.create') == false%}
-                <li>
-		    {{translate('pleaseRegister')}} {{url('user/register')}}
-		</li>	
 {% endif %}

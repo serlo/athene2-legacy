@@ -1,6 +1,0 @@
-<?php
-$event = $this->event;
-$user = $this->normalize()->toAnchor($event->getActor());
-$object = $this->normalize()->toAnchor($event->getObject());
-$parent = $this->normalize()->toAnchor($event->getParameter('parent'));
-echo sprintf($this->translate('%s added %s to %s'), $user, $object, $parent);

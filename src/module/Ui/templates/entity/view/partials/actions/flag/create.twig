@@ -2,7 +2,7 @@
     <li>
         <a href="{{ url('flag/add', {'id': entity.getId()}) }}">
             <span class="glyphicon glyphicon-flag"></span>
-            {{ translate('Flag content') }}
+            {% trans %} Flag content {% endtrans %}
         </a>
     </li>
 {% endif %}

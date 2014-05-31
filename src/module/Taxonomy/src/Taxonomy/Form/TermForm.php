@@ -56,7 +56,7 @@ class TermForm extends Form
 
         $this->add(new TermFieldset());
 
-        $this->add((new Textarea('description'))->setLabel('description:'));
+        $this->add((new Textarea('description'))->setAttribute('id', 'description')->setLabel('description:'));
 
         $this->add(
             (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')

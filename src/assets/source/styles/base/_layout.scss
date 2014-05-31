@@ -187,11 +187,11 @@ body {
 }
 
 /* Content */
-#content {
+#content-layout {
     width: $contentWidth;
     // For Now
     min-height: 670px;
-    padding: 0 $contentPadding;
+    padding: 0 $contentPadding $contentPadding;
 
     float: left;
     box-sizing: content-box;
@@ -264,24 +264,27 @@ body {
 
 
 .page-header {
-    margin: 20px 0;
-    .navbar {
-        margin: 0px;
+    position: relative;
+
+    margin: 0 0 20px 0;
+    padding-top: 20px;
+
+    background-color: $white;
+
+    z-index: 1;
+    // transition: 0.3s transform 0s;
+
+    .nav {
+        min-height: 0;
+        margin: 5px 0 0 0;
+
         .navbar-collapse {
             padding: 0px;
         }
-    }
-}
 
-.page-header {
-    margin: 0 0 20px 0;
-    padding-top: 20px;
-    position: relative;
-    z-index: 1;
-    background-color: $white;
-    .navbar {
-        min-height: 0;
-        margin: 5px 0 0 0;
+        &.nav-pills > li > a {
+          color: $grayDark;
+        }
     }
     &>h1 {
         margin: 0;

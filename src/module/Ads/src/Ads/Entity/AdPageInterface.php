@@ -14,10 +14,8 @@ use Page\Entity\PageRepositoryInterface;
 
 interface AdPageInterface extends InstanceAwareInterface
 {
-
-  
     /**
-     * Gets the url.
+     * Gets the Repository
      *
      * @return PageRepositoryInterface 
      */
