@@ -26,7 +26,14 @@ return [
     ],
     'view_helpers'    => [
         'factories' => [
-            'events' => __NAMESPACE__ . '\Factory\EventLogHelperFactory'
+            'eventLog' => __NAMESPACE__ . '\Factory\EventLogHelperFactory'
+        ]
+    ],
+    'zfctwig'         => [
+        'helper_manager' => [
+            'factories' => [
+                'eventLog' => __NAMESPACE__ . '\Factory\EventLogHelperFactory'
+            ]
         ]
     ],
     'controllers'     => [
@@ -100,14 +107,34 @@ return [
                 ],
                 'child_routes' => [
                     'history' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route'    => '/history/:id',
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route'    => '/history',
                             'defaults' => [
                                 'action' => 'history'
                             ]
+                        ],
+                        'child_routes' => [
+                            'object' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/object/:id',
+                                    'defaults' => [
+                                        'action' => 'history'
+                                    ]
+                                ]
+                            ],
+                            'all'     => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '[/:page]',
+                                    'defaults' => [
+                                        'action' => 'all'
+                                    ]
+                                ]
+                            ]
                         ]
-                    ]
+                    ],
                 ]
             ]
         ]

@@ -15,27 +15,13 @@ use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
 interface EventLogInterface extends InstanceAwareInterface
-
 {
 
     /**
-     * Returns the id
-     *
-     * @return int
+     * @param EventParameterInterface $parameter
+     * @return self
      */
-    public function getId();
-
-    /**
-     * Gets the associated object (uuid)
-     *
-     * @return UuidInterface
-     */
-    public function getObject();
-
-    /**
-     * @return Datetime
-     */
-    public function getTimestamp();
+    public function addParameter(EventParameterInterface $parameter);
 
     /**
      * Gets the actor
@@ -52,6 +38,13 @@ interface EventLogInterface extends InstanceAwareInterface
     public function getEvent();
 
     /**
+     * Returns the id
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
      * Returns the name
      *
      * @return string
@@ -59,9 +52,11 @@ interface EventLogInterface extends InstanceAwareInterface
     public function getName();
 
     /**
-     * @return EventParameterInterface[]
+     * Gets the associated object (uuid)
+     *
+     * @return UuidInterface
      */
-    public function getParameters();
+    public function getObject();
 
     /**
      * @return UuidInterface
@@ -69,18 +64,22 @@ interface EventLogInterface extends InstanceAwareInterface
     public function getParameter($name);
 
     /**
-     * @param EventParameterInterface $parameter
-     * @return self
+     * @return EventParameterInterface[]
      */
-    public function addParameter(EventParameterInterface $parameter);
+    public function getParameters();
 
     /**
-     * Sets the associated object (uuid)
+     * @return Datetime
+     */
+    public function getTimestamp();
+
+    /**
+     * Sets the actor.
      *
-     * @param UuidInterface $uuid
+     * @param UserInterface $actor
      * @return self
      */
-    public function setObject(UuidInterface $uuid);
+    public function setActor(UserInterface $actor);
 
     /**
      * Sets the event.
@@ -91,10 +90,10 @@ interface EventLogInterface extends InstanceAwareInterface
     public function setEvent(EventInterface $event);
 
     /**
-     * Sets the actor.
+     * Sets the associated object (uuid)
      *
-     * @param UserInterface $actor
+     * @param UuidInterface $uuid
      * @return self
      */
-    public function setActor(UserInterface $actor);
+    public function setObject(UuidInterface $uuid);
 }

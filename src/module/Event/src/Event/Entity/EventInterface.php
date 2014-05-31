@@ -11,7 +11,6 @@ namespace Event\Entity;
 
 interface EventInterface
 {
-
     /**
      * Returns the event's id.
      *

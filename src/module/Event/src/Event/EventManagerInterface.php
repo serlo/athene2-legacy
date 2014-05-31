@@ -9,16 +9,18 @@
  */
 namespace Event;
 
+use Doctrine\Common\Collections\Collection;
 use Event\Entity\EventInterface;
 use Event\Entity\EventLogInterface;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
+use Zend\Paginator\Paginator;
 
 interface EventManagerInterface
 {
     /**
      * @param int $userId
-     * @return EventLogInterface[]
+     * @return EventLogInterface[]|Collection
      */
     public function findEventsByActor($userId);
 
@@ -26,7 +28,7 @@ interface EventManagerInterface
      * @param int   $objectId
      * @param bool  $recursive
      * @param array $filter
-     * @return EventLogInterface[]
+     * @return EventLogInterface[]|Collection
      */
     public function findEventsByObject($objectId, $recursive = true, array $filter = []);
 
@@ -43,6 +45,13 @@ interface EventManagerInterface
      * @return EventLogInterface
      */
     public function getEvent($id);
+
+    /**
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function findAll($page, $limit = 100);
 
     /**
      * @param string            $eventName

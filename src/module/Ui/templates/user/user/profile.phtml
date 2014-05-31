@@ -30,6 +30,6 @@
         <strong><?php echo $this->translate('Activity log'); ?></strong>
     </div>
     <div class="col-md-10">
-        <?php echo $this->events()->renderUserLog($this->user->getId()); ?>
+        <?php echo $this->eventLog()->renderUserLog($this->user->getId()); ?>
     </div>
 </div>

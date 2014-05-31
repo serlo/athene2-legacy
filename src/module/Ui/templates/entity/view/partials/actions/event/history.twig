@@ -1,8 +1,8 @@
 {% if isGranted('event.log.get', entity) %}
     <li>
-        <a href="{{ url('event/history', {'id': entity.getId()}) }}">
-            <span class="glyphicon glyphicon-hdd"></span>
-            {% trans %} Show logfile {% endtrans %}
+        <a href="{{ url('event/history/object', {'id': entity.getId()}) }}">
+            <span class="glyphicon glyphicon-tasks"></span>
+            {% trans %} Log {% endtrans %}
         </a>
     </li>
 {% endif %}

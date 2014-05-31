@@ -1,5 +1,0 @@
-<?php
-$event = $this->event;
-$user = $this->normalize()->toAnchor($event->getActor());
-$object = $this->normalize()->toAnchor($event->getObject());
-echo sprintf($this->translate('%s changed the license of %s'), $user, $object);

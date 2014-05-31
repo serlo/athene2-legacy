@@ -20,8 +20,8 @@
             </li>
             {% if isGranted('event.log.get', page) %}
                 <li>
-                    <a href="{{ url('event/history', {'id': page.getId()}) }}"> <span
-                                class="glyphicon glyphicon-hdd"></span> {% trans %} Log {% endtrans %}
+                    <a href="{{ url('event/history/object', {'id': page.getId()}) }}"> <span
+                                class="glyphicon glyphicon-tasks"></span> {% trans %} Log {% endtrans %}
                     </a>
                 </li>
             {% endif %}

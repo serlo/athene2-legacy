@@ -37,16 +37,12 @@ class EventLog extends AbstractHelper
         $this->eventManager = $eventManager;
     }
 
-    public function renderObjectLog($id)
+    /**
+     * @return $this
+     */
+    public function __invoke()
     {
-        $events = $this->getEventManager()->findEventsByObject($id);
-        return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
-    }
-
-    public function renderUserLog($id)
-    {
-        $events = $this->getEventManager()->findEventsByActor($id);
-        return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
+        return $this;
     }
 
     public function renderEvent($id)
@@ -63,5 +59,17 @@ class EventLog extends AbstractHelper
         }
 
         return $this->getView()->partial($this->eventTemplate, ['event' => $event]);
+    }
+
+    public function renderObjectLog($id)
+    {
+        $events = $this->getEventManager()->findEventsByObject($id);
+        return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
+    }
+
+    public function renderUserLog($id)
+    {
+        $events = $this->getEventManager()->findEventsByActor($id);
+        return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
     }
 }

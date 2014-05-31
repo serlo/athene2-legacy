@@ -159,6 +159,21 @@ return [
                     ]
                 ]
             ],
+            'event'         => [
+                'label' => 'Log',
+                'uri'   => '#',
+                'pages' => [
+                    [
+                        'route' => 'event/history/object',
+                        'visible' => false
+                    ],
+                    [
+                        'route' => 'event/history/all',
+                        'label' => 'Logs',
+                        'icon'  => 'tasks'
+                    ]
+                ]
+            ],
             'me'         => [
                 'label' => 'Me',
                 'uri'   => '#',

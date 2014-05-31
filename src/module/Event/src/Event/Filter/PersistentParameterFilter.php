@@ -10,10 +10,10 @@
  */
 namespace Event\Filter;
 
+use ArrayIterator;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Event\Entity\EventLogInterface;
-use Event\Entity\EventParameterUuid;
 use Zend\Filter\Exception;
 use Zend\Filter\FilterInterface;
 
@@ -41,7 +41,7 @@ class PersistentParameterFilter implements FilterInterface
      */
     public function filter($value)
     {
-        $passes        = function (EventLogInterface $eventLog) {
+        $passes = function (EventLogInterface $eventLog) {
             foreach ($eventLog->getParameters() as $parameter) {
                 if ($parameter->getValue() === null) {
                     //$this->objectManager->remove($eventLog);
@@ -55,6 +55,8 @@ class PersistentParameterFilter implements FilterInterface
 
         if ($value instanceof Collection) {
             return $value->filter($passes);
+        } elseif ($value instanceof \Iterator) {
+            return new ArrayIterator(array_filter(iterator_to_array($value), $passes));
         } elseif (is_array($value)) {
             return array_filter($value, $passes);
         } else {

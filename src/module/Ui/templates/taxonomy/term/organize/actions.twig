@@ -20,8 +20,8 @@
             <span class="glyphicon glyphicon-pencil"></span> </a>
     {% endif %}
 
-    <a class="btn btn-default btn-xs" href="{{ url('event/history', {'id':term.getId()}) }}">
-        <span class="glyphicon glyphicon-hdd"></span></a>
+    <a class="btn btn-default btn-xs" href="{{ url('event/history/object', {'id':term.getId()}) }}">
+        <span class="glyphicon glyphicon-tasks"></span></a>
 
     {% if term.isTrashed() %}
         {% if(isGranted('taxonomy.term.restore', term)) %}

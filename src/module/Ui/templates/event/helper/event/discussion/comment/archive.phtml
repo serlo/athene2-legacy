@@ -1,4 +1,0 @@
-<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php $discussion = $this->normalize()->toAnchor($this->event->getObject()); ?>
-<?php $content = $this->normalize()->toPreview($this->event->getObject()); ?>
-<?php echo sprintf($this->translate('%s archived "%s": %s'), $user , $discussion, $content);?>

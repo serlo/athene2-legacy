@@ -12,12 +12,12 @@ namespace Event;
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
+use Common\Paginator\DoctrinePaginatorFactory;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Event\Exception;
 use Event\Filter\PersistentEventLogFilterChain;
-use Event\Validator\EventLogValidatorChain;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 use ZfcRbac\Exception\UnauthorizedException;
@@ -149,6 +149,16 @@ class EventManager implements EventManagerInterface
         }
         $this->assertGranted('event.log.get', $event);
         return $event;
+    }
+
+    public function findAll($page, $limit = 100)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
+        $dql       = 'SELECT e FROM ' . $className . ' e ' . 'ORDER BY e.id DESC';
+        $paginator = new DoctrinePaginatorFactory($this->objectManager);
+        $paginator = $paginator->createPaginator($dql, $page, $limit);
+        $paginator->setFilter($this->persistentEventLogFilterChain);
+        return $paginator;
     }
 
     public function logEvent(
