@@ -81,13 +81,13 @@
                             </section>
                             <footer class="clearfix">
                                 <div class="discussion-action btn-group pull-right">
-                                    {% if isGranted('flag.create', discussion) %}
+                                    {% if isGranted('flag.create', comment) %}
                                         <a class="btn btn-xs btn-default"
-                                           href="{{ url('flag/add', {'id': discussion.getId()}) }}">
+                                           href="{{ url('flag/add', {'id': comment.getId()}) }}">
                                             <span class="glyphicon glyphicon-flag"></span> </a>
                                     {% endif %}
-                                    {% if isGranted('discussion.comment.trash', discussion) %}
-                                        <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
+                                    {% if isGranted('discussion.comment.trash', comment) %}
+                                        <a href="{{ url('uuid/trash', {'id': comment.getId()}) }}"
                                            class="btn btn-xs btn-default dialog"
                                            data-content="{% trans %} Do you really want to delete this comment? {% endtrans %}">
                                             <span class="glyphicon glyphicon-trash"></span> </a>
