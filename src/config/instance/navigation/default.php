@@ -170,7 +170,7 @@ return [
                     [
                         'route' => 'event/history/all',
                         'label' => 'Logs',
-                        'icon'  => 'tasks'
+                        'icon'  => 'log-book glyphicon-regular'
                     ]
                 ]
             ],

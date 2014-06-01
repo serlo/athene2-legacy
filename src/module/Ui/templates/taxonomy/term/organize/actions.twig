@@ -21,7 +21,7 @@
     {% endif %}
 
     <a class="btn btn-default btn-xs" href="{{ url('event/history/object', {'id':term.getId()}) }}">
-        <span class="glyphicon glyphicon-tasks"></span></a>
+        <span class="glyphicon-regular glyphicon-log-book"></span></a>
 
     {% if term.isTrashed() %}
         {% if(isGranted('taxonomy.term.restore', term)) %}

@@ -28,7 +28,7 @@
                 {% endif %}
                 {% if isGranted('event.log.get', revision) %}
                     <a class="btn btn-xs btn-default" href="{{ url('event/history/object', {'id': revision.getId()}) }}">
-                        <span class="glyphicon glyphicon-tasks"></span> {% trans %} Log {% endtrans %}
+                        <span class="glyphicon-regular glyphicon-log-book"></span> {% trans %} Log {% endtrans %}
                     </a>
                 {% endif %}
                 {% if revision.getRepository().getCurrentRevision() is not same as(revision) %}
