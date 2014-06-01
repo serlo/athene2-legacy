@@ -159,21 +159,6 @@ return [
                     ]
                 ]
             ],
-            'event'         => [
-                'label' => 'Log',
-                'uri'   => '#',
-                'pages' => [
-                    [
-                        'route' => 'event/history/object',
-                        'visible' => false
-                    ],
-                    [
-                        'route' => 'event/history/all',
-                        'label' => 'Logs',
-                        'icon'  => 'log-book glyphicon-regular'
-                    ]
-                ]
-            ],
             'me'         => [
                 'label' => 'Me',
                 'uri'   => '#',
