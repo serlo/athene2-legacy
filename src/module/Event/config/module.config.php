@@ -110,9 +110,6 @@ return [
                         'type'         => 'Zend\Mvc\Router\Http\Segment',
                         'options'      => [
                             'route'    => '/history',
-                            'defaults' => [
-                                'action' => 'history'
-                            ]
                         ],
                         'child_routes' => [
                             'object' => [
@@ -127,7 +124,7 @@ return [
                             'all'     => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route'    => '[/:page]',
+                                    'route'    => '',
                                     'defaults' => [
                                         'action' => 'all'
                                     ]
