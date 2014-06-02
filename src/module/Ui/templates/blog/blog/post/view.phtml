@@ -1,5 +1,6 @@
 <?php $blog = $this->post->getBlog(); ?>
 <?php $blogUrl = $this->normalize()->toUrl($blog); ?>
+<?php $this->normalize()->headTitle($this->post); ?>
 <article>
     <header class="page-header">
         <ul class="nav nav-pills pull-left">
