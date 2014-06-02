@@ -6,7 +6,7 @@ return [
             [
                 'type'     => 'gettext',
                 'base_dir' => __DIR__ . '/../../lang',
-                'pattern'  => '%s.mo'
+                'pattern'  => '%s/LC_MESSAGES/athene2.mo'
             ]
         ]
     ]

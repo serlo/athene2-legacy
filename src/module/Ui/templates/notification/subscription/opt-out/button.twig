@@ -7,11 +7,13 @@
         </button>
         <ul class="dropdown-menu" role="menu">
             <li><a href="{{ url('subscription/update', {'object': object, 'email': 0}) }}">{{ 'Unsubscribe emails only' | trans }}</a></li>
-            <li><a href="{{ url('subscription/unsubscribe', {'object': object}) }}">{{ 'Unubscribe' | trans }}</a></li>
+            <li><a href="{{ url('subscription/unsubscribe', {'object': object}) }}">{{ 'Unsubscribe' | trans }}</a></li>
         </ul>
     </div>
 {% else %}
     <div class="btn-group">
-        <span class="glyphicon glyphicon-eye-close"></span> <a href="{{ url('subscription/unsubscribe', {'object': object}) }}" class="btn btn-primary">{{ 'Unubscribe' | trans }}</a>
+        <span class="glyphicon glyphicon-eye-close"></span> <a
+                href="{{ url('subscription/unsubscribe', {'object': object}) }}"
+                class="btn btn-primary">{{ 'Unsubscribe' | trans }}</a>
     </div>
 {% endif %}

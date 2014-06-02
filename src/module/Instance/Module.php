@@ -65,15 +65,27 @@ class Module
             $router->setTranslator($translator);
         }
 
-        setlocale(LC_ALL, $locale);
+        if (!setlocale(LC_ALL, $locale) || !setlocale(LC_MESSAGES, $locale)) {
+            throw new \Exception(sprintf(
+                'Either gettext is not enabled or locale %s is not installed on this system',
+                $locale
+            ));
+        }
+
+        putenv('LC_ALL=' . $locale);
+        putenv('LC_MESSAGES=' . $locale);
+        bindtextdomain('athene2', __DIR__ . '/../../lang');
+        bind_textdomain_codeset('athene2', 'UTF-8');
+        textdomain('athene2');
+
         $translator->addTranslationFile('PhpArray', __DIR__ . '/../../lang/routes/' . $code . '.php', 'default', $code);
-        $translator->setLocale($code);
-        $translator->setFallbackLocale('en');
+        $translator->setLocale($locale);
+        $translator->setFallbackLocale('en_US.UTF-8');
 
         $app->getEventManager()->attach('route', [$this, 'onPreRoute'], 4);
 
         $entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
-        if($entityManager instanceof InstanceAwareEntityManager){
+        if ($entityManager instanceof InstanceAwareEntityManager) {
             $entityManager->setInstance($instance);
         }
     }

@@ -4,10 +4,10 @@
 {% set reason = event.getParameter('reason') %}
 {% if reason %}
     {% trans %}
-    {{ user }} checked out {{ revision }} in {{ repository }}
+    {{ user }} checked out {{ revision }} in {{ repository }}: "{{ reason }}"
     {% endtrans %}
 {% else %}
     {% trans %}
-    {{ user }} checked out {{ revision }} in {{ repository }}: "{{ reason }}"
+    {{ user }} checked out {{ revision }} in {{ repository }}
     {% endtrans %}
 {% endif %}
