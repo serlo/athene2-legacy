@@ -84,90 +84,9 @@ class Entity extends Uuid implements EntityInterface
         $this->termTaxonomyEntities = new ArrayCollection();
     }
 
-    public function getCurrentRevision()
-    {
-        return $this->currentRevision;
-    }
-
-    public function setCurrentRevision(RevisionInterface $currentRevision)
-    {
-        $this->currentRevision = $currentRevision;
-    }
-
-    public function getLicense()
-    {
-        return $this->license;
-    }
-
-    public function setLicense(LicenseInterface $license)
-    {
-        $this->license = $license;
-    }
-
-    public function getTimestamp()
-    {
-        return $this->date;
-    }
-
-    public function getRevisions()
-    {
-        return $this->revisions;
-    }
-
-    public function getParentLinks()
-    {
-        return $this->parentLinks;
-    }
-
-    public function getChildLinks()
-    {
-        return $this->childLinks;
-    }
-
-    public function setTimestamp(\DateTime $date)
-    {
-        $this->date = $date;
-    }
-
-    public function getHead()
-    {
-        return $this->revisions->first();
-    }
-
-    public function isUnrevised()
-    {
-        $hasCurrentRevision = $this->hasCurrentRevision();
-        $head               = $this->getHead();
-        $currentRevision    = $this->getCurrentRevision();
-
-        return (!$hasCurrentRevision && $head) || ($hasCurrentRevision && $head !== $currentRevision);
-    }
-
-    public function countUnrevised()
-    {
-        $current = $this->getCurrentRevision() ? $this->getCurrentRevision()->getId() : 0;
-
-        return $this->revisions->matching(Criteria::create()->where(Criteria::expr()->gt('id', $current)))->count();
-    }
-
-    public function createLink()
-    {
-        return new EntityLink();
-    }
-
-    public function hasCurrentRevision()
-    {
-        return is_object($this->getCurrentRevision());
-    }
-
     public function addRevision(RevisionInterface $revision)
     {
         $this->revisions->add($revision);
-    }
-
-    public function removeRevision(RevisionInterface $revision)
-    {
-        $this->revisions->removeElement($revision);
     }
 
     public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
@@ -178,12 +97,20 @@ class Entity extends Uuid implements EntityInterface
         $this->termTaxonomyEntities->add($node);
     }
 
-    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
+    public function countUnrevised()
     {
-        if ($node === null) {
-            throw new Exception\InvalidArgumentException('Missing parameter node');
-        }
-        $this->termTaxonomyEntities->removeElement($node);
+        $current = $this->getCurrentRevision() ? $this->getCurrentRevision()->getId() : 0;
+
+        return $this->revisions->matching(
+            Criteria::create()->where(Criteria::expr()->gt('id', $current))->andWhere(
+                    Criteria::expr()->eq('trashed', false)
+                )
+        )->count();
+    }
+
+    public function createLink()
+    {
+        return new EntityLink();
     }
 
     public function createRevision()
@@ -194,15 +121,9 @@ class Entity extends Uuid implements EntityInterface
         return $revision;
     }
 
-    public function getTaxonomyTerms()
+    public function getChildLinks()
     {
-        $collection = new ArrayCollection();
-
-        foreach ($this->termTaxonomyEntities as $rel) {
-            $collection->add($rel->getTaxonomyTerm());
-        }
-
-        return $collection;
+        return $this->childLinks;
     }
 
     public function getChildren($linkyType, $childType = null)
@@ -221,6 +142,36 @@ class Entity extends Uuid implements EntityInterface
         return $collection;
     }
 
+    public function getCurrentRevision()
+    {
+        return $this->currentRevision;
+    }
+
+    public function setCurrentRevision(RevisionInterface $currentRevision)
+    {
+        $this->currentRevision = $currentRevision;
+    }
+
+    public function getHead()
+    {
+        return $this->revisions->first();
+    }
+
+    public function getLicense()
+    {
+        return $this->license;
+    }
+
+    public function setLicense(LicenseInterface $license)
+    {
+        $this->license = $license;
+    }
+
+    public function getParentLinks()
+    {
+        return $this->parentLinks;
+    }
+
     public function getParents($linkyType, $parentType = null)
     {
         $collection = new ArrayCollection();
@@ -235,5 +186,54 @@ class Entity extends Uuid implements EntityInterface
         }
 
         return $collection;
+    }
+
+    public function getRevisions()
+    {
+        return $this->revisions;
+    }
+
+    public function getTaxonomyTerms()
+    {
+        $collection = new ArrayCollection();
+
+        foreach ($this->termTaxonomyEntities as $rel) {
+            $collection->add($rel->getTaxonomyTerm());
+        }
+
+        return $collection;
+    }
+
+    public function getTimestamp()
+    {
+        return $this->date;
+    }
+
+    public function hasCurrentRevision()
+    {
+        return is_object($this->getCurrentRevision());
+    }
+
+    public function isUnrevised()
+    {
+        return $this->countUnrevised() > 0;
+    }
+
+    public function removeRevision(RevisionInterface $revision)
+    {
+        $this->revisions->removeElement($revision);
+    }
+
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
+    {
+        if ($node === null) {
+            throw new Exception\InvalidArgumentException('Missing parameter node');
+        }
+        $this->termTaxonomyEntities->removeElement($node);
+    }
+
+    public function setTimestamp(\DateTime $date)
+    {
+        $this->date = $date;
     }
 }
