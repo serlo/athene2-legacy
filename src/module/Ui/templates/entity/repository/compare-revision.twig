@@ -34,6 +34,10 @@
                 </div>
             </div>
         {% endfor %}
+    {% else %}
+        {% include 'entity/repository/revision' %}
+    {% endif %}
+    {% if revision is not sameas(currentRevision) %}
         <footer class="panel panel-default">
             <div class="panel-body">
                 <div class="btn-group pull-right">
@@ -50,12 +54,10 @@
                         <a class="btn btn-default btn-md" href="{{ url('uuid/restore', {'id': revision.getId()}) }}">
                             <span class="glyphicon glyphicon-refresh"></span>
                         </a>
-                    {% endif  %}
+                    {% endif %}
                 </div>
             </div>
         </footer>
-    {% else %}
-        {% include 'entity/repository/revision' %}
     {% endif %}
 </article>
 {% set accept = include('entity/repository/modal-accept') %}
