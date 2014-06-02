@@ -25,7 +25,7 @@
                             {{ term.getName() }}
                         {% endif %}
                     </h4>
-                    <small><em>{{ term.getDescription() }}</em></small>
+                    <small><em>{{ markdown().toHtml(term.getDescription()) }}</em></small>
                 </div>
                 {% if term.hasChildren() %}
                     <div id="fsc{{ id ~ term.getId() }}" class="panel-collapse collapse">
