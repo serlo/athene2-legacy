@@ -13,22 +13,32 @@ namespace Admin;
 return [
     'router' => [
         'routes' => [
-            'backend' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'options'       => [
+            'backend'  => [
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => [
                     'route'    => '/backend',
                     'defaults' => [
                         'controller' => 'Admin\Controller\HomeController',
                         'action'     => 'index'
                     ]
                 ],
-                'may_terminate' => true
+            ],
+            'debugger' => [
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => [
+                    'route'    => '/debugger',
+                    'defaults' => [
+                        'controller' => 'Admin\Controller\DebuggerController',
+                        'action'     => 'index'
+                    ]
+                ],
             ]
         ]
     ],
     'di'     => [
         'allowed_controllers' => [
-            'Admin\Controller\HomeController'
+            'Admin\Controller\HomeController',
+            'Admin\Controller\DebuggerController'
         ],
         'definition'          => [
             'class' => [
