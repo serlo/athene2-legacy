@@ -8,6 +8,7 @@ $html = array();
 //$html[] = ' <div class="navbar-inner">';
 //$html[] = ' <div class="container">';
 
+$html[] = '<nav>';
 $html[] = '<div id="navigation-content">';
 $html[] = '<ul id="main-nav" class="nav">';
 
@@ -35,5 +36,6 @@ foreach ($this->container as $page) {
 
 $html[] = '</ul>';
 $html[] = '</div>';
+$html[] = '</nav>';
 
 echo join(PHP_EOL, $html);
