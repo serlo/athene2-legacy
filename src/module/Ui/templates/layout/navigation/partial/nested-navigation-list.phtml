@@ -34,7 +34,7 @@ foreach ($this->pages as $page) {
     }
 
     $breadcrumb = $page->isActive(true) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
-    $child      = ($breadcrumb && isset($this->isChild) && $this->isChild) ? 'itemprop="child"' : '';
+    $child      = $breadcrumb ? 'itemprop="child"' : '';
     $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
 
     $html[] = '<li' . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');

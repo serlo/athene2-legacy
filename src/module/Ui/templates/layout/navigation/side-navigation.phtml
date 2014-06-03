@@ -10,7 +10,7 @@ $html = array();
 
 $html[] = '<nav>';
 $html[] = '<div id="navigation-content">';
-$html[] = '<ul id="main-nav" class="nav">';
+$html[] = '<ul id="main-nav" class="nav" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">';
 
 foreach ($this->container as $page) {
     // visibility of the page
@@ -26,6 +26,10 @@ foreach ($this->container as $page) {
             continue;
         }
     }
+
+    $html[] = '<a class="is-hidden" href="' . $page->getHref() . '" itemprop="url">';
+    $html[] = '<span itemprop="title">' . $page->getLabel() . '</span>';
+    $html[] = '</a>';
 
     if (!empty($page->pages)) {
         // $html[] = '<ul class="dropdown-menu">';
