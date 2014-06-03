@@ -78,9 +78,7 @@ class Normalize extends AbstractHelper
         $filter      = new PreviewFilter(152);
         $content     = $normalized->getContent();
         $content     = $markdown->toHtml($content);
-        $title       = $normalized->getTitle();
-        $description = $content ? $title . ': ' . $content : '';
-        $preview     = $filter->filter($description);
+        $preview     = $filter->filter($content);
         return $preview;
     }
 
