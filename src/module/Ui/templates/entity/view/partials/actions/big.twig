@@ -4,6 +4,7 @@
         {% include 'entity/view/partials/actions/versioning/edit' %}
         {{ subscribe(entity).menuItem() }}
         {% include 'entity/view/partials/actions/versioning/history' %}
+        {% include 'common/share' with {'id': entity.getId()} %}
         <li class="dropdown pull-right">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {% trans %} More {% endtrans %}

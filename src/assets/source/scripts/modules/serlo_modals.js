@@ -12,7 +12,7 @@ define(['jquery', 'router'], function ($, Router) {
         this.type = options.type || false;
         this.title = options.title || false;
         this.content = options.content;
-        this.href = options.href || false;
+        this.href = (options.href && options.href !== '#') ? options.href : false;
         this.cancel = options.cancel === undefined ? true : options.cancel;
         this.okayLabel = options.okayLabel || false;
 
@@ -23,7 +23,7 @@ define(['jquery', 'router'], function ($, Router) {
         var self = this,
             $btn = $('.btn-primary', self.$el);
 
-        $('.modal-body', self.$el).text(self.content);
+        $('.modal-body', self.$el).html(self.content);
         $('body').append(self.$el);
 
         $btn.click(function () {

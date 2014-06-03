@@ -1,5 +1,4 @@
-<ul class="timeline">
-    <li>
-        {% include 'discussion/discussion/show' with {'discussion': discussion} only %}
-    </li>
-</ul>
+{{ pageHeader(discussion.getTitle()) }}
+<div class="discussions">
+    {% include 'discussion/discussion/show' with {'discussion': discussion} only %}
+</div>

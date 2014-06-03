@@ -2,9 +2,10 @@
     <div class="text-center">
         <ul class="pagination">
             <!-- Previous page link -->
-            <?php if (isset($this->previous)): ?>
+            <?php $params = $this->params ? : [];
+            if (isset($this->previous)): ?>
                 <li>
-                    <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->previous; ?>">
+                    <a href="<?php echo $this->url($this->route, $params); ?>?page=<?php echo $this->previous; ?>">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
                 </li>
@@ -19,7 +20,7 @@
             <?php foreach ($this->pagesInRange as $page): ?>
                 <?php if ($page != $this->current): ?>
                     <li>
-                        <a href="<?php echo $this->url($this->route);?>?page=<?php echo $page; ?>">
+                        <a href="<?php echo $this->url($this->route, $params);?>?page=<?php echo $page; ?>">
                             <?php echo $page; ?>
                         </a>
                     </li>
@@ -33,7 +34,7 @@
             <!-- Next page link -->
             <?php if (isset($this->next)): ?>
                 <li>
-                    <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->next; ?>">
+                    <a href="<?php echo $this->url($this->route, $params); ?>?page=<?php echo $this->next; ?>">
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </a>
                 </li>

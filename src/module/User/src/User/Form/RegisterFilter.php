@@ -49,6 +49,12 @@ class RegisterFilter extends InputFilter
                             'fields'            => ['username'],
                             'object_manager'    => $objectManager
                         ]
+                    ],
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-\_0-9]+$~'
+                        ]
                     ]
                 ]
             ]

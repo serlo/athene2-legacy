@@ -42,7 +42,7 @@ class EventController extends AbstractActionController
 
     public function allAction()
     {
-        $page = $this->params('page', 0);
+        $page = $this->params()->fromQuery('page', 0);
         $paginator = $this->eventManager->findAll($page);
         $view = new ViewModel(['paginator' => $paginator]);
         $view->setTemplate('event/history/all');

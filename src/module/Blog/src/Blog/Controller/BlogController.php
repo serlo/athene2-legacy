@@ -9,16 +9,20 @@
  */
 namespace Blog\Controller;
 
+use Blog\Filter\PostPublishedFilter;
+use Blog\Filter\PostUnpublishedFilter;
 use Blog\Form\CreatePostForm;
 use Blog\Form\UpdatePostForm;
 use Blog\Manager\BlogManagerAwareTrait;
 use Blog\Manager\BlogManagerInterface;
 use DateTime;
+use DoctrineModule\Paginator\Adapter\Collection;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 
 class BlogController extends AbstractActionController
@@ -125,16 +129,18 @@ class BlogController extends AbstractActionController
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         $this->assertGranted('blog.get', $blog);
+        $posts = $blog->getAssociated('blogPosts');
 
-        $posts = $blog->getAssociated('blogPosts')->filter(
-            function ($e) {
-                return $e->isPublished() && !$e->isTrashed();
-            }
-        );
+        $filter    = new PostPublishedFilter();
+        $posts     = $filter->filter($posts);
+        $adapter   = new Collection($posts);
+        $paginator = new Paginator($adapter);
+        $paginator->setCurrentPageNumber($this->params()->fromQuery('page', 0));
+        $paginator->setItemCountPerPage(5);
 
         $view = new ViewModel([
-            'blog'  => $blog,
-            'posts' => $posts
+            'blog'      => $blog,
+            'paginator' => $paginator
         ]);
 
         $view->setTemplate('blog/blog/view');
@@ -146,14 +152,19 @@ class BlogController extends AbstractActionController
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         $this->assertGranted('blog.posts.get.unpublished', $blog);
+        $posts = $blog->getAssociated('blogPosts');
 
-        $posts = $blog->getAssociated('blogPosts')->filter(
-            function ($e) {
-                return !$e->isPublished() && !$e->isTrashed();
-            }
-        );
+        $filter    = new PostUnpublishedFilter();
+        $posts     = $filter->filter($posts);
+        $adapter   = new Collection($posts);
+        $paginator = new Paginator($adapter);
+        $paginator->setCurrentPageNumber($this->params()->fromQuery('page', 0));
+        $paginator->setItemCountPerPage(5);
 
-        $view = new ViewModel(['blog' => $blog, 'posts' => $posts]);
+        $view = new ViewModel([
+            'blog'      => $blog,
+            'paginator' => $paginator
+        ]);
         $view->setTemplate('blog/blog/view-all');
 
         return $view;
