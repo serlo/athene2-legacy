@@ -20,6 +20,15 @@
     float: right;
   }
 
+  .archived-toggle span:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e113";
+  }
+
+  .archived-toggle.collapsed span:after {
+    content: "\e114";
+  }
+
   & li.list-group-item {
     border-radius: 0;
     border: 0;
@@ -27,15 +36,6 @@
 
     & .form-group {
       margin: 0 0 5px 0;
-    }
-
-    .archived-toggle span:after {
-      font-family: 'Glyphicons Halflings';
-      content: "\e113";
-    }
-
-    .archived-toggle.collapsed span:after {
-      content: "\e114";
     }
   }
 
