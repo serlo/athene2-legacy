@@ -10,6 +10,7 @@
  */
 
 $html = array();
+$useBreadCrumbs = isset($this->useBreadCrumbs) ? $this->useBreadCrumbs : true;
 
 foreach ($this->pages as $page) {
     $liClasses = [];
@@ -33,7 +34,7 @@ foreach ($this->pages as $page) {
         $elements = ' data-element-count="' . $page->get('elements') . '"';
     }
 
-    $breadcrumb = $page->isActive(true) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
+    $breadcrumb = ($page->isActive(true) && $useBreadCrumbs) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
     $child      = $breadcrumb ? 'itemprop="child"' : '';
     $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
 
@@ -56,7 +57,7 @@ foreach ($this->pages as $page) {
         $html[] = '<ul>';
         $html[] = $this->partial(
             'layout/navigation/partial/nested-navigation-list',
-            array('pages' => $page->pages, 'isChild' => true)
+            array('pages' => $page->pages, 'useBreadCrumbs' => $useBreadCrumbs)
         );;
         $html[] = '</ul>';
     }

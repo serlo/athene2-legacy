@@ -21,7 +21,7 @@ foreach ($this->container as $page) {
 
     if(! empty($page->pages)) {
         $html[] = '<ul class="nav">';
-        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));
+        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->page, 'useBreadCrumbs' => false));
         $html[] = "</ul>";
     }
 
