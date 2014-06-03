@@ -18,7 +18,8 @@ class PageController extends AbstractController
     {
         $entity = $this->getEntity();
 
-        if (!$entity) {
+        if (!$entity || !$entity->hasCurrentRevision()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 

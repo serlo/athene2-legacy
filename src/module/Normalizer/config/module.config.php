@@ -69,7 +69,7 @@ return [
             ]
         ]
     ],
-    'console'        => [
+    'console'      => [
         'router' => [
             'routes' => [
                 'sitemap' => [
@@ -110,7 +110,7 @@ return [
                     'route'    => '/sitemap.xml',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\SitemapController',
-                        'action'     => 'index'
+                        'action'     => 'uuid'
                     ],
                 ],
             ],

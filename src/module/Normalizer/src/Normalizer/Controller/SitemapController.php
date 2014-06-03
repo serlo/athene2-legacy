@@ -53,12 +53,21 @@ class SitemapController extends AbstractActionController
 
     public function uuidAction()
     {
+        // Todo unhack
         $instance = $this->instanceManager->getInstanceFromRequest();
         $objects  = $this->uuidManager->findUuidsByInstance($instance);
         $objects  = $objects->filter(
             function (UuidInterface $object) {
                 $isGood = $object instanceof TaxonomyTermInterface || $object instanceof PageRepositoryInterface;
                 $isGood = $isGood || $object instanceof EntityInterface || $object instanceof PostInterface;
+                if ($object instanceof EntityInterface) {
+                    $name = $object->getType()->getName();
+                    $isGood = $isGood && $object->hasCurrentRevision()
+                        && (in_array(
+                            $name,
+                            ['article', 'course', 'video']
+                        ));
+                }
                 return !$object->isTrashed() && $isGood;
             }
         );
