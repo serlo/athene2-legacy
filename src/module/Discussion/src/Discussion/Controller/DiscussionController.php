@@ -9,6 +9,7 @@
  */
 namespace Discussion\Controller;
 
+use Discussion\Exception\CommentNotFoundException;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
 use Instance\Manager\InstanceManagerAwareTrait;
@@ -48,7 +49,12 @@ class DiscussionController extends AbstractController
 
     public function archiveAction()
     {
-        $discussion = $this->getDiscussionManager()->getComment($this->params('comment'));
+        $discussion = $this->getDiscussion($this->params('comment'));
+
+        if (!$discussion) {
+            return false;
+        }
+
         $this->assertGranted('discussion.archive', $discussion);
         $this->getDiscussionManager()->toggleArchived($this->params('comment'));
         $this->getDiscussionManager()->flush();
@@ -70,8 +76,13 @@ class DiscussionController extends AbstractController
 
     public function commentAction()
     {
-        $discussion = $this->getDiscussionManager()->getDiscussion($this->params('discussion'));
-        $form       = $this->commentForm;
+        $discussion = $this->getDiscussion($this->params('comment'));
+
+        if (!$discussion) {
+            return false;
+        }
+
+        $form = $this->commentForm;
         $this->assertGranted('discussion.comment.create', $discussion);
 
         if ($this->getRequest()->isPost()) {
@@ -97,7 +108,12 @@ class DiscussionController extends AbstractController
     public function showAction()
     {
         $discussion = $this->getDiscussion();
-        $view       = new ViewModel([
+
+        if (!$discussion) {
+            return false;
+        }
+
+        $view = new ViewModel([
             'discussion' => $discussion,
             'user'       => $this->getUserManager()->getUserFromAuthenticator()
         ]);
@@ -125,7 +141,7 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->startDiscussion($form);
                 $this->getDiscussionManager()->flush();
-                if(!$this->getRequest()->isXmlHttpRequest()){
+                if (!$this->getRequest()->isXmlHttpRequest()) {
                     return $this->redirect()->toReferer();
                 }
                 $view->setTerminal(true);
@@ -140,8 +156,13 @@ class DiscussionController extends AbstractController
 
     public function voteAction()
     {
-        $discussion = $this->getDiscussionManager()->getComment($this->params('comment'));
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
+        $discussion = $this->getDiscussion($this->params('comment'));
+
+        if (!$discussion) {
+            return false;
+        }
+
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         $this->assertGranted('discussion.vote', $discussion);
 
         if ($this->params('vote') == 'down') {
@@ -162,8 +183,14 @@ class DiscussionController extends AbstractController
         return $this->redirect()->toReferer();
     }
 
-    protected function getDiscussion()
+    protected function getDiscussion($id = null)
     {
-        return $this->getDiscussionManager()->getComment($this->params('id'));
+        $id = $id ? : $this->params('id');
+        try {
+            return $this->getDiscussionManager()->getComment($id);
+        } catch (CommentNotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+            return null;
+        }
     }
 }
