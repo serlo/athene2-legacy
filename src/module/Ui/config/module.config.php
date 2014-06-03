@@ -28,8 +28,9 @@ return [
     'zfctwig'               => [
         'helper_manager' => [
             'invokables' => [
-                'partial' => 'Zend\View\Helper\Partial',
-                'encrypt' => 'Ui\View\Helper\Encrypt',
+                'partial'    => 'Zend\View\Helper\Partial',
+                'navigation' => 'Zend\View\Helper\Navigation',
+                'encrypt'    => 'Ui\View\Helper\Encrypt',
             ],
             'factories'  => [
                 'brand'    => __NAMESPACE__ . '\Factory\BrandHelperFactory',
@@ -60,12 +61,13 @@ return [
     ],
     'view_helpers'          => [
         'factories'  => [
-            'pageHeader' => function ($helperPluginManager) {
+            'pageHeader'  => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\PageHeaderHelperOptions');
                     return new PageHeader($config);
                 },
-            'brand'      => __NAMESPACE__ . '\Factory\BrandHelperFactory',
-            'tracking'   => __NAMESPACE__ . '\Factory\TrackingFactory'
+            'brand'       => __NAMESPACE__ . '\Factory\BrandHelperFactory',
+            'twigPartial' => __NAMESPACE__ . '\Factory\TwigPartialFactory',
+            'tracking'    => __NAMESPACE__ . '\Factory\TrackingFactory'
         ],
         'invokables' => [
             'encrypt'         => 'Ui\View\Helper\Encrypt',

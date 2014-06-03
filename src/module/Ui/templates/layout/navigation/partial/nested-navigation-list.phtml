@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author  Julian Kempff (julian.kempff@serlo.org)
- * @license LGPL-3.0
- * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @author      Julian Kempff (julian.kempff@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
 $html = array();
@@ -15,7 +14,7 @@ $html = array();
 foreach ($this->pages as $page) {
     $liClasses = [];
     // visibility of the sub-page
-    if (! $page->isVisible() || !$this->navigation()->accept($page)) {
+    if (!$page->isVisible() || !$this->navigation()->accept($page)) {
         continue;
     }
 
@@ -24,7 +23,6 @@ foreach ($this->pages as $page) {
         continue;
     }
 
-    $dropdown = ! empty($page->pages);
 
     if ($page->isActive()) {
         $liClasses[] = 'active';
@@ -35,24 +33,35 @@ foreach ($this->pages as $page) {
         $elements = ' data-element-count="' . $page->get('elements') . '"';
     }
 
-    $html[] = '<li' . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
+    $breadcrumb = $page->isActive(true) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
+    $child      = ($breadcrumb && isset($this->isChild) && $this->isChild) ? 'itemprop="child"' : '';
+    $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
 
-    $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
+    $html[] = '<li' . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
+
+    $html[] = '<a href="' . $this->alias($page->getHref()) . '"' . ($breadcrumb ? ' itemprop="url"' : '') . '>';
 
     if ($page->get('icon')) {
         $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
     }
 
-    $html[] = $page->getLabel();
+    if ($breadcrumb) {
+        $html[] = '<span itemprop="title">' . $page->getLabel() . '</span>';
+    } else {
+        $html[] = '<span>' . $page->getLabel() . '</span>';
+    }
     $html[] = "</a>";
 
-    if ($dropdown) {
+    if (!empty($page->pages)) {
         $html[] = '<ul>';
-        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));;
+        $html[] = $this->partial(
+            'layout/navigation/partial/nested-navigation-list',
+            array('pages' => $page->pages, 'isChild' => true)
+        );;
         $html[] = '</ul>';
     }
 
     $html[] = "</li>";
 }
 
-echo join(PHP_EOL, $html);
+echo join(' ', $html);
