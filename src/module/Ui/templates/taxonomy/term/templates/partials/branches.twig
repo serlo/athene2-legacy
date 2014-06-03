@@ -26,7 +26,7 @@
                     {% if child.getDescription() %}
                         <div class="list-group-item">
                             <strong>
-                                {{ child.getDescription() }}
+                                {{ markdown.toHtml(child.getDescription()) }}
                             </strong>
                         </div>
                     {% endif %}
