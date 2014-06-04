@@ -70,7 +70,7 @@ class Module
     {
         $controller     = $e->getTarget();
         $serviceManager = $controller->getServiceLocator();
-        $container      = $serviceManager->get('navigation');
+        $container      = $serviceManager->get('default_navigation');
 
         // If no active navigation is found, we revert to 1-col layout
         foreach ($container as $page) {

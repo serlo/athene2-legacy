@@ -33,7 +33,7 @@ foreach ($this->container as $page) {
 
     if (!empty($page->pages)) {
         // $html[] = '<ul class="dropdown-menu">';
-        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages, 'useBreadCrumbs' => true));
+        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list-asynchable', array('pages' => $page->pages));
         // $html[] = "</ul>";
     }
 }

@@ -1,0 +1,69 @@
+<?php
+/**
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author      Julian Kempff (julian.kempff@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+
+$html = array();
+$useBreadCrumbs = true;
+$depth = $this->depth ? : 1;
+
+foreach ($this->pages as $page) {
+    $liClasses = [];
+    // visibility of the sub-page
+    if (!$page->isVisible() || !($depth <= $this->navigation()->menu()->getMaxDepth() || $page->isActive(true))  || !$this->navigation()->accept($page)) {
+        continue;
+    }
+
+    if ($page->getLabel() == 'divider') {
+        $html[] = '<li class="divider"></li>';
+        continue;
+    }
+
+
+    if ($page->isActive()) {
+        $liClasses[] = 'active';
+    }
+
+    $elements = '';
+    if ($page->get('elements') !== null) {
+        $elements = ' data-element-count="' . $page->get('elements') . '"';
+    }
+
+    $breadcrumb = ($page->isActive(true) && $useBreadCrumbs) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
+    $child      = $breadcrumb ? 'itemprop="child"' : '';
+    $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
+
+    $html[] = '<li' . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
+
+    $html[] = '<a href="' . $this->alias($page->getHref()) . '"' . ($breadcrumb ? ' itemprop="url"' : '') . '>';
+
+    if ($page->get('icon')) {
+        $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
+    }
+
+    if ($breadcrumb) {
+        $html[] = '<span itemprop="title">' . $page->getLabel() . '</span>';
+    } else {
+        $html[] = '<span>' . $page->getLabel() . '</span>';
+    }
+    $html[] = "</a>";
+
+    if (!empty($page->pages)) {
+        $html[] = '<ul>';
+        $html[] = $this->partial(
+            'layout/navigation/partial/nested-navigation-list-asynchable',
+            array('pages' => $page->pages, 'depth' => $depth + 1)
+        );;
+        $html[] = '</ul>';
+    }
+
+    $html[] = "</li>";
+}
+
+echo join(' ', $html);

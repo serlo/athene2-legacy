@@ -39,7 +39,7 @@ class AliasController extends AbstractActionController
         }
 
         try {
-            $source = $this->aliasManager->findSourceByAlias($alias, $instance);
+            $source = $this->aliasManager->findSourceByAlias($alias);
         } catch (AliasNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return false;

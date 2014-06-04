@@ -12,8 +12,12 @@
 namespace Navigation\Controller;
 
 
+use Alias\AliasManagerInterface;
+use Alias\Exception\AliasNotFoundException;
 use Taxonomy\Controller\AbstractController;
+use Zend\Http\Request;
 use Zend\View\Model\ViewModel;
+use Zend\Mvc\Router\RouteMatch;
 
 class RenderController extends AbstractController
 {
@@ -22,34 +26,82 @@ class RenderController extends AbstractController
      */
     protected $config;
 
-    public function __construct(array $config)
+    /**
+     * @var AliasManagerInterface
+     */
+    protected $aliasManager;
+
+    /**
+     * @param array $config
+     */
+    public function __construct(array $config, AliasManagerInterface $aliasManager)
     {
         $this->config = $config;
+        $this->aliasManager = $aliasManager;
     }
 
     public function listAction()
     {
         $navigation = $this->params('navigation');
-        $minLevel   = $this->params('minLevel');
-        $maxLevel   = $this->params('maxLevel');
+        $current    = $this->params('current');
+        $depth      = $this->params('depth');
         $branch     = $this->params('branch');
         $terminate  = $this->getRequest()->isXmlHttpRequest();
+        $routeMatch = $this->getRouteMatch($branch);
 
-        if (!array_key_exists($navigation, $this->config)) {
+        // TODO: Wow, again, that's so haxxy..
+        if($routeMatch && $routeMatch->getMatchedRouteName() == 'alias'){
+            try {
+                $branch = $routeMatch->getParam('alias');
+                $branch = $this->aliasManager->findSourceByAlias($branch);
+                $routeMatch = $this->getRouteMatch($branch);
+            } catch (AliasNotFoundException $e){
+                $this->getResponse()->setStatusCode(404);
+                return false;
+            }
+        }
+
+        if (!$this->isValidNavigationKey($navigation) || !$routeMatch) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
 
+        $this->getEvent()->setRouteMatch($routeMatch);
+
         $view = new ViewModel([
             'navigation' => $navigation,
-            'minLevel'   => $minLevel,
-            'maxLevel'   => $maxLevel,
+            'current'    => $current,
+            'depth'      => $depth,
             'branch'     => $branch,
         ]);
-        $view->setTemplate('navigation/render');
-        $view->setTerminal($terminate);
+
+        $view->setTemplate('navigation/render/list');
+        $view->setTerminal(true);
 
         return $view;
+    }
+
+    /**
+     * @param $uri
+     * @return RouteMatch
+     */
+    protected function getRouteMatch($uri)
+    {
+        $router  = $this->getServiceLocator()->get('Router');
+        $request = new Request();
+        $request->setMethod(Request::METHOD_GET);
+        $request->setUri($uri);
+        $routeMatch = $router->match($request);
+        return $routeMatch;
+
+    }
+
+    protected function isValidNavigationKey($key)
+    {
+        // TODO: Wow, that's haxxyy - this is due to the fucked up name conventions in the navigations.
+        $key = str_replace('_navigation', '', $key);
+        $key = str_replace('-', '_', $key);
+        return array_key_exists($key, $this->config);
     }
 }
  

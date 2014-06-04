@@ -209,7 +209,7 @@ class AliasManager implements AliasManagerInterface
         throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
     }
 
-    public function findSourceByAlias($alias, InstanceInterface $instance)
+    public function findSourceByAlias($alias, $useCache = false)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -218,8 +218,8 @@ class AliasManager implements AliasManagerInterface
             ));
         }
 
-        $key = 'source:by:alias:' . $instance->getId() . ':' . $alias;
-        if ($this->storage->hasItem($key)) {
+        $key = 'source:by:alias:' . $alias;
+        if ($useCache && $this->storage->hasItem($key)) {
             // The item is null so it didn't get found.
             $item = $this->storage->getItem($key);
             if ($item === self::CACHE_NONEXISTENT) {
@@ -229,10 +229,10 @@ class AliasManager implements AliasManagerInterface
         }
 
         /* @var $entity Entity\AliasInterface */
-        $criteria = ['alias' => $alias, 'instance' => $instance->getId()];
-        $order    = ['timestamp' => 'DESC'];
-        $results  = $this->getAliasRepository()->findBy($criteria, $order);
-        $entity   = current($results);
+        $criteria = ['alias' => $alias];
+        $order   = ['timestamp' => 'DESC'];
+        $results = $this->getAliasRepository()->findBy($criteria, $order);
+        $entity  = current($results);
 
         if (!is_object($entity)) {
             $this->storage->setItem($key, self::CACHE_NONEXISTENT);
@@ -240,7 +240,9 @@ class AliasManager implements AliasManagerInterface
         }
 
         $source = $entity->getSource();
-        $this->storage->setItem($key, $source);
+        if ($useCache) {
+            $this->storage->setItem($key, $source);
+        }
 
         return $source;
     }

@@ -7,12 +7,12 @@
         <?php
         echo $this->partial('layout/partials/search');
 
-        echo $this->navigation('navigation')
+        echo $this->navigation('default_navigation')
                     ->menu()
                     ->setPartial('layout/navigation/side-navigation')
                     ->setOnlyActiveBranch(false)
                     ->setMinDepth(0)
-                    ->setMaxDepth(0)
+                    ->setMaxDepth(2)
                     ->setUlClass('nav clear')
                     ->render();
         ?>

@@ -16,7 +16,7 @@ return [
     'navigation'         => [
         'providers' => [
             'Navigation\Provider\ContainerRepositoryProvider'
-        ]
+        ],
     ],
     'doctrine'           => [
         'driver' => [
@@ -62,8 +62,8 @@ return [
             'top_center_navigation'                                 => __NAMESPACE__ . '\Factory\TopCenterNavigationFactory',
             'footer_navigation'                                     => __NAMESPACE__ . '\Factory\FooterNavigationFactory',
             'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory',
-            'frontpage_navigation'                                       => __NAMESPACE__ . '\Factory\FrontPageNavigationFactory',
-            'navigation'                                            => function (ServiceLocatorInterface $sm) {
+            'frontpage_navigation'                                  => __NAMESPACE__ . '\Factory\FrontPageNavigationFactory',
+            'default_navigation'                                               => function (ServiceLocatorInterface $sm) {
                     // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
                     return $sm->get(__NAMESPACE__ . '\Factory\DefaultNavigationFactory')->createService($sm);
                 },
@@ -76,7 +76,8 @@ return [
     ],
     'controllers'        => [
         'factories' => [
-            __NAMESPACE__ . '\Controller\NavigationController' => __NAMESPACE__ . '\Factory\NavigationControllerFactory'
+            __NAMESPACE__ . '\Controller\NavigationController' => __NAMESPACE__ . '\Factory\NavigationControllerFactory',
+            __NAMESPACE__ . '\Controller\RenderController '    => __NAMESPACE__ . '\Factory\RenderControllerFactory'
         ]
     ],
     'di'                 => [
@@ -103,6 +104,29 @@ return [
                     ]
                 ],
                 'child_routes' => [
+                    'render'    => [
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route'    => '/render',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\RenderController'
+                            ]
+                        ],
+                        'child_routes' => [
+                            'render' => [
+                                'type'    => 'Common\Router\Slashable',
+                                'options' => [
+                                    'route'       => '/list/:navigation/:current/:depth/:branch',
+                                    'defaults'    => [
+                                        'action' => 'list'
+                                    ],
+                                    'constraints' => [
+                                        'branch' => '(.)+'
+                                    ],
+                                ],
+                            ],
+                        ]
+                    ],
                     'manage'    => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
