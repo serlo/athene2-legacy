@@ -10,7 +10,6 @@
     {% else %}
         {% set activeDepth = attribute(activePage, 'depth') %}
     {% endif %}
-    Depth: {{ activeDepth }}
 {% endif %}
 {% set start = navigation().menu().getMinDepth() %}
 {% set end = start + navigation().menu().getMaxDepth() %}
