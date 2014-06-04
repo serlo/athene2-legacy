@@ -1,39 +1,40 @@
 {% set entities = term.getAssociated('entities') %}
 {% set entities = entity().getVisible(entities) %}
 {% set types = entity().asTypeCollection(entities) %}
-<div>
-    {% for i in 0..2 %}
-        {% set type = cycle(['article', 'video', 'course'], i) %}
-        {% if types.get(type) %}
-            <div class="row">
-            <div class="col-xs-12">
-                <h4 class="is-group-headline">
-                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ cycle(['Articles' | trans, 'Videos' | trans, 'Courses' | trans], i) }}
-                </h4>
-            </div>
-            {% set index = 0 %}
-            {% for link in types.get(type) %}
-                {% if index % 3 == 0 and index != 0 %}
-                    </div>
-                    <div class="row">
-                {% endif %}
-                {% set index = index + 1 %}
-                <div class="col-xs-4">
-                    <p>
-                        {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
-                    </p>
+{% if entities.count() %}
+    <div>
+        {% for i in 0..2 %}
+            {% set type = cycle(['article', 'video', 'course'], i) %}
+            {% if types.get(type) %}
+                <div class="row">
+                <div class="col-xs-12">
+                    <h4 class="is-group-headline">
+                        <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ cycle(['Articles' | trans, 'Videos' | trans, 'Courses' | trans], i) }}
+                    </h4>
                 </div>
-            {% endfor %}
-            </div>
-        {% endif %}
-    {% endfor %}
+                {% set index = 0 %}
+                {% for link in types.get(type) %}
+                    {% if index % 3 == 0 and index != 0 %}
+                        </div>
+                        <div class="row">
+                    {% endif %}
+                    {% set index = index + 1 %}
+                    <div class="col-xs-4">
+                        <p>
+                            {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
+                        </p>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
 
-    {% if types.get('text-exercise') or types.get('text-exercise-group') %}
-        <!-- Rest -->
-        <h4 class="is-group-headline">
-            <span class="glyphicon glyphicon-ok"></span> {% trans %} Exercises {% endtrans %}
-        </h4>
-        {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
+        {% if types.get('text-exercise') or types.get('text-exercise-group') %}
+            <!-- Rest -->
+            <h4 class="is-group-headline">
+                <span class="glyphicon glyphicon-ok"></span> {% trans %} Exercises {% endtrans %}
+            </h4>
+            {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
                 <div class="row">
                     <div class="col-xs-1">
                         <strong>{{ loop.index }}.</strong>
@@ -42,7 +43,10 @@
                         {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
                     </div>
                 </div>
-        {% endfor %}
-    {% endif %}
-    <!-- Rest end -->
-</div>
+            {% endfor %}
+        {% endif %}
+        <!-- Rest end -->
+    </div>
+{% else %}
+    <div class="alert alert-info">{{ 'This folder does not contain any content yet.' | trans }}</div>
+{% endif %}

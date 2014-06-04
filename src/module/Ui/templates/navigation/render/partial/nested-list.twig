@@ -1,0 +1,30 @@
+{% include partial() %}
+
+<ul>
+    {% for page in container if page.isVisible() and navigation().accept(page) %}
+    {% if page.getLabel() == 'divider' %}
+        <li class="divider"></li>
+    {% else %}
+    {% endif %}
+    <li
+            {% if page.get('elements') %}
+                data-element-count="{{ page.get('elements') }}"
+            {% endif %}
+            {% if page.isActive() %}
+                class="active"
+            {% endif %}
+            >
+        <a
+                href="{{ alias(page.getHref()) }}"
+                >
+            {% if page.get('icon') %}
+                <span class="glyphicon glyphicon-{{ page->get('icon') }}"></span>
+            {% endif %}
+            {{ page.getLabel() }}
+        </a>
+        {% if page.pages %}
+            {% include 'navigation/render/partial/nested-list', {'container': page.pages} %}
+        {% endif %}
+    </li>
+    {% endif %}
+</ul>

@@ -1,3 +1,4 @@
+{% set hasSubfolders = false %}
 <div class="list-group">
     {% for child in term.findChildrenByTrashed(false) if child.getType().getName() not in ['topic-folder' , 'curriculum-topic-folder'] %}
         <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}" class="list-group-item">
@@ -5,5 +6,9 @@
 
             <p class="list-group-item-text">{{ markdown().toHtml(child.getDescription()) }}</p>
         </a>
+        {% set hasSubfolders = true %}
     {% endfor %}
 </div>
+{% if hasSubfolders %}
+    <div class="alert alert-info">{{ 'This folder does not contain any subfolders yet.' | trans }}</div>
+{% endif %}
