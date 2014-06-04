@@ -16,8 +16,8 @@ use Alias\AliasManagerInterface;
 use Alias\Exception\AliasNotFoundException;
 use Taxonomy\Controller\AbstractController;
 use Zend\Http\Request;
-use Zend\View\Model\ViewModel;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\View\Model\ViewModel;
 
 class RenderController extends AbstractController
 {
@@ -32,53 +32,23 @@ class RenderController extends AbstractController
     protected $aliasManager;
 
     /**
-     * @param array $config
+     * @param array                 $config
+     * @param AliasManagerInterface $aliasManager
      */
     public function __construct(array $config, AliasManagerInterface $aliasManager)
     {
-        $this->config = $config;
+        $this->config       = $config;
         $this->aliasManager = $aliasManager;
+    }
+
+    public function jsonAction()
+    {
+        return $this->process('navigation/render/json');
     }
 
     public function listAction()
     {
-        $navigation = $this->params('navigation');
-        $current    = $this->params('current');
-        $depth      = $this->params('depth');
-        $branch     = $this->params('branch');
-        $terminate  = $this->getRequest()->isXmlHttpRequest();
-        $routeMatch = $this->getRouteMatch($branch);
-
-        // TODO: Wow, again, that's so haxxy..
-        if($routeMatch && $routeMatch->getMatchedRouteName() == 'alias'){
-            try {
-                $branch = $routeMatch->getParam('alias');
-                $branch = $this->aliasManager->findSourceByAlias($branch);
-                $routeMatch = $this->getRouteMatch($branch);
-            } catch (AliasNotFoundException $e){
-                $this->getResponse()->setStatusCode(404);
-                return false;
-            }
-        }
-
-        if (!$this->isValidNavigationKey($navigation) || !$routeMatch) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
-        }
-
-        $this->getEvent()->setRouteMatch($routeMatch);
-
-        $view = new ViewModel([
-            'navigation' => $navigation,
-            'current'    => $current,
-            'depth'      => $depth,
-            'branch'     => $branch,
-        ]);
-
-        $view->setTemplate('navigation/render/list');
-        $view->setTerminal(true);
-
-        return $view;
+        return $this->process('navigation/render/list');
     }
 
     /**
@@ -102,6 +72,51 @@ class RenderController extends AbstractController
         $key = str_replace('_navigation', '', $key);
         $key = str_replace('-', '_', $key);
         return array_key_exists($key, $this->config);
+    }
+
+    /**
+     * @param $template
+     * @return bool|ViewModel
+     */
+    protected function process($template)
+    {
+        $navigation = $this->params('navigation');
+        $current    = $this->params('current');
+        $depth      = $this->params('depth');
+        $branch     = $this->params('branch');
+        $routeMatch = $this->getRouteMatch($branch);
+
+        // TODO: Wow, again, that's so haxxy..
+        if ($routeMatch && $routeMatch->getMatchedRouteName() == 'alias') {
+            try {
+                $branch     = $routeMatch->getParam('alias');
+                $branch     = $this->aliasManager->findSourceByAlias($branch);
+                $routeMatch = $this->getRouteMatch($branch);
+            } catch (AliasNotFoundException $e) {
+                $this->getResponse()->setStatusCode(404);
+                return false;
+            }
+        }
+
+        if (!$this->isValidNavigationKey($navigation) || !$routeMatch) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
+        $this->getEvent()->setRouteMatch($routeMatch);
+
+        $view = new ViewModel([
+            'container'                 => $navigation,
+            'current'                   => $current,
+            'depth'                     => $depth,
+            'branch'                    => $branch,
+            '__disableTemplateDebugger' => true
+        ]);
+
+        $view->setTemplate($template);
+        $view->setTerminal(true);
+
+        return $view;
     }
 }
  

@@ -14,7 +14,7 @@ use Navigation\View\Helper\Navigation;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class NavigationHelperFactory implements FactoryInterface
+class TwigNavigationHelperFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -27,7 +27,7 @@ class NavigationHelperFactory implements FactoryInterface
         $serviceLocator = $serviceLocator->getServiceLocator();
         $storage        = $serviceLocator->get('Navigation\Storage\NavigationHelperStorage');
         $pluginManager  = $serviceLocator->get('Zend\View\Helper\Navigation\PluginManager');
-        $renderer       = $serviceLocator->get('Zend\View\Renderer\PhpRenderer');
+        $renderer       = $serviceLocator->get('ZfcTwig\View\TwigRenderer');
         $helper         = new Navigation($storage);
         $helper->setView($renderer);
         $helper->setPluginManager($pluginManager);

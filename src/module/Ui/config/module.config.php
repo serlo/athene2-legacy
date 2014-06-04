@@ -29,7 +29,6 @@ return [
         'helper_manager' => [
             'invokables' => [
                 'partial'    => 'Zend\View\Helper\Partial',
-                'navigation' => 'Zend\View\Helper\Navigation',
                 'encrypt'    => 'Ui\View\Helper\Encrypt',
             ],
             'factories'  => [
