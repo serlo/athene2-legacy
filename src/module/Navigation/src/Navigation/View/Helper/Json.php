@@ -52,9 +52,12 @@ class Json extends Menu
 
         /* @var $page AbstractPage */
         foreach ($container as $page) {
-            if (!($page->isVisible() && $this->accept(
-                    $page
-                ) && $currentDepth < $end && ($currentDepth > $activeDepth || $page->isActive(true)))
+            if (!($page->isVisible()
+                && $this->accept(
+                $page
+                )
+                && $currentDepth < $end
+                && ($currentDepth > $activeDepth || $page->isActive(true)))
             ) {
                 continue;
             }
@@ -66,7 +69,7 @@ class Json extends Menu
                 } else {
                     $addPage             = $pagePrototype;
                     $addPage['label']    = $page->getLabel();
-                    $addPage['elements'] = $page->get('elements') !== null ? : 0;
+                    $addPage['elements'] = $page->get('elements') ? : 0;
                     $addPage['icon']     = $page->get('icon');
                     $addPage['class']    = $page->getClass();
                     $addPage['href']     = $page->getHref();

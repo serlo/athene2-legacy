@@ -43,6 +43,9 @@ class RenderController extends AbstractController
 
     public function jsonAction()
     {
+        $response = $this->getResponse();
+        $headers  = $response->getHeaders();
+        $headers->addHeaders(['Content-Type' => 'application/json']);
         return $this->process('navigation/render/json');
     }
 
