@@ -76,7 +76,7 @@ class DiscussionController extends AbstractController
 
     public function commentAction()
     {
-        $discussion = $this->getDiscussion($this->params('comment'));
+        $discussion = $this->getDiscussion($this->params('discussion'));
 
         if (!$discussion) {
             return false;
