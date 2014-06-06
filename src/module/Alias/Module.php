@@ -53,15 +53,9 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager       = $e->getApplication()->getEventManager();
-        $sharedEventManager = $eventManager->getSharedManager();
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), -1000);
-
-        foreach (self::$listeners as $listener) {
-            $sharedEventManager->attachAggregate(
-                $e->getApplication()->getServiceManager()->get($listener)
-            );
-        }
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 1000);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatchRegisterListeners'), 1000);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -122,5 +116,16 @@ class Module
         $response->sendHeaders();
         $e->stopPropagation();
         return $response;
+    }
+
+    public function onDispatchRegisterListeners(MvcEvent $e)
+    {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        foreach (self::$listeners as $listener) {
+            $sharedEventManager->attachAggregate(
+                $e->getApplication()->getServiceManager()->get($listener)
+            );
+        }
     }
 }

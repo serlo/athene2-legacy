@@ -9,6 +9,8 @@
  */
 namespace License;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
 
@@ -43,13 +45,18 @@ class Module
         return $autoloader;
     }
 
-    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    public function onBootstrap(MvcEvent $e)
     {
-        $application  = $e->getApplication();
-        $eventManager = $application->getEventManager();
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatchRegisterListeners'), 1000);
+    }
 
+    public function onDispatchRegisterListeners(MvcEvent $e)
+    {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
         foreach (self::$listeners as $listener) {
-            $eventManager->getSharedManager()->attachAggregate(
+            $sharedEventManager->attachAggregate(
                 $e->getApplication()->getServiceManager()->get($listener)
             );
         }

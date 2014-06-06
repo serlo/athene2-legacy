@@ -48,17 +48,18 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function onBootstrap(MvcEvent $e)
+    public function onDispatchRegisterListeners(MvcEvent $e)
     {
-        $application        = $e->getApplication();
-        $eventManager       = $application->getEventManager();
-        $serviceLocator     = $application->getServiceManager();
+        $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
-
-        foreach (static::$listeners as $listener) {
-            $sharedEventManager->attachAggregate($serviceLocator->get($listener));
+        foreach (self::$listeners as $listener) {
+            $sharedEventManager->attachAggregate(
+                $e->getApplication()->getServiceManager()->get($listener)
+            );
         }
 
+        $application        = $e->getApplication();
+        $serviceLocator     = $application->getServiceManager();
         if ($e->getRequest() instanceof Request) {
             /* @var $moduleOptions Options\ModuleOptions */
             $moduleOptions = $serviceLocator->get('Mailman\Options\ModuleOptions');
