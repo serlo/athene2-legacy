@@ -13,7 +13,7 @@ return [
     'router'          => [
         'routes' => [
             'ads' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'may_terminate' => true,
                 'options'       => [
                     'route'    => '/horizon',
@@ -24,7 +24,7 @@ return [
                 ],
                 'child_routes'  => [
                     'about' => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/about',
@@ -35,7 +35,7 @@ return [
                         ],
                         'child_routes'  => [
                             'editabout' => [
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'may_terminate' => true,
                                 'options'       => [
                                     'route'    => '/editabout',
@@ -46,7 +46,7 @@ return [
                                 ]
                             ],
                             'setabout'  => [
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'may_terminate' => true,
                                 'options'       => [
                                     'route'    => '/setabout',
@@ -59,7 +59,7 @@ return [
                         ]
                     ],
                     'add'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/add',
                             'defaults' => [
@@ -69,7 +69,7 @@ return [
                         ]
                     ],
                     'ad'    => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'         => 'segment',
                         'options'      => [
                             'route'    => '/:id',
                             'defaults' => [
@@ -79,7 +79,7 @@ return [
                         ],
                         'child_routes' => [
                             'delete' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options' => [
                                     'route'    => '/delete',
                                     'defaults' => [
@@ -89,7 +89,7 @@ return [
                                 ]
                             ],
                             'out'    => [
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'may_terminate' => true,
                                 'options'       => [
                                     'route'    => '/out',
@@ -100,7 +100,7 @@ return [
                                 ]
                             ],
                             'edit'   => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options' => [
                                     'route'    => '/edit',
                                     'defaults' => [

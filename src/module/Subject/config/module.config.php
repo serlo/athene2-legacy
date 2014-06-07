@@ -95,7 +95,7 @@ return [
                 ],
                 'child_routes' => [
                     'entity' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/entity/:action',
                             'defaults' => [
@@ -105,7 +105,7 @@ return [
                         ]
                     ],
                     //'home'   => [
-                    //    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    //    'type'    => 'segment',
                     //    'options' => [
                     //        'route'    => '',
                     //        'defaults' => [

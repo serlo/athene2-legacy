@@ -9,27 +9,34 @@
  */
 namespace Search;
 
+use Zend\I18n\Translator\Translator;
+use Zend\Mvc\Router\RouteInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 class SearchService implements SearchServiceInterface
 {
-    use \Common\Traits\ConfigAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait, \Common\Traits\RouterAwareTrait;
+    use \Common\Traits\ConfigAwareTrait;
 
-    public function search($query, array $adapters)
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+
+    /**
+     * @var RouteInterface
+     */
+    protected $router;
+
+    /**
+     * @var Translator
+     */
+    protected $translator;
+
+    public function __construct(Translator $translator, RouteInterface $router, ServiceLocatorInterface $serviceLocator)
     {
-        $container      = new Result\Container();
-        $configAdapters = $this->getOption('adapters');
-
-        foreach ($adapters as $adapter) {
-            if (!array_key_exists($adapter, $configAdapters)) {
-                throw new Exception\RuntimeException(sprintf('Unkown adapter: %s', $adapter));
-            }
-
-            /* @var $adapter Adapter\AdapterInterface */
-            $adapter = $this->getServiceLocator()->get($configAdapters[$adapter]);
-
-            $adapter->search($query, $container);
-        }
-
-        return $container;
+        $this->router         = $router;
+        $this->serviceLocator = $serviceLocator;
+        $this->translator     = $translator;
     }
 
     public function ajaxify(Result\ContainerInterface $container)
@@ -40,12 +47,41 @@ class SearchService implements SearchServiceInterface
         return $return;
     }
 
+    public function search($query, array $adapters)
+    {
+        $container      = new Result\Container();
+        $configAdapters = $this->getOption('adapters');
+
+        foreach ($adapters as $adapterName) {
+            if (!array_key_exists($adapterName, $configAdapters)) {
+                throw new Exception\RuntimeException(sprintf('Unkown adapter: %s', $adapterName));
+            }
+
+            /* @var $adapterName Adapter\AdapterInterface */
+            $adapterName = $this->serviceLocator->get($configAdapters[$adapterName]);
+
+            $adapterName->search($query, $container);
+        }
+
+        return $container;
+    }
+
+    protected function getDefaultConfig()
+    {
+        return [
+            'adapters' => [
+                'entity'       => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter',
+                'taxonomyTerm' => __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter'
+            ]
+        ];
+    }
+
     protected function iterContainer(Result\ContainerInterface $container, array & $return, $limit = 10)
     {
         $items = [];
 
         foreach ($container->getResults() as $result) {
-            $url     = $this->getRouter()->assemble(
+            $url     = $this->router->assemble(
                 $result->getRouteParams(),
                 [
                     'name' => $result->getRouteName()
@@ -60,7 +96,7 @@ class SearchService implements SearchServiceInterface
 
         if (!empty($items)) {
             $return[] = [
-                'title' => $container->getName(),
+                'title' => $this->translator->translate($container->getName()),
                 'items' => $items
             ];
         }
@@ -72,15 +108,5 @@ class SearchService implements SearchServiceInterface
         foreach ($container->getContainers() as $subContainer) {
             $this->iterContainer($subContainer, $return);
         }
-    }
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'adapters' => [
-                'entity'       => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter',
-                'taxonomyTerm' => __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter'
-            ]
-        ];
     }
 }

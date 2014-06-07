@@ -10,8 +10,6 @@
  */
 namespace Navigation;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 return [
     'navigation'         => [
         'providers' => [
@@ -62,11 +60,8 @@ return [
             'top_center_navigation'                                 => __NAMESPACE__ . '\Factory\TopCenterNavigationFactory',
             'footer_navigation'                                     => __NAMESPACE__ . '\Factory\FooterNavigationFactory',
             'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory',
-            'frontpage_navigation'                                       => __NAMESPACE__ . '\Factory\FrontPageNavigationFactory',
-            'navigation'                                            => function (ServiceLocatorInterface $sm) {
-                    // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
-                    return $sm->get(__NAMESPACE__ . '\Factory\DefaultNavigationFactory')->createService($sm);
-                },
+            'frontpage_navigation'                                  => __NAMESPACE__ . '\Factory\FrontPageNavigationFactory',
+            'navigation'                                            => __NAMESPACE__ . '\Factory\UniqueDefaultNavigationFactory',
         ]
     ],
     'view_helpers'       => [
@@ -95,7 +90,7 @@ return [
     'router'             => [
         'routes' => [
             'navigation' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'         => 'literal',
                 'options'      => [
                     'route'    => '/navigation',
                     'defaults' => [
@@ -104,7 +99,7 @@ return [
                 ],
                 'child_routes' => [
                     'manage'    => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/manage',
                             'defaults' => [
@@ -113,13 +108,13 @@ return [
                         ]
                     ],
                     'container' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'         => 'literal',
                         'options'      => [
                             'route' => '/container',
                         ],
                         'child_routes' => [
                             'get'    => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/get/:container',
                                     'defaults' => [
@@ -128,7 +123,7 @@ return [
                                 ]
                             ],
                             'create' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options' => [
                                     'route'    => '/create',
                                     'defaults' => [
@@ -137,7 +132,7 @@ return [
                                 ]
                             ],
                             'remove' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/remove/:container',
                                     'defaults' => [
@@ -148,13 +143,13 @@ return [
                         ],
                     ],
                     'page'      => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'         => 'literal',
                         'options'      => [
                             'route' => '/page',
                         ],
                         'child_routes' => [
                             'get'    => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/get/:container',
                                     'defaults' => [
@@ -163,7 +158,7 @@ return [
                                 ]
                             ],
                             'create' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/create/:container[/:parent]',
                                     'defaults' => [
@@ -172,7 +167,7 @@ return [
                                 ]
                             ],
                             'update' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/update/:page',
                                     'defaults' => [
@@ -181,7 +176,7 @@ return [
                                 ]
                             ],
                             'remove' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/remove/:page',
                                     'defaults' => [
@@ -192,13 +187,13 @@ return [
                         ],
                     ],
                     'parameter' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'         => 'segment',
                         'options'      => [
                             'route' => '/parameter',
                         ],
                         'child_routes' => [
                             'create' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/create/:page[/:parent]',
                                     'defaults' => [
@@ -207,7 +202,7 @@ return [
                                 ]
                             ],
                             'remove' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/remove/:parameter',
                                     'defaults' => [
@@ -216,7 +211,7 @@ return [
                                 ]
                             ],
                             'update' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/update/:parameter',
                                     'defaults' => [
@@ -225,13 +220,13 @@ return [
                                 ]
                             ],
                             'key'    => [
-                                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                                'type'         => 'segment',
                                 'options'      => [
                                     'route' => '/key',
                                 ],
                                 'child_routes' => [
                                     'create' => [
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'type'    => 'segment',
                                         'options' => [
                                             'route'    => '/create',
                                             'defaults' => [

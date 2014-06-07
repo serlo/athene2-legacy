@@ -57,7 +57,7 @@ return [
     'router'          => [
         'routes' => [
             'pages' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'may_terminate' => true,
                 'options'       => [
                     'route'    => '/pages',
@@ -68,7 +68,7 @@ return [
                 ],
             ],
             'page'  => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/page',
                     'defaults' => [
@@ -77,7 +77,7 @@ return [
                 ],
                 'child_routes' => [
                     'create'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/create',
                             'defaults' => [
@@ -86,7 +86,7 @@ return [
                         ]
                     ],
                     'update'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/update/:page',
                             'defaults' => [
@@ -95,7 +95,7 @@ return [
                         ]
                     ],
                     'view'     => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'          => 'segment',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/view/:page',
@@ -105,13 +105,13 @@ return [
                         ],
                     ],
                     'revision' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'         => 'segment',
                         'options'      => [
                             'route' => '/revision',
                         ],
                         'child_routes' => [
                             'view'     => [
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'type'          => 'segment',
                                 'may_terminate' => true,
                                 'options'       => [
                                     'route'    => '/:revision',
@@ -121,7 +121,7 @@ return [
                                 ],
                             ],
                             'checkout' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/:page/checkout/:revision',
                                     'defaults' => [
@@ -130,7 +130,7 @@ return [
                                 ]
                             ],
                             'view-all' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/revisions/:page',
                                     'defaults' => [
@@ -139,7 +139,7 @@ return [
                                 ]
                             ],
                             'create'   => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/create/:page[/:revision]',
                                     'defaults' => [

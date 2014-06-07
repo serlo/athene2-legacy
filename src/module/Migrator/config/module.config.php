@@ -49,7 +49,6 @@ return [
         'router' => [
             'routes' => [
                 'migrator' => [
-                    //'type'    => 'Zend\Mvc\Router\Http\Segment',
                     'options' => [
                         'route'    => 'migrate',
                         'defaults' => [

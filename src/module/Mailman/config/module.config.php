@@ -9,9 +9,6 @@
  */
 namespace Mailman;
 
-use Zend\Mail\Transport\SmtpOptions;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 return [
     'mailman'         => [
         'adapters' => [
@@ -26,10 +23,7 @@ return [
             __NAMESPACE__ . '\Listener\AuthenticationControllerListener' => __NAMESPACE__ . '\Factory\AuthenticationControllerListenerFactory',
             __NAMESPACE__ . '\Listener\UserControllerListener'           => __NAMESPACE__ . '\Factory\UserControllerListenerFactory',
             __NAMESPACE__ . '\Listener\NotificationWorkerListener'       => __NAMESPACE__ . '\Factory\NotificationWorkerListenerFactory',
-            'Zend\Mail\Transport\SmtpOptions'                            => function (ServiceLocatorInterface $sm) {
-                    $config = $sm->get('config')['smtp_options'];
-                    return new SmtpOptions($config);
-                },
+            'Zend\Mail\Transport\SmtpOptions'                            => __NAMESPACE__ . '\Factory\SmtpOptionsFactory'
         ]
     ],
     'smtp_options'    => [

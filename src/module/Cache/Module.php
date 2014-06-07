@@ -43,9 +43,8 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        /** @var $application \Zend\Mvc\Application */
-        $application    = $e->getParam('application');
-        $serviceManager = $e->getApplication()->getServiceManager();
+        $application    = $e->getApplication();
+        $serviceManager = $application->getServiceManager();
         $listener       = $serviceManager->get('StrokerCache\Listener\CacheListener');
 
         /* @var $authService AuthenticationService */

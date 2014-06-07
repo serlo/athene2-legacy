@@ -70,7 +70,7 @@ return [
     'router'          => [
         'routes' => [
             'flag' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/flag',
                     'defaults' => [
@@ -79,7 +79,7 @@ return [
                 ],
                 'child_routes' => [
                     'manage' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/manage[/:type]',
                             'defaults' => [
@@ -88,7 +88,7 @@ return [
                         ]
                     ],
                     'add'    => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/add/:id',
                             'defaults' => [
@@ -97,7 +97,7 @@ return [
                         ]
                     ],
                     'detail' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/detail/:id',
                             'defaults' => [
@@ -106,7 +106,7 @@ return [
                         ]
                     ],
                     'remove' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/remove/:id',
                             'defaults' => [

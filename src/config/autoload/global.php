@@ -48,11 +48,11 @@ return [
         ],
     ],
     'service_manager' => [
-        'factories' => [
-            'doctrine.cache.apccache' => function ($sm) {
-                    $cache = new \Doctrine\Common\Cache\ApcCache();
-                    return $cache;
-                },
+        'invokables' => [
+            'Doctrine\Common\Cache\ApcCache'
+        ],
+        'aliases' => [
+            'doctrine.cache.apccache' => 'Doctrine\Common\Cache\ApcCache'
         ]
     ],
     'di'              => [

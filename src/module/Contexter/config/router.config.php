@@ -13,7 +13,7 @@ return [
     'router' => [
         'routes' => [
             'contexter' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/context',
                     'defaults' => [
@@ -22,7 +22,7 @@ return [
                 ],
                 'child_routes' => [
                     'select-uri' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/select-uri',
                             'defaults' => [
@@ -31,13 +31,13 @@ return [
                         ]
                     ],
                     'route'      => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route' => '/route'
                         ],
                         'child_routes' => [
                             'remove' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/remove/:id',
                                     'defaults' => [
@@ -48,7 +48,7 @@ return [
                         ]
                     ],
                     'remove'     => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/remove/:id',
                             'defaults' => [
@@ -57,7 +57,7 @@ return [
                         ]
                     ],
                     'add'        => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/add',
                             'defaults' => [
@@ -66,7 +66,7 @@ return [
                         ]
                     ],
                     'manage'     => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/manage',
                             'defaults' => [
