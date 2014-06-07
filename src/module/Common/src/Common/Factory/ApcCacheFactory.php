@@ -8,7 +8,7 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace PageSpeed\src\PageSpeed\Factory;
+namespace Common\Factory;
 
 use Doctrine\Common\Cache\ApcCache;
 use Zend\ServiceManager\FactoryInterface;
@@ -24,6 +24,6 @@ class ApcCacheFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new ApcCache;
+        return new ApcCache();
     }
 }
