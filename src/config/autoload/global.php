@@ -47,14 +47,6 @@ return [
             'Zend\Session\Validator\HttpUserAgent'
         ],
     ],
-    'service_manager' => [
-        'invokables' => [
-            'Doctrine\Common\Cache\ApcCache'
-        ],
-        'aliases' => [
-            'doctrine.cache.apccache' => 'Doctrine\Common\Cache\ApcCache'
-        ]
-    ],
     'di'              => [
         'instance' => [
             'preferences' => [
