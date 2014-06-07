@@ -12,4 +12,4 @@ cd src && php public/index.php assetic build
 rm data/twig data/zfc* -Rf
 pm2 status
 cd ../
-php composer.phar update
+php composer.phar update -o
