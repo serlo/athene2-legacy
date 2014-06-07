@@ -27,7 +27,7 @@ class NavigationHelperFactory implements FactoryInterface
         $serviceLocator = $serviceLocator->getServiceLocator();
         $storage        = $serviceLocator->get('Navigation\Storage\NavigationHelperStorage');
         $pluginManager  = $serviceLocator->get('Zend\View\Helper\Navigation\PluginManager');
-        $renderer       = $serviceLocator->get('Ui\Renderer\PhpDebugRenderer');
+        $renderer       = $serviceLocator->get('Zend\View\Renderer\PhpRenderer');
         $helper         = new Navigation($storage);
         $helper->setView($renderer);
         $helper->setPluginManager($pluginManager);

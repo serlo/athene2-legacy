@@ -55,7 +55,7 @@ return [
             'error/index'    => __DIR__ . '/../templates/error/index.phtml'
         ],
         'strategies'               => [
-            'Zend\View\Strategy\JsonStrategy'
+            'Zend\View\Strategy\JsonStrategy',
         ]
     ],
     'view_helpers'          => [
