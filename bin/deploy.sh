@@ -1,3 +1,4 @@
+#!/bin/sh
 git status
 git pull -ff
 sh build.sh
@@ -11,7 +12,7 @@ cd ../../
 cd src
 php public/index.php assetic build
 php public/index.php pagespeed build
-rm data/twig data/zfc* *.php -Rf
+rm data/twig data/zfc* data/*.php -Rf
 pm2 status
 cd ../
 php composer.phar update -o
