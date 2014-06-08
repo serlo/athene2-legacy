@@ -73,13 +73,13 @@ return [
     'router'          => [
         'routes' => [
             'discussion' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route' => ''
                 ],
                 'child_routes' => [
                     'view'        => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/discussion/:id',
                             'defaults' => [
@@ -89,7 +89,7 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'       => [
                             'route'    => '/discussions',
                             'defaults' => [
@@ -100,7 +100,7 @@ return [
                         'may_terminate' => true,
                         'child_routes'  => [
                             'get' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route' => '/:id'
                                 ]
@@ -108,14 +108,14 @@ return [
                         ]
                     ],
                     'discussion'  => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route'    => '/discussion',
                             'defaults' => []
                         ],
                         'child_routes' => [
                             'start'   => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/start/:on/:forum',
                                     'defaults' => [
@@ -125,7 +125,7 @@ return [
                                 ]
                             ],
                             'select'  => [
-                                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options'      => [
                                     'route'    => '/select',
                                     'defaults' => [
@@ -134,7 +134,7 @@ return [
                                 ],
                                 'child_routes' => [
                                     'forum' => [
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'type'    => 'segment',
                                         'options' => [
                                             'route'    => '/forum/:on',
                                             'defaults' => [
@@ -145,7 +145,7 @@ return [
                                 ]
                             ],
                             'comment' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/comment/:discussion',
                                     'defaults' => [
@@ -155,7 +155,7 @@ return [
                                 ]
                             ],
                             'vote'    => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'       => '/vote/:vote/:comment',
                                     'defaults'    => [
@@ -168,7 +168,7 @@ return [
                                 ]
                             ],
                             'trash'   => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/trash/:comment',
                                     'defaults' => [
@@ -178,7 +178,7 @@ return [
                                 ]
                             ],
                             'archive' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/archive/:comment',
                                     'defaults' => [

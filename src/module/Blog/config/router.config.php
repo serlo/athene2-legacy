@@ -14,7 +14,7 @@ return [
     'router' => [
         'routes' => [
             'blog' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'       => [
                     'route'    => '/blog',
                     'defaults' => [
@@ -25,7 +25,7 @@ return [
                 'may_terminate' => true,
                 'child_routes'  => [
                     'view-all' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/view-all/:id',
                             'defaults' => [
@@ -34,7 +34,7 @@ return [
                         ]
                     ],
                     'view'     => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/view/:id',
                             'defaults' => [
@@ -43,13 +43,13 @@ return [
                         ]
                     ],
                     'post'     => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route' => '/post'
                         ],
                         'child_routes' => [
                             'create' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/create/:id',
                                     'defaults' => [
@@ -58,7 +58,7 @@ return [
                                 ]
                             ],
                             'view'   => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/view/:post',
                                     'defaults' => [
@@ -67,7 +67,7 @@ return [
                                 ]
                             ],
                             'update' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/update/:post',
                                     'defaults' => [
@@ -76,7 +76,7 @@ return [
                                 ]
                             ],
                             'trash'  => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/trash/:post',
                                     'defaults' => [

@@ -10,8 +10,6 @@
  */
 namespace Taxonomy;
 
-use Taxonomy\View\Helper\TaxonomyHelper;
-
 return [
     'zfc_rbac'         => [
         'assertion_map' => [
@@ -40,14 +38,7 @@ return [
     ],
     'view_helpers'     => [
         'factories' => [
-            'taxonomy' => function ($helperPluginManager) {
-                    $serviceLocator  = $helperPluginManager->getServiceLocator();
-                    $moduleOptions   = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
-                    $taxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
-                    $plugin          = new TaxonomyHelper($moduleOptions, $taxonomyManager);
-
-                    return $plugin;
-                }
+            'taxonomy' => __NAMESPACE__ . '\Factory\TaxonomyHelperFactory'
         ]
     ],
     'hydrator_plugins' => [
@@ -66,7 +57,7 @@ return [
     'router'           => [
         'routes' => [
             'taxonomy' => [
-                'type'         => 'Segment',
+                'type'         => 'literal',
                 'options'      => [
                     'route' => '/taxonomy'
                 ],
@@ -81,7 +72,7 @@ return [
                         ]
                     ],
                     'term'     => [
-                        'type'         => 'Segment',
+                        'type'         => 'literal',
                         'options'      => [
                             'route'    => '/term',
                             'defaults' => [
@@ -146,7 +137,7 @@ return [
                                 ]
                             ],
                             'sort-associated' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/sort/:association/:term',
                                     'defaults' => [

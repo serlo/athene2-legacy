@@ -10,28 +10,12 @@
  */
 namespace Search;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 return [
     'search'          => [],
     'service_manager' => [
         'factories' => [
-            'Foolz\SphinxQL\Connection'      => function (ServiceLocatorInterface $serviceLocator) {
-                    $config   = $serviceLocator->get('config');
-                    $config   = $config['sphinx'];
-                    $instance = new \Foolz\SphinxQL\Connection();
-                    $instance->setConnectionParams($config['host'], $config['port']);
-                    return $instance;
-                },
-            __NAMESPACE__ . '\SearchService' => function (ServiceLocatorInterface $serviceLocator) {
-                    $config   = $serviceLocator->get('config');
-                    $config   = $config['search'];
-                    $instance = new SearchService();
-                    $instance->setRouter($serviceLocator->get('Router'));
-                    $instance->setServiceLocator($serviceLocator);
-                    $instance->setConfig($config);
-                    return $instance;
-                }
+            'Foolz\SphinxQL\Connection'      => __NAMESPACE__ . '\Factory\ConnectionFactory',
+            __NAMESPACE__ . '\SearchService' => __NAMESPACE__ . '\Factory\SearchServiceFactory'
         ]
     ],
     'di'              => [
@@ -84,7 +68,7 @@ return [
     'router'          => [
         'routes' => [
             'search' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'literal',
                 'options'       => [
                     'route'    => '/search',
                     'defaults' => [
@@ -95,7 +79,7 @@ return [
                 'may_terminate' => true,
                 'child_routes'  => [
                     'ajax' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/ajax',
                             'defaults' => [

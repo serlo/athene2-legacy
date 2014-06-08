@@ -26,7 +26,8 @@ return [
     'service_manager'    => [
         'factories' => [
             __NAMESPACE__ . '\Hydrator\HydratorPluginAwareDoctrineObject' => __NAMESPACE__ . '\Factory\HydratorPluginAwareDoctrineObjectFactory',
-            __NAMESPACE__ . '\Hydrator\HydratorPluginManager'             => __NAMESPACE__ . '\Factory\HydratorPluginManagerFactory'
+            __NAMESPACE__ . '\Hydrator\HydratorPluginManager'             => __NAMESPACE__ . '\Factory\HydratorPluginManagerFactory',
+            'doctrine.cache.apccache'                                     => __NAMESPACE__ . '\Factory\ApcCacheFactory'
         ]
     ]
 ];

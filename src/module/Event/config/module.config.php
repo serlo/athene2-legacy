@@ -98,7 +98,7 @@ return [
     'router'          => [
         'routes' => [
             'event' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/event',
                     'defaults' => [
@@ -107,22 +107,22 @@ return [
                 ],
                 'child_routes' => [
                     'history' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route'    => '/history',
                         ],
                         'child_routes' => [
                             'object' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/object/:id',
+                                    'route'    => '/:id',
                                     'defaults' => [
                                         'action' => 'history'
                                     ]
                                 ]
                             ],
                             'all'     => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options' => [
                                     'route'    => '',
                                     'defaults' => [

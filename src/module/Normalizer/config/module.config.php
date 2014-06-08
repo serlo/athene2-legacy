@@ -11,21 +11,10 @@
  */
 namespace Normalizer;
 
-use Normalizer\View\Helper\Normalize;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 return [
     'view_helpers' => [
         'factories' => [
-            'normalize' => function (ServiceLocatorInterface $serviceLocator) {
-                    $normalize  = new Normalize();
-                    $normalizer = $serviceLocator->getServiceLocator()->get('Normalizer\Normalizer');
-                    $normalize->setNormalizer(
-                        $normalizer
-                    );
-
-                    return $normalize;
-                }
+            'normalize' => __NAMESPACE__ . '\Factory\NormalizeHelperFactory'
         ]
     ],
     'normalizer'   => [
@@ -87,13 +76,13 @@ return [
     'router'       => [
         'routes' => [
             'normalizer' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'         => 'literal',
                 'options'      => [
                     'route' => ''
                 ],
                 'child_routes' => [
                     'signpost' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/ref/:object',
                             'defaults' => [
@@ -105,7 +94,7 @@ return [
                 ]
             ],
             'sitemap'    => [
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options' => [
                     'route'    => '/sitemap.xml',
                     'defaults' => [
@@ -117,7 +106,7 @@ return [
             'uuid'       => [
                 'child_routes' => [
                     'get' => [
-                        'type'     => 'Zend\Mvc\Router\Http\Segment',
+                        'type'     => 'segment',
                         'priority' => -9000,
                         'options'  => [
                             'route'       => '/:uuid',

@@ -22,7 +22,7 @@ return [
     'router'             => [
         'routes' => [
             'instance' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/instance',
                     'defaults' => [
@@ -31,7 +31,7 @@ return [
                 ],
                 'child_routes' => [
                     'switch' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/switch/:instance',
                             'defaults' => [

@@ -14,7 +14,7 @@ return [
     'router' => [
         'routes' => [
             'backend'  => [
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options' => [
                     'route'    => '/backend',
                     'defaults' => [
@@ -24,7 +24,7 @@ return [
                 ],
             ],
             'debugger' => [
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options' => [
                     'route'    => '/debugger',
                     'defaults' => [

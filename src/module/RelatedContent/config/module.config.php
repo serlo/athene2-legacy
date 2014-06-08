@@ -70,7 +70,7 @@ return [
     'router'          => [
         'routes' => [
             'related-content' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'         => 'segment',
                 'options'      => [
                     'route'    => '/{related-content}',
                     'defaults' => [
@@ -79,7 +79,7 @@ return [
                 ],
                 'child_routes' => [
                     'manage'       => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/:id',
                             'defaults' => [
@@ -88,7 +88,7 @@ return [
                         ]
                     ],
                     'add-internal' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/add-internal/:id',
                             'defaults' => [
@@ -97,7 +97,7 @@ return [
                         ]
                     ],
                     'add-category' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/add-category/:id',
                             'defaults' => [
@@ -106,7 +106,7 @@ return [
                         ]
                     ],
                     'add-external' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/add-external/:id',
                             'defaults' => [
@@ -115,7 +115,7 @@ return [
                         ]
                     ],
                     'remove'       => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/remove-internal/:id',
                             'defaults' => [
@@ -124,7 +124,7 @@ return [
                         ]
                     ],
                     'order'        => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/order',
                             'defaults' => [

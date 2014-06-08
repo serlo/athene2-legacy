@@ -50,16 +50,6 @@ return [
     'service_manager' => [
         'factories' => [
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-            'MailMan'    => function ($sm) {
-                    $config     = $sm->get('Config');
-                    $smtpParams = $config['smtpParams'];
-
-                    $transport = new \Zend\Mail\Transport\Smtp();
-                    $options   = new \Zend\Mail\Transport\SmtpOptions($smtpParams);
-                    $transport->setOptions($options);
-
-                    return $transport;
-                }
         ]
     ],
     'controllers'     => [

@@ -47,14 +47,6 @@ return [
             'Zend\Session\Validator\HttpUserAgent'
         ],
     ],
-    'service_manager' => [
-        'factories' => [
-            'doctrine.cache.apccache' => function ($sm) {
-                    $cache = new \Doctrine\Common\Cache\ApcCache();
-                    return $cache;
-                },
-        ]
-    ],
     'di'              => [
         'instance' => [
             'preferences' => [

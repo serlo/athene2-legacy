@@ -9,22 +9,10 @@
  */
 namespace Notification;
 
-use Notification\View\Helper\Notification;
-
 return [
     'view_helpers'    => [
         'factories' => [
-            'notifications' => function ($sm) {
-                    $helper = new Notification();
-                    $helper->setUserManager(
-                        $sm->getServiceLocator()->get('User\Manager\UserManager')
-                    );
-                    $helper->setNotificationManager(
-                        $sm->getServiceLocator()->get('Notification\NotificationManager')
-                    );
-
-                    return $helper;
-                },
+            'notifications' => __NAMESPACE__ . '\Factory\NotificationHelperFactory',
             'subscribe'     => __NAMESPACE__ . '\Factory\SubscribeFactory'
         ]
     ],
@@ -38,7 +26,7 @@ return [
     'router'          => [
         'routes' => [
             'notification'  => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'literal',
                 'options'       => [
                     'route'    => '/notification',
                     'defaults' => [
@@ -48,7 +36,7 @@ return [
                 'may_terminate' => false,
                 'child_routes'  => [
                     'read' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/read',
                             'defaults' => [
@@ -59,7 +47,7 @@ return [
                 ]
             ],
             'subscription'  => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'literal',
                 'options'       => [
                     'route'    => '',
                     'defaults' => [
@@ -69,7 +57,7 @@ return [
                 'may_terminate' => false,
                 'child_routes'  => [
                     'subscribe'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/subscribe/:object/:email',
                             'defaults' => [
@@ -78,7 +66,7 @@ return [
                         ]
                     ],
                     'unsubscribe' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/unsubscribe/:object',
                             'defaults' => [
@@ -86,8 +74,8 @@ return [
                             ]
                         ]
                     ],
-                    'update' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    'update'      => [
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/subscription/update/:object/:email',
                             'defaults' => [
@@ -98,7 +86,7 @@ return [
                 ],
             ],
             'subscriptions' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'         => 'literal',
                 'options'      => [
                     'route'    => '/subscriptions',
                     'defaults' => [
@@ -107,7 +95,7 @@ return [
                 ],
                 'child_routes' => [
                     'manage' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/manage',
                             'defaults' => [

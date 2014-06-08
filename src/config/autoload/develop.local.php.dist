@@ -21,9 +21,17 @@ return [
         'debug' => true,
         'buildOnRequest' => true
     ],
-    'strokercache' => array(
-        'storage_adapter' => array(
+    'view_manager'          => [
+        'strategies'               => [
+            'Ui\Strategy\PhpRendererStrategy'
+        ]
+    ],
+    'strokercache' => [
+        'storage_adapter' => [
             'name' => 'Zend\Cache\Storage\Adapter\Apc',
-        )
-    )
+            'options' => [
+               'ttl' => 60*60
+            ]
+        ]
+    ]
 ];

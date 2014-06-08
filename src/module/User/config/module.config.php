@@ -16,11 +16,7 @@ return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Manager\UserManager' => __NAMESPACE__ . '\Factory\UserManagerFactory',
-            __NAMESPACE__ . '\Form\Register'       => function ($sm) {
-                    $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
-
-                    return $form;
-                },
+            __NAMESPACE__ . '\Form\Register'       => __NAMESPACE__ . '\Factory\RegisterFormFactory',
         ]
     ],
     'class_resolver'  => [
@@ -66,7 +62,7 @@ return [
     'router'          => [
         'routes' => [
             'users' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'may_terminate' => true,
                 'options'       => [
                     'route'    => '/users',
@@ -77,7 +73,7 @@ return [
                 ]
             ],
             'user'  => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'may_terminate' => false,
                 'options'       => [
                     'route'    => '/user',
@@ -88,7 +84,7 @@ return [
                 ],
                 'child_routes'  => [
                     'me'       => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/me',
@@ -98,7 +94,7 @@ return [
                         ]
                     ],
                     'profile'  => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'          => 'segment',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/profile/:id',
@@ -108,7 +104,7 @@ return [
                         ]
                     ],
                     'register' => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/register',
@@ -118,7 +114,7 @@ return [
                         ]
                     ],
                     'settings' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/settings',
                             'defaults' => [
@@ -127,7 +123,7 @@ return [
                         ]
                     ],
                     'remove'   => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/remove/:id',
                             'defaults' => [

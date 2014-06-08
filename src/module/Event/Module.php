@@ -9,6 +9,8 @@
  */
 namespace Event;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
 
@@ -49,12 +51,20 @@ class Module
         return $autoloader;
     }
 
-    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    public function onBootstrap(MvcEvent $e)
     {
-        foreach (static::$listeners as $listener) {
-            $serviceManager = $e->getApplication()->getServiceManager();
-            $listener       = $serviceManager->get($listener);
-            $e->getApplication()->getEventManager()->getSharedManager()->attachAggregate($listener);
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatchRegisterListeners'), 1000);
+    }
+
+    public function onDispatchRegisterListeners(MvcEvent $e)
+    {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        foreach (self::$listeners as $listener) {
+            $sharedEventManager->attachAggregate(
+                $e->getApplication()->getServiceManager()->get($listener)
+            );
         }
     }
 }

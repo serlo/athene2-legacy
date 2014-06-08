@@ -7,10 +7,18 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
+
+$moduleCache = true;
+$configCache = false;
+if (file_exists(__DIR__ . '/definitions.local.php')) {
+    require_once __DIR__ . '/definitions.local.php';
+}
+
 return [
     // This should be an array of module namespaces used in the application.
     'modules'                 => [
         // Session needs to be the first entry, so db storage instead of php storage is used!
+        'PageSpeed',
         'Session',
         'ZendDeveloperTools',
         'Application',
@@ -58,7 +66,6 @@ return [
         'Taxonomy',
         'Notification',
         'Ads',
-        'Migrator',
         'Log',
         'CacheInvalidator',
         'Cache'
@@ -84,14 +91,14 @@ return [
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
-        'config_cache_enabled'     => false,
+        'config_cache_enabled'     => $configCache,
         // The key used to create the configuration cache file name.
 
         'config_cache_key'         => "2245023265ae4cf87d02c8b6ba994139",
         // Whether or not to enable a module class map cache.
         // If enabled, creates a module class map cache which will be used
         // by in future requests, to reduce the autoloading process.
-        'module_map_cache_enabled' => true,
+        'module_map_cache_enabled' => $moduleCache,
         // The key used to create the class map cache file name.
         'module_map_cache_key'     => "496fe9daf9bed5ab03314f04518b9268",
         // The path in which to cache merged configuration.

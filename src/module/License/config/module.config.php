@@ -69,7 +69,7 @@ return [
     'router'          => [
         'routes' => [
             'license' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/license',
                     'defaults' => [
@@ -78,7 +78,7 @@ return [
                 ],
                 'child_routes' => [
                     'manage' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/manage',
                             'defaults' => [
@@ -87,7 +87,7 @@ return [
                         ]
                     ],
                     'add'    => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/add',
                             'defaults' => [
@@ -96,7 +96,7 @@ return [
                         ]
                     ],
                     'detail' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/detail/:id',
                             'defaults' => [
@@ -105,7 +105,7 @@ return [
                         ]
                     ],
                     'update' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/update/:id',
                             'defaults' => [
@@ -114,7 +114,7 @@ return [
                         ]
                     ],
                     'remove' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/remove/:id',
                             'defaults' => [

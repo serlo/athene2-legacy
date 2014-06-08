@@ -14,13 +14,13 @@ return [
     'router' => [
         'routes' => [
             'entity' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route' => '/entity'
                 ],
                 'child_routes' => [
                     'create'     => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/create/:type',
                             'defaults' => [
@@ -30,7 +30,7 @@ return [
                         ]
                     ],
                     'trash'      => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/trash/:entity',
                             'defaults' => [
@@ -40,7 +40,7 @@ return [
                         ]
                     ],
                     'restore'    => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/restore/:entity',
                             'defaults' => [
@@ -50,7 +50,7 @@ return [
                         ]
                     ],
                     'purge'      => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/purge/:entity',
                             'defaults' => [
@@ -60,7 +60,7 @@ return [
                         ]
                     ],
                     'repository' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route'    => '/repository',
                             'defaults' => [
@@ -69,7 +69,7 @@ return [
                         ],
                         'child_routes' => [
                             'checkout'     => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/checkout/:entity/:revision',
                                     'defaults' => [
@@ -78,7 +78,7 @@ return [
                                 ]
                             ],
                             'reject'       => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/reject/:entity/:revision',
                                     'defaults' => [
@@ -87,7 +87,7 @@ return [
                                 ]
                             ],
                             'compare'      => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/compare/:entity/:revision',
                                     'defaults' => [
@@ -96,7 +96,7 @@ return [
                                 ]
                             ],
                             'history'      => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/history/:entity',
                                     'defaults' => [
@@ -105,7 +105,7 @@ return [
                                 ]
                             ],
                             'add-revision' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/add-revision/:entity',
                                     'defaults' => [
@@ -116,7 +116,7 @@ return [
                         ]
                     ],
                     'license'    => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route'    => '/license',
                             'defaults' => [
@@ -125,7 +125,7 @@ return [
                         ],
                         'child_routes' => [
                             'update' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/update/:entity',
                                     'defaults' => [
@@ -136,7 +136,7 @@ return [
                         ]
                     ],
                     'link'       => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route'    => '/link',
                             'defaults' => [
@@ -145,7 +145,7 @@ return [
                         ],
                         'child_routes' => [
                             'order' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/order/:type/:entity',
                                     'defaults' => [
@@ -154,7 +154,7 @@ return [
                                 ]
                             ],
                             'move'  => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/move/:type/:entity/:from',
                                     'defaults' => [
@@ -165,7 +165,7 @@ return [
                         ]
                     ],
                     'page'       => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/view/:entity',
                             'defaults' => [
@@ -175,13 +175,13 @@ return [
                         ]
                     ],
                     'taxonomy'   => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route' => '/taxonomy'
                         ],
                         'child_routes' => [
                             'update' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/update/:entity',
                                     'defaults' => [

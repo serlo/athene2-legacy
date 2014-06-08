@@ -30,14 +30,14 @@ return [
     'router'          => [
         'routes' => [
             'uuid' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     // Do not change this or /:id refs wont work (see normalizer route config)
                     'route' => ''
                 ],
                 'child_routes' => [
                     'trash'       => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/uuid/trash/:id',
                             'defaults' => [
@@ -47,7 +47,7 @@ return [
                         ]
                     ],
                     'recycle-bin' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/uuid/recycle-bin',
                             'defaults' => [
@@ -57,7 +57,7 @@ return [
                         ]
                     ],
                     'restore'     => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/uuid/restore/:id',
                             'defaults' => [
@@ -67,7 +67,7 @@ return [
                         ]
                     ],
                     'purge'       => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/uuid/purge/:id',
                             'defaults' => [

@@ -4,12 +4,18 @@
  * to the application root now.
  */
 chdir(dirname(__DIR__));
+define('ZF_CLASS_CACHE', 'data/classes.php.cache');
+
+if (file_exists(ZF_CLASS_CACHE)) {
+    require_once ZF_CLASS_CACHE;
+}
 
 set_time_limit(400);
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', true);
 ini_set('session.gc_maxlifetime', 2419200);
 set_error_handler("exception_error_handler");
+
 date_default_timezone_set('Europe/Berlin');
 
 // Setup autoloading

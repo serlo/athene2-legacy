@@ -34,7 +34,7 @@ return [
     'router'          => [
         'routes' => [
             'authentication' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/auth',
                     'defaults' => [
@@ -43,7 +43,7 @@ return [
                 ],
                 'child_routes' => [
                     'login'    => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/login',
@@ -53,7 +53,7 @@ return [
                         ]
                     ],
                     'logout'   => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/logout',
@@ -63,7 +63,7 @@ return [
                         ]
                     ],
                     'activate' => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'type'          => 'segment',
                         'may_terminate' => true,
                         'options'       => [
                             'route'    => '/activate[/:token]',
@@ -73,13 +73,13 @@ return [
                         ]
                     ],
                     'password' => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route' => '/password'
                         ],
                         'child_routes' => [
                             'change'  => [
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'may_terminate' => true,
                                 'options'       => [
                                     'route'    => '/change',
@@ -89,7 +89,7 @@ return [
                                 ]
                             ],
                             'restore' => [
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'type'          => 'segment',
                                 'may_terminate' => true,
                                 'options'       => [
                                     'route'    => '/restore[/:token]',

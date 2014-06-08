@@ -55,15 +55,11 @@ return [
         ],
         'strategies'               => [
             'Zend\View\Strategy\JsonStrategy',
-            'Ui\Strategy\PhpRendererStrategy'
         ]
     ],
     'view_helpers'          => [
         'factories'  => [
-            'pageHeader'  => function ($helperPluginManager) {
-                    $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\PageHeaderHelperOptions');
-                    return new PageHeader($config);
-                },
+            'pageHeader'  => __NAMESPACE__ . '\Factory\PageHeaderFactory',
             'brand'       => __NAMESPACE__ . '\Factory\BrandHelperFactory',
             'twigPartial' => __NAMESPACE__ . '\Factory\TwigPartialFactory',
             'tracking'    => __NAMESPACE__ . '\Factory\TrackingFactory'
@@ -80,13 +76,7 @@ return [
     ],
     'service_manager'       => [
         'factories'  => [
-            'Ui\Renderer\PhpDebugRenderer'                     => function (ServiceLocatorInterface $sm) {
-                    $service = new Renderer\PhpDebugRenderer();
-                    $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
-                    $service->setHelperPluginManager($sm->get('ViewHelperManager'));
-
-                    return $service;
-                },
+            'Ui\Renderer\PhpDebugRenderer'                     => __NAMESPACE__ . '\Factory\PhpDebugRenderFactory',
             __NAMESPACE__ . '\Options\BrandHelperOptions'      => __NAMESPACE__ . '\Factory\BrandHelperOptionsFactory',
             __NAMESPACE__ . '\Options\TrackingHelperOptions'   => __NAMESPACE__ . '\Factory\TrackingHelperOptionsFactory',
             __NAMESPACE__ . '\Options\PageHeaderHelperOptions' => __NAMESPACE__ . '\Factory\PageHeaderHelperOptionsFactory',

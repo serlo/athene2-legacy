@@ -79,7 +79,7 @@ return [
     'router'             => [
         'routes' => [
             'attachment' => [
-                'type'         => 'Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route'    => '/attachment',
                     'defaults' => [

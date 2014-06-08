@@ -66,13 +66,13 @@ return [
     'router'             => [
         'routes' => [
             'authorization' => [
-                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'literal',
                 'options'      => [
                     'route' => '/authorization',
                 ],
                 'child_routes' => [
                     'forbidden' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/forbidden',
                             'defaults' => [
@@ -82,7 +82,7 @@ return [
                         ],
                     ],
                     'roles'     => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options' => [
                             'route'    => '/roles',
                             'defaults' => [
@@ -92,7 +92,7 @@ return [
                         ],
                     ],
                     'role'      => [
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'literal',
                         'options'      => [
                             'route'    => '/role',
                             'defaults' => [
@@ -101,7 +101,7 @@ return [
                         ],
                         'child_routes' => [
                             'show'       => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '/show/:role',
                                     'defaults' => [
@@ -110,7 +110,7 @@ return [
                                 ]
                             ],
                             'create'     => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options' => [
                                     'route'    => '/create',
                                     'defaults' => [
@@ -119,7 +119,7 @@ return [
                                 ]
                             ],
                             'all'        => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options' => [
                                     'route'    => '/all',
                                     'defaults' => [
@@ -128,13 +128,13 @@ return [
                                 ]
                             ],
                             'user'       => [
-                                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'literal',
                                 'options'      => [
                                     'route' => '/user',
                                 ],
                                 'child_routes' => [
                                     'add'    => [
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'type'    => 'segment',
                                         'options' => [
                                             'route'    => '/add/:role',
                                             'defaults' => [
@@ -143,7 +143,7 @@ return [
                                         ]
                                     ],
                                     'remove' => [
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'type'    => 'segment',
                                         'options' => [
                                             'route'    => '/remove/:role',
                                             'defaults' => [
@@ -154,13 +154,13 @@ return [
                                 ]
                             ],
                             'permission' => [
-                                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                                'type'         => 'segment',
                                 'options'      => [
                                     'route' => '/permission',
                                 ],
                                 'child_routes' => [
                                     'add'    => [
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'type'    => 'segment',
                                         'options' => [
                                             'route'    => '/add/:role',
                                             'defaults' => [
@@ -169,7 +169,7 @@ return [
                                         ]
                                     ],
                                     'remove' => [
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'type'    => 'segment',
                                         'options' => [
                                             'route'    => '/remove/:role/:permission',
                                             'defaults' => [
