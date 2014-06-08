@@ -11,8 +11,8 @@ grunt build
 cd ../../
 cd src
 php public/index.php assetic build
-php public/index.php pagespeed build
-rm data/twig data/zfc* data/*.php -Rf
+rm data/twig data/zfc* data/*.php data/*.cache -Rf
 pm2 status
 cd ../
 php composer.phar update -o
+php public/index.php pagespeed build

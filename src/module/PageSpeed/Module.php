@@ -129,6 +129,7 @@ class Module
     public function cache($e)
     {
         $request = $e->getRequest();
+
         if ($request instanceof ConsoleRequest) {
             if (!($request->getParam('controller') == 'PageSpeed\Controller\PageSpeedController' && $request->getParam(
                     'action'
@@ -136,6 +137,8 @@ class Module
             ) {
                 return;
             }
+        } else {
+            return;
         }
 
         if (file_exists(ZF_CLASS_CACHE)) {
