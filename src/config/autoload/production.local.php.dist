@@ -36,7 +36,7 @@ return [
     ],
     'log' => [
         'exceptions' => true
-    ]
+    ],
     'strokercache' => array(
         'storage_adapter' => [
             'name' => 'Zend\Cache\Storage\Adapter\Filesystem',

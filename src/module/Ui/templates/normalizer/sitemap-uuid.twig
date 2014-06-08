@@ -3,6 +3,7 @@
     {% for object in objects if normalize().possible(object) %}
         <url>
             <loc>{{ normalize().toUrl(object, true) }}</loc>
+            <lastmod>2014-06-08</lastmod>
         </url>
     {% endfor %}
 </urlset>
