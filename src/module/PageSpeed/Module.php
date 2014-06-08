@@ -14,6 +14,7 @@ namespace PageSpeed;
 use Zend\Code\Reflection\ClassReflection;
 use Zend\Code\Scanner\FileScanner;
 use Zend\Console\Request as ConsoleRequest;
+use Zend\ModuleManager\ModuleManager;
 
 /**
  * Create a class cache of all classes used.
@@ -128,8 +129,13 @@ class Module
     public function cache($e)
     {
         $request = $e->getRequest();
-        if ($request instanceof ConsoleRequest || $request->getQuery()->get('BUILD', null) === null) {
-            return;
+        if ($request instanceof ConsoleRequest) {
+            if (!($request->getParam('controller') == 'PageSpeed\Controller\PageSpeedController' && $request->getParam(
+                    'action'
+                ) == 'build')
+            ) {
+                return;
+            }
         }
 
         if (file_exists(ZF_CLASS_CACHE)) {
@@ -183,12 +189,39 @@ class Module
         file_put_contents(ZF_CLASS_CACHE, php_strip_whitespace(ZF_CLASS_CACHE));
     }
 
+    public function getAutoloaderConfig()
+    {
+        $autoloader = [];
+
+        $autoloader['Zend\Loader\StandardAutoloader'] = [
+            'namespaces' => [
+                __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+            ]
+        ];
+
+        if (file_exists(__DIR__ . '/autoload_classmap.php')) {
+            return [
+                'Zend\Loader\ClassMapAutoloader' => [
+                    __DIR__ . '/autoload_classmap.php',
+                ]
+            ];
+
+        }
+
+        return $autoloader;
+    }
+
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
+
     /**
      * Attach events
      *
      * @return void
      */
-    public function init($e)
+    public function init(ModuleManager $e)
     {
         $events = $e->getEventManager()->getSharedManager();
         $events->attach('Zend\Mvc\Application', 'finish', array($this, 'cache'));
@@ -204,6 +237,5 @@ class Module
         $scanner            = new FileScanner(ZF_CLASS_CACHE);
         $this->knownClasses = array_unique($scanner->getClassNames());
     }
-
 }
  
