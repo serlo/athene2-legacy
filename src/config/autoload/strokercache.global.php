@@ -22,13 +22,6 @@ return array(
                     ),
                 ),
             ),
-        ),
-        'storage_adapter' => [
-            'name' => 'Zend\Cache\Storage\Adapter\Filesystem',
-            'options' => [
-                'cache_dir' => __DIR__ . '/../../data',
-                'ttl' => 60*60*24*7
-            ]
-        ]
+        )
     ),
 );

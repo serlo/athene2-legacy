@@ -36,7 +36,16 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         // duration of slide animation
         animationDuration: 150,
         // how many breadcrumbs are shown OR false for every breadcrumb
-        breadcrumbDepth: false
+        breadcrumbDepth: false,
+        // asynch nav config
+        asyncNav: {
+            // fetch location
+            loc: '/navigation/render/json/default_navigation',
+            // maximum levels to fetch per iteration
+            max: 3,
+            // attribute name to indicate that this branch has been fetched already
+            indicator: 'needs-fetching'
+        }
     };
 
     /**
@@ -63,6 +72,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     MenuItem = function (data) {
         if (data.url === undefined || !data.title || !data.position || data.level === undefined) {
             Common.log('Invalid MenuItem', data);
+        }
+
+        if (data.needsFetching === undefined) {
+            data.needsFetching = true;
         }
 
         eventScope(this);
@@ -109,6 +122,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
             if (self.data.renderedChildren && self.data.renderedChildren.length) {
                 $children = $('<ul>');
+                self.$children = $children;
 
                 _.each(self.data.renderedChildren, function (child) {
                     var childItem = new MenuItem(_.extend({}, child.data, {
@@ -324,6 +338,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     $link = $listItem.children().filter('a').first(),
                     position = [].concat(deepness),
                     hasChildren = $listItem.children().filter('ul').find('> li').length,
+                    needsFetching = $listItem.data('needs-fetching') !== undefined,
                     icon;
 
                 if (hasChildren) {
@@ -338,7 +353,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     position: position,
                     level: level,
                     parent: parent,
-                    icon: icon
+                    icon: icon,
+                    deepness: deepness,
+                    needsFetching: needsFetching
                 });
 
                 if (hasChildren) {
@@ -349,6 +366,68 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         }
 
         loop(self.$root, self.data, 0);
+        return this;
+    };
+
+    /**
+     * @method fetchFromJson
+     * @param {Object} object
+     * @param {MenuItem} parent
+     *
+     * Loops through data and creates an hierarchial array of objects
+     **/
+    Hierarchy.prototype.fetchFromJson = function (object, parent) {
+        var deepness = parent.data.deepness;
+
+        parent.data.needsFetching = false;
+
+        /**
+         * @function loop
+         * @param {Object} object The element containing the children to loop through
+         * @param {Array} dataHierarchy The current hierarchy array
+         * @param {Number} level The current level of hierarchy
+         * @param {MenuItem} parent
+         *
+         * Creates a recursive reflection of the <li> tags in the given $element
+         * on the Hierarchy (hierarchy.data)
+         *
+         * Also creates MenuItem instances for every link and adds event handlers
+         **/
+        function loop(object, dataHierarchy, level, parent) {
+            $.each(object, function (i, item) {
+                deepness = deepness.splice(0, level);
+                deepness.push(i);
+
+                var position = [].concat(deepness),
+                    hasChildren = item.children.length,
+                    icon;
+
+                if (hasChildren) {
+                    icon = 'chevron-right';
+                }
+
+                dataHierarchy[i] = new MenuItem({
+                    url: item.href,
+                    title: item.label,
+                    position: position,
+                    level: level,
+                    parent: parent,
+                    icon: icon,
+                    deepness: deepness,
+                    needsFetching: item.needsFetching
+                });
+
+                if (hasChildren) {
+                    dataHierarchy[i].children = [];
+                    loop(item.children, dataHierarchy[i].children, level + 1, dataHierarchy[i]);
+                }
+
+                return dataHierarchy;
+            });
+        }
+
+        parent.children = [];
+        loop(object, parent.children, parent.data.level + 1, parent);
         return this;
     };
 
@@ -564,7 +643,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 siblings = [];
             }
 
-            if (parents.length) {
+            if (parents.length && !self.$breadcrumbs.html().length) {
                 _.each(parents, function (menuItem, key) {
                     var breadcrumb,
                         breadCrumbOptions = {
@@ -629,8 +708,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             menuItem.addEventListener('click', function (e) {
                 e.originalEvent.preventDefault();
                 self.navigatedMenuItem = e.menuItem;
-                console.log('yeahh');
-                self.jumpTo(e.menuItem);
+                self.fetch(e.menuItem);
             });
 
             menuItem.addEventListener('reload', function () {
@@ -652,6 +730,42 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 self.force = false;
                 return;
             }
+        });
+    };
+
+    /**
+     * @method fetch
+     * @param {MenuItem} menuItem The clicked MenuItem instance
+     *
+     * This method fetches an menuItems children from the server.
+     */
+    SideNavigation.prototype.fetch = function (menuItem) {
+        var call,
+            options = defaults.asyncNav,
+            max = options.max,
+            self = this,
+            level = menuItem.data.level + 2,
+            needsFetching = menuItem.data.needsFetching,
+            url = menuItem.data.url,
+            fetchUrl = options.loc + '/' + level + '/' + max + '/' + url;
+
+        if (!needsFetching) {
+            self.jumpTo(menuItem);
+            return;
+        }
+
+        call = $.ajax({
+            url: fetchUrl,
+            dataType: 'json'
+        });
+
+        call.success(function (data) {
+            self.hierarchy.fetchFromJson(data, menuItem);
+            self.jumpTo(menuItem);
+        });
+
+        call.error(function () {
+            console.log('Fetch not successfull :(');
         });
     };
 

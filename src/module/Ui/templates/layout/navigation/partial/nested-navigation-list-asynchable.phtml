@@ -12,11 +12,14 @@
 $html = array();
 $useBreadCrumbs = true;
 $depth = $this->depth ? : 1;
+$maxDepth = $this->navigation()->menu()->getMaxDepth();
+$siblingIsActive = false;
 
 foreach ($this->pages as $page) {
     $liClasses = [];
+    $siblingIsActive = $siblingIsActive || $page->isActive();
     // visibility of the sub-page
-    if (!$page->isVisible() || !($depth <= $this->navigation()->menu()->getMaxDepth() || $page->isActive(true))  || !$this->navigation()->accept($page)) {
+    if (!$page->isVisible() || !($depth <= $maxDepth || $page->isActive(true) || $siblingIsActive)  || !$this->navigation()->accept($page)) {
         continue;
     }
 
@@ -38,8 +41,9 @@ foreach ($this->pages as $page) {
     $breadcrumb = ($page->isActive(true) && $useBreadCrumbs) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
     $child      = $breadcrumb ? 'itemprop="child"' : '';
     $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
+    $needsFetching = ($depth >= $maxDepth - 1 && !empty($page->pages)) ? ' data-needs-fetching="true" ' : '';
 
-    $html[] = '<li' . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
+    $html[] = '<li' . $needsFetching . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
     $html[] = '<a href="' . $this->alias($page->getHref()) . '"' . ($breadcrumb ? ' itemprop="url"' : '') . '>';
 

@@ -18,7 +18,7 @@ return [
         ],
     ],
     'assetic_configuration' => [
-        'debug' => true,
+        'debug' => false,
         'buildOnRequest' => true
     ],
     'view_manager'          => [

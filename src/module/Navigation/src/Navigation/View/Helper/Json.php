@@ -25,7 +25,13 @@ class Json extends Menu
 
         $data = $this->process($container);
         $json = new ZendJson;
-        return $json->encode($data);
+        $json = $json->encode($data);
+
+        // todo ....
+        $json = preg_replace('~^\[+~is', '[', $json);
+        $json = preg_replace('~\]+$~is', ']', $json);
+
+        return $json;
     }
 
     protected function process($container, $currentDepth = 0, $activeDepth = null)
@@ -42,22 +48,20 @@ class Json extends Menu
         $end           = $start + $this->getMaxDepth();
         $pages         = [];
         $pagePrototype = [
-            'label'    => null,
-            'class'    => null,
-            'href'     => null,
-            'elements' => 0,
-            'icon'     => null,
-            'children' => []
+            'label'         => null,
+            'class'         => null,
+            'href'          => null,
+            'elements'      => 0,
+            'icon'          => null,
+            'needsFetching' => false,
+            'children'      => []
         ];
 
         /* @var $page AbstractPage */
         foreach ($container as $page) {
-            if (!($page->isVisible()
-                && $this->accept(
-                $page
-                )
-                && $currentDepth < $end
-                && ($currentDepth > $activeDepth || $page->isActive(true)))
+            if (!($page->isVisible() && $this->accept(
+                    $page
+                ) && $currentDepth < $end && ($currentDepth > $activeDepth || $page->isActive(true)))
             ) {
                 continue;
             }
@@ -67,12 +71,14 @@ class Json extends Menu
                     $addPage['class'] = 'divider';
                     $pages[]          = $addPage;
                 } else {
-                    $addPage             = $pagePrototype;
-                    $addPage['label']    = $page->getLabel();
-                    $addPage['elements'] = $page->get('elements') ? : 0;
-                    $addPage['icon']     = $page->get('icon');
-                    $addPage['class']    = $page->getClass();
-                    $addPage['href']     = $page->getHref();
+                    $active                   = $page->isActive() ? ' active' : '';
+                    $addPage                  = $pagePrototype;
+                    $addPage['label']         = $page->getLabel();
+                    $addPage['elements']      = $page->get('elements') ? : 0;
+                    $addPage['icon']          = $page->get('icon');
+                    $addPage['class']         = $page->getClass() . $active;
+                    $addPage['href']          = $page->getHref();
+                    $addPage['needsFetching'] = $currentDepth >= $end - 1 && count($page->getPages());
                     if (count($page->getPages())) {
                         $addPage['children'] = $this->process($page->getPages(), $currentDepth + 1, $activeDepth);
                     }
@@ -81,7 +87,7 @@ class Json extends Menu
             } else {
                 if (count($page->getPages())) {
                     $addPages = $this->process($page->getPages(), $currentDepth + 1, $activeDepth);
-                    $pages[]  = $this->removeWrapping($addPages);
+                    $pages[]  = $addPages;
                 }
             }
         }
@@ -91,8 +97,9 @@ class Json extends Menu
 
     protected function removeWrapping(array $data)
     {
-        if (is_array($data) && count($data) == 1 && is_numeric(array_keys($data)[0])) {
-            return $data[0];
+        $first = $data[0];
+        if (count($first) == 1 && count($data) == 1) {
+            return $this->removeWrapping($data[0]);
         }
         return $data;
     }
