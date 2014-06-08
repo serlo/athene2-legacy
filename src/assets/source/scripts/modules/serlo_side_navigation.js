@@ -629,6 +629,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             menuItem.addEventListener('click', function (e) {
                 e.originalEvent.preventDefault();
                 self.navigatedMenuItem = e.menuItem;
+                console.log('yeahh');
                 self.jumpTo(e.menuItem);
             });
 
