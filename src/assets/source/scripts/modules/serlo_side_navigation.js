@@ -44,7 +44,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // maximum levels to fetch per iteration
             max: 5,
             // attribute name to indicate that this branch has been fetched already
-            indicator: 'needs-fetching'
+            indicator: 'needs-fetching',
+            // attribute name to identify the menuitem
+            identifier: 'identifier'
         }
     };
 
@@ -355,7 +357,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     parent: parent,
                     icon: icon,
                     needsFetching: needsFetching,
-                    elementCount: $listItem.data('element-count')
+                    elementCount: $listItem.data('element-count'),
+                    identifier: $listItem.data(defaults.asyncNav.identifier)
                 });
 
                 if (hasChildren) {
@@ -414,7 +417,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     parent: parent,
                     icon: icon,
                     needsFetching: item.needsFetching,
-                    elementCount: item.elements
+                    elementCount: item.elements,
+                    identifier: item.identifier
                 });
 
                 if (hasChildren) {
@@ -777,8 +781,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             self = this,
             level = menuItem.data.level + 2,
             needsFetching = menuItem.data.needsFetching,
-            url = menuItem.data.url,
-            fetchUrl = options.loc + '/' + level + '/' + max + '/' + url;
+            identifier = menuItem.data.identifier,
+            fetchUrl = options.loc + '/' + level + '/' + max + '/' + identifier;
 
         if (!needsFetching) {
             self.jumpTo(menuItem);

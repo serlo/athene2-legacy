@@ -115,7 +115,7 @@ return [
                             'route'       => '/render/:action/:navigation/:current/:depth/:branch',
                             'constraints' => [
                                 'branch' => '(.)+',
-                                'action' => 'list|json'
+                                'action' => 'json'
                             ],
                             'defaults'    => [
                                 'controller' => __NAMESPACE__ . '\Controller\RenderController'

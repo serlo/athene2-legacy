@@ -16,6 +16,29 @@ use Zend\View\Helper\Navigation\Menu;
 
 class Json extends Menu
 {
+    /**
+     * @var string
+     */
+    protected $identifier;
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * @param string $identifier
+     * @return $this
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+        return $this;
+    }
+
     public function render($container = null)
     {
         $this->parseContainer($container);
@@ -27,6 +50,70 @@ class Json extends Menu
         $json = new ZendJson;
         $json = $json->encode($data);
         return $json;
+    }
+
+    protected function isActive(AbstractPage $page, $recursive = true)
+    {
+        if ($page->get('identifier') != $this->identifier && $recursive) {
+            foreach ($page->getPages() as $subPage) {
+                if ($this->isActive($subPage, $recursive)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return $page->get('identifier') == $this->identifier;
+    }
+
+    public function findActive($container, $minDepth = null, $maxDepth = -1)
+    {
+        $this->parseContainer($container);
+        if (!is_int($minDepth)) {
+            $minDepth = $this->getMinDepth();
+        }
+        if ((!is_int($maxDepth) || $maxDepth < 0) && null !== $maxDepth) {
+            $maxDepth = $this->getMaxDepth();
+        }
+
+        $found  = null;
+        $foundDepth = -1;
+        $iterator = new \RecursiveIteratorIterator($container, \RecursiveIteratorIterator::CHILD_FIRST);
+
+        foreach ($iterator as $page) {
+            $currDepth = $iterator->getDepth();
+            if ($currDepth < $minDepth || !$this->accept($page)) {
+                // page is not accepted
+                continue;
+            }
+
+            if ($this->isActive($page, false) && $currDepth > $foundDepth) {
+                // found an active page at a deeper level than before
+                $found = $page;
+                $foundDepth = $currDepth;
+            }
+        }
+
+        if (is_int($maxDepth) && $foundDepth > $maxDepth) {
+            while ($foundDepth > $maxDepth) {
+                if (--$foundDepth < $minDepth) {
+                    $found = null;
+                    break;
+                }
+
+                $found = $found->getParent();
+                if (!$found instanceof AbstractPage) {
+                    $found = null;
+                    break;
+                }
+            }
+        }
+
+        if ($found) {
+            return array('page' => $found, 'depth' => $foundDepth);
+        }
+
+        return array();
     }
 
     protected function process($container, $currentDepth = 0, $activeDepth = null, array &$pages = [])
@@ -42,7 +129,7 @@ class Json extends Menu
         $start         = $this->getMinDepth();
         $end           = $start + $this->getMaxDepth();
         $pagePrototype = [
-            'id'            => null,
+            'identifier'    => null,
             'label'         => null,
             'class'         => null,
             'href'          => null,
@@ -56,7 +143,7 @@ class Json extends Menu
         foreach ($container as $page) {
             if (!($page->isVisible() && $this->accept(
                     $page
-                ) && $currentDepth < $end && ($currentDepth > $activeDepth || $page->isActive(true)))
+                ) && $currentDepth < $end && ($currentDepth > $activeDepth || $this->isActive($page)))
             ) {
                 continue;
             }
@@ -66,9 +153,9 @@ class Json extends Menu
                     $addPage['class'] = 'divider';
                     $pages[]          = $addPage;
                 } else {
-                    $active                   = $page->isActive() ? ' active' : '';
+                    $active                   = $this->isActive($page, false) ? ' active' : '';
                     $addPage                  = $pagePrototype;
-                    $addPage['id']            = $page->getId();
+                    $addPage['identifier']    = $page->get('identifier');
                     $addPage['label']         = $page->getLabel();
                     $addPage['elements']      = $page->get('elements') ? : 0;
                     $addPage['icon']          = $page->get('icon');

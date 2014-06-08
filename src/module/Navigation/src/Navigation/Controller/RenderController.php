@@ -54,21 +54,6 @@ class RenderController extends AbstractController
         return $this->process('navigation/render/list');
     }
 
-    /**
-     * @param $uri
-     * @return RouteMatch
-     */
-    protected function getRouteMatch($uri)
-    {
-        $router  = $this->getServiceLocator()->get('Router');
-        $request = new Request();
-        $request->setMethod(Request::METHOD_GET);
-        $request->setUri($uri);
-        $routeMatch = $router->match($request);
-        return $routeMatch;
-
-    }
-
     protected function isValidNavigationKey($key)
     {
         // TODO: Wow, that's haxxyy - this is due to the fucked up name conventions in the navigations.
@@ -87,26 +72,11 @@ class RenderController extends AbstractController
         $current    = $this->params('current');
         $depth      = $this->params('depth');
         $branch     = $this->params('branch');
-        $routeMatch = $this->getRouteMatch($branch);
 
-        // TODO: Wow, again, that's so haxxy..
-        if ($routeMatch && $routeMatch->getMatchedRouteName() == 'alias') {
-            try {
-                $branch     = $routeMatch->getParam('alias');
-                $branch     = $this->aliasManager->findSourceByAlias($branch);
-                $routeMatch = $this->getRouteMatch($branch);
-            } catch (AliasNotFoundException $e) {
-                $this->getResponse()->setStatusCode(404);
-                return false;
-            }
-        }
-
-        if (!$this->isValidNavigationKey($navigation) || !$routeMatch) {
+        if (!$this->isValidNavigationKey($navigation)) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
-
-        $this->getEvent()->setRouteMatch($routeMatch);
 
         $view = new ViewModel([
             'container'                 => $navigation,

@@ -77,6 +77,8 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
         $request = null
     ) {
         foreach ($pages as &$page) {
+            $page['identifier'] = hash('md5', print_r($page, true));
+
             $hasMvc = isset($page['action']) || isset($page['controller']) || isset($page['route']);
             if ($hasMvc) {
                 if (!isset($page['routeMatch']) && $routeMatch) {
