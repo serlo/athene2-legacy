@@ -18,6 +18,7 @@ return array(
                         'taxonomy/term/get',
                         'entity/page',
                         'page/view',
+                        'navigation/render',
                         'sitemap'
                     ),
                 ),
