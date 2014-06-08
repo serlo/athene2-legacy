@@ -115,7 +115,7 @@ return [
                             'object' => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/object/:id',
+                                    'route'    => '/:id',
                                     'defaults' => [
                                         'action' => 'history'
                                     ]
