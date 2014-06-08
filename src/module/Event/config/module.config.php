@@ -122,7 +122,7 @@ return [
                                 ]
                             ],
                             'all'     => [
-                                'type'    => 'literal',
+                                'type'    => 'segment',
                                 'options' => [
                                     'route'    => '',
                                     'defaults' => [
