@@ -42,7 +42,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // fetch location
             loc: '/navigation/render/json/default_navigation',
             // maximum levels to fetch per iteration
-            max: 3,
+            max: 5,
             // attribute name to indicate that this branch has been fetched already
             indicator: 'needs-fetching'
         }
@@ -229,7 +229,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     });
 
                 } else {
-                    elementCount = parentData.$li.data('element-count');
+                    elementCount = parentData.elementCount;
                     if (parentData.url !== '' && parentData.url !== '#' && typeof elementCount !== "undefined") {
                         msg = t('Show overview');
 
@@ -354,8 +354,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     level: level,
                     parent: parent,
                     icon: icon,
-                    deepness: deepness,
-                    needsFetching: needsFetching
+                    needsFetching: needsFetching,
+                    elementCount: $listItem.data('element-count')
                 });
 
                 if (hasChildren) {
@@ -377,7 +377,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      * Loops through data and creates an hierarchial array of objects
      **/
     Hierarchy.prototype.fetchFromJson = function (object, parent) {
-        var deepness = parent.data.deepness;
+        var deepness = parent.data.position.slice();
 
         parent.data.needsFetching = false;
 
@@ -413,8 +413,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     level: level,
                     parent: parent,
                     icon: icon,
-                    deepness: deepness,
-                    needsFetching: item.needsFetching
+                    needsFetching: item.needsFetching,
+                    elementCount: item.elements
                 });
 
                 if (hasChildren) {
@@ -715,6 +715,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 self.force = true;
                 self.close();
             });
+
+            menuItem.data.attached = true;
         });
 
         $('body').on('click', function () {
@@ -729,6 +731,35 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 e.stopPropagation();
                 self.force = false;
                 return;
+            }
+        });
+    };
+
+
+    /**
+     * @method synchEventHandlers
+     *
+     * Attaches all needed event handlers to new MenuItems
+     **/
+    SideNavigation.prototype.synchEventHandlers = function () {
+        var self = this,
+            menuItems = this.hierarchy.getFlattened();
+
+        // add 'open' click event to first-level items
+        _.each(menuItems, function (menuItem) {
+            if (!menuItem.data.attached) {
+                menuItem.addEventListener('click', function (e) {
+                    e.originalEvent.preventDefault();
+                    self.navigatedMenuItem = e.menuItem;
+                    self.fetch(e.menuItem);
+                });
+
+                menuItem.addEventListener('reload', function () {
+                    self.force = true;
+                    self.close();
+                });
+
+                menuItem.data.attached = true;
             }
         });
     };
@@ -761,6 +792,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         call.success(function (data) {
             self.hierarchy.fetchFromJson(data, menuItem);
+            self.synchEventHandlers();
             self.jumpTo(menuItem);
         });
 

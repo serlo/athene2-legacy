@@ -26,15 +26,10 @@ class Json extends Menu
         $data = $this->process($container);
         $json = new ZendJson;
         $json = $json->encode($data);
-
-        // todo ....
-        $json = preg_replace('~^\[+~is', '[', $json);
-        $json = preg_replace('~\]+$~is', ']', $json);
-
         return $json;
     }
 
-    protected function process($container, $currentDepth = 0, $activeDepth = null)
+    protected function process($container, $currentDepth = 0, $activeDepth = null, array &$pages = [])
     {
         if (!$activeDepth) {
             $foundActive = $this->findActive($container, 0, 9999);
@@ -46,8 +41,8 @@ class Json extends Menu
 
         $start         = $this->getMinDepth();
         $end           = $start + $this->getMaxDepth();
-        $pages         = [];
         $pagePrototype = [
+            'id'            => null,
             'label'         => null,
             'class'         => null,
             'href'          => null,
@@ -73,12 +68,13 @@ class Json extends Menu
                 } else {
                     $active                   = $page->isActive() ? ' active' : '';
                     $addPage                  = $pagePrototype;
+                    $addPage['id']            = $page->getId();
                     $addPage['label']         = $page->getLabel();
                     $addPage['elements']      = $page->get('elements') ? : 0;
                     $addPage['icon']          = $page->get('icon');
                     $addPage['class']         = $page->getClass() . $active;
                     $addPage['href']          = $page->getHref();
-                    $addPage['needsFetching'] = $currentDepth >= $end - 1 && count($page->getPages());
+                    $addPage['needsFetching'] = $currentDepth >= $end - 2 && count($page->getPages());
                     if (count($page->getPages())) {
                         $addPage['children'] = $this->process($page->getPages(), $currentDepth + 1, $activeDepth);
                     }
@@ -86,8 +82,7 @@ class Json extends Menu
                 }
             } else {
                 if (count($page->getPages())) {
-                    $addPages = $this->process($page->getPages(), $currentDepth + 1, $activeDepth);
-                    $pages[]  = $addPages;
+                    $this->process($page->getPages(), $currentDepth + 1, $activeDepth, $pages);
                 }
             }
         }
