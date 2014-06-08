@@ -11,16 +11,43 @@ namespace Notification\View\Helper;
 
 use Doctrine\Common\Collections\Collection;
 use Notification\Entity\NotificationInterface;
+use Notification\NotificationManagerInterface;
+use User\Manager\UserManagerInterface;
+use Zend\Cache\Storage\StorageInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class Notification extends AbstractHelper
 {
-    use\Notification\NotificationManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
-
     protected $template, $aggregatedUsers;
 
-    public function __construct()
-    {
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
+
+    /**
+     * @var NotificationManagerInterface
+     */
+    protected $notificationManager;
+
+    /**
+     * @var UserManagerInterface
+     */
+    protected $userManager;
+
+    /**
+     * @param NotificationManagerInterface $notificationManager
+     * @param StorageInterface             $storage
+     * @param UserManagerInterface         $userManager
+     */
+    public function __construct(
+        NotificationManagerInterface $notificationManager,
+        StorageInterface $storage,
+        UserManagerInterface $userManager
+    ) {
+        $this->storage             = $storage;
+        $this->notificationManager = $notificationManager;
+        $this->userManager         = $userManager;
         $this->template = 'user/notification/notifications';
     }
 
@@ -64,18 +91,25 @@ class Notification extends AbstractHelper
 
     public function render()
     {
-        $output = '';
-        $user   = $this->getUserManager()->getUserFromAuthenticator();
-        if ($user) {
-            $output .= $this->getView()->partial(
-                $this->template,
-                [
-                    'notifications' => $this->getNotificationManager()->findNotificationsBySubscriber($user)
-                ]
-            );
+        $user = $this->userManager->getUserFromAuthenticator();
+        $key  = hash('sha256', serialize($user));
+
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
         }
 
-        return $output;
+        if ($user) {
+            $output = $this->getView()->partial(
+                $this->template,
+                [
+                    'notifications' => $this->notificationManager->findNotificationsBySubscriber($user)
+                ]
+            );
+            $this->storage->setItem($key, $output);
+            return $output;
+        }
+
+        return '';
     }
 
     public function setTemplate($template)
