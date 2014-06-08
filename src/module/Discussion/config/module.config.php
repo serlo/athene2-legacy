@@ -73,7 +73,7 @@ return [
     'router'          => [
         'routes' => [
             'discussion' => [
-                'type'    => 'literal',
+                'type'    => 'segment',
                 'options'      => [
                     'route' => ''
                 ],

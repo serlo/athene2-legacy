@@ -30,7 +30,7 @@ return [
     'router'          => [
         'routes' => [
             'uuid' => [
-                'type'    => 'literal',
+                'type'    => 'segment',
                 'options'      => [
                     // Do not change this or /:id refs wont work (see normalizer route config)
                     'route' => ''

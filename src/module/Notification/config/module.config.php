@@ -47,7 +47,7 @@ return [
                 ]
             ],
             'subscription'  => [
-                'type'          => 'literal',
+                'type'          => 'segment',
                 'options'       => [
                     'route'    => '',
                     'defaults' => [

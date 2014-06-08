@@ -76,7 +76,7 @@ return [
     'router'       => [
         'routes' => [
             'normalizer' => [
-                'type'         => 'literal',
+                'type'         => 'segment',
                 'options'      => [
                     'route' => ''
                 ],
