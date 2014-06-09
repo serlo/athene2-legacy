@@ -110,6 +110,7 @@ return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\NotificationManager' => __NAMESPACE__ . '\Factory\NotificationManagerFactory',
+            __NAMESPACE__ . '\Storage\Storage' => __NAMESPACE__ . '\Factory\NotificationStorageFactory'
         ]
     ],
     'class_resolver'  => [

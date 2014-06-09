@@ -10,16 +10,12 @@
  */
 namespace Notification\Factory;
 
-use Notification\View\Helper\Notification;
-use User\Factory\UserManagerFactoryTrait;
-use Zend\ServiceManager\AbstractPluginManager;
+use Zend\Cache\StorageFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class NotificationHelperFactory implements FactoryInterface
+class NotificationStorageFactory implements FactoryInterface
 {
-    use UserManagerFactoryTrait;
-
     /**
      * Create service
      *
@@ -28,14 +24,24 @@ class NotificationHelperFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /* @var AbstractPluginManager $serviceLocator */
-        $serviceManager      = $serviceLocator->getServiceLocator();
-        $userManager         = $this->getUserManager($serviceManager);
-        $notificationManager = $serviceManager->get('Notification\NotificationManager');
-        $storage             = $serviceManager->get('Notification\Storage\Storage');
+        $cache = StorageFactory::factory(
+            [
+                'adapter' => [
+                    'name'    => 'apc',
+                    'options' => [
+                        'namespace' => __NAMESPACE__,
+                        'ttl'       => 60 * 5
+                    ]
+                ],
+                'plugins' => [
+                    'exception_handler' => [
+                        'throw_exceptions' => false
+                    ],
+                    'serializer'
+                ]
+            ]
+        );
 
-        return new Notification($notificationManager, $storage, $userManager);
+        return $cache;
     }
-
 }
- 
