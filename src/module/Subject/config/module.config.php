@@ -95,7 +95,7 @@ return [
                 ],
                 'child_routes' => [
                     'entity' => [
-                        'type'    => 'literal',
+                        'type'    => 'segment',
                         'options' => [
                             'route'    => '/entity/:action',
                             'defaults' => [
