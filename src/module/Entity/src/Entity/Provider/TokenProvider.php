@@ -12,49 +12,47 @@ namespace Entity\Provider;
 use Entity\Entity\EntityInterface;
 use Normalizer\NormalizerAwareTrait;
 use Normalizer\NormalizerInterface;
+use Taxonomy\Strategy\BranchDecisionMakerStrategy;
+use Taxonomy\Strategy\ShortestBranchDecisionMaker;
 use Token\Provider\AbstractProvider;
 use Token\Provider\ProviderInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class TokenProvider extends AbstractProvider implements ProviderInterface
 {
     use ServiceLocatorAwareTrait, NormalizerAwareTrait;
 
-    public function __construct(NormalizerInterface $normalizer, ServiceLocatorInterface $serviceLocator)
+    /**
+     * @var BranchDecisionMakerStrategy
+     */
+    protected $strategy;
+
+    public function __construct(NormalizerInterface $normalizer, BranchDecisionMakerStrategy $strategy = null)
     {
-        $this->normalizer     = $normalizer;
-        $this->serviceLocator = $serviceLocator;
+        if (!$strategy) {
+            $strategy = new ShortestBranchDecisionMaker();
+        }
+        $this->normalizer = $normalizer;
+        $this->strategy   = $strategy;
     }
 
     public function getData()
     {
-        $path = $this->getObject()->getId();
+        $term = $this->strategy->findBranch($this->getObject()->getTaxonomyTerms());
 
-        /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */
-        foreach ($this->getObject()->getTaxonomyTerms() as $term) {
-            if (in_array($term->getType()->getName(), ['topic', 'topic-folder'])) {
-                $path = $term->slugify('root');
-                break;
-            }
+        $path = $this->getObject()->getId();
+        if ($term) {
+            $path = $term->slugify('root');
         }
 
         $normalized = $this->getNormalizer()->normalize($this->getObject());
-
-        $title = $normalized->getTitle();
-        $type  = $normalized->getType();
+        $title      = $normalized->getTitle();
 
         return [
             'path'  => $path,
-            'type'  => $this->getTranslator()->translate($type),
             'title' => $title,
             'id'    => $this->getObject()->getId(),
         ];
-    }
-
-    public function getTranslator()
-    {
-        return $this->getServiceLocator()->get('translator');
     }
 
     protected function isValid(EntityInterface $object)

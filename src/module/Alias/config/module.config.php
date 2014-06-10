@@ -19,7 +19,7 @@ return [
             ],
             'entity'       => [
                 'tokenize' => '{path}/{title}',
-                'fallback' => '{path}/{type}/{title}-{id}',
+                'fallback' => '{path}/{title}-{id}',
                 'provider' => 'Entity\Provider\TokenProvider'
             ],
             'taxonomyTerm' => [
