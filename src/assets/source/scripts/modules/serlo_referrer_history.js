@@ -102,5 +102,19 @@ define(["underscore", "cache", "events"], function (_, cache) {
         return this.getRange(this.history.length);
     };
 
+    /**
+     * returns current item
+     **/
+    ReferrerHistory.prototype.getCurrent = function () {
+        return this.getOne();
+    };
+
+    /**
+     * returns current item
+     **/
+    ReferrerHistory.prototype.getPrevious = function () {
+        return this.getOne(this.history.length - 2);
+    };
+
     return new ReferrerHistory();
 });

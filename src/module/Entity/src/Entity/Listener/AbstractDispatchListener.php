@@ -11,7 +11,9 @@ namespace Entity\Listener;
 
 use Common\Listener\AbstractSharedListenerAggregate;
 use Entity\Controller\AbstractController;
-use Navigation\Factory\DefaultNavigationFactoryFactory;
+use Navigation\Factory\DefaultNavigationFactory;
+use Taxonomy\Strategy\BranchDecisionMakerStrategy;
+use Taxonomy\Strategy\ShortestBranchDecisionMaker;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\MvcEvent;
@@ -19,6 +21,16 @@ use Zend\Mvc\Router\RouteMatch;
 
 abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
 {
+    protected $strategy;
+
+    public function __construct(BranchDecisionMakerStrategy $strategy = null)
+    {
+        if (!$strategy) {
+            $strategy = new ShortestBranchDecisionMaker();
+        }
+        $this->strategy = $strategy;
+    }
+
     public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach(
@@ -43,21 +55,19 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
             return;
         }
 
-        $subject = null;
+        $terms = $entity->getTaxonomyTerms();
+        $term  = $this->strategy->findBranch($terms);
 
-        foreach ($entity->getTaxonomyTerms() as $term) {
-            $subject = $term->findAncestorByTypeName('subject');
-            if ($subject) {
-                break;
-            }
-        }
-
-        if ($subject !== null) {
-            /* @var $navigationFactory DefaultNavigationFactoryFactory */
+        if ($term) {
+            /* @var $navigationFactory DefaultNavigationFactory */
             $navigationFactory = $controller->getServiceLocator()->get(
                 'Navigation\Factory\DefaultNavigationFactory'
             );
-            $params            = ['term' => $subject->getId()];
+            $params            = [
+                'term'       => $term->getId(),
+                'controller' => 'Taxonomy\Controller\GetController',
+                'action'     => 'index'
+            ];
             $routeMatch        = new RouteMatch($params);
 
             $routeMatch->setMatchedRouteName('taxonomy/term/get');

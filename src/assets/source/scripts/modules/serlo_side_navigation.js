@@ -26,6 +26,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         mainId: '#main-nav',
         // active class, given to <li> elements
         activeClass: 'is-active',
+        // the item which zf2 returns as the current route match
+        routeMatchClass: 'active',
         // class given to menu items the user is navigating through
         activeNavigatorClass: 'is-nav-active',
         // width of the subnavigation
@@ -356,6 +358,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     level: level,
                     parent: parent,
                     icon: icon,
+                    active: $listItem.hasClass(defaults.routeMatchClass),
                     needsFetching: needsFetching,
                     elementCount: $listItem.data('element-count'),
                     identifier: $listItem.data(defaults.asyncNav.identifier)
@@ -454,8 +457,71 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     };
 
     /**
+     * @method findActiveByActive
+     * @return {Object} The first found menu item
+     *
+     * Searches for a menu item by active property
+     **/
+    Hierarchy.prototype.findActiveByActive = function () {
+        var self = this;
+
+        return _.first(deepFlatten(self.data).filter(function (menuItem) {
+            if (menuItem.data.active) {
+                return menuItem;
+            }
+            return false;
+        }).value());
+    };
+
+    /**
+     * @method findActive
+     * @return {Object} The active menu item.
+     *
+     * Finds the active menu item. Searches for both the last available url as well as
+     * the active menu item given by the app.
+     **/
+    Hierarchy.prototype.findActive = function () {
+        var self = this,
+            foundItem,
+            fromStorageItem,
+            currentUrl = ReferrerHistory.getCurrent();
+
+        foundItem = this.findActiveByActive();
+
+        if (foundItem !== undefined) {
+
+            console.log(foundItem.data.url);
+            console.log(currentUrl);
+
+            if (foundItem.data.url !== currentUrl) {
+                fromStorageItem = self.findPreviousMenuItem();
+                if (fromStorageItem) {
+                    return fromStorageItem;
+                }
+            }
+            return foundItem;
+        }
+    };
+
+    /**
+     * @method findPreviousMenuItem
+     * @return {Object} The first found menu item matching on the last ReferrerHistory entries.
+     *
+     * Searches menu items by URL
+     **/
+    Hierarchy.prototype.findPreviousMenuItem = function () {
+        var self = this,
+            result,
+            lastUrl = ReferrerHistory.getPrevious();
+
+        result = self.findByUrl(lastUrl);
+        if (result) {
+            return result;
+        }
+    };
+
+    /**
      * @method findLastAvailableUrl
-     * @param {String} url
      * @return {Object} The first found menu item matching on the last ReferrerHistory entries.
      * 
      * Searches menu items by URL
@@ -466,9 +532,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             lastUrls = ReferrerHistory.getAll();
 
         _.each(lastUrls, function (lastUrl) {
-            var result = self.findByUrl(lastUrl);
-            if (result) {
-                foundItem = result;
+            foundItem = self.findByUrl(lastUrl);
+            if (foundItem) {
                 return;
             }
         });
@@ -593,7 +658,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         this.hierarchy = new Hierarchy();
         this.hierarchy.fetchFromDom(this.$el);
 
-        this.active = this.hierarchy.findLastAvailableUrl();
+        this.active = this.hierarchy.findActive();
 
         this.setActiveBranch();
 
