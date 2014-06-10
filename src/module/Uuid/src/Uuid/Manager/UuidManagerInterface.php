@@ -16,18 +16,6 @@ use Doctrine\Common\Collections\Collection;
 
 interface UuidManagerInterface extends Flushable
 {
-
-    /**
-     * Creates an UuidEntity
-     * <code>
-     * $uuid = $um->createUuid();
-     * $um->injectUuid($entity, $uuid);
-     * </code>
-     *
-     * @return UuidInterface
-     */
-    public function createUuid();
-
     /**
      * Finds Uuuids by their trashed attribute.
      * <code>
@@ -44,15 +32,14 @@ interface UuidManagerInterface extends Flushable
     public function findByTrashed($trashed);
 
     /**
-     * Finds Uuids by their instance
+     * Finds all Uuids
      * <code>
-     *    $collection = $um->findUuidsByInstance($myInstance);
+     *    $collection = $um->findAll();
      * </code>
      *
-     * @param InstanceInterface $instance
      * @return UuidInterface[]|Collection
      */
-    public function findUuidsByInstance(InstanceInterface $instance);
+    public function findAll();
 
     /**
      * Get an Uuid.
