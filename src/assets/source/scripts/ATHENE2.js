@@ -150,7 +150,7 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
             displayAlign: 'left',
             extensions: ["tex2jax.js"],
             jax: ["input/TeX", "output/HTML-CSS"],
-            skipStartupTypeset: 'true',
+            skipStartupTypeset: true,
             tex2jax: {
                 inlineMath: [
                     ["%%", "%%"]
