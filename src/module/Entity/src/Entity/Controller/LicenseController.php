@@ -16,12 +16,11 @@ use Zend\View\Model\ViewModel;
 
 class LicenseController extends AbstractController
 {
-    use InstanceManagerAwareTrait, LicenseManagerAwareTrait;
+    use LicenseManagerAwareTrait;
 
     public function updateAction()
     {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $licenses = $this->getLicenseManager()->findLicensesByInstance($instance);
+        $licenses = $this->getLicenseManager()->findAllLicenses();
         $entity   = $this->getEntity();
         if(!$entity){
             return false;

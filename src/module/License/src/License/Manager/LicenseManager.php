@@ -16,7 +16,6 @@ use Common\Traits\ConfigAwareTrait;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Persistence\ObjectManager;
-use Instance\Entity\InstanceInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use License\Entity\LicenseAwareInterface;
@@ -44,45 +43,7 @@ class LicenseManager implements LicenseManagerInterface
         $this->objectManager   = $objectManager;
     }
 
-    public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = null)
-    {
-        if (!$license) {
-            $license = $this->getDefaultLicense();
-        }
-        $object->setLicense($license);
-        $this->getObjectManager()->persist($object);
-        $this->getEventManager()->trigger('inject', $this, ['object' => $object, 'license' => $license]);
-    }
-
-    public function findLicenseByTitleAndInstance($title, InstanceInterface $instance)
-    {
-        if (!is_string($title)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Expected parameter 1 to be string, but got `%s`',
-                gettype($title)
-            ));
-        }
-
-        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
-        $license   = $this->getObjectManager()->getRepository($className)->findOneBy(
-            [
-                'title'    => $title,
-                'instance' => $instance->getId()
-            ]
-        );
-
-        if (!is_object($license)) {
-            throw new Exception\LicenseNotFoundException(sprintf(
-                'License not found by title `%s` and instance `%s`.',
-                $title,
-                $instance->getName()
-            ));
-        }
-
-        return $license;
-    }
-
-    public function addLicense(LicenseForm $form)
+    public function createLicense(LicenseForm $form)
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('license.create', $instance);
@@ -96,18 +57,34 @@ class LicenseManager implements LicenseManagerInterface
         $entity->setInstance($instance);
         $form->bind($entity);
         $this->getObjectManager()->persist($entity);
+
+        return $entity;
     }
 
-    public function getLicenseForm($id = null)
+    public function findAllLicenses()
     {
-        if ($id !== null) {
-            $license = $this->getLicense($id);
-        } else {
-            $license = $this->getClassResolver()->resolve('License\Entity\LicenseInterface');
+        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
+        $licenses  = $this->getObjectManager()->getRepository($className)->findAll();
+        foreach ($licenses as $license) {
+            $this->assertGranted('license.get', $license);
         }
-        $form = new LicenseForm();
-        $form->bind($license);
-        return $form;
+        return $licenses;
+    }
+
+    public function getDefaultLicense()
+    {
+        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
+        $license   = $this->getObjectManager()->getRepository($className)->findOneBy(
+            [
+                'default' => true,
+            ]
+        );
+
+        if (!is_object($license)) {
+            throw new Exception\Runtimeexception(sprintf('No default license set for for %s', $license->getName()));
+        }
+
+        return $license;
     }
 
     public function getLicense($id)
@@ -122,6 +99,28 @@ class LicenseManager implements LicenseManagerInterface
         $this->assertGranted('license.get', $license);
 
         return $license;
+    }
+
+    public function getLicenseForm($id = null)
+    {
+        if ($id !== null) {
+            $license = $this->getLicense($id);
+        } else {
+            $license = $this->getClassResolver()->resolve('License\Entity\LicenseInterface');
+        }
+        $form = new LicenseForm();
+        $form->bind($license);
+        return $form;
+    }
+
+    public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = null)
+    {
+        if (!$license) {
+            $license = $this->getDefaultLicense();
+        }
+        $object->setLicense($license);
+        $this->getObjectManager()->persist($object);
+        $this->getEventManager()->trigger('inject', $this, ['object' => $object, 'license' => $license]);
     }
 
     public function removeLicense($id)
@@ -140,43 +139,5 @@ class LicenseManager implements LicenseManagerInterface
         $license = $form->getObject();
         $this->assertGranted('license.update', $license);
         $this->getObjectManager()->persist($license);
-    }
-
-    public function findAllLicenses()
-    {
-        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
-        $licenses  = $this->getObjectManager()->getRepository($className)->findAll();
-        foreach ($licenses as $license) {
-            $this->assertGranted('license.get', $license);
-        }
-        return $licenses;
-    }
-
-    public function findLicensesByInstance(InstanceInterface $instance)
-    {
-        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
-        $licenses  = $this->getObjectManager()->getRepository($className)->findBy(['instance' => $instance]);
-        foreach ($licenses as $license) {
-            $this->assertGranted('license.get', $license);
-        }
-        return $licenses;
-    }
-
-    public function getDefaultLicense()
-    {
-        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
-        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
-        $license   = $this->getObjectManager()->getRepository($className)->findOneBy(
-            [
-                'default'  => true,
-                'instance' => $instance->getId()
-            ]
-        );
-
-        if (!is_object($license)) {
-            throw new Exception\Runtimeexception(sprintf('No default license set for for %s', $license->getName()));
-        }
-
-        return $license;
     }
 }

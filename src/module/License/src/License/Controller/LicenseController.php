@@ -18,23 +18,20 @@ use Zend\View\Model\ViewModel;
 
 class LicenseController extends AbstractActionController
 {
-    use LicenseManagerAwareTrait, InstanceManagerAwareTrait;
+    use LicenseManagerAwareTrait;
 
     /**
-     * @param InstanceManagerInterface $instanceManager
      * @param LicenseManagerInterface  $licenseManager
      */
-    public function __construct(InstanceManagerInterface $instanceManager, LicenseManagerInterface $licenseManager)
+    public function __construct(LicenseManagerInterface $licenseManager)
     {
         $this->licenseManager  = $licenseManager;
-        $this->instanceManager = $instanceManager;
     }
 
     public function manageAction()
     {
         $this->assertGranted('license.create');
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $licenses = $this->getLicenseManager()->findLicensesByInstance($instance);
+        $licenses = $this->getLicenseManager()->findAllLicenses();
         $view     = new ViewModel(['licenses' => $licenses]);
         $view->setTemplate('license/manage');
         return $view;
@@ -83,7 +80,7 @@ class LicenseController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
             if ($form->isValid()) {
-                $this->getLicenseManager()->addLicense($form);
+                $this->getLicenseManager()->createLicense($form);
                 $this->getLicenseManager()->getObjectManager()->flush();
                 return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
