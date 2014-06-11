@@ -489,10 +489,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         foundItem = this.findActiveByActive();
 
         if (foundItem !== undefined) {
-
-            console.log(foundItem.data.url);
-            console.log(currentUrl);
-
             if (foundItem.data.url !== currentUrl) {
                 fromStorageItem = self.findPreviousMenuItem();
                 if (fromStorageItem) {
