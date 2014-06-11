@@ -66,9 +66,10 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 // $('a[href^="/ref"]', $context).addClass('ajax-content');
 
                 // init Mathjax
-                if (elements.length) {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elements]);
-                }
+                $.each(elements, function (key, element) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);
+                });
+
                 $context.MathjaxTrigger();
             });
 
