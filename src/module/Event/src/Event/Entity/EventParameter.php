@@ -51,24 +51,14 @@ class EventParameter implements EventParameterInterface
         return $this->id;
     }
 
+    public function getInstance()
+    {
+        return $this->log->getInstance();
+    }
+
     public function getLog()
     {
         return $this->log;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getValue()
-    {
-        if(is_object($this->object)){
-            return $this->object->getValue();
-        } elseif (is_object($this->string)){
-            return $this->string->getValue();
-        }
-        return null;
     }
 
     public function setLog(EventLogInterface $log)
@@ -76,18 +66,33 @@ class EventParameter implements EventParameterInterface
         $this->log = $log;
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function setName(EventParameterNameInterface $name)
     {
         $this->name = $name;
     }
 
+    public function getValue()
+    {
+        if (is_object($this->object)) {
+            return $this->object->getValue();
+        } elseif (is_object($this->string)) {
+            return $this->string->getValue();
+        }
+        return null;
+    }
+
     public function setValue($value)
     {
-        if($value instanceof UuidInterface){
-            $param = new EventParameterUuid($this, $value);
+        if ($value instanceof UuidInterface) {
+            $param        = new EventParameterUuid($this, $value);
             $this->object = $param;
         } else {
-            $param = new EventParameterString($this, $value);
+            $param        = new EventParameterString($this, $value);
             $this->string = $param;
         }
     }
