@@ -56,16 +56,6 @@ class UuidManager implements UuidManagerInterface
         $this->moduleOptions        = $moduleOptions;
     }
 
-    public function createUuid()
-    {
-        $entity = $this->getClassResolver()->resolve('Uuid\Entity\UuidInterface');
-
-        $this->getObjectManager()->persist($entity);
-        $this->getObjectManager()->flush($entity);
-
-        return $entity;
-    }
-
     public function findByTrashed($trashed)
     {
         $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
@@ -75,17 +65,11 @@ class UuidManager implements UuidManagerInterface
         return new ArrayCollection($entities);
     }
 
-    public function findUuidsByInstance(InstanceInterface $instance)
+    public function findAll()
     {
         $className  = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
         $entities   = $this->getObjectManager()->getRepository($className)->findAll();
-        $collection = new ArrayCollection($entities);
-        $collection = $collection->filter(
-            function (UuidInterface $object) use ($instance) {
-                return $object instanceof InstanceProviderInterface && $object->getInstance() === $instance;
-            }
-        );
-        return $collection;
+        return new ArrayCollection($entities);
     }
 
     /**
