@@ -11,13 +11,15 @@
 namespace Versioning\Factory;
 
 use ClassResolver\ClassResolverFactoryTrait;
+use Common\Factory\AuthorizationServiceFactoryTrait;
+use Common\Factory\EntityManagerFactoryTrait;
 use Versioning\RepositoryManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class RepositoryManagerFactory implements FactoryInterface
 {
-    use ClassResolverFactoryTrait;
+    use ClassResolverFactoryTrait, AuthorizationServiceFactoryTrait, EntityManagerFactoryTrait;
 
     /**
      * Create service
@@ -27,9 +29,10 @@ class RepositoryManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $classResolver = $this->getClassResolver($serviceLocator);
+        $objectManager        = $this->getEntityManager($serviceLocator);
+        $authorizationService = $this->getAuthorizationService($serviceLocator);
+        $moduleOptions        = $serviceLocator->get('Versioning\Options\ModuleOptions');
 
-        return new RepositoryManager($classResolver, $serviceLocator);
+        return new RepositoryManager($authorizationService, $moduleOptions, $objectManager);
     }
-
 }

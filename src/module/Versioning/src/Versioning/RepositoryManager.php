@@ -9,47 +9,164 @@
  */
 namespace Versioning;
 
-use ClassResolver\ClassResolverInterface;
+use Authorization\Service\AuthorizationAssertionTrait;
 use Common\Traits\InstanceManagerTrait;
+use Doctrine\Common\Persistence\ObjectManager;
 use Versioning\Entity\RepositoryInterface;
+use Versioning\Entity\RevisionInterface;
+use Versioning\Options\ModuleOptions;
 use Zend\EventManager\EventManagerAwareTrait;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcRbac\Service\AuthorizationService;
 
 class RepositoryManager implements RepositoryManagerInterface
 {
-    use InstanceManagerTrait, EventManagerAwareTrait;
+    use EventManagerAwareTrait, AuthorizationAssertionTrait;
 
-    public function __construct(ClassResolverInterface $classResolver, ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        $this->classResolver  = $classResolver;
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     * @var RepositoryInterface
+     */
+    protected $repository;
+
+    /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * @var AuthorizationService
+     */
+    protected $authorizationService;
+
+    /**
+     * @param AuthorizationService $authorizationService
+     * @param ModuleOptions        $moduleOptions
+     * @param ObjectManager        $objectManager
+     */
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ModuleOptions $moduleOptions,
+        ObjectManager $objectManager
+    ) {
+        $this->moduleOptions        = $moduleOptions;
+        $this->objectManager        = $objectManager;
+        $this->authorizationService = $authorizationService;
     }
 
-    public function getRepository(RepositoryInterface $repository)
+    /**
+     * {@inheritDoc}
+     */
+    public function checkoutRevision(RepositoryInterface $repository, $revision, $reason = '')
     {
-        $id = $this->getUniqId($repository);
-
-        if (!$this->hasInstance($id)) {
-            $this->createService($repository);
+        if (!$revision instanceof RevisionInterface) {
+            $revision = $this->findRevision($repository, $revision);
         }
 
-        return $this->getInstance($id);
+        $user       = $this->getAuthorizationService()->getIdentity();
+        $permission = $this->moduleOptions->getPermission($repository, 'checkout');
+        $this->assertGranted($permission, $repository);
+        $repository->setCurrentRevision($revision);
+
+        $this->getEventManager()->trigger(
+            'checkout',
+            $this,
+            [
+                'repository' => $repository,
+                'revision'   => $revision,
+                'actor'      => $user,
+                'reason'     => $reason
+            ]
+        );
+
+        $this->objectManager->persist($repository);
     }
 
-    protected function getUniqId(RepositoryInterface $repository)
+    /**
+     * {@inheritDoc}
+     */
+    public function commitRevision(RepositoryInterface $repository, array $data)
     {
-        return get_class($repository) . '::' . $repository->getId();
+        $user       = $this->getAuthorizationService()->getIdentity();
+        $permission = $this->moduleOptions->getPermission($repository, 'commit');
+        $revision   = $repository->createRevision();
+
+        $this->assertGranted($permission, $repository);
+        $revision->setAuthor($user);
+        $repository->addRevision($revision);
+        $revision->setRepository($repository);
+
+        foreach ($data as $key => $value) {
+            if (is_string($key) && is_string($value)) {
+                $revision->set($key, $value);
+            }
+        }
+
+        $this->getEventManager()->trigger(
+            'commit',
+            $this,
+            [
+                'repository' => $repository,
+                'revision'   => $revision,
+                'data'       => $data,
+                'author'     => $user
+            ]
+        );
+
+        $this->objectManager->persist($revision);
+
+        return $revision;
     }
 
-    protected function createService(RepositoryInterface $repository)
+    /**
+     * {@inheritDoc}
+     */
+    public function findRevision(RepositoryInterface $repository, $id)
     {
-        $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
-        $name     = $this->getUniqId($repository);
+        foreach ($repository->getRevisions() as $revision) {
+            if ($revision->getId() == $id) {
+                return $revision;
+            }
+        }
 
-        $instance->setRepository($repository);
-        $instance->setRepositoryManager($this);
-        $this->addInstance($name, $instance);
+        throw new Exception\RevisionNotFoundException(sprintf('Revision "%d" not found', $id));
+    }
 
-        return $this;
+    /**
+     * {@inheritDoc}
+     */
+    public function flush()
+    {
+        $this->objectManager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rejectRevision(RepositoryInterface $repository, $revision, $reason = '')
+    {
+        if (!$revision instanceof RevisionInterface) {
+            $revision = $this->findRevision($repository, $revision);
+        }
+
+        $user       = $this->getAuthorizationService()->getIdentity();
+        $permission = $this->moduleOptions->getPermission($repository, 'reject');
+
+        $this->assertGranted($permission, $repository);
+        $revision->setTrashed(true);
+        $this->objectManager->persist($revision);
+        $this->getEventManager()->trigger(
+            'reject',
+            $this,
+            [
+                'repository' => $repository,
+                'revision'   => $revision,
+                'actor'      => $user,
+                'reason'     => $reason
+            ]
+        );
     }
 }

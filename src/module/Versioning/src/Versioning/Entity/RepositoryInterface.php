@@ -7,22 +7,15 @@
  */
 namespace Versioning\Entity;
 
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 
 interface RepositoryInterface
 {
-
     /**
-     * @return int
+     * @param RevisionInterface $revision
+     * @return void
      */
-    public function getId();
-
-    /**
-     * Returns the revisions
-     *
-     * @return PersistentCollection
-     */
-    public function getRevisions();
+    public function addRevision(RevisionInterface $revision);
 
     /**
      * Creates a new revision
@@ -37,25 +30,31 @@ interface RepositoryInterface
     public function getCurrentRevision();
 
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * Returns the revisions
+     *
+     * @return Collection|RevisionInterface[]
+     */
+    public function getRevisions();
+
+    /**
      * @return bool
      */
     public function hasCurrentRevision();
 
     /**
      * @param RevisionInterface $revision
-     * @return self
-     */
-    public function setCurrentRevision(RevisionInterface $revision);
-
-    /**
-     * @param RevisionInterface $revision
-     * @return self
-     */
-    public function addRevision(RevisionInterface $revision);
-
-    /**
-     * @param RevisionInterface $revision
-     * @return self
+     * @return void
      */
     public function removeRevision(RevisionInterface $revision);
+
+    /**
+     * @param RevisionInterface $revision
+     * @return void
+     */
+    public function setCurrentRevision(RevisionInterface $revision);
 }

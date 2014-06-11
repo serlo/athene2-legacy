@@ -85,11 +85,11 @@ class PageManager implements PageManagerInterface
     {
         $this->assertGranted('page.revision.create', $repository);
 
-        $repository = $this->getRepositoryManager()->getRepository($repository);
-        $revision   = $repository->commitRevision($data);
+        $revision = $this->getRepositoryManager()->commitRevision($repository, $data);
+
+        $this->getRepositoryManager()->checkoutRevision($repository, $revision);
         $this->getObjectManager()->persist($revision);
-        $this->getObjectManager()->persist($repository->getRepository());
-        $repository->checkoutRevision($revision->getId());
+        $this->getObjectManager()->persist($repository);
 
         return $repository;
     }

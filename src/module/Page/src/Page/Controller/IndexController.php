@@ -61,8 +61,9 @@ class IndexController extends AbstractActionController
             return $this->notFound();
         }
 
-        $this->getRepositoryManager()->getRepository($pageRepository)->checkoutRevision($id);
-        $this->getPageManager()->flush();
+        $this->getRepositoryManager()->checkoutRevision($pageRepository, $id);
+        $this->getRepositoryManager()->flush();
+
         return $this->redirect()->toReferer();
     }
 

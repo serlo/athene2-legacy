@@ -11,7 +11,6 @@ use User\Entity\UserInterface;
 
 interface RevisionInterface
 {
-
     /**
      * @return int
      */

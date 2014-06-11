@@ -14,7 +14,9 @@ use Zend\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions
 {
-
+    /**
+     * @var array
+     */
     protected $types = [];
 
     /**
@@ -27,12 +29,10 @@ class ModuleOptions extends AbstractOptions
 
     /**
      * @param array $types
-     * @return self
+     * @return void
      */
     public function setTypes(array $types)
     {
         $this->types = $types;
-
-        return $this;
     }
 }

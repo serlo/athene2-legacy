@@ -9,18 +9,67 @@
  */
 namespace Versioning;
 
+use Common\ObjectManager\Flushable;
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Service\RepositoryServiceInterface;
+use Versioning\Entity\RevisionInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 
-interface RepositoryManagerInterface extends EventManagerAwareInterface
+interface RepositoryManagerInterface extends EventManagerAwareInterface, Flushable
 {
+    /**
+     * Check out a revision.
+     *
+     * <code>
+     * $repositoryManager->checkoutRevision($repository, 123, "my reason");
+     * </code>
+     *
+     * @param RepositoryInterface   $repository
+     * @param int|RevisionInterface $revision
+     * @param string                $reason
+     * @return mixed
+     * @throws Exception\RevisionNotFoundException
+     */
+    public function checkoutRevision(RepositoryInterface $repository, $revision, $reason = '');
 
     /**
-     * Returns a RepositoryService
+     * Creates a new revision and adds it to the repository.
+     *
+     * <code>
+     * $repositoryManager->commitRevision($repository, ['foo' => 'bar', 'acme' => 'bar']);
+     * </code>
      *
      * @param RepositoryInterface $repository
-     * @return RepositoryServiceInterface
+     * @param array               $data
+     * @return RevisionInterface
      */
-    public function getRepository(RepositoryInterface $repository);
+    public function commitRevision(RepositoryInterface $repository, array $data);
+
+    /**
+     * Finds an revision by its id.
+     *
+     * <code>
+     * $repositoryManager->findRevision($repository, 123);
+     * </code>
+     *
+     * @param RepositoryInterface   $repository
+     * @param int|RevisionInterface $id
+     * @return RevisionInterface
+     * @throws Exception\RevisionNotFoundException
+     */
+    public function findRevision(RepositoryInterface $repository, $id);
+
+
+    /**
+     * Rejects a revision (opposite of checkoutRevision).
+     *
+     * <code>
+     * $repositoryManager->rejectRevision($repository, 123, 'That's spam...');
+     * </code>
+     *
+     * @param RepositoryInterface   $repository
+     * @param int|RevisionInterface $revision
+     * @param string                $reason
+     * @return void
+     */
+    public function rejectRevision(RepositoryInterface $repository, $revision, $reason = '');
 }

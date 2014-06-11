@@ -193,8 +193,6 @@ class AuthenticationController extends AbstractActionController
 
     public function logoutAction()
     {
-        $storage = $this->getAuthenticationService()->getStorage();
-        $storage->forgetMe();
         $this->getAuthenticationService()->clearIdentity();
         return $this->redirect()->toReferer();
     }
