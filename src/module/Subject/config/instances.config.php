@@ -44,6 +44,8 @@ return [
                         'article',
                         'video',
                         'course',
+                        'text-exercise',
+                        'text-exercise-group'
                     ]
                 ],
                 'physik'      => [

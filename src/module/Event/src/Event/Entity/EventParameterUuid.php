@@ -10,15 +10,16 @@
 namespace Event\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Uuid\Entity\Uuid;
+use Instance\Entity\InstanceInterface;
+use Instance\Entity\InstanceProviderInterface;
+use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="event_parameter_uuid")
  */
-class EventParameterUuid
+class EventParameterUuid implements InstanceProviderInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -37,24 +38,43 @@ class EventParameterUuid
      */
     protected $uuid;
 
-    public function __construct(EventParameter $eventParameter, Uuid $uuid){
+    /**
+     * @param EventParameterInterface $eventParameter
+     * @param UuidInterface           $uuid
+     */
+    public function __construct(EventParameterInterface $eventParameter, UuidInterface $uuid)
+    {
         $this->eventParameter = $eventParameter;
-        $this->uuid = $uuid;
+        $this->uuid           = $uuid;
     }
 
     /**
-     * @return EventParameter
+     * @return EventParameterInterface
      */
     public function getEventParameter()
     {
         return $this->eventParameter;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return InstanceInterface
+     */
+    public function getInstance()
+    {
+        return $this->eventParameter->getInstance();
+    }
+
+    /**
+     * @return UuidInterface
+     */
     public function getValue()
     {
         return $this->uuid;

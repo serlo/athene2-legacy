@@ -10,6 +10,7 @@
 namespace RelatedContent\Controller;
 
 use Authorization\Service\AuthorizationAssertionTrait;
+use RelatedContent\Exception\NotFoundException;
 use RelatedContent\Form\CategoryForm;
 use RelatedContent\Form\ExternalForm;
 use RelatedContent\Form\InternalForm;
@@ -44,7 +45,11 @@ class RelatedContentController extends AbstractActionController
 
     public function addExternalAction()
     {
-        $container = $this->getContainer();
+        $container  = $this->getContainer();
+        if(!$container){
+            return false;
+        }
+
         $form      = new ExternalForm();
         $view      = new ViewModel(['form' => $form]);
         $this->assertGranted('related.content.create', $container);
@@ -65,7 +70,11 @@ class RelatedContentController extends AbstractActionController
 
     public function addInternalAction()
     {
-        $container = $this->getContainer();
+        $container  = $this->getContainer();
+        if(!$container){
+            return false;
+        }
+
         $form      = new InternalForm();
         $view      = new ViewModel(['form' => $form]);
         $this->assertGranted('related.content.create', $container);
@@ -91,12 +100,21 @@ class RelatedContentController extends AbstractActionController
     public function getContainer($id = null)
     {
         $id = $id ? : $this->params('id');
-        return $this->getRelatedContentManager()->getContainer($id);
+        try {
+            return $this->getRelatedContentManager()->getContainer($id);
+        } catch (NotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
     }
 
     public function manageAction()
     {
         $container  = $this->getContainer();
+        if(!$container){
+            return false;
+        }
+
         $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->params('id'));
         $view       = new ViewModel([
             'aggregated' => $aggregated,

@@ -8,9 +8,9 @@ define(['jquery'], function ($) {
             var that = this;
             requestAnimationFrame(function () {
                 var elements = $('.math, .mathInline', that).filter(':visible').toArray();
-                if (elements.length) {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elements]);
-                }
+                $.each(elements, function (key, element) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);
+                });
             });
         });
     };

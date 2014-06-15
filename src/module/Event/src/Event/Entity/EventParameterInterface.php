@@ -9,11 +9,11 @@
  */
 namespace Event\Entity;
 
+use Instance\Entity\InstanceProviderInterface;
 use Uuid\Entity\UuidInterface;
 
-interface EventParameterInterface
+interface EventParameterInterface extends InstanceProviderInterface
 {
-
     /**
      * @return int
      */
