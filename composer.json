@@ -31,7 +31,6 @@
         "zf-commons/zfc-twig": "dev-master",
         "umpirsky/twig-gettext-extractor": "1.1.*"
     },
-    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "Foolz\\": "vendor/foolz/sphinxql-query-builder/classes/Foolz/"

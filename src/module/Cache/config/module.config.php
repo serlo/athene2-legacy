@@ -13,6 +13,13 @@ namespace Cache;
 
 return [
     'strokercache' => [
-        'id_generator' => 'fulluri'
+        'id_generator' => 'fulluri',
+        'strategies' => array(
+            'plugin_manager' => array(
+                'invokables' => array(
+                    'MyNamespace\MyCustomStrategy'
+                ),
+            ),
+        ),
     ]
 ];

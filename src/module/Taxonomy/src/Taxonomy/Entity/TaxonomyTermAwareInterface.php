@@ -9,13 +9,10 @@
  */
 namespace Taxonomy\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface TaxonomyTermAwareInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
-
     /**
      * @param TaxonomyTermInterface     $taxonomyTerm
      * @param TaxonomyTermNodeInterface $node
@@ -24,14 +21,19 @@ interface TaxonomyTermAwareInterface
     public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null);
 
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * @return TaxonomyTermInterface[]|Collection
+     */
+    public function getTaxonomyTerms();
+
+    /**
      * @param TaxonomyTermInterface     $taxonomyTerm
      * @param TaxonomyTermNodeInterface $node
      * @return self
      */
     public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null);
-
-    /**
-     * @return TaxonomyTermInterface[]
-     */
-    public function getTaxonomyTerms();
 }

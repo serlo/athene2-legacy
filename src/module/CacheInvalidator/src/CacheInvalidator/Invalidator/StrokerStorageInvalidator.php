@@ -10,9 +10,6 @@
  */
 namespace CacheInvalidator\Invalidator;
 
-use Entity\Entity\EntityInterface;
-use Page\Entity\PageRepositoryInterface;
-use StrokerCache\Service\CacheService;
 use Zend\Cache\Storage\FlushableInterface;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\EventManager\Event;
@@ -24,20 +21,13 @@ class StrokerStorageInvalidator implements InvalidatorInterface
      */
     protected $storage;
 
-    /**
-     * @var CacheService
-     */
-    protected $cacheService;
-
 
     /**
-     * @param CacheService     $cacheService
      * @param StorageInterface $storage
      */
-    public function __construct(CacheService $cacheService, StorageInterface $storage)
+    public function __construct(StorageInterface $storage)
     {
-        $this->storage      = $storage;
-        $this->cacheService = $cacheService;
+        $this->storage = $storage;
     }
 
     /**
@@ -48,25 +38,8 @@ class StrokerStorageInvalidator implements InvalidatorInterface
      */
     public function invalidate(Event $e, $class, $event)
     {
-        if ($class == 'Navigation\Manager\NavigationManager') {
-            if ($this->storage instanceof FlushableInterface) {
-                $this->storage->flush();
-            }
-        } elseif ($class == 'Taxonomy\Manager\TaxonomyManager') {
-            if ($this->storage instanceof FlushableInterface) {
-                $this->storage->flush();
-            }
-        } elseif ($class == 'Versioning\RepositoryManager') {
-            $repository = $e->getParam('repository');
-            $result     = false;
-            if ($repository instanceof EntityInterface) {
-                $result = $this->cacheService->clearByTags(['route_entity/page', 'route_taxonomy/term/get']);
-            } elseif ($repository instanceof PageRepositoryInterface) {
-                $result = $this->cacheService->clearByTags(['route_page/view']);
-            }
-            if ($this->storage instanceof FlushableInterface && !$result) {
-                $this->storage->flush();
-            }
+        if ($this->storage instanceof FlushableInterface) {
+            $this->storage->flush();
         }
     }
 }
