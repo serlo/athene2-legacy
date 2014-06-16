@@ -64,21 +64,11 @@ class RepositoryStorageInvalidator implements InvalidatorInterface
         }
     }
 
-    protected function clearTaxonomyTermParents(TaxonomyTermInterface $term)
-    {
-        if ($term->hasParent()) {
-            $parent = $term->getParent();
-            $this->cacheService->clearByTags(['route_taxonomy/term/get', 'param_term_' . $parent->getId()]);
-            $this->clearTaxonomyTermParents($parent);
-        }
-    }
-
     protected function clearTaxonomyTerms(Collection $collection)
     {
         foreach ($collection as $term) {
             if ($term instanceof TaxonomyTermInterface) {
                 $this->cacheService->clearByTags(['route_taxonomy/term/get', 'param_term_' . $term->getId()]);
-                $this->clearTaxonomyTermParents($term);
             }
         }
     }
