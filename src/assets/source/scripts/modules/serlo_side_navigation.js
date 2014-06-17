@@ -130,7 +130,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 _.each(self.data.renderedChildren, function (child) {
                     var childItem = new MenuItem(_.extend({}, child.data, {
-                        icon: false
+                        icon: false,
+                        needsFetching: false
                     }));
 
                     childItem.addEventListener('reload', function (e) {
@@ -156,7 +157,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      * OnClick handler for MenuItem
      **/
     MenuItem.prototype.onClick = function (e) {
-        if (this.data.needsFetching || this.children || this.alwaysPrevent) {
+        if ((this.data.needsFetching || this.children) && !this.alwaysReload) {
             e.preventDefault();
             e.stopPropagation();
             this.trigger('click', {
@@ -713,12 +714,11 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     var breadcrumb,
                         breadCrumbOptions = {
                         icon: false,
+                        needsFetching: false,
                         renderedChildren: (key === parents.length - 1) ? siblings : false
                     };
 
                     breadcrumb = new MenuItem(_.extend({}, menuItem.data, breadCrumbOptions));
-
-                    // breadcrumb.alwaysPrevent = true;
 
                     // breadcrumb.addEventListener('click', function (e) {
                     //     var parentMenuItem = self.hierarchy.getParent(e.menuItem);
