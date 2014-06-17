@@ -21,7 +21,7 @@ class AuthenticationControllerListener extends AbstractListener
     {
         $class = $this->getMonitoredClass();
         $events->attach($class, 'restore-password', [$this, 'onRestore'], -1);
-        $events->attach($this->getMonitoredClass(), 'activate', [$this, 'onActivate'], -1);
+        $events->attach($class, 'activate', [$this, 'onActivate'], -1);
     }
 
     protected function getMonitoredClass()
