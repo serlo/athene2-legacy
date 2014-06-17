@@ -48,6 +48,12 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
+    public function onBootstrap(MvcEvent $e)
+    {
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatchRegisterListeners'), 1000);
+    }
+
     public function onDispatchRegisterListeners(MvcEvent $e)
     {
         $eventManager       = $e->getApplication()->getEventManager();
