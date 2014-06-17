@@ -43,7 +43,7 @@ foreach ($this->pages as $page) {
     $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
     $needsFetching = ($depth >= $maxDepth - 1 && !empty($page->pages)) ? ' data-needs-fetching="true" ' : '';
 
-    $html[] = '<li' . $needsFetching . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : ' data-identifier="' . $page->get('identifier') . '">');
+    $html[] = '<li' . $needsFetching . $rich . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '"') : '') . ' data-identifier="' . $page->get('identifier') . '">';
 
     $html[] = '<a href="' . $this->alias($page->getHref()) . '"' . ($breadcrumb ? ' itemprop="url"' : '') . '>';
 

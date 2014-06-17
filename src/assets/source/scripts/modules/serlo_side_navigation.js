@@ -44,7 +44,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // fetch location
             loc: '/navigation/render/json/default_navigation',
             // maximum levels to fetch per iteration
-            max: 5,
+            max: 10,
             // attribute name to indicate that this branch has been fetched already
             indicator: 'needs-fetching',
             // attribute name to identify the menuitem
@@ -156,7 +156,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      * OnClick handler for MenuItem
      **/
     MenuItem.prototype.onClick = function (e) {
-        if (this.children || this.alwaysPrevent) {
+        if (this.data.needsFetching || this.children || this.alwaysPrevent) {
             e.preventDefault();
             e.stopPropagation();
             this.trigger('click', {

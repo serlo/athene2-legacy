@@ -36,6 +36,8 @@ class NavigationStorageInvalidator implements InvalidatorInterface
      */
     public function invalidate(Event $e, $class, $event)
     {
-        $this->storage->flush();
+        if ($this->storage instanceof FlushableInterface) {
+            $this->storage->flush();
+        }
     }
 }
