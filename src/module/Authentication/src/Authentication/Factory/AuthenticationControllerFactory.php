@@ -12,6 +12,7 @@ namespace Authentication\Factory;
 
 use Authentication\Controller\AuthenticationController;
 use User\Factory\UserManagerFactoryTrait;
+use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -28,9 +29,11 @@ class AuthenticationControllerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $authenticationService = $this->getAuthenticationService($serviceLocator->getServiceLocator());
-        $userManager           = $this->getUserManager($serviceLocator->getServiceLocator());
-        $roleService           = $serviceLocator->getServiceLocator()->get('Authorization\Service\RoleService');
+        /* @var $serviceLocator AbstractPluginManager */
+        $serviceManager        = $serviceLocator->getServiceLocator();
+        $authenticationService = $this->getAuthenticationService($serviceManager);
+        $userManager           = $this->getUserManager($serviceManager);
+        $roleService           = $serviceManager->get('Authorization\Service\RoleService');
         $controller            = new AuthenticationController($authenticationService, $roleService, $userManager);
 
         return $controller;
