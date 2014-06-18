@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Global Configuration Override
  * You can use this file for overriding configuration values from modules, etc.
