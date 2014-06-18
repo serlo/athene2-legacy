@@ -18,6 +18,8 @@ use Zend\Http\Header\SetCookie;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Session\Config\SessionConfig;
+use Zend\Stdlib\RequestInterface;
+use Zend\Stdlib\ResponseInterface;
 
 class AuthenticationService extends ZendAuthenticationService
 {
@@ -51,10 +53,19 @@ class AuthenticationService extends ZendAuthenticationService
         Storage\StorageInterface $storage = null,
         Adapter\AdapterInterface $adapter = null,
         SessionConfig $sessionConfig,
-        Response $response,
-        Request $request
+        ResponseInterface $response,
+        RequestInterface $request
     ) {
         parent::__construct($storage, $adapter);
+
+        if (!$response instanceof Response) {
+            $response = new Response;
+        }
+
+        if (!$request instanceof Request) {
+            $request = new Request;
+        }
+
         $this->response      = $response;
         $this->request       = $request;
         $this->sessionConfig = $sessionConfig;
