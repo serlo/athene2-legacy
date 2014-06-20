@@ -856,6 +856,12 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         });
 
         call.success(function (data) {
+            // We triggered a false positive, there are no children for this item.
+            // Therefore, let's open the damn link!
+            if(!data.length){
+                menuItem.data.needsFetching = false;
+                menuItem.data.$a.trigger('click');
+            }
             self.hierarchy.fetchFromJson(data, menuItem);
             self.synchEventHandlers();
             self.jumpTo(menuItem);

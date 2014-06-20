@@ -1,38 +1,38 @@
 @import "compass/css3";
 
 .is-inline-block {
-    @include inline-block;
+  @include inline-block;
 }
 
 .is-hidden {
-    display: none;
+  display: none !important;
 }
 
 .is-invisible {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .is-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .is-normal {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .is-light {
-    font-weight: light;
+  font-weight: light;
 }
 
 .is-alpha-list {
-    > li {
-        list-style: lower-alpha;
-    }
+  > li {
+    list-style: lower-alpha;
+  }
 }
 
 .is-group-headline {
-    border-bottom: 1px solid #EEE;
-    padding-bottom: 5px;
-    margin-top: 20px;
-    margin-bottom: 5px;
+  border-bottom: 1px solid #EEE;
+  padding-bottom: 5px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
