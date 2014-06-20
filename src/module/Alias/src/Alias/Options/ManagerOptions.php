@@ -26,12 +26,10 @@ class ManagerOptions extends AbstractOptions
 
     /**
      * @param array $aliases
-     * @return self
+     * @return void
      */
     public function setAliases(array $aliases)
     {
         $this->aliases = $aliases;
-
-        return $this;
     }
 }
