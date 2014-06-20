@@ -1,7 +1,7 @@
 {% set subject = term.findAncestorByTypeName('subject') %}
 {% set entities = term.getAssociated('entities') %}
-<nav class="nav nav-pills" role="navigation">
-    {% if isGranted('taxonomy.term.update', term) %}
+<ul class="nav nav-pills" role="navigation">
+{% if isGranted('taxonomy.term.update', term) %}
         <li>
             <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">
                 <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
@@ -55,4 +55,4 @@
             {% endif %}
         </ul>
     </li>
-</nav>
+</ul>

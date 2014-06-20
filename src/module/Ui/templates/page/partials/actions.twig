@@ -1,5 +1,5 @@
-<nav class="nav nav-pills" role="navigation">
-    {% if isGranted('page.revision.create', page) %}
+<ul class="nav nav-pills" role="navigation">
+{% if isGranted('page.revision.create', page) %}
         <li>
             <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}">
                 <span class="glyphicon glyphicon-pencil"></span> {% trans %} Edit {% endtrans %}
@@ -47,4 +47,4 @@
             {% endif %}
         </ul>
     </li>
-</nav>
+</ul>

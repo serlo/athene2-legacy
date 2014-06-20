@@ -1,7 +1,7 @@
 {% set options = entity().getOptions(entity) %}
 <div class="edit-control hidden">
-    <nav class="nav nav-pills" role="navigation">
-        {% include 'entity/view/partials/actions/versioning/edit' %}
+    <ul class="nav nav-pills" role="navigation">
+    {% include 'entity/view/partials/actions/versioning/edit' %}
         {{ subscribe(entity).menuItem() }}
         {% include 'entity/view/partials/actions/versioning/history' %}
         {% include 'common/share' with {'id': entity.getId()} %}
@@ -21,5 +21,5 @@
                 {% include 'entity/view/partials/actions/trash' %}
             </ul>
         </li>
-    </nav>
+    </ul>
 </div>
