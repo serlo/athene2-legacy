@@ -216,7 +216,25 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // add back btns
             if (level[0].data.parent) {
                 parentData = level[0].data.parent.data;
-                if (parentData.level > 0) {
+                if (parentData.level === 0) {
+                    backBtn = new MenuItem({
+                        icon: 'remove-circle',
+                        cssClass: 'sub-nav-header',
+                        title: t('Close'),
+                        url: '#',
+                        position: [],
+                        needsFetching: false,
+                        level: -1
+                    });
+
+                    backBtn.$el.unbind('click').click(function (e) {
+                        self.trigger('close', {
+                            originalEvent: e,
+                            menuItem: backBtn
+                        });
+                    });
+
+                } else {
                     elementCount = parentData.elementCount;
                     if (parentData.url !== '' && parentData.url !== '#' && typeof elementCount !== "undefined") {
                         msg = t('Show overview');
