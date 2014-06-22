@@ -27,6 +27,7 @@ class ModuleForm extends Form
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
+        $this->add((new Textarea('description'))->setAttribute('id', 'description')->setLabel('Description:'));
         $this->add(
             (new Textarea('reasoning'))->setAttribute('id', 'reasoning')->setLabel('Reasoning:')
         );
