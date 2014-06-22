@@ -20,10 +20,12 @@ use Markdown\Service\RenderServiceInterface;
 use Normalizer\NormalizerInterface;
 use Uuid\Filter\NotTrashedCollectionFilter;
 use Versioning\Filter\HasCurrentRevisionCollectionFilter;
+use Zend\Feed\Writer\Feed;
 use Zend\Filter\FilterChain;
+use Zend\View\Model\FeedModel;
 use Zend\View\Model\JsonModel;
 
-class JsonApiController extends AbstractController
+class ApiController extends AbstractController
 {
     /**
      * @var NormalizerInterface
@@ -67,7 +69,7 @@ class JsonApiController extends AbstractController
         return new JsonModel($data);
     }
 
-    public function rssAction()
+    public function latestAction()
     {
         $type     = $this->params('type');
         $age      = (int)$this->params('age');
@@ -76,8 +78,50 @@ class JsonApiController extends AbstractController
         $chain    = new FilterChain();
         $chain->attach(new EntityAgeCollectionFilter($maxAge));
         $chain->attach(new NotTrashedCollectionFilter());
-        $data = $chain->filter($entities);
+        $entities = $chain->filter($entities);
+        $data     = $this->normalize($entities);
         return new JsonModel($data);
+    }
+
+    public function rssAction()
+    {
+        $feed     = new Feed();
+        $type     = $this->params('type');
+        $age      = (int)$this->params('age');
+        $maxAge   = new DateTime($age . ' days ago');
+        $entities = $this->getEntityManager()->findEntitiesByTypeName($type);
+        $chain    = new FilterChain();
+        $chain->attach(new EntityAgeCollectionFilter($maxAge));
+        $chain->attach(new NotTrashedCollectionFilter());
+        $entities = $chain->filter($entities);
+        $data     = $this->normalize($entities);
+
+        foreach ($data as $item) {
+            $entry = $feed->createEntry();
+            $entry->setTitle($item['title']);
+            $entry->setDescription($item['description']);
+            $entry->setId($item['guid']);
+            $entry->setLink($item['link']);
+            foreach($item['keywords'] as $keyword){
+                $entry->addCategory(['term' => $keyword]);
+            }
+            $entry->setDateModified($item['lastModified']);
+            $feed->addEntry($entry);
+        }
+
+        $feed->setTitle($this->brand()->getHeadTitle());
+        $feed->setDescription($this->brand()->getDescription());
+        $feed->setDateModified(time());
+        $feed->setLink($this->url()->fromRoute('home', [], ['force_canonical' => true]));
+        $feed->setFeedLink(
+            $this->url()->fromRoute('entity/api/rss', ['type' => $type, 'age' => $age], ['force_canonical' => true]),
+            'atom'
+        );
+        $feed->export('atom');
+        $feedModel = new FeedModel();
+        $feedModel->setFeed($feed);
+
+        return $feedModel;
     }
 
     protected function normalize(Collection $collection)
@@ -95,11 +139,12 @@ class JsonApiController extends AbstractController
 
             $description = $this->descriptionFilter->filter($description);
             $item        = [
-                'title'       => $normalized->getTitle(),
-                'description' => $description,
-                'guid'        => $entity->getId(),
-                'keywords'    => $normalized->getMetadata()->getKeywords(),
-                'link'        => $this->url()->fromRoute($normalized->getRouteName(), $normalized->getRouteParams())
+                'title'        => $normalized->getTitle(),
+                'description'  => $description,
+                'guid'         => (string) $entity->getId(),
+                'keywords'     => $normalized->getMetadata()->getKeywords(),
+                'link'         => $this->url()->fromRoute($normalized->getRouteName(), $normalized->getRouteParams()),
+                'lastModified' => $normalized->getMetadata()->getLastModified()
             ];
             $data[]      = $item;
         }

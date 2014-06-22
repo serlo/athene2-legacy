@@ -10,6 +10,7 @@
 namespace Normalizer\Adapter;
 
 use Normalizer\Entity\Normalized;
+use DateTime;
 use Normalizer\Exception\RuntimeException;
 
 abstract class AbstractAdapter implements AdapterInterface
@@ -49,7 +50,8 @@ abstract class AbstractAdapter implements AdapterInterface
             'metadata'    => [
                 'creationDate' => $this->getCreationDate(),
                 'description'  => $this->getDescription(),
-                'keywords'     => $this->getKeywords()
+                'keywords'     => $this->getKeywords(),
+                'lastModified' => $this->getLastModified()
             ]
         ]);
 
@@ -72,6 +74,13 @@ abstract class AbstractAdapter implements AdapterInterface
     protected function getDescription()
     {
         return $this->getContent();
+    }
+
+    /**
+     * @return DateTime
+     */
+    protected function getLastModified() {
+        return new DateTime();
     }
 
     /**

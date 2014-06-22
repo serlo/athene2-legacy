@@ -9,6 +9,7 @@
  */
 namespace Normalizer\Adapter;
 
+use DateTime;
 use Entity\Entity\EntityInterface;
 
 class EntityAdapter extends AbstractAdapter
@@ -34,6 +35,14 @@ class EntityAdapter extends AbstractAdapter
     protected function getCreationDate()
     {
         return $this->getObject()->getTimestamp();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDescription()
+    {
+        return $this->getField(['summary', 'description', 'content']);
     }
 
     protected function getField($field)
@@ -85,11 +94,15 @@ class EntityAdapter extends AbstractAdapter
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
-    protected function getDescription()
+    protected function getLastModified()
     {
-        return $this->getField(['summary', 'description', 'content']);
+        $head = $this->getObject()->getHead();
+        if ($head) {
+            return $head->getTimestamp();
+        }
+        return new DateTime();
     }
 
     protected function getPreview()

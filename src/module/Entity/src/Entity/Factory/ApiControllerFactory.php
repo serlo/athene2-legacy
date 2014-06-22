@@ -10,12 +10,12 @@
  */
 namespace Entity\Factory;
 
-use Entity\Controller\JsonApiController;
+use Entity\Controller\ApiController;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class JsonApiControllerFactory implements FactoryInterface
+class ApiControllerFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -30,7 +30,6 @@ class JsonApiControllerFactory implements FactoryInterface
         $entityManager  = $serviceManager->get('Entity\Manager\EntityManager');
         $normalizer     = $serviceManager->get('Normalizer\Normalizer');
         $renderService  = $serviceManager->get('Markdown\Service\HtmlRenderService');
-        return new JsonApiController($entityManager, $normalizer, $renderService);
+        return new ApiController($entityManager, $normalizer, $renderService);
     }
-
 }

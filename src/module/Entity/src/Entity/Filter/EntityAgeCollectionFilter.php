@@ -54,7 +54,7 @@ class EntityAgeCollectionFilter implements FilterInterface
                     return false;
                 }
 
-                return $revision->getTimestamp() < $this->maxAge;
+                return $revision->getTimestamp() > $this->maxAge;
             }
         );
     }

@@ -19,19 +19,19 @@ return [
                     'route' => '/entity'
                 ],
                 'child_routes' => [
-                    'api' => [
+                    'api'        => [
                         'type'         => 'literal',
                         'options'      => [
-                            'route'    => '/api',
+                            'route' => '/api',
+                            'defaults'     => [
+                                'controller' => __NAMESPACE__ . '\Controller\ApiController'
+                            ],
                         ],
                         'child_routes' => [
                             'json' => [
                                 'type'         => 'literal',
                                 'options'      => [
-                                    'route'    => '/json',
-                                    'defaults' => [
-                                        'controller' => __NAMESPACE__ . '\Controller\JsonApiController'
-                                    ]
+                                    'route' => '/json',
                                 ],
                                 'child_routes' => [
                                     'export' => [
@@ -43,15 +43,24 @@ return [
                                             ]
                                         ]
                                     ],
-                                    'rss' => [
+                                    'latest' => [
                                         'type'    => 'segment',
                                         'options' => [
-                                            'route'    => '/rss/:type/:age',
+                                            'route'    => '/export/latest/:type/:age',
                                             'defaults' => [
-                                                'action' => 'rss'
+                                                'action' => 'latest'
                                             ]
                                         ]
                                     ],
+                                ]
+                            ],
+                            'rss' => [
+                                'type'    => 'segment',
+                                'options' => [
+                                    'route'    => '/rss/:type/:age/feed.rss',
+                                    'defaults' => [
+                                        'action' => 'rss'
+                                    ]
                                 ]
                             ],
                         ]

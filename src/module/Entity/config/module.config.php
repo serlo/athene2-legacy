@@ -153,7 +153,7 @@ return [
     ],
     'controllers'     => [
         'factories' => [
-            __NAMESPACE__ . '\Controller\JsonApiController' => __NAMESPACE__ . '\Factory\JsonApiControllerFactory'
+            __NAMESPACE__ . '\Controller\ApiController' => __NAMESPACE__ . '\Factory\ApiControllerFactory'
         ]
     ],
     'view_helpers'    => [
