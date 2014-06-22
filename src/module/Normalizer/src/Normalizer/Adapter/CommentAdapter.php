@@ -7,13 +7,12 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
 use Discussion\Entity\CommentInterface;
 
-class CommentStrategy extends AbstractStrategy
+class CommentAdapter extends AbstractAdapter
 {
-
     /**
      * @return CommentInterface
      */
@@ -35,6 +34,11 @@ class CommentStrategy extends AbstractStrategy
     protected function getId()
     {
         return $this->getObject()->getId();
+    }
+
+    protected function getKeywords()
+    {
+        return [];
     }
 
     protected function getPreview()

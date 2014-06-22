@@ -13,6 +13,7 @@ use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Entity\Entity\EntityInterface;
 use Entity\Exception;
 use Instance\Entity\InstanceInterface;
@@ -27,19 +28,6 @@ class EntityManager implements EntityManagerInterface
     use EventManagerAwareTrait, FlushableTrait;
     use AuthorizationAssertionTrait;
 
-    public function getEntity($id)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');
-        $entity    = $this->getObjectManager()->find($className, $id);
-
-        if (!is_object($entity)) {
-            throw new Exception\EntityNotFoundException(sprintf('Entity "%d" not found.', $id));
-        }
-        $this->assertGranted('entity.get', $entity);
-
-        return $entity;
-    }
-
     public function createEntity($typeName, array $data = [], InstanceInterface $instance)
     {
         $this->assertGranted('entity.create', $instance);
@@ -52,6 +40,27 @@ class EntityManager implements EntityManagerInterface
         $entity->setType($type);
         $this->getEventManager()->trigger('create', $this, ['entity' => $entity, 'data' => $data]);
         $this->getObjectManager()->persist($entity);
+
+        return $entity;
+    }
+
+    public function findEntitiesByTypeName($name)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');
+        $type      = $this->getTypeManager()->findTypeByName($name);
+        $results   = $this->getObjectManager()->getRepository($className)->findBy(['type' => $type->getId()]);
+        return new ArrayCollection($results);
+    }
+
+    public function getEntity($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');
+        $entity    = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($entity)) {
+            throw new Exception\EntityNotFoundException(sprintf('Entity "%d" not found.', $id));
+        }
+        $this->assertGranted('entity.get', $entity);
 
         return $entity;
     }

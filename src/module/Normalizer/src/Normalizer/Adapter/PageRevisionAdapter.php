@@ -3,20 +3,20 @@
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author      Jakob Pfab
  * @license     LGPL-3.0
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
-use Attachment\Entity\AttachmentInterface;
-use Attachment\Entity\ContainerInterface;
-use Normalizer\Exception\RuntimeException;
+use Page\Entity\PageRevisionInterface;
 
-class AttachmentStrategy extends AbstractStrategy
+class PageRevisionAdapter extends AbstractAdapter
 {
+
     /**
-     * @return ContainerInterface
+     * @return PageRevisionInterface
      */
     public function getObject()
     {
@@ -25,21 +25,17 @@ class AttachmentStrategy extends AbstractStrategy
 
     public function isValid($object)
     {
-        return $object instanceof ContainerInterface;
+        return $object instanceof PageRevisionInterface;
     }
 
     protected function getContent()
     {
-        return $this->getFile()->getLocation();
+        return $this->getObject()->getContent();
     }
 
-    protected function getFile()
+    protected function getKeywords()
     {
-        $file = $this->getObject()->getFiles()->current();
-        if (!is_object($file)) {
-            throw new RuntimeException('No files have been attached');
-        }
-        return $file;
+        return [];
     }
 
     protected function getId()
@@ -49,33 +45,33 @@ class AttachmentStrategy extends AbstractStrategy
 
     protected function getPreview()
     {
-        return $this->getFile()->getLocation();
+        return $this->getObject()->getContent();
     }
 
     protected function getRouteName()
     {
-        return 'attachment/info';
+        return 'page/revision/view';
     }
 
     protected function getRouteParams()
     {
         return [
-            'id' => $this->getObject()->getId()
+            'revision' => $this->getObject()->getId()
         ];
     }
 
     protected function getCreationDate()
     {
-        return $this->getFile()->getDateTime();
+        return $this->getObject()->getDate();
     }
 
     protected function getTitle()
     {
-        return $this->getFile()->getFilename();
+        return $this->getObject()->getTitle();
     }
 
     protected function getType()
     {
-        return $this->getObject()->getType();
+        return 'Page revision';
     }
 }

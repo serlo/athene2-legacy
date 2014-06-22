@@ -7,13 +7,12 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
 use Entity\Entity\EntityInterface;
 
-class EntityStrategy extends AbstractStrategy
+class EntityAdapter extends AbstractAdapter
 {
-
     /**
      * @return EntityInterface
      */
@@ -30,6 +29,11 @@ class EntityStrategy extends AbstractStrategy
     protected function getContent()
     {
         return $this->getField('content');
+    }
+
+    protected function getCreationDate()
+    {
+        return $this->getObject()->getTimestamp();
     }
 
     protected function getField($field)
@@ -67,6 +71,19 @@ class EntityStrategy extends AbstractStrategy
         return $this->getObject()->getId();
     }
 
+    protected function getKeywords()
+    {
+        $entity   = $this->getObject();
+        $keywords = [];
+        foreach ($entity->getTaxonomyTerms() as $term) {
+            while ($term->hasParent()) {
+                $keywords[] = $term->getName();
+                $term       = $term->getParent();
+            }
+        }
+        return array_unique($keywords);
+    }
+
     protected function getPreview()
     {
         return $this->getField(['summary', 'description', 'content']);
@@ -82,11 +99,6 @@ class EntityStrategy extends AbstractStrategy
         return [
             'entity' => $this->getObject()->getId()
         ];
-    }
-
-    protected function getCreationDate()
-    {
-        return $this->getObject()->getTimestamp();
     }
 
     protected function getTitle()

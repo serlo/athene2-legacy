@@ -151,6 +151,11 @@ return [
             __NAMESPACE__ . '\Form\VideoForm'               => __NAMESPACE__ . '\Factory\VideoFormFactory'
         ]
     ],
+    'controllers'     => [
+        'factories' => [
+            __NAMESPACE__ . '\Controller\JsonApiController' => __NAMESPACE__ . '\Factory\JsonApiControllerFactory'
+        ]
+    ],
     'view_helpers'    => [
         'factories' => [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'

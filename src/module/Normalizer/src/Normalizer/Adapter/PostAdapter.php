@@ -3,21 +3,19 @@
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @author      Jakob Pfab
  * @license     LGPL-3.0
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
-use Page\Entity\PageRevision;
-use Page\Entity\PageRevisionInterface;
+use Blog\Entity\PostInterface;
 
-class PageRevisionStrategy extends AbstractStrategy
+class PostAdapter extends AbstractAdapter
 {
 
     /**
-     * @return PageRevision
+     * @return PostInterface
      */
     public function getObject()
     {
@@ -26,12 +24,17 @@ class PageRevisionStrategy extends AbstractStrategy
 
     public function isValid($object)
     {
-        return $object instanceof PageRevisionInterface;
+        return $object instanceof PostInterface;
     }
 
     protected function getContent()
     {
         return $this->getObject()->getContent();
+    }
+
+    protected function getKeywords()
+    {
+        return [];
     }
 
     protected function getId()
@@ -46,19 +49,19 @@ class PageRevisionStrategy extends AbstractStrategy
 
     protected function getRouteName()
     {
-        return 'page/revision/view';
+        return 'blog/post/view';
     }
 
     protected function getRouteParams()
     {
         return [
-            'revision' => $this->getObject()->getId()
+            'post' => $this->getObject()->getId()
         ];
     }
 
     protected function getCreationDate()
     {
-        return $this->getObject()->getDate();
+        return $this->getObject()->getTimestamp();
     }
 
     protected function getTitle()
@@ -68,6 +71,6 @@ class PageRevisionStrategy extends AbstractStrategy
 
     protected function getType()
     {
-        return 'Page revision';
+        return 'blogPost';
     }
 }

@@ -7,16 +7,15 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
-use Page\Entity\PageRepository;
 use Page\Entity\PageRepositoryInterface;
 
-class PageRepositoryStrategy extends AbstractStrategy
+class PageRepositoryAdapter extends AbstractAdapter
 {
 
     /**
-     * @return PageRepository
+     * @return PageRepositoryInterface
      */
     public function getObject()
     {
@@ -37,9 +36,23 @@ class PageRepositoryStrategy extends AbstractStrategy
         return '';
     }
 
+    protected function getCreationDate()
+    {
+        $revision = $this->getRevision();
+        if ($revision) {
+            return $revision->getDate();
+        }
+        return new \DateTime;
+    }
+
     protected function getId()
     {
         return $this->getObject()->getId();
+    }
+
+    protected function getKeywords()
+    {
+        return [];
     }
 
     protected function getPreview()
@@ -70,15 +83,6 @@ class PageRepositoryStrategy extends AbstractStrategy
         return [
             'page' => $this->getObject()->getId()
         ];
-    }
-
-    protected function getCreationDate()
-    {
-        $revision = $this->getRevision();
-        if ($revision) {
-            return $revision->getDate();
-        }
-        return new \DateTime;
     }
 
     protected function getTitle()

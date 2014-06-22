@@ -9,52 +9,69 @@
  */
 namespace Normalizer;
 
-use Normalizer\Strategy\StrategyInterface;
+use Normalizer\Adapter\AdapterPluginManager;
+use Zend\Cache\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 class Normalizer implements NormalizerInterface
 {
-    use ServiceLocatorAwareTrait;
 
     /**
-     * @var Strategy\StrategyInterface[]
+     * @var Adapter\AdapterPluginManager
      */
-    protected $strategies = [
-        'Normalizer\Strategy\AttachmentStrategy',
-        'Normalizer\Strategy\PageRepositoryStrategy',
-        'Normalizer\Strategy\PageRevisionStrategy',
-        'Normalizer\Strategy\EntityStrategy',
-        'Normalizer\Strategy\TaxonomyTermStrategy',
-        'Normalizer\Strategy\CommentStrategy',
-        'Normalizer\Strategy\UserStrategy',
-        'Normalizer\Strategy\EntityRevisionStrategy',
-        'Normalizer\Strategy\PostStrategy'
+    protected $pluginManager;
+
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
+
+    /**
+     * @var array
+     */
+    protected $adapters = [
+        'Attachment\Entity\ContainerInterface'  => 'Normalizer\Adapter\AttachmentAdapter',
+        'Discussion\Entity\CommentInterface'    => 'Normalizer\Adapter\CommentAdapter',
+        'Entity\Entity\EntityInterface'         => 'Normalizer\Adapter\EntityAdapter',
+        'Entity\Entity\RevisionInterface'       => 'Normalizer\Adapter\EntityRevisionAdapter',
+        'Page\Entity\PageRepositoryInterface'   => 'Normalizer\Adapter\PageRepositoryAdapter',
+        'Page\Entity\PageRevisionInterface'     => 'Normalizer\Adapter\PageRevisionAdapter',
+        'Blog\Entity\PostInterface'             => 'Normalizer\Adapter\PostAdapter',
+        'Taxonomy\Entity\TaxonomyTermInterface' => 'Normalizer\Adapter\TaxonomyTermAdapter',
+        'User\Entity\UserInterface'             => 'Normalizer\Adapter\UserAdapter',
     ];
 
-    protected $cache = [];
+    public function __construct(StorageInterface $storage, AdapterPluginManager $pluginManager = null)
+    {
+        if (!$pluginManager) {
+            $pluginManager = new AdapterPluginManager();
+        }
+        $this->pluginManager = $pluginManager;
+        $this->storage       = $storage;
+    }
 
     public function normalize($object)
     {
-        $objectHash = spl_object_hash($object);
-
-        if (isset($this->cache[$objectHash])) {
-            return $this->cache[$objectHash];
+        if (!is_object($object)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected object but got %s.', gettype($object)));
         }
 
-        /* @var $strategy Strategy\StrategyInterface */
-        foreach ($this->strategies as & $strategy) {
-            if (!$strategy instanceof StrategyInterface) {
-                $strategy = $this->getServiceLocator()->get($strategy);
-            }
+        $key = hash('sha256', serialize($object));
 
-            if ($strategy->isValid($object)) {
-                $normalized               = $strategy->normalize($object);
-                $this->cache[$objectHash] = $normalized;
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
 
+        foreach ($this->adapters as $class => $adapterClass) {
+            if ($object instanceof $class) {
+                /* @var $adapterClass Adapter\AdapterInterface */
+                $adapter    = $this->pluginManager->get($adapterClass);
+                $normalized = $adapter->normalize($object);
+                $this->storage->setItem($key, $normalized);
                 return $normalized;
             }
         }
 
-        throw new Exception\RuntimeException(sprintf('No strategy found for "%s"', get_class($object)));
+        throw new Exception\NoSuitableAdapterFoundException($object);
     }
 }

@@ -7,15 +7,15 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
-use Blog\Entity\PostInterface;
+use User\Entity\UserInterface;
 
-class PostStrategy extends AbstractStrategy
+class UserAdapter extends AbstractAdapter
 {
 
     /**
-     * @return PostInterface
+     * @return UserInterface
      */
     public function getObject()
     {
@@ -24,12 +24,12 @@ class PostStrategy extends AbstractStrategy
 
     public function isValid($object)
     {
-        return $object instanceof PostInterface;
+        return $object instanceof UserInterface;
     }
 
     protected function getContent()
     {
-        return $this->getObject()->getContent();
+        return $this->getObject()->getUsername();
     }
 
     protected function getId()
@@ -37,35 +37,38 @@ class PostStrategy extends AbstractStrategy
         return $this->getObject()->getId();
     }
 
+    protected function getKeywords()
+    {
+        return [];
+    }
+
     protected function getPreview()
     {
-        return $this->getObject()->getContent();
+        return $this->getObject()->getUsername();
     }
 
     protected function getRouteName()
     {
-        return 'blog/post/view';
+        return 'user/profile';
     }
 
     protected function getRouteParams()
     {
-        return [
-            'post' => $this->getObject()->getId()
-        ];
+        return ['id' => $this->getObject()->getId()];
     }
 
     protected function getCreationDate()
     {
-        return $this->getObject()->getTimestamp();
+        return $this->getObject()->getDate();
     }
 
     protected function getTitle()
     {
-        return $this->getObject()->getTitle();
+        return $this->getObject()->getUsername();
     }
 
     protected function getType()
     {
-        return 'blogPost';
+        return 'user';
     }
 }

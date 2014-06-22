@@ -54,4 +54,9 @@ interface MetadataInterface
      * @return DateTime
      */
     public function getLastModified();
+
+    /**
+     * @return array|string[]
+     */
+    public function getKeywords();
 }
