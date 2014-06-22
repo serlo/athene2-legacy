@@ -48,7 +48,7 @@ abstract class AbstractAdapter implements AdapterInterface
             'id'          => $this->getId(),
             'metadata'    => [
                 'creationDate' => $this->getCreationDate(),
-                'description'  => $this->getContent(),
+                'description'  => $this->getDescription(),
                 'keywords'     => $this->getKeywords()
             ]
         ]);
@@ -65,6 +65,14 @@ abstract class AbstractAdapter implements AdapterInterface
      * @return string
      */
     abstract protected function getCreationDate();
+
+    /**
+     * @return string
+     */
+    protected function getDescription()
+    {
+        return $this->getContent();
+    }
 
     /**
      * @return int

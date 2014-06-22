@@ -15,6 +15,7 @@ use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Entity\Filter\EntityAgeCollectionFilter;
 use Entity\Manager\EntityManagerInterface;
+use Markdown\Exception\RuntimeException;
 use Markdown\Service\RenderServiceInterface;
 use Normalizer\NormalizerInterface;
 use Uuid\Filter\NotTrashedCollectionFilter;
@@ -85,7 +86,13 @@ class JsonApiController extends AbstractController
         foreach ($collection as $entity) {
             $normalized  = $this->normalizer->normalize($entity);
             $description = $normalized->getMetadata()->getDescription();
-            $description = $this->renderService->render($description);
+
+            try {
+                $description = $this->renderService->render($description);
+            } catch (RuntimeException $e) {
+                // nothing to do
+            }
+
             $description = $this->descriptionFilter->filter($description);
             $item        = [
                 'title'       => $normalized->getTitle(),

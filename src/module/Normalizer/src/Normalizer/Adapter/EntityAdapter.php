@@ -84,6 +84,14 @@ class EntityAdapter extends AbstractAdapter
         return array_unique($keywords);
     }
 
+    /**
+     * @return string
+     */
+    protected function getDescription()
+    {
+        return $this->getField(['summary', 'description', 'content']);
+    }
+
     protected function getPreview()
     {
         return $this->getField(['summary', 'description', 'content']);
