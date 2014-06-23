@@ -38,7 +38,7 @@ class Normalize extends AbstractHelper
         $preview    = $this->toPreview($object);
         $meta->setProperty('og:title', $title);
         $meta->appendName('description', $preview);
-        $meta->appendName('keywords', $keywords);
+        $meta->appendName('keywords', implode(', ', $keywords));
 
         return $this;
     }

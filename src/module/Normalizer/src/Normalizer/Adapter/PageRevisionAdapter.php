@@ -28,14 +28,14 @@ class PageRevisionAdapter extends AbstractAdapter
         return $object instanceof PageRevisionInterface;
     }
 
+    protected function getKeywords()
+    {
+        return explode(' ', $this->getTitle());
+    }
+
     protected function getContent()
     {
         return $this->getObject()->getContent();
-    }
-
-    protected function getKeywords()
-    {
-        return [];
     }
 
     protected function getId()
