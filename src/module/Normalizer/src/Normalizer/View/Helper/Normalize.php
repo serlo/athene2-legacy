@@ -34,9 +34,11 @@ class Normalize extends AbstractHelper
         $meta       = $this->getView()->plugin('headMeta');
         $normalized = $this->normalize($object);
         $title      = $normalized->getTitle();
+        $keywords   = $normalized->getMetadata()->getKeywords();
         $preview    = $this->toPreview($object);
         $meta->setProperty('og:title', $title);
         $meta->appendName('description', $preview);
+        $meta->appendName('keywords', $keywords);
 
         return $this;
     }
@@ -70,21 +72,9 @@ class Normalize extends AbstractHelper
         return '<a href="' . $this->toUrl($object) . '">' . $normalized->getTitle() . '</a>';
     }
 
-    public function toPreview($object)
+    public function toAuthor($object)
     {
-        /* @var $markdown MarkdownHelper */
-        $markdown    = $this->getView()->plugin('markdown');
-        $normalized  = $this->normalize($object);
-        $filter      = new PreviewFilter(152);
-        $content     = $normalized->getContent();
-        $content     = $markdown->toHtml($content);
-        $preview     = $filter->filter($content);
-        return $preview;
-    }
-
-    public function toTitle($object)
-    {
-        return $this->normalize($object)->getTitle();
+        return $this->normalize($object)->getMetadata()->getAuthor();
     }
 
     public function toCreationDate($object)
@@ -97,9 +87,21 @@ class Normalize extends AbstractHelper
         return $this->normalize($object)->getMetadata()->getLastModified();
     }
 
-    public function toAuthor($object)
+    public function toPreview($object)
     {
-        return $this->normalize($object)->getMetadata()->getAuthor();
+        /* @var $markdown MarkdownHelper */
+        $markdown   = $this->getView()->plugin('markdown');
+        $normalized = $this->normalize($object);
+        $filter     = new PreviewFilter(152);
+        $content    = $normalized->getContent();
+        $content    = $markdown->toHtml($content);
+        $preview    = $filter->filter($content);
+        return $preview;
+    }
+
+    public function toTitle($object)
+    {
+        return $this->normalize($object)->getTitle();
     }
 
     public function toType($object)

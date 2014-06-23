@@ -52,7 +52,7 @@ class PageRepositoryAdapter extends AbstractAdapter
 
     protected function getKeywords()
     {
-        return [];
+        return explode(' ', $this->getTitle());
     }
 
     protected function getPreview()
