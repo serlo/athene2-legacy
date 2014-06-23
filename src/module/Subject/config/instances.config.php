@@ -25,7 +25,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'deutsch als fremdsprache'       => [
+                'deutsch-als-fremdsprache'       => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
