@@ -38,11 +38,6 @@ class RepositoryManager implements RepositoryManagerInterface
     protected $objectManager;
 
     /**
-     * @var AuthorizationService
-     */
-    protected $authorizationService;
-
-    /**
      * @param AuthorizationService $authorizationService
      * @param ModuleOptions        $moduleOptions
      * @param ObjectManager        $objectManager
