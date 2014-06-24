@@ -11,6 +11,7 @@
 namespace CacheInvalidator\Factory;
 
 use CacheInvalidator\Invalidator\StrokerStorageInvalidator;
+use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -24,8 +25,8 @@ class StrokerStorageInvalidatorFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $storage      = $serviceLocator->getServiceLocator()->get('StrokerCache\Storage\CacheStorage');
-        $cacheService = $serviceLocator->getServiceLocator()->get('strokerCache\Service\CacheService');
-        return new StrokerStorageInvalidator($cacheService, $storage);
+        /* @var $serviceLocator AbstractPluginManager */
+        $storage = $serviceLocator->getServiceLocator()->get('StrokerCache\Storage\CacheStorage');
+        return new StrokerStorageInvalidator($storage);
     }
 }

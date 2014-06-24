@@ -10,7 +10,8 @@
  */
 namespace Authentication\Factory;
 
-use Zend\Authentication\AuthenticationService;
+use Authentication\Service\AuthenticationService;
+use Zend\Mvc\Application;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -24,9 +25,12 @@ class AuthenticationServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instance = new AuthenticationService();
-        $instance->setAdapter($serviceLocator->get('Authentication\Adapter\UserAuthAdapter'));
-        $instance->setStorage($serviceLocator->get('Authentication\Storage\UserSessionStorage'));
+        $sessionConfig = $serviceLocator->get('Zend\Session\Config\SessionConfig');
+        $request       = $serviceLocator->get('Request');
+        $response      = $serviceLocator->get('Response');
+        $adapter       = $serviceLocator->get('Authentication\Adapter\UserAuthAdapter');
+        $storage       = $serviceLocator->get('Authentication\Storage\UserSessionStorage');
+        $instance      = new AuthenticationService($storage, $adapter, $sessionConfig, $response, $request);
 
         return $instance;
     }

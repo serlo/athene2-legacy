@@ -165,6 +165,7 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
                             'title',
+                            'description',
                             'reasoning',
                             'changes'
                         ]

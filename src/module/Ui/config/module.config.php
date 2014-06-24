@@ -9,9 +9,7 @@
  */
 namespace Ui;
 
-use Ui\View\Helper\PageHeader;
 use Zend\Mvc\Application;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcRbac\Guard\GuardInterface;
 
 return [
@@ -28,8 +26,8 @@ return [
     'zfctwig'               => [
         'helper_manager' => [
             'invokables' => [
-                'partial'    => 'Zend\View\Helper\Partial',
-                'encrypt'    => 'Ui\View\Helper\Encrypt',
+                'partial' => 'Zend\View\Helper\Partial',
+                'encrypt' => 'Ui\View\Helper\Encrypt',
             ],
             'factories'  => [
                 'brand'    => __NAMESPACE__ . '\Factory\BrandHelperFactory',
@@ -55,6 +53,12 @@ return [
         ],
         'strategies'               => [
             'Zend\View\Strategy\JsonStrategy',
+            'ViewFeedStrategy',
+        ]
+    ],
+    'controller_plugins'    => [
+        'factories' => [
+            'brand' => __NAMESPACE__ . '\Factory\BrandPluginFactory'
         ]
     ],
     'view_helpers'          => [

@@ -24,7 +24,7 @@ class Metadata extends AbstractOptions implements MetadataInterface
      * @var DateTime
      */
     protected $lastModified;
-    
+
     /**
      * @var string
      */
@@ -49,6 +49,11 @@ class Metadata extends AbstractOptions implements MetadataInterface
      * @var string
      */
     protected $license;
+
+    /**
+     * @var array|string[]
+     */
+    protected $keywords = [];
 
     public function __construct(array $data)
     {
@@ -119,6 +124,22 @@ class Metadata extends AbstractOptions implements MetadataInterface
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return array|\string[]
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @param array|string[] $keywords
+     */
+    public function setKeywords(array $keywords)
+    {
+        $this->keywords = $keywords;
     }
 
     /**

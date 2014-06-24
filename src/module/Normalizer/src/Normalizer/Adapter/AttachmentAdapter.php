@@ -7,13 +7,12 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
-use Attachment\Entity\AttachmentInterface;
 use Attachment\Entity\ContainerInterface;
 use Normalizer\Exception\RuntimeException;
 
-class AttachmentStrategy extends AbstractStrategy
+class AttachmentAdapter extends AbstractAdapter
 {
     /**
      * @return ContainerInterface
@@ -33,6 +32,11 @@ class AttachmentStrategy extends AbstractStrategy
         return $this->getFile()->getLocation();
     }
 
+    protected function getCreationDate()
+    {
+        return $this->getFile()->getDateTime();
+    }
+
     protected function getFile()
     {
         $file = $this->getObject()->getFiles()->current();
@@ -45,6 +49,11 @@ class AttachmentStrategy extends AbstractStrategy
     protected function getId()
     {
         return $this->getObject()->getId();
+    }
+
+    protected function getKeywords()
+    {
+        return [];
     }
 
     protected function getPreview()
@@ -62,11 +71,6 @@ class AttachmentStrategy extends AbstractStrategy
         return [
             'id' => $this->getObject()->getId()
         ];
-    }
-
-    protected function getCreationDate()
-    {
-        return $this->getFile()->getDateTime();
     }
 
     protected function getTitle()

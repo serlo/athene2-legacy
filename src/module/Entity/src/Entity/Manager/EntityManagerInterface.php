@@ -10,6 +10,7 @@
 namespace Entity\Manager;
 
 use Common\ObjectManager\Flushable;
+use Doctrine\Common\Collections\Collection;
 use Entity\Entity\EntityInterface;
 use Instance\Entity\InstanceInterface;
 
@@ -23,6 +24,12 @@ interface EntityManagerInterface extends Flushable
      * @return EntityInterface
      */
     public function createEntity($type, array $data = [], InstanceInterface $instance);
+
+    /**
+     * @param string $name
+     * @return EntityInterface[]|Collection
+     */
+    public function findEntitiesByTypeName($name);
 
     /**
      * @param int $id

@@ -11,6 +11,7 @@
 namespace CacheInvalidator\Factory;
 
 use CacheInvalidator\Invalidator\NavigationStorageInvalidator;
+use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -24,6 +25,7 @@ class NavigationStorageInvalidatorFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        /* @var $serviceLocator AbstractPluginManager */
         $storage = $serviceLocator->getServiceLocator()->get('Navigation\\Storage\Storage');
         return new NavigationStorageInvalidator($storage);
     }

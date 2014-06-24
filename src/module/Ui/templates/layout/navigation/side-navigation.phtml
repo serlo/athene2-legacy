@@ -27,9 +27,11 @@ foreach ($this->container as $page) {
         }
     }
 
+    $html[] = '<li class="is-hidden">';
     $html[] = '<a class="is-hidden" href="' . $page->getHref() . '" itemprop="url">';
     $html[] = '<span itemprop="title">' . $page->getLabel() . '</span>';
     $html[] = '</a>';
+    $html[] = '</li>';
 
     if (!empty($page->pages)) {
         // $html[] = '<ul class="dropdown-menu">';

@@ -7,11 +7,11 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
 use Blog\Entity\PostInterface;
 
-class PostStrategy extends AbstractStrategy
+class PostAdapter extends AbstractAdapter
 {
 
     /**
@@ -30,6 +30,11 @@ class PostStrategy extends AbstractStrategy
     protected function getContent()
     {
         return $this->getObject()->getContent();
+    }
+
+    protected function getKeywords()
+    {
+        return [];
     }
 
     protected function getId()

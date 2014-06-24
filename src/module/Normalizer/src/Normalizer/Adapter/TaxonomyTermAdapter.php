@@ -7,13 +7,13 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
 use DateTime;
 use Normalizer\Exception\RuntimeException;
 use Taxonomy\Entity\TaxonomyTermInterface;
 
-class TaxonomyTermStrategy extends AbstractStrategy
+class TaxonomyTermAdapter extends AbstractAdapter
 {
 
     /**
@@ -34,9 +34,25 @@ class TaxonomyTermStrategy extends AbstractStrategy
         return $this->getObject()->getDescription();
     }
 
+    protected function getCreationDate()
+    {
+        return new DateTime();
+    }
+
     protected function getId()
     {
         return $this->getObject()->getId();
+    }
+
+    protected function getKeywords()
+    {
+        $term     = $this->getObject();
+        $keywords = [];
+        while ($term->hasParent()) {
+            $keywords[] = $term->getName();
+            $term       = $term->getParent();
+        }
+        return $keywords;
     }
 
     protected function getPreview()
@@ -88,11 +104,6 @@ class TaxonomyTermStrategy extends AbstractStrategy
         }
 
         throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
-    }
-
-    protected function getCreationDate()
-    {
-        return new DateTime();
     }
 
     protected function getTitle()

@@ -15,4 +15,5 @@ rm data/twig data/zfc* data/*.php data/*.cache -Rf
 pm2 status
 cd ../
 php composer.phar update -o
+rm data/*.php -Rf
 php src/public/index.php pagespeed build

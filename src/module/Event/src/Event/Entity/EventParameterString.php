@@ -10,12 +10,14 @@
 namespace Event\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Instance\Entity\InstanceInterface;
+use Instance\Entity\InstanceProviderInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="event_parameter_string")
  */
-class EventParameterString
+class EventParameterString implements InstanceProviderInterface
 {
 
     /**
@@ -33,11 +35,14 @@ class EventParameterString
 
     /**
      * Do not change the default value or filtering will remove these events!
-     *
      * @ORM\Column(type="string")
      */
     protected $value = '';
 
+    /**
+     * @param EventParameterInterface $eventParameter
+     * @param string                  $value
+     */
     public function __construct(EventParameter $eventParameter, $value)
     {
         $this->value          = $value ? $value : '';
@@ -45,18 +50,32 @@ class EventParameterString
     }
 
     /**
-     * @return EventParameter
+     * @return EventParameterInterface
      */
     public function getEventParameter()
     {
         return $this->eventParameter;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return InstanceInterface
+     */
+    public function getInstance()
+    {
+        return $this->eventParameter->getInstance();
+    }
+
+    /**
+     * @return string
+     */
     public function getValue()
     {
         return $this->value;

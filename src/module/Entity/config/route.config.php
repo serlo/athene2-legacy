@@ -14,11 +14,57 @@ return [
     'router' => [
         'routes' => [
             'entity' => [
-                'type'    => 'literal',
+                'type'         => 'literal',
                 'options'      => [
                     'route' => '/entity'
                 ],
                 'child_routes' => [
+                    'api'        => [
+                        'type'         => 'literal',
+                        'options'      => [
+                            'route' => '/api',
+                            'defaults'     => [
+                                'controller' => __NAMESPACE__ . '\Controller\ApiController'
+                            ],
+                        ],
+                        'child_routes' => [
+                            'json' => [
+                                'type'         => 'literal',
+                                'options'      => [
+                                    'route' => '/json',
+                                ],
+                                'child_routes' => [
+                                    'export' => [
+                                        'type'    => 'segment',
+                                        'options' => [
+                                            'route'    => '/export/:type',
+                                            'defaults' => [
+                                                'action' => 'export'
+                                            ]
+                                        ]
+                                    ],
+                                    'latest' => [
+                                        'type'    => 'segment',
+                                        'options' => [
+                                            'route'    => '/export/latest/:type/:age',
+                                            'defaults' => [
+                                                'action' => 'latest'
+                                            ]
+                                        ]
+                                    ],
+                                ]
+                            ],
+                            'rss' => [
+                                'type'    => 'segment',
+                                'options' => [
+                                    'route'    => '/rss/:type/:age/feed.rss',
+                                    'defaults' => [
+                                        'action' => 'rss'
+                                    ]
+                                ]
+                            ],
+                        ]
+                    ],
                     'create'     => [
                         'type'    => 'segment',
                         'options' => [
@@ -60,7 +106,7 @@ return [
                         ]
                     ],
                     'repository' => [
-                        'type'    => 'literal',
+                        'type'         => 'literal',
                         'options'      => [
                             'route'    => '/repository',
                             'defaults' => [
@@ -116,7 +162,7 @@ return [
                         ]
                     ],
                     'license'    => [
-                        'type'    => 'literal',
+                        'type'         => 'literal',
                         'options'      => [
                             'route'    => '/license',
                             'defaults' => [
@@ -136,7 +182,7 @@ return [
                         ]
                     ],
                     'link'       => [
-                        'type'    => 'literal',
+                        'type'         => 'literal',
                         'options'      => [
                             'route'    => '/link',
                             'defaults' => [
@@ -175,7 +221,7 @@ return [
                         ]
                     ],
                     'taxonomy'   => [
-                        'type'    => 'literal',
+                        'type'         => 'literal',
                         'options'      => [
                             'route' => '/taxonomy'
                         ],

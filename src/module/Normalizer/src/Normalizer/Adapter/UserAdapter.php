@@ -7,15 +7,15 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
-use Discussion\Entity\CommentInterface;
+use User\Entity\UserInterface;
 
-class CommentStrategy extends AbstractStrategy
+class UserAdapter extends AbstractAdapter
 {
 
     /**
-     * @return CommentInterface
+     * @return UserInterface
      */
     public function getObject()
     {
@@ -24,12 +24,12 @@ class CommentStrategy extends AbstractStrategy
 
     public function isValid($object)
     {
-        return $object instanceof CommentInterface;
+        return $object instanceof UserInterface;
     }
 
     protected function getContent()
     {
-        return $this->getObject()->getContent();
+        return $this->getObject()->getUsername();
     }
 
     protected function getId()
@@ -37,37 +37,38 @@ class CommentStrategy extends AbstractStrategy
         return $this->getObject()->getId();
     }
 
+    protected function getKeywords()
+    {
+        return [];
+    }
+
     protected function getPreview()
     {
-        return $this->getContent();
+        return $this->getObject()->getUsername();
     }
 
     protected function getRouteName()
     {
-        return 'discussion/view';
+        return 'user/profile';
     }
 
     protected function getRouteParams()
     {
-        return [
-            'id' => $this->getObject()->hasParent() ? $this->getObject()->getParent()->getId() :
-                    $this->getObject()->getId()
-        ];
+        return ['id' => $this->getObject()->getId()];
     }
 
     protected function getCreationDate()
     {
-        return $this->getObject()->getTimestamp();
+        return $this->getObject()->getDate();
     }
 
     protected function getTitle()
     {
-        return $this->getObject()->hasParent() ? $this->getObject()->getParent()->getTitle() :
-            $this->getObject()->getTitle();
+        return $this->getObject()->getUsername();
     }
 
     protected function getType()
     {
-        return $this->getObject()->hasParent() ? 'comment' : 'parent';
+        return 'user';
     }
 }

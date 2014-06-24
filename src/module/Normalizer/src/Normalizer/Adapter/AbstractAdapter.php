@@ -7,12 +7,13 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Normalizer\Strategy;
+namespace Normalizer\Adapter;
 
 use Normalizer\Entity\Normalized;
+use DateTime;
 use Normalizer\Exception\RuntimeException;
 
-abstract class AbstractStrategy implements StrategyInterface
+abstract class AbstractAdapter implements AdapterInterface
 {
 
     protected $object;
@@ -47,7 +48,10 @@ abstract class AbstractStrategy implements StrategyInterface
             'routeParams' => $this->getRouteParams(),
             'id'          => $this->getId(),
             'metadata'    => [
-                'creationDate' => $this->getCreationDate()
+                'creationDate' => $this->getCreationDate(),
+                'description'  => $this->getDescription(),
+                'keywords'     => $this->getKeywords(),
+                'lastModified' => $this->getLastModified()
             ]
         ]);
 
@@ -60,9 +64,34 @@ abstract class AbstractStrategy implements StrategyInterface
     abstract protected function getContent();
 
     /**
+     * @return string
+     */
+    abstract protected function getCreationDate();
+
+    /**
+     * @return string
+     */
+    protected function getDescription()
+    {
+        return $this->getContent();
+    }
+
+    /**
+     * @return DateTime
+     */
+    protected function getLastModified() {
+        return new DateTime();
+    }
+
+    /**
      * @return int
      */
     abstract protected function getId();
+
+    /**
+     * @return string
+     */
+    abstract protected function getKeywords();
 
     /**
      * @return string
@@ -78,11 +107,6 @@ abstract class AbstractStrategy implements StrategyInterface
      * @return string
      */
     abstract protected function getRouteParams();
-
-    /**
-     * @return string
-     */
-    abstract protected function getCreationDate();
 
     /**
      * @return string

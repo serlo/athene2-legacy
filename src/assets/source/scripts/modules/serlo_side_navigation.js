@@ -44,7 +44,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // fetch location
             loc: '/navigation/render/json/default_navigation',
             // maximum levels to fetch per iteration
-            max: 5,
+            max: 10,
             // attribute name to indicate that this branch has been fetched already
             indicator: 'needs-fetching',
             // attribute name to identify the menuitem
@@ -130,7 +130,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 _.each(self.data.renderedChildren, function (child) {
                     var childItem = new MenuItem(_.extend({}, child.data, {
-                        icon: false
+                        icon: false,
+                        needsFetching: false
                     }));
 
                     childItem.addEventListener('reload', function (e) {
@@ -156,7 +157,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      * OnClick handler for MenuItem
      **/
     MenuItem.prototype.onClick = function (e) {
-        if (this.children || this.alwaysPrevent) {
+        if ((this.data.needsFetching || this.children) && !this.alwaysReload) {
             e.preventDefault();
             e.stopPropagation();
             this.trigger('click', {
@@ -222,6 +223,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         title: t('Close'),
                         url: '#',
                         position: [],
+                        needsFetching: false,
                         level: -1
                     });
 
@@ -489,10 +491,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         foundItem = this.findActiveByActive();
 
         if (foundItem !== undefined) {
-
-            console.log(foundItem.data.url);
-            console.log(currentUrl);
-
             if (foundItem.data.url !== currentUrl) {
                 fromStorageItem = self.findPreviousMenuItem();
                 if (fromStorageItem) {
@@ -717,12 +715,11 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     var breadcrumb,
                         breadCrumbOptions = {
                         icon: false,
+                        needsFetching: false,
                         renderedChildren: (key === parents.length - 1) ? siblings : false
                     };
 
                     breadcrumb = new MenuItem(_.extend({}, menuItem.data, breadCrumbOptions));
-
-                    // breadcrumb.alwaysPrevent = true;
 
                     // breadcrumb.addEventListener('click', function (e) {
                     //     var parentMenuItem = self.hierarchy.getParent(e.menuItem);
@@ -820,7 +817,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 menuItem.addEventListener('click', function (e) {
                     e.originalEvent.preventDefault();
                     self.navigatedMenuItem = e.menuItem;
-                    self.fetch(e.menuItem);
+                    self.fetch(e.menuItem, e);
                 });
 
                 menuItem.addEventListener('reload', function () {
@@ -860,6 +857,14 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         });
 
         call.success(function (data) {
+            // We triggered a false positive, there are no children for this item.
+            // Therefore, let's open the damn link!
+            if (data.length === 0) {
+                // this is so super hacky
+                // todo: fixme
+                window.location.href = menuItem.data.url;
+                return;
+            }
             self.hierarchy.fetchFromJson(data, menuItem);
             self.synchEventHandlers();
             self.jumpTo(menuItem);

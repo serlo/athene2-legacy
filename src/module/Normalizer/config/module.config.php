@@ -12,12 +12,18 @@
 namespace Normalizer;
 
 return [
-    'view_helpers' => [
+    'view_helpers'    => [
         'factories' => [
             'normalize' => __NAMESPACE__ . '\Factory\NormalizeHelperFactory'
         ]
     ],
-    'normalizer'   => [
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Normalizer'      => __NAMESPACE__ . '\Factory\NormalizerFactory',
+            __NAMESPACE__ . '\Storage\Storage' => __NAMESPACE__ . '\Factory\NormalizerStorageFactory'
+        ]
+    ],
+    'normalizer'      => [
         'strategies' => [
             __NAMESPACE__ . '\Strategy\AttachmentStrategy'     => [],
             __NAMESPACE__ . '\Strategy\CommentStrategy'        => [],
@@ -30,7 +36,7 @@ return [
             __NAMESPACE__ . '\Strategy\UserStrategy'           => [],
         ]
     ],
-    'di'           => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\SignpostController',
             __NAMESPACE__ . '\Controller\SitemapController'
@@ -44,11 +50,6 @@ return [
                     'setUuidManager' => [
                         'required' => true
                     ]
-                ],
-                __NAMESPACE__ . '\Normalizer'                    => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ]
                 ]
             ]
         ],
@@ -58,7 +59,7 @@ return [
             ]
         ]
     ],
-    'console'      => [
+    'console'         => [
         'router' => [
             'routes' => [
                 'sitemap' => [
@@ -73,7 +74,7 @@ return [
             ]
         ],
     ],
-    'router'       => [
+    'router'          => [
         'routes' => [
             'normalizer' => [
                 'type'         => 'segment',

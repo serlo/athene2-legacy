@@ -25,6 +25,19 @@ return [
                         'text-exercise-group'
                     ]
                 ],
+                'deutsch-als-fremdsprache'       => [
+                    'allowed_taxonomies' => [
+                        'topic',
+                        'locale'
+                    ],
+                    'allowed_entities'   => [
+                        'article',
+                        'text-exercise',
+                        'video',
+                        'course',
+                        'text-exercise-group'
+                    ]
+                ],
                 'chemie'      => [
                     'allowed_taxonomies' => [
                         'topic'

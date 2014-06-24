@@ -32,7 +32,7 @@ class PageControllerListener extends AbstractListener
         /* @var $repository PageRepositoryInterface */
         $slug       = $e->getParam('slug');
         $repository = $e->getParam('repository');
-        $url        = $e->getTarget()->url()->fromRoute('page/view', ['page' => $repository->getId()]);
+        $url        = $e->getTarget()->url()->fromRoute('page/view', ['page' => $repository->getId()], null, null, false);
         $alias      = $this->getAliasManager()->createAlias(
             $url,
             $slug,

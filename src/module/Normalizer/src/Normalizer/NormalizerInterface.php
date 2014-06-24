@@ -16,6 +16,8 @@ interface NormalizerInterface
     /**
      * @param object $object
      * @return NormalizedInterface
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\NoSuitableAdapterFoundException
      */
     public function normalize($object);
 }
