@@ -10,20 +10,10 @@
  */
 namespace Instance\Factory;
 
-use Instance\Strategy\CookieStrategy;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class CookieStrategyFactory implements FactoryInterface
+class DomainStrategyFactory extends AbstractStrategyFactory
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    protected function getClass()
     {
-        $response   = $serviceLocator->get('Response');
-        $routeMatch = $serviceLocator->get('RouteMatch');
-        $router     = $serviceLocator->get('MvcRouter');
-        return new CookieStrategy($response, $router, $routeMatch);
+        return 'Instance\Strategy\DomainStrategy';
     }
 }

@@ -10,7 +10,42 @@
  */
 namespace Instance\Strategy;
 
-class StrategyPluginManager {
+use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception;
 
+class StrategyPluginManager extends AbstractPluginManager
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected $autoAddInvokableClass = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $factories = [
+        'Instance\Strategy\DomainStrategy' => 'Instance\Factory\DomainStrategyFactory',
+        'Instance\Strategy\CookieStrategy' => 'Instance\Factory\CookieStrategyFactory'
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validatePlugin($plugin)
+    {
+        if (!$plugin instanceof StrategyInterface) {
+            throw new Exception\RuntimeException(sprintf(
+                'Expected instance of StrategyInterface but got %s.',
+                is_object($plugin) ? get_class($plugin) : gettype($plugin)
+            ));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function canonicalizeName($name)
+    {
+        return $name;
+    }
 }
- 

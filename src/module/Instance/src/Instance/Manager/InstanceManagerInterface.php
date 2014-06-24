@@ -16,7 +16,7 @@ interface InstanceManagerInterface
 {
 
     /**
-     * @return Collection InstanceInterface[]
+     * @return Collection|InstanceInterface[]
      */
     public function findAllInstances();
 
@@ -49,7 +49,7 @@ interface InstanceManagerInterface
     public function getInstanceFromRequest();
 
     /**
-     * @param int $id
+     * @param int|InstanceInterface $id
      * @return void
      */
     public function switchInstance($id);

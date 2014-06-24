@@ -15,9 +15,9 @@ use Zend\Stdlib\AbstractOptions;
 class InstanceOptions extends AbstractOptions
 {
     /**
-     * @var bool
+     * @var string
      */
-    protected $useCookie = true;
+    protected $strategy = 'Instance\Strategy\CookieStrategy';
 
     /**
      * @var int
@@ -41,18 +41,18 @@ class InstanceOptions extends AbstractOptions
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function getUseCookie()
+    public function getStrategy()
     {
-        return $this->useCookie;
+        return $this->strategy;
     }
 
     /**
-     * @param boolean $useCookie
+     * @param string $strategy
      */
-    public function setUseCookie($useCookie)
+    public function setStrategy($strategy)
     {
-        $this->useCookie = $useCookie;
+        $this->strategy = $strategy;
     }
 }

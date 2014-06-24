@@ -22,7 +22,7 @@ return [
     'router'             => [
         'routes' => [
             'instance' => [
-                'type'    => 'literal',
+                'type'         => 'literal',
                 'options'      => [
                     'route'    => '/instance',
                     'defaults' => [
@@ -70,11 +70,14 @@ return [
         ]
     ],
     'service_manager'    => [
-        'factories' => [
-            __NAMESPACE__ . '\Manager\InstanceManager' => __NAMESPACE__ . '\Factory\InstanceManagerFactory',
-            __NAMESPACE__ . '\Options\InstanceOptions' => __NAMESPACE__ . '\Factory\InstanceOptionsFactory'
-            // Required in case of upgrade to zf 2.3
-            //'Zend\I18n\Translator\TranslatorInterface' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+        'invokables' => [
+            __NAMESPACE__ . '\Strategy\StrategyPluginManager'
+        ],
+        'factories'  => [
+            __NAMESPACE__ . '\Manager\InstanceManager'            => __NAMESPACE__ . '\Factory\InstanceManagerFactory',
+            __NAMESPACE__ . '\Options\InstanceOptions'            => __NAMESPACE__ . '\Factory\InstanceOptionsFactory',
+            __NAMESPACE__ . '\Listener\IsolationBypassedListener' => __NAMESPACE__ . '\Factory\IsolationBypassedListenerFactory',
+            'Zend\I18n\Translator\TranslatorInterface'            => 'Zend\I18n\Translator\TranslatorServiceFactory'
         ]
     ],
     'di'                 => [

@@ -23,7 +23,7 @@ return [
         'location' => 'http://www.serlo.org'
     ],
     'instance' => [
-        'use_cookie' => false
+        'strategy' => 'Instance\Strategy\DomainStrategy'
     ],
     'tracking' => [
         'instances' => [

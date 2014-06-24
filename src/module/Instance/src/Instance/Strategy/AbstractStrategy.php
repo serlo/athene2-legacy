@@ -10,7 +10,25 @@
  */
 namespace Instance\Strategy;
 
-class AbstractStrategy {
+use Zend\Http\Response;
 
+abstract class AbstractStrategy implements StrategyInterface
+{
+    /**
+     * @var Response
+     */
+    protected $response;
+
+    /**
+     * @param string $url
+     * @return void
+     */
+    protected function redirect($url)
+    {
+        $response = $this->response;
+        $response->getHeaders()->addHeaderLine('Location', $url);
+        $response->setStatusCode(302);
+        $response->sendHeaders();
+        exit;
+    }
 }
- 

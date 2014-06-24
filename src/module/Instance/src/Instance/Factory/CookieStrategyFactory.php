@@ -10,7 +10,10 @@
  */
 namespace Instance\Factory;
 
-class CookieStrategyFactory {
-
+class CookieStrategyFactory extends AbstractStrategyFactory
+{
+    protected function getClass()
+    {
+        return 'Instance\Strategy\CookieStrategy';
+    }
 }
- 

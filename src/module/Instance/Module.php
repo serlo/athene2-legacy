@@ -17,6 +17,12 @@ use Zend\Mvc\MvcEvent;
 
 class Module
 {
+    /**
+     * @var array
+     */
+    public static $listeners = [
+        'Instance\Listener\IsolationBypassedListener'
+    ];
 
     public function getAutoloaderConfig()
     {
@@ -47,12 +53,13 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $app            = $e->getTarget();
+        $app            = $e->getApplication();
         $serviceManager = $app->getServiceManager();
+        $eventManager   = $app->getEventManager();
 
         /* @var $translator Translator */
         $translator = $serviceManager->get('MvcTranslator');
-        $router     = $serviceManager->get('router');
+        $router     = $serviceManager->get('Router');
 
         /* @var $instanceManager Manager\InstanceManager */
         $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
@@ -82,11 +89,23 @@ class Module
         $translator->setLocale($locale);
         $translator->setFallbackLocale('en_US.UTF-8');
 
-        $app->getEventManager()->attach('route', [$this, 'onPreRoute'], 4);
+        $eventManager->attach('route', [$this, 'onPreRoute'], 4);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatchRegisterListeners'), 1000);
 
         $entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
         if ($entityManager instanceof InstanceAwareEntityManager) {
             $entityManager->setInstance($instance);
+        }
+    }
+
+    public function onDispatchRegisterListeners(MvcEvent $e)
+    {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        foreach (self::$listeners as $listener) {
+            $sharedEventManager->attachAggregate(
+                $e->getApplication()->getServiceManager()->get($listener)
+            );
         }
     }
 

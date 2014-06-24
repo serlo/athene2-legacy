@@ -14,7 +14,6 @@ use Zend\Stdlib\ArrayUtils;
 
 class Module
 {
-
     public static $listeners = [
         'Entity\Listener\EntityControllerListener',
         'Entity\Listener\RepositoryControllerListener',

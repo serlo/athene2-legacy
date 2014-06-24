@@ -26,13 +26,10 @@ trait InstanceManagerAwareTrait
 
     /**
      * @param InstanceManagerInterface $tenantManager
-     * @return self
+     * @return void
      */
     public function setInstanceManager(InstanceManagerInterface $tenantManager)
     {
         $this->instanceManager = $tenantManager;
-
-        return $this;
     }
-
 }

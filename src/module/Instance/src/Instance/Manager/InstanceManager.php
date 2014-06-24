@@ -18,8 +18,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Instance\Exception;
 use Instance\Options\InstanceOptions;
-use Zend\Session\AbstractContainer;
-use Zend\Session\Container;
+use Instance\Strategy\StrategyInterface;
 use ZfcRbac\Service\AuthorizationService;
 use ZfcRbac\Service\AuthorizationServiceAwareTrait;
 
@@ -34,33 +33,39 @@ class InstanceManager implements InstanceManagerInterface
     protected $requestInstance;
 
     /**
-     * @var AbstractContainer
-     */
-    protected $container;
-
-    /**
      * @var InstanceOptions
      */
     protected $options;
+
+    /**
+     * @var StrategyInterface
+     */
+    protected $strategy;
 
     /**
      * @param AuthorizationService   $authorizationService
      * @param ClassResolverInterface $classResolver
      * @param InstanceOptions        $options
      * @param ObjectManager          $objectManager
+     * @param StrategyInterface      $strategy
      */
     public function __construct(
         AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
         InstanceOptions $options,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        StrategyInterface $strategy
     ) {
         $this->setAuthorizationService($authorizationService);
         $this->classResolver = $classResolver;
         $this->objectManager = $objectManager;
         $this->options       = $options;
+        $this->strategy      = $strategy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function findAllInstances()
     {
         $className  = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
@@ -76,6 +81,9 @@ class InstanceManager implements InstanceManagerInterface
         return $return;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function findInstanceByName($name)
     {
         if (!is_string($name)) {
@@ -95,6 +103,9 @@ class InstanceManager implements InstanceManagerInterface
         return $instance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function findInstanceBySubDomain($subDomain)
     {
         if (!is_string($subDomain)) {
@@ -115,22 +126,16 @@ class InstanceManager implements InstanceManagerInterface
     }
 
     /**
-     * @return AbstractContainer
+     * {@inheritDoc}
      */
-    public function getContainer()
-    {
-        if (!is_object($this->container)) {
-            $this->container = new Container('instance');
-        }
-
-        return $this->container;
-    }
-
     public function getDefaultInstance()
     {
         return $this->getInstance($this->options->getDefault());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getInstance($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
@@ -144,46 +149,22 @@ class InstanceManager implements InstanceManagerInterface
         return $instance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getInstanceFromRequest()
     {
-        if ($this->options->getUseCookie()) {
-            return $this->getInstanceFromCookie();
-        }
-        return $this->getInstanceFromDomain();
+        return $this->strategy->getActiveInstance($this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function switchInstance($id)
     {
-        $instance  = $this->getInstance($id);
-        $container = $this->getContainer();
-        $container->offsetSet('instance', $instance->getId());
-    }
-
-    protected function getInstanceFromCookie()
-    {
-
-        if (!is_object($this->requestInstance)) {
-            $container = $this->getContainer();
-            if (!$container->offsetExists('instance')) {
-                $this->requestInstance = $this->getDefaultInstance();
-            } else {
-                $this->requestInstance = $this->getInstance($container->offsetGet('instance'));
-            }
+        if (!$id instanceof InstanceInterface) {
+            $id = $this->getInstance($id);
         }
-        return $this->requestInstance;
-    }
-
-    protected function getInstanceFromDomain()
-    {
-        if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
-            return $this->getDefaultInstance();
-        }
-
-        if (!$this->requestInstance) {
-            $subDomain             = explode('.', $_SERVER['HTTP_HOST'])[0];
-            $this->requestInstance = $this->findInstanceBySubDomain($subDomain);
-        }
-
-        return $this->requestInstance;
+        $this->strategy->switchInstance($id);
     }
 }

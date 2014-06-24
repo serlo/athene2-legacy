@@ -26,7 +26,7 @@ class SignpostController extends AbstractActionController
     public function indexAction()
     {
         try {
-            $object = $this->getUuidManager()->getUuid($this->params('uuid'));
+            $object = $this->getUuidManager()->getUuid($this->params('uuid'), true);
         } catch (NotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return false;

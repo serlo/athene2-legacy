@@ -10,7 +10,20 @@
  */
 namespace Instance\Strategy;
 
-class StrategyInterface {
+use Instance\Entity\InstanceInterface;
+use Instance\Manager\InstanceManagerInterface;
 
+interface StrategyInterface
+{
+    /**
+     * @param InstanceManagerInterface $instanceManager
+     * @return InstanceInterface
+     */
+    public function getActiveInstance(InstanceManagerInterface $instanceManager);
+
+    /**
+     * @param InstanceInterface $instance
+     * @return void
+     */
+    public function switchInstance(InstanceInterface $instance);
 }
- 

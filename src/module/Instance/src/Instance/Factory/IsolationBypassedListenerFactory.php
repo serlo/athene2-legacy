@@ -10,7 +10,23 @@
  */
 namespace Instance\Factory;
 
-class IsolationBypassedListenerFactory {
+use Instance\Listener\IsolationBypassedListener;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
+class IsolationBypassedListenerFactory implements FactoryInterface
+{
+    use InstanceManagerFactoryTrait;
+
+    /**
+     * Create service
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $instanceManager = $this->getInstanceManager($serviceLocator);
+        return new IsolationBypassedListener($instanceManager);
+    }
 }
- 

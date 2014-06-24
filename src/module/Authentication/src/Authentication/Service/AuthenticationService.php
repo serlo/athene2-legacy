@@ -47,7 +47,7 @@ class AuthenticationService extends ZendAuthenticationService
     /**
      * @var string
      */
-    protected $cookiePath = null;
+    protected $cookiePath = '/';
 
     public function __construct(
         Storage\StorageInterface $storage = null,

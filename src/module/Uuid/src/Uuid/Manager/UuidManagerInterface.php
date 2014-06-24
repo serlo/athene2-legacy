@@ -10,12 +10,21 @@
 namespace Uuid\Manager;
 
 use Common\ObjectManager\Flushable;
-use Instance\Entity\InstanceInterface;
-use Uuid\Entity\UuidInterface;
 use Doctrine\Common\Collections\Collection;
+use Uuid\Entity\UuidInterface;
 
 interface UuidManagerInterface extends Flushable
 {
+    /**
+     * Finds all Uuids
+     * <code>
+     *    $collection = $um->findAll();
+     * </code>
+     *
+     * @return UuidInterface[]|Collection
+     */
+    public function findAll();
+
     /**
      * Finds Uuuids by their trashed attribute.
      * <code>
@@ -32,16 +41,6 @@ interface UuidManagerInterface extends Flushable
     public function findByTrashed($trashed);
 
     /**
-     * Finds all Uuids
-     * <code>
-     *    $collection = $um->findAll();
-     * </code>
-     *
-     * @return UuidInterface[]|Collection
-     */
-    public function findAll();
-
-    /**
      * Get an Uuid.
      * <code>
      * $um->getUuid('1');
@@ -50,9 +49,10 @@ interface UuidManagerInterface extends Flushable
      * </code>
      *
      * @param int|string|UuidInterface $key
+     * @param bool                     $bypassIsolation
      * @return UuidInterface $uuid
      */
-    public function getUuid($key);
+    public function getUuid($key, $bypassIsolation = false);
 
     /**
      * @param int $id

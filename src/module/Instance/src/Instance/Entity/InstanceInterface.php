@@ -33,6 +33,11 @@ interface InstanceInterface
     public function getName();
 
     /**
+     * @return string
+     */
+    public function getSubdomain();
+
+    /**
      * @param string $name
      * @return void
      */

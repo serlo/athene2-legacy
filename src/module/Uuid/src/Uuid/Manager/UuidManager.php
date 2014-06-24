@@ -15,11 +15,8 @@ use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Instance\Entity\InstanceAwareInterface;
-use Instance\Entity\InstanceInterface;
-use Instance\Entity\InstanceProviderInterface;
+use Instance\Manager\InstanceAwareEntityManager;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception;
 use Uuid\Exception\NotFoundException;
@@ -39,16 +36,16 @@ class UuidManager implements UuidManagerInterface
     protected $moduleOptions;
 
     /**
-     * @param AuthorizationService   $authorizationService
-     * @param ClassResolverInterface $classResolver
-     * @param ModuleOptions          $moduleOptions
-     * @param ObjectManager          $objectManager
+     * @param AuthorizationService       $authorizationService
+     * @param ClassResolverInterface     $classResolver
+     * @param ModuleOptions              $moduleOptions
+     * @param InstanceAwareEntityManager $objectManager
      */
     public function __construct(
         AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
         ModuleOptions $moduleOptions,
-        ObjectManager $objectManager
+        InstanceAwareEntityManager $objectManager
     ) {
         $this->authorizationService = $authorizationService;
         $this->classResolver        = $classResolver;
@@ -56,6 +53,19 @@ class UuidManager implements UuidManagerInterface
         $this->moduleOptions        = $moduleOptions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function findAll()
+    {
+        $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
+        $entities  = $this->getObjectManager()->getRepository($className)->findAll();
+        return new ArrayCollection($entities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function findByTrashed($trashed)
     {
         $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
@@ -65,25 +75,17 @@ class UuidManager implements UuidManagerInterface
         return new ArrayCollection($entities);
     }
 
-    public function findAll()
-    {
-        $className  = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
-        $entities   = $this->getObjectManager()->getRepository($className)->findAll();
-        return new ArrayCollection($entities);
-    }
-
     /**
-     * @return ModuleOptions
+     * {@inheritDoc}
      */
-    public function getModuleOptions()
+    public function getUuid($key, $bypassIsolation = false)
     {
-        return $this->moduleOptions;
-    }
+        $previous = $this->objectManager->getBypassIsolation();
+        $this->objectManager->setBypassIsolation($bypassIsolation);
 
-    public function getUuid($key)
-    {
         $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
         $entity    = $this->getObjectManager()->find($className, $key);
+        $this->objectManager->setBypassIsolation($previous);
 
         if (!is_object($entity)) {
             throw new NotFoundException(sprintf('Could not find %s', $key));
@@ -92,21 +94,27 @@ class UuidManager implements UuidManagerInterface
         return $entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function purgeUuid($id)
     {
         $uuid       = $this->getUuid($id);
         $class      = ClassUtils::getClass($uuid);
-        $permission = $this->getModuleOptions()->getPermission($class, 'purge');
+        $permission = $this->moduleOptions->getPermission($class, 'purge');
         $this->assertGranted($permission, $uuid);
         $this->getObjectManager()->remove($uuid);
         $this->getEventManager()->trigger('purge', $this, ['object' => $uuid]);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function restoreUuid($id)
     {
         $uuid       = $this->getUuid($id);
         $class      = ClassUtils::getClass($uuid);
-        $permission = $this->getModuleOptions()->getPermission($class, 'restore');
+        $permission = $this->moduleOptions->getPermission($class, 'restore');
         $this->assertGranted($permission, $uuid);
 
         if (!$uuid->isTrashed()) {
@@ -119,11 +127,14 @@ class UuidManager implements UuidManagerInterface
         $this->getEventManager()->trigger('restore', $this, ['object' => $uuid]);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function trashUuid($id)
     {
         $uuid       = $this->getUuid($id);
         $class      = ClassUtils::getClass($uuid);
-        $permission = $this->getModuleOptions()->getPermission($class, 'trash');
+        $permission = $this->moduleOptions->getPermission($class, 'trash');
         $this->assertGranted($permission, $uuid);
 
         if ($uuid->isTrashed()) {
@@ -136,6 +147,11 @@ class UuidManager implements UuidManagerInterface
         $this->getEventManager()->trigger('trash', $this, ['object' => $uuid]);
     }
 
+    /**
+     * @param int|UuidInterface $idOrObject
+     * @return UuidInterface
+     * @throws \Uuid\Exception\InvalidArgumentException
+     */
     protected function ambiguousToUuid($idOrObject)
     {
         $uuid = null;

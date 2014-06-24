@@ -72,7 +72,7 @@ return [
             'related-content' => [
                 'type'         => 'segment',
                 'options'      => [
-                    'route'    => '/{related-content}',
+                    'route'    => '/related-content',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\RelatedContentController'
                     ]
