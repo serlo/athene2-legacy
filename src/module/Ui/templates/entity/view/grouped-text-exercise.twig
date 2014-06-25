@@ -1,3 +1,4 @@
+{% set title = 'grouped-text-exercise' | trans %}
 {% set revision = entity.getCurrentRevision() %}
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
 {% set hint = entity.getChildren('link', 'text-hint').first() %}
@@ -9,7 +10,8 @@
         <div class="col-xs-6">
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
-                    <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to see the solution {% endtrans %}">
+                    <li data-toggle="tooltip" data-placement="bottom"
+                        title="{% trans %} I want to see the solution {% endtrans %}">
                         <a data-toggle="collapse" href="#solution-{{ solution.getId() }}">
                             <span class="glyphicon glyphicon-ok-circle"></span>
                         </a>
@@ -22,8 +24,10 @@
                         </a>
                     </li>
                 {% endif %}
-                <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to comment this {% endtrans %}">
-                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
+                <li data-toggle="tooltip" data-placement="bottom"
+                    title="{% trans %} I want to comment this {% endtrans %}">
+                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}"
+                       href="#discussions-{{ entity.getId() }}">
                         <span class="glyphicon glyphicon-comment"></span>
                     </a>
                 </li>

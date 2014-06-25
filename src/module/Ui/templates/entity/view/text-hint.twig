@@ -1,3 +1,4 @@
+{% set title = 'text-hint' | trans %}
 {% set revision = entity.getCurrentRevision() %}
 <article class="panel-group">
     <section class="{{ collapse is defined ? 'collapse' : '' }} panel panel-default" id="hint-{{ entity.getId() }}">

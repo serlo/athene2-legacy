@@ -1,3 +1,4 @@
+{% set title = 'text-exercise-group' | trans %}
 <article>
     <section class="row">
         <div class="col-xs-8" itemprop="articleBody">
@@ -5,8 +6,10 @@
         </div>
         <div class="col-xs-4">
             <ul class="nav nav-pills pull-right">
-                <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I want to comment this {% endtrans %}">
-                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
+                <li data-toggle="tooltip" data-placement="bottom"
+                    title="{% trans %} I want to comment this {% endtrans %}">
+                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}"
+                       href="#discussions-{{ entity.getId() }}">
                         <span class="glyphicon glyphicon-comment"></span>
                     </a>
                 </li>

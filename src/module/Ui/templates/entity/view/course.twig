@@ -1,12 +1,16 @@
+{% set title = 'course' | trans %}
+{% set subtitle = 'course-page' | trans %}
 {% set pages = entity.getChildren('link', 'course-page') %}
 <article>
-	<!-- Overview -->
+    <!-- Overview -->
     <section>
-        <div class="sortable" data-action="{{ url('entity/link/order', {'type': 'link', 'entity': entity.getId()}) }}" data-depth="1" data-active="false">
+        <div class="sortable" data-action="{{ url('entity/link/order', {'type': 'link', 'entity': entity.getId()}) }}"
+             data-depth="1" data-active="false">
             <ol class="sortable-list">
                 {% for page in pages if page.hasCurrentRevision() and not(page.isTrashed()) %}
                     <li class="sortable-item" data-id="{{ page.getId() }}">
                         <span class="sortable-handle"></span>
+
                         <div class="sortable-item-inner">
                             <span class="glyphicon glyphicon-align-left"></span>
                             <a href="#{{ page.getId() }}">
@@ -15,7 +19,7 @@
                         </div>
                     </li>
                 {% endfor %}
-            </ol>            
+            </ol>
             <div class="row">
                 <div class="col-xs-8"></div>
                 <div class="col-xs-4">
@@ -26,7 +30,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Detailview -->
     <section>
         {% for page in pages if page.hasCurrentRevision() and not(page.isTrashed()) %}
@@ -49,7 +53,7 @@
     <hr>
     {% include 'entity/view/partials/license' %}
     <hr>
-    
+
     <!-- Discussions -->
     <section class="hidden" id="discussion-{{ entity.getId() }}">
         {{ discussion(entity).render() }}

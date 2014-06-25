@@ -1,3 +1,4 @@
+{% set title = 'article' | trans %}
 {% set revision = entity.getCurrentRevision() %}
 {% set content = markdown().toHtml(revision.get('content')) %}
 <article>
