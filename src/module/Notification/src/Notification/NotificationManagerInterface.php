@@ -27,9 +27,10 @@ interface NotificationManagerInterface extends Flushable
 
     /**
      * @param UserInterface $user
+     * @param int           $limit
      * @return ArrayCollection
      */
-    public function findNotificationsBySubscriber(UserInterface $user);
+    public function findNotificationsBySubscriber(UserInterface $user, $limit = 20);
 
     /**
      * @param UserInterface $user

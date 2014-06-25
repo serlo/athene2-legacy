@@ -60,12 +60,12 @@ class NotificationManager implements NotificationManagerInterface
         return $notification;
     }
 
-    public function findNotificationsBySubscriber(UserInterface $user)
+    public function findNotificationsBySubscriber(UserInterface $user, $limit = 20)
     {
         $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface');
         $criteria      = ['user' => $user->getId()];
         $order         = ['id' => 'desc'];
-        $notifications = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order);
+        $notifications = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order, $limit);
         $collection    = new ArrayCollection($notifications);
         return $this->persistentNotificationFilterChain->filter($collection);
     }

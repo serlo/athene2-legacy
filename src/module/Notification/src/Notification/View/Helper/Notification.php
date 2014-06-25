@@ -102,7 +102,7 @@ class Notification extends AbstractHelper
             $output = $this->getView()->partial(
                 $this->template,
                 [
-                    'notifications' => $this->notificationManager->findNotificationsBySubscriber($user)
+                    'notifications' => $this->notificationManager->findNotificationsBySubscriber($user, 20)
                 ]
             );
             $this->storage->setItem($key, $output);
