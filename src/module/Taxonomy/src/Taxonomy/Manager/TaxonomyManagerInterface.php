@@ -46,7 +46,7 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
      * @param array             $ancestors
      * @return TaxonomyTermInterface
      */
-    public function findTerm(TaxonomyInterface $taxonomy, array $ancestors);
+    public function findTermByName(TaxonomyInterface $taxonomy, array $ancestors);
 
     /**
      * @param int $id

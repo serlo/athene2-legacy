@@ -25,11 +25,6 @@ interface TermEntityInterface extends InstanceAwareInterface
     public function getName();
 
     /**
-     * @return string $slug
-     */
-    public function getSlug();
-
-    /**
      * @param string $name
      * @return void
      */

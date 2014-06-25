@@ -61,7 +61,7 @@ class EntityControllerAdapter extends AbstractAdapter
         foreach ($entity->getTaxonomyTerms() as $term) {
             while ($term->hasParent()) {
                 $name           = $term->getTaxonomy()->getName();
-                $array[$name][] = $term->getSlug();
+                $array[$name][] = $term->getName();
                 $term           = $term->getParent();
             }
         }

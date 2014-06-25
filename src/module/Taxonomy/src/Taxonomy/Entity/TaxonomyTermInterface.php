@@ -40,12 +40,6 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
     public function findAncestorByTypeName($name);
 
     /**
-     * @param array $slugs
-     * @return self
-     */
-    public function findChildBySlugs(array $slugs);
-
-    /**
      * @param array|string[] $names
      * @return self[]|Collection
      */
@@ -99,11 +93,6 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
      * @return int
      */
     public function getPosition();
-
-    /**
-     * @return string
-     */
-    public function getSlug();
 
     /**
      * @return TaxonomyInterface

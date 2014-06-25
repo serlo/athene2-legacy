@@ -47,7 +47,7 @@ class SubjectManager implements SubjectManagerInterface
     public function findSubjectByString($name, InstanceInterface $instance)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $instance);
-        $term     = $this->getTaxonomyManager()->findTerm($taxonomy, (array)$name);
+        $term     = $this->getTaxonomyManager()->findTermByName($taxonomy, (array)$name);
         return $term;
     }
 

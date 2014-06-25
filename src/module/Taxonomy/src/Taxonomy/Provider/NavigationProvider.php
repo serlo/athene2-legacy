@@ -82,7 +82,7 @@ class NavigationProvider implements PageProviderInterface
             $instance   = $this->getInstanceManager()->findInstanceByName($this->options['instance']);
             $parent     = $this->options['parent'];
             $taxonomy   = $this->getTaxonomyManager()->findTaxonomyByName($parent['type'], $instance);
-            $this->term = $this->getTaxonomyManager()->findTerm($taxonomy, (array)$parent['slug']);
+            $this->term = $this->getTaxonomyManager()->findTermByName($taxonomy, (array)$parent['slug']);
         }
 
         return $this->term;
@@ -95,13 +95,13 @@ class NavigationProvider implements PageProviderInterface
     public function provide(array $options)
     {
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
-        $key = hash('sha256', serialize($this->options));
+        $key           = hash('sha256', serialize($this->options));
 
         if ($this->storage->hasItem($key)) {
             return $this->storage->getItem($key);
         }
 
-        $term          = $this->getTerm();
+        $term = $this->getTerm();
 
         if ($this->getObjectManager()->isOpen()) {
             $this->getObjectManager()->refresh($term);
@@ -131,7 +131,7 @@ class NavigationProvider implements PageProviderInterface
             if (!$term->isTrashed()) {
                 $current             = [];
                 $current['route']    = $this->options['route'];
-                $current['params']   = ['term' => (string) $term->getId()];
+                $current['params']   = ['term' => (string)$term->getId()];
                 $current['label']    = $term->getName();
                 $current['elements'] = $term->countElements();
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);

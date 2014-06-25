@@ -9,6 +9,7 @@
  */
 namespace Subject\View\Helper;
 
+use Common\Filter\Slugify;
 use Subject\Options\ModuleOptions;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Zend\View\Helper\AbstractHelper;
@@ -20,6 +21,16 @@ class SubjectHelper extends AbstractHelper
      * @var ModuleOptions
      */
     protected $moduleOptions;
+
+    /**
+     * @var Slugify
+     */
+    protected $filter;
+
+    public function __construct()
+    {
+        $this->filter = new Slugify();
+    }
 
     /**
      * @return self
@@ -35,7 +46,7 @@ class SubjectHelper extends AbstractHelper
      */
     public function getOptions(TaxonomyTermInterface $subject)
     {
-        return $this->getModuleOptions()->getInstance($subject->getSlug(), $subject->getInstance()->getName());
+        return $this->getModuleOptions()->getInstance($subject->getName(), $subject->getInstance()->getName());
     }
 
     /**
@@ -61,7 +72,7 @@ class SubjectHelper extends AbstractHelper
      */
     public function slugify(TaxonomyTermInterface $term, $parent = 'subject')
     {
-        return substr($this->processSlugs($term, $parent), 0, -1);
+        return $this->filter->filter(substr($this->processSlugs($term, $parent), 0, -1));
     }
 
     /**
@@ -71,7 +82,9 @@ class SubjectHelper extends AbstractHelper
      */
     protected function processSlugs(TaxonomyTermInterface $term, $parent)
     {
-        return ($term->getTaxonomy()->getName() != $parent) ?
-            $this->processSlugs($term->getParent(), $parent) . $term->getSlug() . '/' : '';
+        return ($term->getTaxonomy()->getName() != $parent) ? $this->processSlugs(
+                $term->getParent(),
+                $parent
+            ) . $term->getName() . '/' : '';
     }
 }

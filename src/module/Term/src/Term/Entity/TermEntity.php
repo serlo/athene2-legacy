@@ -39,25 +39,27 @@ class TermEntity implements TermEntityInterface
      */
     protected $termTaxonomies;
 
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return $this->name;
     }
 
-    public function getSlug()
-    {
-        $filter = new Slugify();
-        return $filter->filter($this->getName());
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
     }
 }

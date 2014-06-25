@@ -59,7 +59,7 @@ class TaxonomyTermControllerAdapter extends AbstractAdapter
     {
         while ($term->hasParent()) {
             $name           = $term->getTaxonomy()->getName();
-            $array[$name][] = $term->getSlug();
+            $array[$name][] = $term->getName();
             $term           = $term->getParent();
         }
     }

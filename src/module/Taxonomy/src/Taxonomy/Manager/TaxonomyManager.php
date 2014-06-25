@@ -132,7 +132,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $entity;
     }
 
-    public function findTerm(TaxonomyInterface $taxonomy, array $ancestors)
+    public function findTermByName(TaxonomyInterface $taxonomy, array $ancestors)
     {
         if (!count($ancestors)) {
             throw new Exception\RuntimeException('Ancestors are empty');
@@ -146,7 +146,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
                 $element = strtolower($element);
                 foreach ($terms as $term) {
                     $found = false;
-                    if (strtolower($term->getSlug()) == strtolower($element)) {
+                    if (strtolower($term->getName()) == strtolower($element)) {
                         $terms = $term->getChildren();
                         $found = $term;
                         $ancestorsFound++;

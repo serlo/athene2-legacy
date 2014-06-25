@@ -147,22 +147,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         throw new Exception\TermNotFoundException();
     }
 
-    public function findChildBySlugs(array $slugs)
-    {
-        if (empty($slugs)) {
-            return $this;
-        }
-        $slug = array_shift($slugs);
-
-        foreach ($this->getChildren() as $child) {
-            if ($child->getSlug() == $slug) {
-                return $child->findChildBySlugs($slugs);
-            }
-        }
-
-        throw new Exception\TermNotFoundException();
-    }
-
     public function findChildrenByTaxonomyNames(array $names)
     {
         return $this->getChildren()->filter(
@@ -241,7 +225,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
 
     public function setParent(TaxonomyTermInterface $parent = null)
     {
-        if(!$parent){
+        if (!$parent) {
             return;
         }
         $this->parent = $parent;
@@ -251,11 +235,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function getPosition()
     {
         return $this->weight;
-    }
-
-    public function getSlug()
-    {
-        return $this->getTerm()->getSlug();
     }
 
     public function getTaxonomy()
