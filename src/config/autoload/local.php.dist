@@ -7,44 +7,49 @@ $dbParams = array(
 		'database' => 'serlo'
 );
 
-
-/**
- *
- * If Sphinx doesn't run on 127.0.0.1:9306, use this.
- */
-// Sphinxql::addConnection('custom', 'yourhost.com', 9231);
-// Sphinxql::setConnection('custom');
-
-return array(
-    'doctrine' => array(
-        'connection' => array(
-            'orm_default' => array(
+return [
+    'doctrine'     => [
+        'connection' => [
+            'orm_default' => [
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
-                'params' => array(
-                    'host' => $dbParams['host'],
-                    'port' => $dbParams['port'],
-                    'user' => $dbParams['user'],
+                'params'      => [
+                    'host'     => $dbParams['host'],
+                    'port'     => $dbParams['port'],
+                    'user'     => $dbParams['user'],
                     'password' => $dbParams['password'],
-                    'dbname' => $dbParams['database']
-                )
-            )
-        )
-    ),
-    'dbParams' => array(
-        'host' => $dbParams['host'],
-        'port' => $dbParams['port'],
-        'user' => $dbParams['user'],
+                    'dbname'   => $dbParams['database']
+                ]
+            ]
+        ]
+    ],
+    'solarium'     => [
+        'endpoint' => [
+            'default' => [
+                'host'    => 'localhost',
+                'port'    => 8080,
+                'path'    => '/solr',
+                'core'    => '',
+                'timeout' => 5
+            ]
+        ]
+    ],
+    'instance'     => [
+        'strategy' => 'Instance\Strategy\CookieStrategy'
+    ],
+    'dbParams'     => array(
+        'host'     => $dbParams['host'],
+        'port'     => $dbParams['port'],
+        'username' => $dbParams['user'],
         'password' => $dbParams['password'],
-        'database' => $dbParams['database'],
-       'driver' => 'mysqli'
+        'database' => $dbParams['database']
     ),
-    'smtp_options' => array(
+    'smtp_options' => [
     	'name' => 'localhost.localdomain',
 		'host' => '127.0.0.1',
 		'connection_class' => 'login',
-		'connection_config' => array(
+        'connection_config' => [
 			'username' => 'user',
 			'password' => 'pass'
-		)
-	)
-);
+        ]
+    ]
+];

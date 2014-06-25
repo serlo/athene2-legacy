@@ -14,7 +14,8 @@ use Search\SearchService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class SearchServiceFactory implements FactoryInterface {
+class SearchServiceFactory implements FactoryInterface
+{
     /**
      * Create service
      *
@@ -23,12 +24,9 @@ class SearchServiceFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config     = $serviceLocator->get('config');
-        $translator = $serviceLocator->get('MvcTranslator');
-        $router     = $serviceLocator->get('Router');
-        $config     = $config['search'];
-        $instance   = new SearchService($translator, $router, $serviceLocator);
-        $instance->setConfig($config);
+        $pluginManager = $serviceLocator->get('Search\Adapter\AdapterPluginManager');
+        $adapter       = $pluginManager->get('Search\Adapter\SolrAdapter');
+        $instance      = new SearchService($adapter);
         return $instance;
     }
 

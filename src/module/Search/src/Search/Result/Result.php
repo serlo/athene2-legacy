@@ -15,7 +15,7 @@ class Result implements ResultInterface
     /**
      * @var string
      */
-    protected $name;
+    protected $title;
 
     /**
      * @var int
@@ -23,87 +23,103 @@ class Result implements ResultInterface
     protected $id;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $routeParams;
+    protected $url;
 
     /**
      * @var string
      */
-    protected $routeName;
+    protected $content;
 
     /**
-     * @var mixed
+     * @var string
      */
-    protected $object;
+    protected $type;
 
-    public function getRouteParams()
+    /**
+     * @var array
+     */
+    protected $keywords;
+
+    /**
+     * @param int    $id
+     * @param string $title
+     * @param string $content
+     * @param string $type
+     * @param string $url
+     * @param array  $keywords
+     */
+    public function __construct($id, $title, $content, $type, $url, array $keywords)
     {
-        return $this->routeParams;
+        $this->id       = $id;
+        $this->title    = $title;
+        $this->content  = $content;
+        $this->type     = $type;
+        $this->url      = $url;
+        $this->keywords = $keywords;
     }
 
-    public function getRouteName()
+    /**
+     * {@inheritDoc}
+     */
+    public function getContent()
     {
-        return $this->routeName;
+        return $this->content;
     }
 
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @param string $name
-     * @return void
+     * {@inheritDoc}
      */
-    public function setName($name)
+    public function getKeywords()
     {
-        $this->name = $name;
+        return $this->keywords;
     }
 
     /**
-     * @param number $id
-     * @return void
+     * {@inheritDoc}
      */
-    public function setId($id)
+    public function getTitle()
     {
-        $this->id = $id;
+        return $this->title;
     }
 
     /**
-     * @param array $routeParams
-     * @return void
+     * {@inheritDoc}
      */
-    public function setRouteParams(array $routeParams)
+    public function getType()
     {
-        $this->routeParams = $routeParams;
+        return $this->type;
     }
 
     /**
-     * @param string $routeName
-     * @return void
+     * {@inheritDoc}
      */
-    public function setRouteName($routeName)
+    public function getUrl()
     {
-        $this->routeName = $routeName;
+        return $this->url;
     }
 
     /**
-     * @param mixed $object
-     * @return void
+     * {@inheritDoc}
      */
-    public function setObject($object)
+    public function toArray()
     {
-        $this->object = $object;
+        return [
+            'id'      => $this->getId(),
+            'title'   => $this->getTitle(),
+            'content' => $this->getContent(),
+            'url'     => $this->getUrl(),
+            'type'    => $this->getType(),
+            'keywords'
+        ];
     }
 }

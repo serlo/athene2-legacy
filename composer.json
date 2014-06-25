@@ -29,7 +29,8 @@
         "ryakad/pandoc-php": "dev-master",
         "stroker/cache": "dev-master",
         "zf-commons/zfc-twig": "dev-master",
-        "umpirsky/twig-gettext-extractor": "1.1.*"
+        "umpirsky/twig-gettext-extractor": "1.1.*",
+        "ewgo/solarium-module": "~1.0"
     },
     "autoload": {
         "psr-0": {

@@ -11,23 +11,11 @@ namespace Search\Result;
 
 interface ContainerInterface
 {
-
     /**
-     * @param ResultInterface $reuslt
+     * @param ResultInterface $result
      * @return void
      */
-    public function addResult(ResultInterface $reuslt);
-
-    /**
-     * @param ContainerInterface $container
-     * @return void
-     */
-    public function addContainer(ContainerInterface $container);
-
-    /**
-     * @return ContainerInterface[]
-     */
-    public function getContainers();
+    public function addResult(ResultInterface $result);
 
     /**
      * @return ResultInterface[]
@@ -35,7 +23,7 @@ interface ContainerInterface
     public function getResults();
 
     /**
-     * @return string
+     * @return array
      */
-    public function getName();
+    public function toArray();
 }

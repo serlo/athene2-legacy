@@ -30,6 +30,7 @@ return [
         'ZfcRbac',
         'TwbBundle',
         'ZfcTwig',
+        'EwgoSolarium',
         'Common',
         'Authentication',
         'Ui',

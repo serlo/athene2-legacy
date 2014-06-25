@@ -15,7 +15,8 @@ interface AdapterInterface
 {
     /**
      * @param string $query
-     * @return Result\ContainerInterface[]
+     * @param int $limit
+     * @return Result\ContainerInterface
      */
-    public function search($query, Result\Container $container);
+    public function search($query, $limit);
 }

@@ -17,12 +17,12 @@ class PreviewHelper extends AbstractHelper
 {
     /**
      * @param string $text
+     * @param int    $length
      * @return string
      */
-    public function __invoke($text)
+    public function __invoke($text, $length = 152)
     {
-        $filter = new PreviewFilter(152);
+        $filter = new PreviewFilter($length);
         return $filter->filter($text);
     }
 }
- 

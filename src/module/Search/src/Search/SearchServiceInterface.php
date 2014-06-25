@@ -12,26 +12,9 @@ namespace Search;
 interface SearchServiceInterface
 {
     /**
-     * Search for something.
-     * <code>
-     * $adapters = array(
-     *     'AdapterA',
-     *     'AdapterB',
-     *     'AdapterC'
-     * );
-     * $results = $searchService->search('test', $adapters);
-     * var_dump($results);
-     * </code>
-     *
      * @param string $query
-     * @param array  $adapters
-     * @return Result\Con
+     * @param int    $limit
+     * @return Result\ContainerInterface
      */
-    public function search($query, array $adapters);
-
-    /**
-     * @param Result\ContainerInterface $container
-     * @return array
-     */
-    public function ajaxify(Result\ContainerInterface $container);
+    public function search($query, $limit = 20);
 }

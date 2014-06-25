@@ -15,53 +15,40 @@ use Doctrine\Common\Collections\Collection;
 class Container implements ContainerInterface
 {
     /**
-     * @var Collection
-     */
-    protected $containers;
-
-    /**
-     * @var Collection
+     * @var Collection|ResultInterface[]
      */
     protected $results;
 
-    /**
-     * @var string
-     */
-    protected $name;
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
     public function __construct()
     {
-        $this->containers = new ArrayCollection();
-        $this->results    = new ArrayCollection();
+        $this->results = new ArrayCollection();
     }
 
-    public function getContainers()
-    {
-        return $this->containers;
-    }
-
-    public function getResults()
-    {
-        return $this->results;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function addResult(ResultInterface $result)
     {
         $this->results->add($result);
     }
 
-    public function addContainer(ContainerInterface $container)
+    /**
+     * {@inheritDoc}
+     */
+    public function getResults()
     {
-        $this->containers->add($container);
+        return $this->results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray()
+    {
+        $array = [];
+        foreach ($this->results as $result) {
+            $array[] = $result->toArray();
+        }
+        return $array;
     }
 }

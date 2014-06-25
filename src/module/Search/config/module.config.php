@@ -11,10 +11,11 @@
 namespace Search;
 
 return [
-    'search'          => [],
     'service_manager' => [
-        'factories' => [
-            'Foolz\SphinxQL\Connection'      => __NAMESPACE__ . '\Factory\ConnectionFactory',
+        'invokables' => [
+            'Search\Adapter\AdapterPluginManager'
+        ],
+        'factories'  => [
             __NAMESPACE__ . '\SearchService' => __NAMESPACE__ . '\Factory\SearchServiceFactory'
         ]
     ],
@@ -24,39 +25,7 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter'       => [
-                    'setConnection'      => [
-                        'required' => true
-                    ],
-                    'setEntityManager'   => [
-                        'required' => true
-                    ],
-                    'setNormalizer'      => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter' => [
-                    'setConnection'      => [
-                        'required' => true
-                    ],
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ],
-                    'setNormalizer'      => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Controller\SearchController'          => [
-                    'setSearchService' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Controller\SearchController' => []
             ]
         ],
         'instance'            => [

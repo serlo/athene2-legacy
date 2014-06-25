@@ -12,27 +12,37 @@ namespace Search\Result;
 interface ResultInterface
 {
     /**
-     * @return string $name
+     * @return string
      */
-    public function getName();
+    public function getContent();
 
     /**
-     * @return int $id
+     * @return int
      */
     public function getId();
 
     /**
-     * @return mixed $object
+     * @return string
      */
-    public function getObject();
+    public function getTitle();
 
     /**
-     * @return array $routeParams
+     * @return string
      */
-    public function getRouteParams();
+    public function getType();
 
     /**
-     * @return string $routeName
+     * @return string
      */
-    public function getRouteName();
+    public function getUrl();
+
+    /**
+     * @return array
+     */
+    public function toArray();
+
+    /**
+     * @return array
+     */
+    public function getKeywords();
 }

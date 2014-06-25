@@ -9,104 +9,29 @@
  */
 namespace Search;
 
-use Zend\I18n\Translator\Translator;
-use Zend\Mvc\Router\RouteInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Search\Adapter\AdapterInterface;
+use Solarium\Core\Client\Adapter\Curl;
 
 class SearchService implements SearchServiceInterface
 {
-    use \Common\Traits\ConfigAwareTrait;
+    /**
+     * @var Adapter\AdapterInterface
+     */
+    protected $adapter;
 
     /**
-     * @var ServiceLocatorInterface
+     * @param AdapterInterface $adapter
      */
-    protected $serviceLocator;
+    public function __construct(AdapterInterface $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
     /**
-     * @var RouteInterface
+     * {@inheritDoc}
      */
-    protected $router;
-
-    /**
-     * @var Translator
-     */
-    protected $translator;
-
-    public function __construct(Translator $translator, RouteInterface $router, ServiceLocatorInterface $serviceLocator)
+    public function search($query, $limit = 20)
     {
-        $this->router         = $router;
-        $this->serviceLocator = $serviceLocator;
-        $this->translator     = $translator;
-    }
-
-    public function ajaxify(Result\ContainerInterface $container)
-    {
-        $return = [];
-        $this->iterContainer($container, $return);
-
-        return $return;
-    }
-
-    public function search($query, array $adapters)
-    {
-        $container      = new Result\Container();
-        $configAdapters = $this->getOption('adapters');
-
-        foreach ($adapters as $adapterName) {
-            if (!array_key_exists($adapterName, $configAdapters)) {
-                throw new Exception\RuntimeException(sprintf('Unkown adapter: %s', $adapterName));
-            }
-
-            /* @var $adapterName Adapter\AdapterInterface */
-            $adapterName = $this->serviceLocator->get($configAdapters[$adapterName]);
-
-            $adapterName->search($query, $container);
-        }
-
-        return $container;
-    }
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'adapters' => [
-                'entity'       => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter',
-                'taxonomyTerm' => __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter'
-            ]
-        ];
-    }
-
-    protected function iterContainer(Result\ContainerInterface $container, array & $return, $limit = 10)
-    {
-        $items = [];
-
-        foreach ($container->getResults() as $result) {
-            $url     = $this->router->assemble(
-                $result->getRouteParams(),
-                [
-                    'name' => $result->getRouteName()
-                ]
-            );
-            $item    = [
-                'title' => $result->getName(),
-                'url'   => $url
-            ];
-            $items[] = $item;
-        }
-
-        if (!empty($items)) {
-            $return[] = [
-                'title' => $this->translator->translate($container->getName()),
-                'items' => $items
-            ];
-        }
-
-        if (count($return) > $limit) {
-            return;
-        }
-
-        foreach ($container->getContainers() as $subContainer) {
-            $this->iterContainer($subContainer, $return);
-        }
+        return $this->adapter->search($query, $limit);
     }
 }

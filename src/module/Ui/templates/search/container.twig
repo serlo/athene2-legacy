@@ -1,0 +1,24 @@
+{% for result in container.getResults() %}
+    <p class="media">
+        <p class="media-body">
+            <h4 class="media-heading">
+                <a href="{{ result.getUrl() }}">{{ result.getTitle() }}</a>
+                <small>{{ result.getType() }}</small>
+            </h4>
+            {{ preview(markdown().toHtml(result.getContent()), 180) }}
+            <br>
+            {% for keyword in result.getKeywords() %}
+                {% if loop.index < 5 %}
+                    <span class="label label-primary">{{ keyword }}</span>
+                {% endif %}
+            {% endfor %}
+        </p>
+    </p>
+{% else %}
+    {% set query = '<strong>' ~ query ~ '</strong>' %}
+    <div class="alert alert-info">
+        {% trans %}
+        No matching results found for {{ query }}.
+        {% endtrans %}
+    </div>
+{% endfor %}
