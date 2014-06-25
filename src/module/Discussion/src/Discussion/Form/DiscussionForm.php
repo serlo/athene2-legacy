@@ -66,7 +66,7 @@ class DiscussionForm extends AbstractForm
         $this->add((new Textarea('content'))->setAttribute('placeholder', 'Content'));
         $this->add(new OptInFieldset());
         $this->add(
-            (new Submit('submit'))->setValue('Start discussion')->setAttribute('class', 'btn btn-success pull-right')
+            (new Submit('start'))->setValue('Start discussion')->setAttribute('class', 'btn btn-success pull-right')
         );
 
         $inputFilter->add(
