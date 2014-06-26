@@ -663,6 +663,10 @@ RewriteRule ^home http://de.serlo.org/ [R=301,L,NC]
 RewriteRule ^serlo/about(.)* http://de.serlo.org/serlo [R=301,L,NC]
 RewriteRule ^serlo/participate(.)* http://de.serlo.org/mitmachen-startseite [R=301,L,NC]
 
+RewriteRule ^math/exercises/topics/(.*) http://de.serlo.org/mathe [R=301,L,NC]
+RewriteRule ^wiki/view/frontbox/(.*) http://de.serlo.org/mathe [R=301,L,NC]
+RewriteRule ^recommends/(.*) http://de.serlo.org/ [R=301,L,NC]
+
 # The following rule tells Apache that if the requested filename
 # exists, simply serve it.
 RewriteCond %{REQUEST_FILENAME} -s [OR]

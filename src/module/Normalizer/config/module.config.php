@@ -97,12 +97,31 @@ return [
             'sitemap'    => [
                 'type'    => 'literal',
                 'options' => [
-                    'route'    => '/sitemap.xml',
+                    'route'    => '/sitemap',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\SitemapController',
-                        'action'     => 'uuid'
                     ],
                 ],
+                'child_routes' => [
+                    'uuid' => [
+                        'type'    => 'literal',
+                        'options'  => [
+                            'route'    => '/uuid.xml',
+                            'defaults'    => [
+                                'action'     => 'uuid'
+                            ],
+                        ]
+                    ],
+                    'navigation' => [
+                        'type'    => 'literal',
+                        'options'  => [
+                            'route'    => '/nav.xml',
+                            'defaults'    => [
+                                'action'     => 'index'
+                            ],
+                        ]
+                    ]
+                ]
             ],
             'uuid'       => [
                 'child_routes' => [
