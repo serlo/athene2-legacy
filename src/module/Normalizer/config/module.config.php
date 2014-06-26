@@ -97,7 +97,7 @@ return [
             'sitemap'    => [
                 'type'    => 'literal',
                 'options' => [
-                    'route'    => '',
+                    'route'    => '/sitemap',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\SitemapController',
                     ],
@@ -106,7 +106,7 @@ return [
                     'uuid' => [
                         'type'    => 'literal',
                         'options'  => [
-                            'route'    => '/sitemap-uuid.xml',
+                            'route'    => '/uuid.xml',
                             'defaults'    => [
                                 'action'     => 'uuid'
                             ],
@@ -115,7 +115,7 @@ return [
                     'navigation' => [
                         'type'    => 'literal',
                         'options'  => [
-                            'route'    => '/sitemap-nav.xml',
+                            'route'    => '/nav.xml',
                             'defaults'    => [
                                 'action'     => 'index'
                             ],
