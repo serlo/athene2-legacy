@@ -96,7 +96,8 @@ class SearchService implements SearchServiceInterface
                     $result->getContent(),
                     $result->getType(),
                     $result->getLink(),
-                    $result->getKeywords()
+                    $result->getKeywords(),
+                    $result->getInstance()
                 );
             }
         }

@@ -9,7 +9,12 @@
  */
 return [
     'navigation' => [
-        'top-center' => []
+        'top-center' => [
+            [
+                'label' => 'Search',
+                'route' => 'search'
+            ]
+        ]
     ]
 ];
 /*

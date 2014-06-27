@@ -44,18 +44,24 @@ class EntityManager implements EntityManagerInterface
         return $entity;
     }
 
-    public function findAll()
+    public function findAll($bypassInstanceIsolation = false)
     {
+        $old = $this->objectManager->getBypassIsolation();
+        $this->objectManager->setBypassIsolation($bypassInstanceIsolation);
         $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');
         $results   = $this->getObjectManager()->getRepository($className)->findAll();
+        $this->objectManager->setBypassIsolation($old);
         return new ArrayCollection($results);
     }
 
-    public function findEntitiesByTypeName($name)
+    public function findEntitiesByTypeName($name, $bypassInstanceIsolation = false)
     {
+        $old = $this->objectManager->getBypassIsolation();
+        $this->objectManager->setBypassIsolation($bypassInstanceIsolation);
         $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');
         $type      = $this->getTypeManager()->findTypeByName($name);
         $results   = $this->getObjectManager()->getRepository($className)->findBy(['type' => $type->getId()]);
+        $this->objectManager->setBypassIsolation($old);
         return new ArrayCollection($results);
     }
 

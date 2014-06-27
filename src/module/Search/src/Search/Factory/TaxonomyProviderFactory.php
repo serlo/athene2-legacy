@@ -10,30 +10,25 @@
  */
 namespace Search\Factory;
 
-use Instance\Factory\InstanceManagerFactoryTrait;
-use Search\Adapter\SolrAdapter;
-use Uuid\Factory\UuidManagerFactoryTrait;
+use Search\Provider\TaxonomyProvider;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class SolrAdapterFactory implements FactoryInterface
+class TaxonomyProviderFactory implements FactoryInterface
 {
-    use UuidManagerFactoryTrait, InstanceManagerFactoryTrait;
-
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $serviceLocator AbstractPluginManager */
-        $serviceManager  = $serviceLocator->getServiceLocator();
-        $client          = $serviceManager->get('Solarium\Client');
-        $normalizer      = $serviceManager->get('Normalizer\Normalizer');
-        $translator      = $serviceManager->get('MvcTranslator');
-        $instanceManager = $this->getInstanceManager($serviceManager);
-        $uuidManager     = $this->getUuidManager($serviceManager);
+        $serviceLocator  = $serviceLocator->getServiceLocator();
+        $renderService   = $serviceLocator->get('Markdown\Service\HtmlRenderService');
+        $normalizer      = $serviceLocator->get('Normalizer\Normalizer');
+        $taxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
+        $router          = $serviceLocator->get('Router');
 
-        return new SolrAdapter($client, $instanceManager, $normalizer, $translator, $uuidManager);
+        return new TaxonomyProvider($taxonomyManager, $normalizer, $renderService, $router);
     }
 }

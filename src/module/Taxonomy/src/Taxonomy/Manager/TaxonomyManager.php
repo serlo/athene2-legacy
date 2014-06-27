@@ -14,6 +14,7 @@ use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Instance\Entity\InstanceInterface;
@@ -21,8 +22,8 @@ use Instance\Manager\InstanceManager;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Form\TermForm;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
@@ -97,6 +98,25 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->getObjectManager()->persist($term);
     }
 
+    /**
+     * @param TermForm $termForm
+     * @return TaxonomyTermInterface
+     */
+    public function createRoot(TermForm $termForm)
+    {
+        $instance = $this->instanceManager->getInstanceFromRequest();
+        $termForm->setData(
+            [
+                'instance' => $instance,
+                'term'     => [
+                    'name' => 'root'
+                ],
+                'taxonomy' => $this->findTaxonomyByName('root', $instance)
+            ]
+        );
+        return $this->createTerm($termForm);
+    }
+
     public function createTerm(FormInterface $form)
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
@@ -104,6 +124,16 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->assertGranted('taxonomy.term.create', $term);
         $this->getEventManager()->trigger('create', $this, ['term' => $term]);
         return $term;
+    }
+
+    public function findAllTerms($bypassInstanceIsolation = false)
+    {
+        $old = $this->objectManager->getBypassIsolation();
+        $this->objectManager->setBypassIsolation($bypassInstanceIsolation);
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface');
+        $terms     = $this->getObjectManager()->getRepository($className)->findAll();
+        $this->objectManager->setBypassIsolation($old);
+        return new ArrayCollection($terms);
     }
 
     public function findTaxonomyByName($name, InstanceInterface $instance)
@@ -270,25 +300,6 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
 
         return $term;
-    }
-
-    /**
-     * @param TermForm $termForm
-     * @return TaxonomyTermInterface
-     */
-    public function createRoot(TermForm $termForm)
-    {
-        $instance = $this->instanceManager->getInstanceFromRequest();
-        $termForm->setData(
-            [
-                'instance' => $instance,
-                'term'     => [
-                    'name' => 'root'
-                ],
-                'taxonomy' => $this->findTaxonomyByName('root', $instance)
-            ]
-        );
-        return $this->createTerm($termForm);
     }
 
     /**

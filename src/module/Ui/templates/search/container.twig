@@ -2,11 +2,13 @@
     <p class="media">
         <p class="media-body">
             <h4 class="media-heading">
-                <a href="{{ result.getLink() }}">{{ result.getTitle() }}</a>
+                <a href="{{ result.getLink() }}">{{ search().highlight(query, result.getTitle()) }}</a>
                 <small>{{ result.getType() }}</small>
             </h4>
-            {{ result.getContent() }}
-            <br>
+            {% if result.getContent() %}
+                {{ result.getContent() }}
+                <br>
+            {% endif %}
             {% for keyword in result.getKeywords() %}
                 {% if loop.index0 < 5 %}
                     {% if loop.index0 > 0 %}

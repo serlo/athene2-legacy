@@ -24,7 +24,8 @@ class ProviderPluginManager extends AbstractPluginManager
      * {@inheritDoc}
      */
     protected $factories = [
-        'Search\Provider\EntityProvider' => 'Search\Factory\EntityProviderFactory'
+        'Search\Provider\EntityProvider' => 'Search\Factory\EntityProviderFactory',
+        'Search\Provider\TaxonomyProvider' => 'Search\Factory\TaxonomyProviderFactory'
     ];
 
     /**

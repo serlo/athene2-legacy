@@ -53,7 +53,8 @@ return [
     'search'          => [
         'adapter'   => __NAMESPACE__ . '\Adapter\SolrAdapter',
         'providers' => [
-            __NAMESPACE__ . '\Provider\EntityProvider'
+            __NAMESPACE__ . '\Provider\EntityProvider',
+            __NAMESPACE__ . '\Provider\TaxonomyProvider',
         ]
     ],
     'router'          => [

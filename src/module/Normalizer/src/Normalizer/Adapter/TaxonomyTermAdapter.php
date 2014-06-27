@@ -77,6 +77,7 @@ class TaxonomyTermAdapter extends AbstractAdapter
             case 'curriculum-topic-folder':
             case 'topic-final-folder':
             case 'subject':
+            case 'root':
                 return 'taxonomy/term/get';
         }
 
@@ -100,6 +101,7 @@ class TaxonomyTermAdapter extends AbstractAdapter
             case 'curriculum-topic-folder':
             case 'subject':
             case 'topic-final-folder':
+            case 'root':
                 return ['term' => $object->getId()];
         }
 

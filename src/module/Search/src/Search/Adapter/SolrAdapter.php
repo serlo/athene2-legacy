@@ -10,7 +10,9 @@
  */
 namespace Search\Adapter;
 
+use Common\Filter\PreviewFilter;
 use Common\Guard\StringGuardTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Normalizer\NormalizerInterface;
 use Search\Exception;
 use Search\Result;
@@ -51,21 +53,30 @@ class SolrAdapter implements AdapterInterface
     protected $update;
 
     /**
-     * @param Client               $client
-     * @param NormalizerInterface  $normalizer
-     * @param TranslatorInterface  $translator
-     * @param UuidManagerInterface $uuidManager
+     * @var InstanceManagerInterface
+     */
+    protected $instanceManager;
+
+    /**
+     * @param Client                   $client
+     * @param InstanceManagerInterface $instanceManager
+     * @param NormalizerInterface      $normalizer
+     * @param TranslatorInterface      $translator
+     * @param UuidManagerInterface     $uuidManager
      */
     public function __construct(
         Client $client,
+        InstanceManagerInterface $instanceManager,
         NormalizerInterface $normalizer,
         TranslatorInterface $translator,
         UuidManagerInterface $uuidManager
     ) {
-        $this->client      = $client;
-        $this->normalizer  = $normalizer;
-        $this->uuidManager = $uuidManager;
-        $this->translator  = $translator;
+        $this->instanceManager = $instanceManager;
+        $this->client          = $client;
+        $this->normalizer      = $normalizer;
+        $this->uuidManager     = $uuidManager;
+        $this->translator      = $translator;
+        $this->filter          = new PreviewFilter(200);
     }
 
     /**
@@ -130,9 +141,8 @@ class SolrAdapter implements AdapterInterface
     {
         $container  = new Result\Container();
         $queryClass = $this->client->createSelect();
-        // $types      = ['article', 'topic', 'course', 'video'];
-        // $types      = implode(' OR ', $types);
-        // $queryClass->createFilterQuery('typeFilter')->setQuery('content_type:(' . $types . ')');
+        $instance   = $this->instanceManager->getInstanceFromRequest();
+        $queryClass->createFilterQuery('ínstanceFilter')->setQuery('instance:(' . $instance->getId() . ')');
         $hl = $queryClass->getHighlighting();
         $hl->setFields('content');
         $hl->setSimplePrefix('<strong>');
@@ -151,11 +161,16 @@ class SolrAdapter implements AdapterInterface
             $highlightedDoc = $highlighting->getResult($document->id);
             $id             = $document['id'];
             $title          = $document['title'];
-            $content        = '...' . implode(' ... ', $highlightedDoc->getField('content')) . '...';
+            $content        = implode(' ... ', $highlightedDoc->getField('content'));
             $type           = ucfirst($document['content_type']);
             $keywords       = explode(self::KEYWORD_DELIMITER, $document['keywords']);
             if ($type) {
                 $type = $this->translator->translate($type);
+            }
+            if ($content) {
+                $content = '... ' . $content . ' ...';
+            } else {
+                $content = $this->filter->filter($document['content']);
             }
             $item = new Result\Result($id, $title, $content, $type, $id, $keywords);
             $container->addResult($item);

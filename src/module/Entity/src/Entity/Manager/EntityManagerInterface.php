@@ -26,15 +26,17 @@ interface EntityManagerInterface extends Flushable
     public function createEntity($type, array $data = [], InstanceInterface $instance);
 
     /**
-     * @param string $name
+     * @param bool $bypassInstanceIsolation
      * @return EntityInterface[]|Collection
      */
-    public function findEntitiesByTypeName($name);
+    public function findAll($bypassInstanceIsolation = false);
 
     /**
+     * @param string $name
+     * @param bool   $bypassInstanceIsolation
      * @return EntityInterface[]|Collection
      */
-    public function findAll();
+    public function findEntitiesByTypeName($name, $bypassInstanceIsolation = false);
 
     /**
      * @param int $id

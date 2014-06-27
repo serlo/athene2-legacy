@@ -10,6 +10,7 @@
 namespace Taxonomy\Manager;
 
 use Common\ObjectManager\Flushable;
+use Doctrine\Common\Collections\Collection;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
@@ -29,10 +30,22 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
     public function associateWith($term, TaxonomyTermAwareInterface $with, $position = null);
 
     /**
+     * @param TermForm $termForm
+     * @return TaxonomyTermInterface
+     */
+    public function createRoot(TermForm $termForm);
+
+    /**
      * @param FormInterface $form
      * @return mixed
      */
     public function createTerm(FormInterface $form);
+
+    /**
+     * @param bool $bypassInstanceIsolation
+     * @return TaxonomyTermInterface[]|Collection
+     */
+    public function findAllTerms($bypassInstanceIsolation = false);
 
     /**
      * @param string            $name
@@ -79,10 +92,4 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
      * @return mixed
      */
     public function updateTerm(FormInterface $form);
-
-    /**
-     * @param TermForm $termForm
-     * @return TaxonomyTermInterface
-     */
-    public function createRoot(TermForm $termForm);
 }

@@ -93,7 +93,7 @@ class EntityProvider implements ProviderInterface
                 $component = $type->getComponent('search');
                 if ($component->getEnabled()) {
                     $name     = $type->getName();
-                    $entities = $this->entityManager->findEntitiesByTypeName($name);
+                    $entities = $this->entityManager->findEntitiesByTypeName($name, true);
                     $entities = $chain->filter($entities);
                     $this->addEntitiesToContainer($entities, $container);
                 }
