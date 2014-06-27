@@ -20,16 +20,10 @@ class ModuleOptions extends AbstractOptions
     protected $types = [];
 
     /**
-     * @param unknown $types
-     * @return \Entity\Options\ModuleOptions
+     * @param string $type
+     * @return EntityOptions
+     * @throws Exception\RuntimeException
      */
-    public function setTypes($types)
-    {
-        $this->types = $types;
-
-        return $this;
-    }
-
     public function getType($type)
     {
         if (!array_key_exists($type, $this->types)) {
@@ -40,9 +34,32 @@ class ModuleOptions extends AbstractOptions
 
         if (!$options instanceof EntityOptions) {
             $options            = new EntityOptions($options);
+            $options->setName($type);
+
             $this->types[$type] = $options;
         }
 
         return $options;
+    }
+
+    /**
+     * @return array|EntityOptions[]
+     */
+    public function getTypes()
+    {
+        $types = [];
+        foreach ($this->types as $type => $options) {
+            $types[] = $this->getType($type);
+        }
+        return $types;
+    }
+
+    /**
+     * @param array $types
+     * @return void
+     */
+    public function setTypes(array $types)
+    {
+        $this->types = $types;
     }
 }

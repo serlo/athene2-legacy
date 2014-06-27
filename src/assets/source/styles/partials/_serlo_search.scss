@@ -154,3 +154,9 @@
 
   background: white;
 }
+
+.form-search {
+  *[type="submit"] {
+    height: 34px;
+  }
+}

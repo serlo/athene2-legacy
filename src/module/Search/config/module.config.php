@@ -13,25 +13,47 @@ namespace Search;
 return [
     'service_manager' => [
         'invokables' => [
-            'Search\Adapter\AdapterPluginManager'
+            'Search\Adapter\AdapterPluginManager',
+            'Search\Adapter\ProviderPluginManager'
         ],
         'factories'  => [
-            __NAMESPACE__ . '\SearchService' => __NAMESPACE__ . '\Factory\SearchServiceFactory'
+            __NAMESPACE__ . '\SearchService'         => __NAMESPACE__ . '\Factory\SearchServiceFactory',
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
         ]
     ],
     'di'              => [
         'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\SearchController'
+            __NAMESPACE__ . '\Controller\SearchController',
+            __NAMESPACE__ . '\Controller\IndexController'
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\SearchController' => []
+                __NAMESPACE__ . '\Controller\SearchController' => [],
+                __NAMESPACE__ . '\Controller\IndexController'  => []
             ]
         ],
         'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\SearchServiceInterface' => __NAMESPACE__ . '\SearchService'
             ]
+        ]
+    ],
+    'view_helpers'    => [
+        'invokables' => [
+            'search' => __NAMESPACE__ . '\View\Helper\SearchHelper',
+        ]
+    ],
+    'zfctwig'         => [
+        'helper_manager' => [
+            'invokables' => [
+                'search' => __NAMESPACE__ . '\View\Helper\SearchHelper',
+            ],
+        ]
+    ],
+    'search'          => [
+        'adapter'   => __NAMESPACE__ . '\Adapter\SolrAdapter',
+        'providers' => [
+            __NAMESPACE__ . '\Provider\EntityProvider'
         ]
     ],
     'router'          => [
@@ -47,7 +69,7 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [
-                    'ajax' => [
+                    'ajax'    => [
                         'type'    => 'literal',
                         'options' => [
                             'route'    => '/ajax',
@@ -55,9 +77,19 @@ return [
                                 'action' => 'ajax'
                             ]
                         ]
+                    ],
+                    'rebuild' => [
+                        'type'    => 'literal',
+                        'options' => [
+                            'route'    => '/rebuild',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\IndexController',
+                                'action'     => 'rebuild'
+                            ]
+                        ]
                     ]
                 ]
-            ]
+            ],
         ]
     ]
 ];

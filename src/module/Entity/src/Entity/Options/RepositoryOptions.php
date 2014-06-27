@@ -11,7 +11,7 @@ namespace Entity\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
-class RepositoryOptions extends AbstractOptions
+class RepositoryOptions extends AbstractOptions implements ComponentOptionsInterface
 {
 
     /**

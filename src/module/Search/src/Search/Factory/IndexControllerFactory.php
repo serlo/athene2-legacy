@@ -10,22 +10,24 @@
  */
 namespace Search\Factory;
 
-use Search\SearchService;
+use Search\Controller\IndexController;
+use Search\SearchServiceFactoryTrait;
+use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class SearchServiceFactory implements FactoryInterface
+class IndexControllerFactory implements FactoryInterface
 {
+    use SearchServiceFactoryTrait;
+
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $pluginManager         = $serviceLocator->get('Search\Adapter\AdapterPluginManager');
-        $providerPluginManager = $serviceLocator->get('Search\Provider\ProviderPluginManager');
-        $options               = $serviceLocator->get('Search\Options\ModuleOptions');
-        $adapter               = $pluginManager->get($options->getAdapter());
-        $instance              = new SearchService($adapter, $options, $providerPluginManager);
-        return $instance;
+        /* @var $serviceLocator AbstractPluginManager */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+        $searchService  = $this->getSearchService($serviceLocator);
+        return new IndexController($searchService);
     }
 }

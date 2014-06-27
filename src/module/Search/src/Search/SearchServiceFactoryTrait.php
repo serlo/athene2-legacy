@@ -8,26 +8,19 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Search\Factory;
+namespace Search;
 
-use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ConnectionFactory implements FactoryInterface{
+trait SearchServiceFactoryTrait
+{
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return SearchServiceInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function getSearchService(ServiceLocatorInterface $serviceLocator)
     {
-        $config   = $serviceLocator->get('config');
-        $config   = $config['sphinx'];
-        $instance = new \Foolz\SphinxQL\Connection();
-        $instance->setConnectionParams($config['host'], $config['port']);
-        return $instance;
+        return $serviceLocator->get('Search\SearchService');
     }
-
 }
  

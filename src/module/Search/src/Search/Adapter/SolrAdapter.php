@@ -10,24 +10,25 @@
  */
 namespace Search\Adapter;
 
+use Common\Guard\StringGuardTrait;
 use Normalizer\NormalizerInterface;
+use Search\Exception;
 use Search\Result;
 use Solarium\Client;
+use Solarium\QueryType\Update\Query\Query;
 use Uuid\Manager\UuidManagerInterface;
 use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Router\RouteInterface;
 
 class SolrAdapter implements AdapterInterface
 {
+    use StringGuardTrait;
+
+    const KEYWORD_DELIMITER = ';';
+
     /**
      * @var Client
      */
     protected $client;
-
-    /**
-     * @var RouteInterface
-     */
-    protected $router;
 
     /**
      * @var NormalizerInterface
@@ -45,24 +46,81 @@ class SolrAdapter implements AdapterInterface
     protected $translator;
 
     /**
+     * @var Query
+     */
+    protected $update;
+
+    /**
      * @param Client               $client
      * @param NormalizerInterface  $normalizer
-     * @param RouteInterface       $router
      * @param TranslatorInterface  $translator
      * @param UuidManagerInterface $uuidManager
      */
     public function __construct(
         Client $client,
         NormalizerInterface $normalizer,
-        RouteInterface $router,
         TranslatorInterface $translator,
         UuidManagerInterface $uuidManager
     ) {
         $this->client      = $client;
         $this->normalizer  = $normalizer;
-        $this->router      = $router;
         $this->uuidManager = $uuidManager;
         $this->translator  = $translator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function add($id, $title, $content, $type, $link, array $keywords, $instance = null)
+    {
+        $keywords               = implode(self::KEYWORD_DELIMITER, $keywords);
+        $update                 = $this->update = $this->client->createUpdate();
+        $document               = $update->createDocument();
+        $document->id           = (string)$id;
+        $document->title        = (string)$title;
+        $document->content      = (string)$content;
+        $document->content_type = (string)$type;
+        $document->keywords     = (string)$keywords;
+        $document->link         = (string)$link;
+        $document->instance     = (string)$instance;
+
+        $update->addDeleteById($id);
+        $update->addDocument($document);
+        $update->addCommit();
+        $this->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete($id)
+    {
+        $update = $this->update = $this->client->createUpdate();
+        $update->addDeleteById($id);
+        $update->addCommit();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function erase()
+    {
+        $update = $this->update = $this->client->createUpdate();
+        $update->addDeleteQuery('*:*');
+        $update->addCommit();
+        $this->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function flush()
+    {
+        if (!is_object($this->update)) {
+            return;
+        }
+        $this->client->update($this->update);
+        $this->update = null;
     }
 
     /**
@@ -72,28 +130,34 @@ class SolrAdapter implements AdapterInterface
     {
         $container  = new Result\Container();
         $queryClass = $this->client->createSelect();
-        $types      = ['article', 'topic', 'course', 'video'];
-        $types      = implode(' OR ', $types);
-        $queryClass->createFilterQuery('typeFilter')->setQuery('content_type:(' . $types . ')');
+        // $types      = ['article', 'topic', 'course', 'video'];
+        // $types      = implode(' OR ', $types);
+        // $queryClass->createFilterQuery('typeFilter')->setQuery('content_type:(' . $types . ')');
+        $hl = $queryClass->getHighlighting();
+        $hl->setFields('content');
+        $hl->setSimplePrefix('<strong>');
+        $hl->setSimplePostfix('</strong>');
+        $queryClass->setFields(['*', 'score']);
+        $disMax = $queryClass->getDisMax();
+        $disMax->setQueryFields('title^4 content keywords^2 type^3');
         $queryClass->setQuery($query);
         $queryClass->setRows($limit);
-        $queryClass->addSort('score', $queryClass::SORT_ASC);
-        $queryClass->setQueryDefaultOperator($queryClass::QUERY_OPERATOR_OR);
-        $resultSet = $this->client->select($queryClass);
+        $queryClass->addSort('score', $queryClass::SORT_DESC);
+        $queryClass->setQueryDefaultOperator($queryClass::QUERY_OPERATOR_AND);
+        $resultSet    = $this->client->select($queryClass);
+        $highlighting = $resultSet->getHighlighting();
 
         foreach ($resultSet as $document) {
-            $id         = $document['id'];
-            $object     = $this->uuidManager->getUuid($id);
-            $normalized = $this->normalizer->normalize($object);
-            $title      = $normalized->getTitle();
-            $content    = $normalized->getContent();
-            $type       = $this->translator->translate($normalized->getType());
-            $link       = $this->router->assemble(
-                $normalized->getRouteParams(),
-                ['name' => $normalized->getRouteName()]
-            );
-            $keywords   = $normalized->getMetadata()->getKeywords();
-            $item       = new Result\Result($id, $title, $content, $type, $link, $keywords);
+            $highlightedDoc = $highlighting->getResult($document->id);
+            $id             = $document['id'];
+            $title          = $document['title'];
+            $content        = '...' . implode(' ... ', $highlightedDoc->getField('content')) . '...';
+            $type           = ucfirst($document['content_type']);
+            $keywords       = explode(self::KEYWORD_DELIMITER, $document['keywords']);
+            if ($type) {
+                $type = $this->translator->translate($type);
+            }
+            $item = new Result\Result($id, $title, $content, $type, $id, $keywords);
             $container->addResult($item);
         }
 

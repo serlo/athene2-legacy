@@ -32,6 +32,11 @@ interface EntityManagerInterface extends Flushable
     public function findEntitiesByTypeName($name);
 
     /**
+     * @return EntityInterface[]|Collection
+     */
+    public function findAll();
+
+    /**
      * @param int $id
      * @return EntityInterface
      */

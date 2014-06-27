@@ -64,22 +64,22 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             this.focusNext();
             return;
         case Common.KeyCode.enter:
-            if (isSearching) {
-                break;
-            }
+            //if (isSearching) {
+            //    break;
+            //}
 
             if (xhr) {
                 xhr.abort('stop');
             }
 
-            if (undefined !== this.$links && this.$links.length && this.activeFocus !== -1) {
-                Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
-                this.$input.blur();
-            } else {
-                Router.post('/search', {
-                    q: this.$input.val()
-                });
-            }
+            //if (undefined !== this.$links && this.$links.length && this.activeFocus !== -1) {
+            //    Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
+            //    this.$input.blur();
+            //} else {
+            Router.post('/search', {
+                q: this.$input.val()
+            });
+            //}
             break;
         }
     };
@@ -221,9 +221,9 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             // was the last xhr call!
             if (arguments[2] === self.ajax) {
                 if (typeof data !== 'object' || data.length === 0) {
-                    self.onNoResult(string);
+                    // self.onNoResult(string);
                 } else {
-                    self.onResult(data);
+                    // self.onResult(data);
                 }
                 self.isSearching = false;
             }

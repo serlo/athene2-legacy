@@ -2,14 +2,17 @@
     <p class="media">
         <p class="media-body">
             <h4 class="media-heading">
-                <a href="{{ result.getUrl() }}">{{ result.getTitle() }}</a>
+                <a href="{{ result.getLink() }}">{{ result.getTitle() }}</a>
                 <small>{{ result.getType() }}</small>
             </h4>
-            {{ preview(markdown().toHtml(result.getContent()), 180) }}
+            {{ result.getContent() }}
             <br>
             {% for keyword in result.getKeywords() %}
-                {% if loop.index < 5 %}
-                    <span class="label label-primary">{{ keyword }}</span>
+                {% if loop.index0 < 5 %}
+                    {% if loop.index0 > 0 %}
+                        <small class="text-muted">|</small>
+                    {% endif %}
+                    <small class="text-muted">{{ keyword }}</small>
                 {% endif %}
             {% endfor %}
         </p>

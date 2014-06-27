@@ -25,7 +25,7 @@ class Result implements ResultInterface
     /**
      * @var string
      */
-    protected $url;
+    protected $link;
 
     /**
      * @var string
@@ -43,21 +43,35 @@ class Result implements ResultInterface
     protected $keywords;
 
     /**
-     * @param int    $id
-     * @param string $title
-     * @param string $content
-     * @param string $type
-     * @param string $url
-     * @param array  $keywords
+     * @var int|null
      */
-    public function __construct($id, $title, $content, $type, $url, array $keywords)
-    {
+    protected $instance;
+
+    /**
+     * @param int      $id
+     * @param string   $title
+     * @param string   $content
+     * @param string   $type
+     * @param string   $link
+     * @param array    $keywords
+     * @param int|null $instance
+     */
+    public function __construct(
+        $id,
+        $title,
+        $content,
+        $type,
+        $link,
+        array $keywords,
+        $instance = null
+    ) {
         $this->id       = $id;
         $this->title    = $title;
         $this->content  = $content;
         $this->type     = $type;
-        $this->url      = $url;
+        $this->link     = $link;
         $this->keywords = $keywords;
+        $this->instance = $instance;
     }
 
     /**
@@ -79,9 +93,25 @@ class Result implements ResultInterface
     /**
      * {@inheritDoc}
      */
+    public function getInstance()
+    {
+        return $this->instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getKeywords()
     {
         return $this->keywords;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLink()
+    {
+        return $this->link;
     }
 
     /**
@@ -103,23 +133,15 @@ class Result implements ResultInterface
     /**
      * {@inheritDoc}
      */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function toArray()
     {
         return [
-            'id'      => $this->getId(),
-            'title'   => $this->getTitle(),
-            'content' => $this->getContent(),
-            'url'     => $this->getUrl(),
-            'type'    => $this->getType(),
-            'keywords'
+            'id'       => $this->getId(),
+            'title'    => $this->getTitle(),
+            'content'  => $this->getContent(),
+            'link'     => $this->getLink(),
+            'type'     => $this->getType(),
+            'keywords' => $this->getKeywords()
         ];
     }
 }

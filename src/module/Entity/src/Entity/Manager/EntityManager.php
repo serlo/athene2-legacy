@@ -44,6 +44,13 @@ class EntityManager implements EntityManagerInterface
         return $entity;
     }
 
+    public function findAll()
+    {
+        $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');
+        $results   = $this->getObjectManager()->getRepository($className)->findAll();
+        return new ArrayCollection($results);
+    }
+
     public function findEntitiesByTypeName($name)
     {
         $className = $this->getClassResolver()->resolveClassName('Entity\Entity\EntityInterface');

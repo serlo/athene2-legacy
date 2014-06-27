@@ -14,7 +14,9 @@ return [
     'entity' => [
         'types' => [
             'text-exercise'         => [
-                'components' => [
+                'title'       => 'id',
+                'description' => 'content',
+                'components'  => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseForm',
                         'fields' => [
@@ -27,7 +29,7 @@ return [
                             'text-solution' => [
                                 'multiple' => false
                             ],
-                            'text-hint'          => [
+                            'text-hint'     => [
                                 'multiple' => false
                             ]
                         ]
@@ -37,7 +39,9 @@ return [
                 ]
             ],
             'text-exercise-group'   => [
-                'components' => [
+                'title'       => 'id',
+                'description' => 'content',
+                'components'  => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
                         'fields' => [
@@ -57,7 +61,9 @@ return [
                 ]
             ],
             'grouped-text-exercise' => [
-                'components' => [
+                'title'       => 'id',
+                'description' => 'content',
+                'components'  => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\GroupedTextExerciseForm',
                         'fields' => [
@@ -70,7 +76,7 @@ return [
                             'text-solution' => [
                                 'multiple' => false
                             ],
-                            'text-hint'          => [
+                            'text-hint'     => [
                                 'multiple' => false
                             ]
                         ],
@@ -84,7 +90,9 @@ return [
                 ]
             ],
             'text-solution'         => [
-                'components' => [
+                'title'       => 'id',
+                'description' => 'content',
+                'components'  => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextSolutionForm',
                         'fields' => [
@@ -106,6 +114,7 @@ return [
                 ]
             ],
             'video'                 => [
+                'content'    => 'description',
                 'components' => [
                     'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\VideoForm',
@@ -119,11 +128,14 @@ return [
                     ],
                     'license'         => [],
                     'taxonomy'        => [],
-                    'related_content' => []
+                    'related_content' => [],
+                    'search'          => []
                 ],
             ],
-            'text-hint'                  => [
-                'components' => [
+            'text-hint'             => [
+                'title'       => 'id',
+                'description' => 'content',
+                'components'  => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextHintForm',
                         'fields' => [
@@ -144,7 +156,8 @@ return [
                 ]
             ],
             'article'               => [
-                'components' => [
+                'description' => 'content',
+                'components'  => [
                     'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\ArticleForm',
                         'fields' => [
@@ -156,10 +169,12 @@ return [
                     ],
                     'license'         => [],
                     'taxonomy'        => [],
-                    'related_content' => []
+                    'related_content' => [],
+                    'search'          => []
                 ]
             ],
             'course'                => [
+                'content'    => 'description',
                 'components' => [
                     'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
@@ -179,11 +194,13 @@ return [
                     ],
                     'license'         => [],
                     'taxonomy'        => [],
-                    'related_content' => []
+                    'related_content' => [],
+                    'search'          => []
                 ]
             ],
             'course-page'           => [
-                'components' => [
+                'description' => 'content',
+                'components'  => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
                         'fields' => [

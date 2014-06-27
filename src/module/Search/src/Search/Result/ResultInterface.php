@@ -9,6 +9,8 @@
  */
 namespace Search\Result;
 
+use Instance\Entity\InstanceInterface;
+
 interface ResultInterface
 {
     /**
@@ -34,7 +36,7 @@ interface ResultInterface
     /**
      * @return string
      */
-    public function getUrl();
+    public function getLink();
 
     /**
      * @return array
@@ -45,4 +47,9 @@ interface ResultInterface
      * @return array
      */
     public function getKeywords();
+
+    /**
+     * @return int|null
+     */
+    public function getInstance();
 }

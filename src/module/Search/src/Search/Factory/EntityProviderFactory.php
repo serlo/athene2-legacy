@@ -10,28 +10,26 @@
  */
 namespace Search\Factory;
 
-use Search\Adapter\SolrAdapter;
-use Uuid\Factory\UuidManagerFactoryTrait;
+use Search\Provider\EntityProvider;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class SolrAdapterFactory implements FactoryInterface
+class EntityProviderFactory implements FactoryInterface
 {
-    use UuidManagerFactoryTrait;
-
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $serviceLocator AbstractPluginManager */
-        $serviceManager = $serviceLocator->getServiceLocator();
-        $client         = $serviceManager->get('Solarium\Client');
-        $normalizer     = $serviceManager->get('Normalizer\Normalizer');
-        $translator     = $serviceManager->get('MvcTranslator');
-        $uuidManager    = $this->getUuidManager($serviceManager);
+        $serviceLocator = $serviceLocator->getServiceLocator();
+        $renderService  = $serviceLocator->get('Markdown\Service\HtmlRenderService');
+        $normalizer     = $serviceLocator->get('Normalizer\Normalizer');
+        $entityManager  = $serviceLocator->get('Entity\Manager\EntityManager');
+        $options        = $serviceLocator->get('Entity\Options\ModuleOptions');
+        $router         = $serviceLocator->get('Router');
 
-        return new SolrAdapter($client, $normalizer, $translator, $uuidManager);
+        return new EntityProvider($entityManager, $options, $normalizer, $renderService, $router);
     }
 }

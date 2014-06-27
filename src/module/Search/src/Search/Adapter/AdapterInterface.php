@@ -9,13 +9,42 @@
  */
 namespace Search\Adapter;
 
+use Common\ObjectManager\Flushable;
 use Search\Result;
 
-interface AdapterInterface
+interface AdapterInterface extends Flushable
 {
     /**
+     * @param int      $id
+     * @param string   $title
+     * @param string   $content
+     * @param string   $type
+     * @param string   $link
+     * @param array    $keywords
+     * @param int|null $instance
+     * @return void
+     * @throws \Exception
+     */
+    public function add($id, $title, $content, $type, $link, array $keywords, $instance = null);
+
+    /**
+     * Deletes an object by it's id
+     *
+     * @param int $id
+     * @return void
+     */
+    public function delete($id);
+
+    /**
+     * Deletes all entries from the index
+     *
+     * @return void
+     */
+    public function erase();
+
+    /**
      * @param string $query
-     * @param int $limit
+     * @param int    $limit
      * @return Result\ContainerInterface
      */
     public function search($query, $limit);

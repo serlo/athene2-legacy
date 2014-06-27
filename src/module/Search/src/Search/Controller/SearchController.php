@@ -31,8 +31,8 @@ class SearchController extends AbstractActionController
     public function ajaxAction()
     {
         $form = new SearchForm();
-        if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
+        $data = $this->getRequest()->getQuery();
+        if (isset($data['q'])) {
             $form->setData($data);
             if ($form->isValid()) {
                 $data      = $form->getData();
@@ -52,8 +52,8 @@ class SearchController extends AbstractActionController
         $view->setTemplate('search/search');
         $this->layout('layout/1-col');
 
-        if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
+        $data = $this->getRequest()->getQuery();
+        if (isset($data['q'])) {
             $form->setData($data);
             if ($form->isValid()) {
                 $data      = $form->getData();
