@@ -27,7 +27,7 @@ class TaxonomyProviderFactory implements FactoryInterface
         $renderService   = $serviceLocator->get('Markdown\Service\HtmlRenderService');
         $normalizer      = $serviceLocator->get('Normalizer\Normalizer');
         $taxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
-        $router          = $serviceLocator->get('Router');
+        $router          = $serviceLocator->get('HttpRouter');
 
         return new TaxonomyProvider($taxonomyManager, $normalizer, $renderService, $router);
     }

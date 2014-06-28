@@ -28,7 +28,7 @@ class EntityProviderFactory implements FactoryInterface
         $normalizer     = $serviceLocator->get('Normalizer\Normalizer');
         $entityManager  = $serviceLocator->get('Entity\Manager\EntityManager');
         $options        = $serviceLocator->get('Entity\Options\ModuleOptions');
-        $router         = $serviceLocator->get('Router');
+        $router         = $serviceLocator->get('HttpRouter');
 
         return new EntityProvider($entityManager, $options, $normalizer, $renderService, $router);
     }

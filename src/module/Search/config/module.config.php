@@ -57,6 +57,21 @@ return [
             __NAMESPACE__ . '\Provider\TaxonomyProvider',
         ]
     ],
+    'console' => [
+        'router' => [
+            'routes' => [
+                'search' => [
+                    'options' => [
+                        'route'    => 'search rebuild',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\Controller\IndexController',
+                            'action'     => 'rebuild'
+                        ]
+                    ]
+                ],
+            ]
+        ],
+    ],
     'router'          => [
         'routes' => [
             'search' => [
@@ -76,16 +91,6 @@ return [
                             'route'    => '/ajax',
                             'defaults' => [
                                 'action' => 'ajax'
-                            ]
-                        ]
-                    ],
-                    'rebuild' => [
-                        'type'    => 'literal',
-                        'options' => [
-                            'route'    => '/rebuild',
-                            'defaults' => [
-                                'controller' => __NAMESPACE__ . '\Controller\IndexController',
-                                'action'     => 'rebuild'
                             ]
                         ]
                     ]
