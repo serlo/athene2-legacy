@@ -12,7 +12,7 @@ return [
     'subject' => [
         'instances' => [
             'deutsch' => [
-                'mathe'       => [
+                'mathe'                    => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
@@ -25,7 +25,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'deutsch-als-fremdsprache'       => [
+                'englisch'                 => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
@@ -38,7 +38,20 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'chemie'      => [
+                'deutsch-als-fremdsprache' => [
+                    'allowed_taxonomies' => [
+                        'topic',
+                        'locale'
+                    ],
+                    'allowed_entities'   => [
+                        'article',
+                        'text-exercise',
+                        'video',
+                        'course',
+                        'text-exercise-group'
+                    ]
+                ],
+                'chemie'                   => [
                     'allowed_taxonomies' => [
                         'topic'
                     ],
@@ -49,7 +62,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'permakultur' => [
+                'permakultur'              => [
                     'allowed_taxonomies' => [
                         'topic'
                     ],
@@ -61,7 +74,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'physik'      => [
+                'physik'                   => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
@@ -74,7 +87,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'biologie'    => [
+                'biologie'                 => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'

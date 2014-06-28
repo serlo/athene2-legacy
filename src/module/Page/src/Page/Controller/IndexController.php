@@ -172,7 +172,7 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array  = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $source = $this->url()->fromRoute('page/view', ['page' => $page->getId()]);
+                $source = $this->url()->fromRoute('page/view', ['page' => $page->getId()], null, null, false);
                 $this->getAliasManager()->createAlias(
                     $source,
                     $array['slug'],
