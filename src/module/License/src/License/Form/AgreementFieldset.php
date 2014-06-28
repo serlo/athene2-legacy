@@ -21,14 +21,15 @@ class AgreementFieldset extends Fieldset implements InputFilterProviderInterface
     public function __construct(LicenseInterface $license)
     {
         parent::__construct('license');
-        $agreement = $license->getAgreement() ?: $license->getTitle();
+        $agreement = $license->getAgreement() ? : $license->getTitle();
         $checkbox  = new Checkbox('agreement');
         $checkbox->setOptions(
             [
-                'use_hidden_element' => false
+                'use_hidden_element' => false,
             ]
         );
         $checkbox->setLabel($agreement);
+        $checkbox->setLabelOptions(['disable_html_escape' => true]);
         $this->add($checkbox);
     }
 
