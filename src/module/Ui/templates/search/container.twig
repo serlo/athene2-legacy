@@ -1,4 +1,4 @@
-{% for result in container.getResults() %}
+{% for result in container %}
     <p class="media">
         <p class="media-body">
             <h4 class="media-heading">
@@ -19,11 +19,13 @@
             {% endfor %}
         </p>
     </p>
-{% else %}
+{% endfor %}
+{% if container is empty %}
     {% set query = '<strong>' ~ query ~ '</strong>' %}
     <div class="alert alert-info">
         {% trans %}
         No matching results found for {{ query }}.
         {% endtrans %}
     </div>
-{% endfor %}
+{% endif %}
+{{ paginationControl(container, 'Sliding', 'common/paginator', {'route': 'search', 'options': {'query': {'q': query}}}) }}

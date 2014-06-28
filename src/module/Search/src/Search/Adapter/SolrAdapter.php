@@ -14,12 +14,14 @@ use Common\Filter\PreviewFilter;
 use Common\Guard\StringGuardTrait;
 use Instance\Manager\InstanceManagerInterface;
 use Normalizer\NormalizerInterface;
+use Search\Entity;
 use Search\Exception;
-use Search\Result;
+use Search\Paginator\SolrPaginator;
 use Solarium\Client;
 use Solarium\QueryType\Update\Query\Query;
 use Uuid\Manager\UuidManagerInterface;
 use Zend\I18n\Translator\TranslatorInterface;
+use Zend\Paginator\Paginator;
 
 class SolrAdapter implements AdapterInterface
 {
@@ -137,9 +139,8 @@ class SolrAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function search($query, $limit)
+    public function search($query)
     {
-        $container  = new Result\Container();
         $queryClass = $this->client->createSelect();
         $instance   = $this->instanceManager->getInstanceFromRequest();
         $queryClass->createFilterQuery('ínstanceFilter')->setQuery('instance:(' . $instance->getId() . ')');
@@ -151,31 +152,16 @@ class SolrAdapter implements AdapterInterface
         $disMax = $queryClass->getDisMax();
         $disMax->setQueryFields('title^4 content keywords^2 type^3');
         $queryClass->setQuery($query);
-        $queryClass->setRows($limit);
+        //$queryClass->setStart($offset);
+        //$queryClass->setRows($limit);
         $queryClass->addSort('score', $queryClass::SORT_DESC);
         $queryClass->setQueryDefaultOperator($queryClass::QUERY_OPERATOR_AND);
-        $resultSet    = $this->client->select($queryClass);
-        $highlighting = $resultSet->getHighlighting();
+        //$resultSet    = $this->client->select($queryClass);
 
-        foreach ($resultSet as $document) {
-            $highlightedDoc = $highlighting->getResult($document->id);
-            $id             = $document['id'];
-            $title          = $document['title'];
-            $content        = implode(' ... ', $highlightedDoc->getField('content'));
-            $type           = ucfirst($document['content_type']);
-            $keywords       = explode(self::KEYWORD_DELIMITER, $document['keywords']);
-            if ($type) {
-                $type = $this->translator->translate($type);
-            }
-            if ($content) {
-                $content = '... ' . $content . ' ...';
-            } else {
-                $content = $this->filter->filter($document['content']);
-            }
-            $item = new Result\Result($id, $title, $content, $type, $id, $keywords);
-            $container->addResult($item);
-        }
+        $adapter = new SolrPaginator($this->client, $queryClass);
+        $adapter->setTranslator($this->translator);
+        $paginator = new Paginator($adapter);
 
-        return $container;
+        return $paginator;
     }
 }

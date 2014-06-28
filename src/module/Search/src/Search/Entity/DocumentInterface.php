@@ -7,11 +7,9 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-namespace Search\Result;
+namespace Search\Entity;
 
-use Instance\Entity\InstanceInterface;
-
-interface ResultInterface
+interface DocumentInterface
 {
     /**
      * @return string
@@ -24,6 +22,21 @@ interface ResultInterface
     public function getId();
 
     /**
+     * @return int|null
+     */
+    public function getInstance();
+
+    /**
+     * @return array
+     */
+    public function getKeywords();
+
+    /**
+     * @return string
+     */
+    public function getLink();
+
+    /**
      * @return string
      */
     public function getTitle();
@@ -34,22 +47,7 @@ interface ResultInterface
     public function getType();
 
     /**
-     * @return string
-     */
-    public function getLink();
-
-    /**
      * @return array
      */
     public function toArray();
-
-    /**
-     * @return array
-     */
-    public function getKeywords();
-
-    /**
-     * @return int|null
-     */
-    public function getInstance();
 }

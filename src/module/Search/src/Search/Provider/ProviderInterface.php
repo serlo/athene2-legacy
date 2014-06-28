@@ -10,12 +10,12 @@
  */
 namespace Search\Provider;
 
-use Search\Result\Container;
+use Search\Entity\DocumentInterface;
 
 interface ProviderInterface
 {
     /**
-     * @return Container
+     * @return DocumentInterface[]
      */
     public function provide();
 }

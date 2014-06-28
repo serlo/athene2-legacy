@@ -10,7 +10,6 @@
  */
 namespace Search\View\Helper;
 
-use Search\SearchServiceInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class SearchHelper extends AbstractHelper

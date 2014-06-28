@@ -10,6 +10,7 @@
 namespace Search;
 
 use Common\ObjectManager\Flushable;
+use Zend\Paginator\Paginator;
 
 interface SearchServiceInterface extends Flushable
 {
@@ -50,8 +51,9 @@ interface SearchServiceInterface extends Flushable
 
     /**
      * @param string $query
-     * @param int    $limit
-     * @return Result\ContainerInterface
+     * @param int    $page
+     * @param int    $itemsPerPage
+     * @return Paginator
      */
-    public function search($query, $limit = 20);
+    public function search($query, $page = 0, $itemsPerPage = 20);
 }

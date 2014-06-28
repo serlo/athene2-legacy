@@ -88,7 +88,7 @@ class SearchService implements SearchServiceInterface
         foreach ($providers as $provider) {
             /* @var $provider Provider\ProviderInterface */
             $provider = $this->providerPluginManager->get($provider);
-            $results  = $provider->provide()->getResults();
+            $results  = $provider->provide();
             foreach ($results as $result) {
                 $this->add(
                     $result->getId(),
@@ -106,8 +106,11 @@ class SearchService implements SearchServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function search($query, $limit = 20)
+    public function search($query, $page = 0, $itemsPerPage = 20)
     {
-        return $this->adapter->search($query, $limit);
+        $paginator = $this->adapter->search($query);
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage($itemsPerPage);
+        return $paginator;
     }
 }

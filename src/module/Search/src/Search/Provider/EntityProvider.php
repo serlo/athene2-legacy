@@ -18,14 +18,12 @@ use Entity\Options\SearchOptions;
 use Markdown\Exception\RuntimeException;
 use Markdown\Service\RenderServiceInterface;
 use Normalizer\NormalizerInterface;
-use Search\Result\Container;
-use Search\Result\Result;
+use Search\Entity\Document;
 use Uuid\Filter\NotTrashedCollectionFilter;
 use Versioning\Filter\HasCurrentRevisionCollectionFilter;
 use Zend\Filter\FilterChain;
 use Zend\Filter\StripTags;
 use Zend\Mvc\Router\RouteInterface;
-
 
 class EntityProvider implements ProviderInterface
 {
@@ -84,7 +82,7 @@ class EntityProvider implements ProviderInterface
         $chain      = new FilterChain();
         $chain->attach($notTrashed);
         $chain->attach($hasCurrent);
-        $container = new Container();
+        $container = [];
         $types     = $this->options->getTypes();
 
         foreach ($types as $type) {
@@ -105,7 +103,7 @@ class EntityProvider implements ProviderInterface
 
     protected function addEntitiesToContainer(
         Collection $collection,
-        Container $container
+        array &$container
     ) {
         $stripTags = new StripTags();
         /* @var $entity EntityInterface */
@@ -130,8 +128,8 @@ class EntityProvider implements ProviderInterface
 
             $content = $stripTags->filter($content);
 
-            $result = new Result($id, $title, $content, $type, $link, $keywords, $instance);
-            $container->addResult($result);
+            $result      = new Document($id, $title, $content, $type, $link, $keywords, $instance);
+            $container[] = $result;
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Search\Provider;
 use Markdown\Exception\RuntimeException;
 use Markdown\Service\RenderServiceInterface;
 use Normalizer\NormalizerInterface;
-use Search\Result\Container;
-use Search\Result\Result;
+use Search\Entity\Document;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Uuid\Filter\NotTrashedCollectionFilter;
@@ -42,7 +41,7 @@ class TaxonomyProvider implements ProviderInterface
 
     public function provide()
     {
-        $container = new Container();
+        $container = [];
         $terms     = $this->taxonomyManager->findAllTerms(true);
         $filter    = new NotTrashedCollectionFilter();
         $terms     = $filter->filter($terms);
@@ -65,8 +64,8 @@ class TaxonomyProvider implements ProviderInterface
             } catch (RuntimeException $e) {
                 // Could not render -> nothing to do.
             }
-            $result = new Result($id, $title, $content, $type, $link, $keywords, $instance);
-            $container->addResult($result);
+            $result      = new Document($id, $title, $content, $type, $link, $keywords, $instance);
+            $container[] = $result;
         }
         return $container;
     }

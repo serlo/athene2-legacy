@@ -3,9 +3,11 @@
         <ul class="pagination">
             <!-- Previous page link -->
             <?php $params = $this->params ? : [];
+            $this->options = $this->options ? : [];
             if (isset($this->previous)): ?>
                 <li>
-                    <a href="<?php echo $this->url($this->route, $params); ?>?page=<?php echo $this->previous; ?>">
+                    <?php $options = array_merge_recursive($this->options, ['query' => ['page' => $this->previous]]); ?>
+                    <a href="<?php echo $this->url($this->route, $params, $options); ?>">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
                 </li>
@@ -20,7 +22,8 @@
             <?php foreach ($this->pagesInRange as $page): ?>
                 <?php if ($page != $this->current): ?>
                     <li>
-                        <a href="<?php echo $this->url($this->route, $params);?>?page=<?php echo $page; ?>">
+                        <?php $options = array_merge_recursive($this->options, ['query' => ['page' => $page]]); ?>
+                        <a href="<?php echo $this->url($this->route, $params, $options);?>">
                             <?php echo $page; ?>
                         </a>
                     </li>
@@ -34,7 +37,8 @@
             <!-- Next page link -->
             <?php if (isset($this->next)): ?>
                 <li>
-                    <a href="<?php echo $this->url($this->route, $params); ?>?page=<?php echo $this->next; ?>">
+                    <?php $options = array_merge_recursive($this->options, ['query' => ['page' => $this->next]]); ?>
+                    <a href="<?php echo $this->url($this->route, $params, $options); ?>">
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </a>
                 </li>

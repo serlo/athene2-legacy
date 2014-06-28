@@ -10,7 +10,8 @@
 namespace Search\Adapter;
 
 use Common\ObjectManager\Flushable;
-use Search\Result;
+use Search\Entity;
+use Zend\Paginator\Paginator;
 
 interface AdapterInterface extends Flushable
 {
@@ -44,8 +45,7 @@ interface AdapterInterface extends Flushable
 
     /**
      * @param string $query
-     * @param int    $limit
-     * @return Result\ContainerInterface
+     * @return Paginator
      */
-    public function search($query, $limit);
+    public function search($query);
 }

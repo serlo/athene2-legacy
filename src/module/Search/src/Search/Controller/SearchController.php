@@ -48,16 +48,16 @@ class SearchController extends AbstractActionController
     {
         $form = new SearchForm();
         $view = new ViewModel(['form' => $form, 'query' => '']);
+        $page = $this->params()->fromQuery('page', 0);
 
         $view->setTemplate('search/search');
-        $this->layout('layout/1-col');
 
         $data = $this->getRequest()->getQuery();
         if (isset($data['q'])) {
             $form->setData($data);
             if ($form->isValid()) {
                 $data      = $form->getData();
-                $container = $this->getSearchService()->search($data['q']);
+                $container = $this->getSearchService()->search($data['q'], $page, 10);
                 $view->setVariable('container', $container);
                 $view->setVariable('query', $data['q']);
                 $view->setTemplate('search/results');

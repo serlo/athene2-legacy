@@ -10,10 +10,6 @@
 return [
     'navigation' => [
         'top-center' => [
-            [
-                'label' => 'Search',
-                'route' => 'search'
-            ]
         ]
     ]
 ];

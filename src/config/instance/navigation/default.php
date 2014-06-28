@@ -11,6 +11,17 @@
 return [
     'navigation' => [
         'default' => [
+            'search'     => [
+                'label' => 'Search',
+                'route' => 'search',
+                'pages' => [
+                    [
+                        'label' => 'Search',
+                        'route' => 'search',
+                        'icon'  => 'search'
+                    ]
+                ]
+            ],
             'restricted' => [
                 'label'         => 'Backend',
                 'uri'           => '#',
