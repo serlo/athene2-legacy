@@ -6,9 +6,8 @@
     {% endif %}
 {% endfor %}
 {% if children %}
-    <h4 class="is-group-headline">
-        <span class="glyphicon glyphicon-folder-open"></span> {% trans %} Folders {% endtrans %}
-    </h4>
+    <h2>{% trans %} Subfolders {% endtrans %}</h2>
+    <hr>
     <div class="panel-group" id="accordion{{ term.getId() }}">
         {% for child in children %}
             <div class="panel panel-default">
@@ -19,7 +18,7 @@
                         </a>
                     </h4>
                 </div>
-                <div class="panel-collapse {{ loop.index > 1 ? 'collapse' : '' }} list-group" id="branch{{ child.getId() }}">
+                <div class="panel-collapse {{loop.last ? 'in' : 'collapse' }} list-group" id="branch{{ child.getId() }}">
                     <div class="list-group-item edit-control hidden">
                         {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
                     </div>

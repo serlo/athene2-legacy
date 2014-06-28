@@ -1,0 +1,60 @@
+.glyphicon-lg {
+  font-size: 3em
+}
+
+.blockquote-box {
+  border-right: 5px solid #E6E6E6;
+  margin-bottom: 25px;
+
+  &>.row {
+    margin: 0;
+  }
+
+  .square {
+    width: 100px;
+    min-height: 50px;
+    text-align: center !important;
+    background-color: #E6E6E6;
+    padding: 20px 0;
+  }
+
+  &.blockquote-primary {
+    border-color: $btn-primary-bg;
+    .square {
+      background-color: $btn-primary-border;
+      color: #FFF
+    }
+  }
+
+  &.blockquote-success {
+    border-color: $btn-success-bg;
+    .square {
+      background-color: $btn-success-border;
+      color: #FFF
+    }
+  }
+
+  &.blockquote-info {
+    border-color: $btn-info-bg;
+    .square {
+      background-color: $btn-info-border;
+      color: #FFF
+    }
+  }
+
+  &.blockquote-warning {
+    border-color: $btn-warning-bg;
+    .square {
+      background-color: $btn-warning-border;
+      color: #FFF
+    }
+  }
+
+  &.blockquote-danger {
+    border-color: $btn-danger-bg;
+    .square {
+      background-color: $btn-danger-border;
+      color: #FFF
+    }
+  }
+}

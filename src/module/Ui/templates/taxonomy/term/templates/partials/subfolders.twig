@@ -1,11 +1,40 @@
 {% set hasSubfolders = false %}
-<div class="list-group">
-    {% for child in term.findChildrenByTrashed(false) if child.getType().getName() not in ['topic-folder' , 'curriculum-topic-folder'] %}
-        <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ child.getName() }}</h4>
 
-            <p class="list-group-item-text">{{ markdown().toHtml(child.getDescription()) }}</p>
-        </a>
+<div>
+    {% for child in term.findChildrenByTrashed(false) if child.getType().getName() not in ['topic-folder' , 'curriculum-topic-folder'] %}
+        <div class="blockquote-box blockquote-primary">
+            <div class="row">
+                <div class="square col-xs-4">
+                    {% if child.countElements() %}
+                        <span class="glyphicon-regular glyphicon-lg glyphicon-show-thumbnails-with_lines"></span>
+                    {% else %}
+                        <span class="glyphicon-regular glyphicon-lg glyphicon-more-items"></span>
+                    {% endif %}
+                </div>
+                <div class="col-xs-8">
+                    <a  href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}">
+                        <h4>{{ child.getName() }}</h4>
+                    </a>
+                    <p>
+                        {% if child.getDescription() %}
+                            {{ markdown().toHtml(child.getDescription()) }}
+                            <br>
+                        {% else %}
+                            <small class="text-muted">
+                                {% for childsChild in child.getChildren() %}
+                                    {% if loop.index0 == 4 %}
+                                        <em> ...</em>
+                                    {% elseif loop.index0 > 4 %}
+                                    {% else %}
+                                        <a class="label label-info" href="{{ url('taxonomy/term/get', {'term': childsChild.getId()}) }}">{{ childsChild.getName() }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </small>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
         {% set hasSubfolders = true %}
     {% endfor %}
 </div>

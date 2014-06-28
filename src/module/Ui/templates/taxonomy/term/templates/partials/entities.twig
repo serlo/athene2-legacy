@@ -2,48 +2,59 @@
 {% set entities = entity().getVisible(entities) %}
 {% set types = entity().asTypeCollection(entities) %}
 {% if entities.count() %}
-    <div>
-        {% for i in 0..2 %}
-            {% set type = cycle(['article', 'video', 'course'], i) %}
-            {% if types.get(type) %}
+    {% for i in 0..2 %}
+        {% set type = cycle(['article', 'video', 'course'], i) %}
+        {% if types.get(type) %}
+            <h2>{{ cycle(['Articles' | trans, 'Videos' | trans, 'Courses' | trans], i) }}</h2>
+            <hr>
+            <div class="blockquote-box blockquote-primary">
                 <div class="row">
-                <div class="col-xs-12">
-                    <h4 class="is-group-headline">
-                        <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ cycle(['Articles' | trans, 'Videos' | trans, 'Courses' | trans], i) }}
-                    </h4>
-                </div>
-                {% set index = 0 %}
-                {% for link in types.get(type) %}
-                    {% if index % 3 == 0 and index != 0 %}
+                    <div class="square col-xs-2">
+                        <span class="glyphicon-regular glyphicon-lg glyphicon-{{ cycle(['book-open', 'play-button', 'share-alt'], i) }}"></span>
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="row">
+                            {% set index = 0 %}
+                            {% for link in types.get(type) %}
+                                {% if index % 3 == 0 and index != 0 %}
                         </div>
                         <div class="row">
-                    {% endif %}
-                    {% set index = index + 1 %}
-                    <div class="col-xs-4">
-                        <p>
-                            {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
-                        </p>
+                                {% endif %}
+                                {% set index = index + 1 %}
+                                <div class="col-xs-4">
+                                    <p>
+                                        {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                {% endfor %}
                 </div>
-            {% endif %}
-        {% endfor %}
-
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div>
+    <div>
         {% if types.get('text-exercise') or types.get('text-exercise-group') %}
             <!-- Rest -->
-            <h4 class="is-group-headline">
-                <span class="glyphicon glyphicon-ok"></span> {% trans %} Exercises {% endtrans %}
-            </h4>
-            {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
+            <h2>{% trans %} Exercises {% endtrans %}</h2>
+            <hr>
+            <div class="blockquote-box blockquote-primary">
                 <div class="row">
-                    <div class="col-xs-1">
-                        <strong>{{ loop.index }}.</strong>
-                    </div>
-                    <div class="col-xs-11">
-                        {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
+                    <div class="col-xs-12">
+                        {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <strong>{{ loop.index }}.</strong>
+                                </div>
+                                <div class="col-xs-11">
+                                    {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         {% endif %}
         <!-- Rest end -->
     </div>
