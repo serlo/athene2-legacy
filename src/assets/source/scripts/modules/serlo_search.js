@@ -76,9 +76,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             //    Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
             //    this.$input.blur();
             //} else {
-            Router.post('/search', {
-                q: this.$input.val()
-            });
+            Router.navigate('/search?q=' + this.$input.val());
             //}
             break;
         }
