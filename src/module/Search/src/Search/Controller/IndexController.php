@@ -11,12 +11,12 @@
 namespace Search\Controller;
 
 use Search\SearchServiceInterface;
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\AbstractConsoleController;
 
 /**
  * A controller for controlling the index.
  */
-class IndexController extends AbstractActionController
+class IndexController extends AbstractConsoleController
 {
     /**
      * @var SearchServiceInterface

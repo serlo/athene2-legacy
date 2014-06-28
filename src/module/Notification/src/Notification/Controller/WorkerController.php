@@ -10,9 +10,9 @@
 namespace Notification\Controller;
 
 use Notification\NotificationWorker;
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\AbstractConsoleController;
 
-class WorkerController extends AbstractActionController
+class WorkerController extends AbstractConsoleController
 {
 
     /**

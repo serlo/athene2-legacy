@@ -152,11 +152,8 @@ class SolrAdapter implements AdapterInterface
         $disMax = $queryClass->getDisMax();
         $disMax->setQueryFields('title^4 content keywords^2 type^3');
         $queryClass->setQuery($query);
-        //$queryClass->setStart($offset);
-        //$queryClass->setRows($limit);
         $queryClass->addSort('score', $queryClass::SORT_DESC);
         $queryClass->setQueryDefaultOperator($queryClass::QUERY_OPERATOR_AND);
-        //$resultSet    = $this->client->select($queryClass);
 
         $adapter = new SolrPaginator($this->client, $queryClass);
         $adapter->setTranslator($this->translator);

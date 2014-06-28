@@ -10,9 +10,9 @@
  */
 namespace PageSpeed\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\AbstractConsoleController;
 
-class PageSpeedController extends AbstractActionController
+class PageSpeedController extends AbstractConsoleController
 {
     public function buildAction()
     {
