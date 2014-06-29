@@ -1,6 +1,7 @@
 #!/bin/sh
 
-sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
+sudo cp /var/www/dist/solr/data-config.xml /etc/solr/config/data-config.xml
+sudo cp /var/www/dist/solr/data-config.xml /etc/solr/config/data-config.xml
 sudo indexer --all
 sudo searchd
 sudo su - root -c "(cd /var/www/src/assets;npm cache clean)"

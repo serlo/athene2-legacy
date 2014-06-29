@@ -14,7 +14,7 @@ echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf
 # Install basic stuff
 apt-get -y update
 apt-get install -y python-software-properties python g++ make python-software-properties
-apt-get install -y apache2 mysql-server-5.5 git sphinxsearch
+apt-get install -y apache2 mysql-server-5.5 git
 apt-get install -y language-pack-de-base
 
 # Add repositories with current versions
@@ -28,6 +28,7 @@ apt-get -y update
 
 apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin
 apt-get install -y php5-xdebug php5-cli php-apc php-xml-parser
+apt-get install -y solr-tomcat
 
 # Install nodejs related stuff
 
@@ -98,7 +99,7 @@ sudo sed -i "s/bind-address.*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
 mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
 
 # Install sphinxsearch
-echo START=yes > /etc/default/sphinxsearch
+# echo START=yes > /etc/default/sphinxsearch
 mkdir /var/lib/sphinxsearch/log
 
 # npm hack
