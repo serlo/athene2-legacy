@@ -1,6 +1,7 @@
-<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php $term = $this->event->getObject()->getName(); ?>
+<?php $event = $this->notification->getEvents()->current(); ?>
+<?php $user = $this->normalize()->toAnchor($event->getActor()); ?>
+<?php $term = $event->getObject()->getName(); ?>
 <a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getObject(), true); ?>">
-    <?php echo sprintf($this->translate('<strong>%s</strong> updated %s'), $user, $associate, $object); ?>
+    <?php echo sprintf($this->translate('<strong>%s</strong> updated %s'), $user); ?>
     <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>
