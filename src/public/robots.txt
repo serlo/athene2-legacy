@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /page/revision/revisions/
 Disallow: /page/revision/revision/
+Disallow: /page/revision/
 Disallow: /entity/repository/history/
 Disallow: /entity/repository/compare/
 Disallow: /backend
