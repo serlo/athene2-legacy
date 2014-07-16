@@ -29,8 +29,8 @@ echo $this->doctype();
     				<div id="content-layout">
                         <?php echo $this->partial('layout/partials/notifications'); ?>
                         <div id="content-container" class="content">
-                        <?php echo $this->partial('layout/partials/main'); ?>
-    					</div>
+                            <?php echo $this->partial('layout/partials/main'); ?>
+                        </div>
     				</div>
     			</div>
     		</section>
@@ -43,5 +43,6 @@ echo $this->doctype();
     <?php echo $this->partial('layout/partials/default-modal'); ?>
     <?php echo $this->placeholder('modals'); ?>
     <?php echo $this->tracking(); ?>
+    <?php echo $this->partial('layout/partials/noscript'); ?>
 </body>
 </html>
