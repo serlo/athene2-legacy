@@ -95,8 +95,9 @@ class NavigationProvider implements PageProviderInterface
      */
     public function provide(array $options)
     {
-        $this->options = ArrayUtils::merge($this->defaultOptions, $options);
-        $key           = hash('sha256', serialize($this->options));
+        $this->options          = ArrayUtils::merge($this->defaultOptions, $options);
+        $key                    = hash('sha256', serialize($this->options));
+        $this->options['types'] = ArrayUtils::merge($this->options['types'], $this->options['hidden']);
 
         if ($this->storage->hasItem($key)) {
             return $this->storage->getItem($key);
