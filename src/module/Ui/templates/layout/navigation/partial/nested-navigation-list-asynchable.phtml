@@ -16,8 +16,11 @@ $maxDepth = $this->navigation()->menu()->getMaxDepth();
 $siblingIsActive = false;
 
 foreach ($this->pages as $page) {
-    $liClasses = [];
     $siblingIsActive = $siblingIsActive || $page->isActive();
+}
+
+foreach ($this->pages as $page) {
+    $liClasses = [];
     // visibility of the sub-page
     if (!$page->isVisible() || !($depth <= $maxDepth || $page->isActive(true) || $siblingIsActive)  || !$this->navigation()->accept($page)) {
         continue;
