@@ -39,7 +39,8 @@ class NavigationProvider implements PageProviderInterface
         'instance'  => 'de',
         'max_depth' => 1,
         'types'     => [],
-        'params'    => []
+        'params'    => [],
+        'hidden'    => []
     ];
     /**
      * @var array
@@ -135,6 +136,9 @@ class NavigationProvider implements PageProviderInterface
                 $current['label']    = $term->getName();
                 $current['elements'] = $term->countElements();
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);
+                if (in_array($term->getType()->getName(), $this->options['hidden'])) {
+                    $current['visible'] = false;
+                }
                 if (count($children)) {
                     $current['pages'] = $this->iterTerms($children, $depth - 1);
                 }

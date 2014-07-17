@@ -21,8 +21,13 @@ foreach ($this->pages as $page) {
 
 foreach ($this->pages as $page) {
     $liClasses = [];
+    $recActive = $page->isActive(true);
     // visibility of the sub-page
-    if (!$page->isVisible() || !($depth <= $maxDepth || $page->isActive(true) || $siblingIsActive)  || !$this->navigation()->accept($page)) {
+    if (!$page->isVisible() || !($depth <= $maxDepth || $recActive || $siblingIsActive)
+        || !$this->navigation()->accept(
+            $page
+        )
+    ) {
         continue;
     }
 
@@ -31,8 +36,7 @@ foreach ($this->pages as $page) {
         continue;
     }
 
-
-    if ($page->isActive()) {
+    if ($recActive) {
         $liClasses[] = 'active';
     }
 
@@ -41,7 +45,7 @@ foreach ($this->pages as $page) {
         $elements = ' data-element-count="' . $page->get('elements') . '"';
     }
 
-    $breadcrumb = ($page->isActive(true) && $useBreadCrumbs) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
+    $breadcrumb = ($recActive && $useBreadCrumbs) ? 'itemscope itemtype="http://data-vocabulary.org/Breadcrumb"' : false;
     $child      = $breadcrumb ? 'itemprop="child"' : '';
     $rich       = $breadcrumb ? ' ' . $child . ' ' . $breadcrumb . ' ' : '';
     $needsFetching = ($depth >= $maxDepth - 1 && !empty($page->pages)) ? ' data-needs-fetching="true" ' : '';

@@ -460,16 +460,16 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
     /**
      * @method findActiveByActive
-     * @return {Object} The first found menu item
+     * @return {Object} The last found menu item
      *
      * Searches for a menu item by active property
      **/
     Hierarchy.prototype.findActiveByActive = function () {
         var self = this;
 
-        return _.first(deepFlatten(self.data).filter(function (menuItem) {
+        return _.last(deepFlatten(self.data).filter(function (menuItem) {
             if (menuItem.data.active) {
-                return menuItem;
+                return true;
             }
             return false;
         }).value());
