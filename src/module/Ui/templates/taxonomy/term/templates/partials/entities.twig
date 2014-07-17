@@ -39,11 +39,11 @@
             <!-- Rest -->
             <h2>{% trans %} Exercises {% endtrans %}</h2>
             <hr>
-            <div class="blockquote-box blockquote-primary">
-                <div class="row">
-                    <div class="col-xs-12">
-                        {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
-                            <div class="row">
+            <div class="row">
+                <div class="col-xs-12">
+                    {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
+                        <div class="blockquote-box blockquote-primary">
+                        <div class="row">
                                 <div class="col-xs-1">
                                     <strong>{{ loop.index }}.</strong>
                                 </div>
@@ -51,8 +51,8 @@
                                     {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         {% endif %}

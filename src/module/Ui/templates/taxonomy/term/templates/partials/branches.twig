@@ -8,41 +8,27 @@
 {% if children %}
     <h2>{% trans %} Subfolders {% endtrans %}</h2>
     <hr>
-    <div class="panel-group" id="accordion{{ term.getId() }}">
-        {% for child in children %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ term.getId() }}" href="#branch{{ child.getId() }}">
-                            {{ child.getName() }}
-                        </a>
-                    </h4>
-                </div>
-                <div class="panel-collapse {{loop.last ? 'in' : 'collapse' }} list-group" id="branch{{ child.getId() }}">
-                    <div class="list-group-item edit-control hidden">
-                        {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
+    <div class="blockquote-box blockquote-primary">
+        <div class="row">
+            <div class="square col-xs-2">
+                <span class="glyphicon-regular glyphicon-lg glyphicon-folder"></span>
+            </div>
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% for child in children %}
+                            <h4>
+                                <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}">
+                                    <h4>{{ child.getName() }}</h4>
+                                </a>
+                            </h4>
+                            <em>
+                                {{ markdown().toHtml(child.getDescription()) }}
+                            </em>
+                        {% endfor %}
                     </div>
-                    {% if child.getDescription() %}
-                        <div class="list-group-item">
-                            <strong>
-                                {{ markdown.toHtml(child.getDescription()) }}
-                            </strong>
-                        </div>
-                    {% endif %}
-                    {% for entity in child.getAssociated('entities') if not entity.getTrashed() %}
-                        <div class="list-group-item">
-                            <div class="row">
-                                <div class="col-xs-1">
-                                    <strong>{{ loop.index }}.</strong>
-                                </div>
-                                <div class="col-xs-11">
-                                    {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
-        {% endfor %}
+        </div>
     </div>
 {% endif %}

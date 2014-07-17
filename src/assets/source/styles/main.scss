@@ -3,24 +3,20 @@
 @import "base/bootstrap-var-override";
 @import "sass-bootstrap/lib/bootstrap";
 @import "base/bootstrap-css-override";
-
+// Use this import once https://github.com/jasny/bootstrap/pull/274 got merged
+// @import "jasny-bootstrap/scss/jasny-bootstrap";
 @import "modules/mixins";
-
 // @import "base/content_layout";
 @import "base/content";
-
 @import "modules/alerts";
 @import "modules/bars";
 @import "modules/modes";
 @import "modules/grid_boxes";
 @import "modules/diff";
 @import "modules/dropdown";
-
 @import "base/layout";
-
 @import "base/base";
 @import "base/typography";
-
 @import "partials/bootstrap_extension";
 @import "partials/serlo_ad";
 @import "partials/serlo_top_menu";
@@ -33,14 +29,12 @@
 @import "partials/serlo_sortablelist";
 @import "partials/serlo_ajax_overlay";
 @import "partials/serlo_brand";
-
 @import "thirdparty/datepicker";
+@import "thirdparty/jasny_bootstrap";
 @import "thirdparty/timeline";
 @import "thirdparty/discussions";
 @import "thirdparty/glyphicons_halflings";
 @import "thirdparty/glyphicons_regular";
 @import "thirdparty/blockquote";
-
 @import "modules/states";
-
 @import "shame";

@@ -16,13 +16,21 @@
     text-align: center !important;
     background-color: #E6E6E6;
     padding: 20px 0;
+    & > .badge {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+    }
   }
 
   &.blockquote-primary {
     border-color: $btn-primary-bg;
     .square {
       background-color: $btn-primary-border;
-      color: #FFF
+      color: #FFF;
+      & > .badge {
+        background-color: lighten($btn-primary-border, 10%);
+      }
     }
   }
 
@@ -30,7 +38,10 @@
     border-color: $btn-success-bg;
     .square {
       background-color: $btn-success-border;
-      color: #FFF
+      color: #FFF;
+      & > .badge {
+        background-color: lighten($btn-success-border, 10%);
+      }
     }
   }
 
@@ -38,7 +49,10 @@
     border-color: $btn-info-bg;
     .square {
       background-color: $btn-info-border;
-      color: #FFF
+      color: #FFF;
+      & > .badge {
+        background-color: lighten($btn-info-border, 10%);
+      }
     }
   }
 
@@ -46,7 +60,10 @@
     border-color: $btn-warning-bg;
     .square {
       background-color: $btn-warning-border;
-      color: #FFF
+      color: #FFF;
+      & > .badge {
+        background-color: lighten($btn-warning-border, 10%);
+      }
     }
   }
 
@@ -54,7 +71,10 @@
     border-color: $btn-danger-bg;
     .square {
       background-color: $btn-danger-border;
-      color: #FFF
+      color: #FFF;
+      & > .badge {
+        background-color: lighten($btn-danger-border, 10%);
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 {% set hasSubfolders = false %}
 
 <div>
-    {% for child in term.findChildrenByTrashed(false) if child.getType().getName() not in ['topic-folder' , 'curriculum-topic-folder'] %}
+    {% for child in term.findChildrenByTrashed(false) if child.getType().getName() %}
         <div class="blockquote-box blockquote-primary">
             <div class="row">
                 <div class="square col-xs-4">
@@ -10,11 +10,13 @@
                     {% else %}
                         <span class="glyphicon-regular glyphicon-lg glyphicon-more-items"></span>
                     {% endif %}
+                    <span class="badge">{{ child.countElements() + child.getChildren().count() }}</span>
                 </div>
                 <div class="col-xs-8">
-                    <a  href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}">
-                        <h4>{{ child.getName() }}</h4>
-                    </a>
+                    <h4>
+                        <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}">{{ child.getName() }}</a>
+                    </h4>
+
                     <p>
                         {% if child.getDescription() %}
                             {{ markdown().toHtml(child.getDescription()) }}
