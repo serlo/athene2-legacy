@@ -1,5 +1,5 @@
-<ul>
-    {% for event in events %}
+<ul class="list-unstyled">
+{% for event in events %}
         <li>{{ eventLog().renderEvent(event) }}</li>
     {% endfor %}
 </ul>

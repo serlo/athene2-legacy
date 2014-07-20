@@ -54,7 +54,7 @@ class EventManager implements EventManagerInterface
         $this->setAuthorizationService($authorizationService);
     }
 
-    public function findEventsByActor($userId)
+    public function findEventsByActor($userId, $limit = 50)
     {
         if (!is_numeric($userId)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -65,7 +65,7 @@ class EventManager implements EventManagerInterface
 
         $className  = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         $repository = $this->getObjectManager()->getRepository($className);
-        $results    = $repository->findBy(['actor' => $userId], ['id' => 'desc']);
+        $results    = $repository->findBy(['actor' => $userId], ['id' => 'desc'], $limit);
         $collection = new ArrayCollection($results);
 
         $collection = $this->persistentEventLogFilterChain->filter($collection);

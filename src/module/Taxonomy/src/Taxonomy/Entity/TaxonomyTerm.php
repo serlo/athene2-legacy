@@ -326,11 +326,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         $this->weight = $position;
     }
 
-    public function slugify($stopAtType = null, $delimiter = '/')
-    {
-        return substr($this->processSlugs($this, $stopAtType, $delimiter), 0, -1);
-    }
-
     protected function addEntities(EntityInterface $entity)
     {
         // Build new relation object to handle join entity correct
@@ -406,19 +401,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         }
 
         return $rel;
-    }
-
-    protected function processSlugs(TaxonomyTermInterface $term, $stopAtType, $delimiter)
-    {
-        $slug = '';
-        if ($term->getTaxonomy()->getName() != $stopAtType) {
-            if ($term->hasParent()) {
-                $slug = $this->processSlugs($term->getParent(), $stopAtType, $delimiter);
-            }
-            $slug .= $term->getSlug() . $delimiter;
-        }
-
-        return $slug;
     }
 
     protected function removeEntities(EntityInterface $entity)

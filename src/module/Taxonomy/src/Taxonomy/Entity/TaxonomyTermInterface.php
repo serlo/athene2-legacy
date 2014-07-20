@@ -163,11 +163,4 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
      * @return self
      */
     public function setTaxonomy(TaxonomyInterface $taxonomy);
-
-    /**
-     * @param string $stopAtType
-     * @param string $delimiter
-     * @return string
-     */
-    public function slugify($stopAtType = null, $delimiter = '/');
 }

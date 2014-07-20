@@ -41,8 +41,13 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
         $term = $this->strategy->findBranch($this->getObject()->getTaxonomyTerms());
 
         $path = $this->getObject()->getId();
+
         if ($term) {
-            $path = $term->slugify('root');
+            $path = '';
+            while ($term->hasParent()) {
+                $path .= $term->getName() . '/';
+                $term = $term->getParent();
+            }
         }
 
         $normalized = $this->getNormalizer()->normalize($this->getObject());

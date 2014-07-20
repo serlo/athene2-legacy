@@ -67,9 +67,9 @@ class EventLog extends AbstractHelper
         return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
     }
 
-    public function renderUserLog($id)
+    public function renderUserLog($id, $limit = 50)
     {
-        $events = $this->getEventManager()->findEventsByActor($id);
+        $events = $this->getEventManager()->findEventsByActor($id, $limit);
         return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
     }
 }
