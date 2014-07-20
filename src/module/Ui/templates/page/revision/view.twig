@@ -8,17 +8,16 @@
         </section>
     </article>
 {% endif %}
-<hr>
-<section class="row">
-    <div class="col-xs-10">
-        <p>{{ page.getLicense().getTitle() }}</p>
+<h1>{{ 'License' | trans }}</h1>
+<section class="well">
+    <a class="pull-right" href="{{ page.getLicense().getUrl() }}" rel="license"><img
+                alt="{{ page.getLicense().getTitle() }}" src="{{ page.getLicense().getIconHref() }}"></a>
+
+    <div>
+    <p>{{ page.getLicense().getTitle() }}</p>
         <p><a href="{{ url('license/detail', {'id': page.getLicense().getId()}) }}">{% trans %} What is that? {% endtrans %}</a></p>
-    </div>
-    <div class="col-xs-2">
-        <a class="pull-right" href="{{ page.getLicense().getUrl() }}" rel="license"><img alt="{{ page.getLicense().getTitle() }}" src="{{ page.getLicense().getIconHref() }}"></a>
     </div>
 </section>
 {% if page.getForum() %}
-    <hr>
     {{ discussion(page).setForum(page.getForum()).render() }}
 {% endif %}
