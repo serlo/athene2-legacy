@@ -1,5 +1,2 @@
-{% if isGranted('discussion.comment.create', discussion) %}
-    <h4>{% trans %} Comment a discussion {% endtrans %}</h4>
-    <hr>
-    {{ form().render(form, null) }}
-{% endif %}
+{{ pageHeader('Comment on a discussion').render() }}
+{{ form().render(form, null) }}

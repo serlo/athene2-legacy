@@ -1,0 +1,36 @@
+<div class="blockquote-box blockquote-info discussion-comment">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="square">
+                <span class="glyphicon-regular glyphicon-lg glyphicon-unshare"></span>
+            </div>
+            {% trans %} by {% endtrans %}
+            <span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+                <span itemprop="name">{{ normalize().toAnchor(comment.getAuthor()) }}</span>
+            </span>
+            <small>
+                <span itemprop="dateCreated">{{ timeago().render(comment.getTimestamp()) }}</span>
+            </small>
+            <div class="discussion-actions btn-group">
+                {% if isGranted('flag.create', comment) %}
+                    <a class="btn btn-xs btn-default"
+                       href="{{ url('flag/add', {'id': comment.getId()}) }}">
+                        <span class="glyphicon glyphicon-flag"></span> </a>
+                {% endif %}
+                {% if isGranted('discussion.comment.trash', comment) %}
+                    <a href="{{ url('uuid/trash', {'id': comment.getId()}) }}"
+                       class="btn btn-xs btn-default dialog"
+                       data-content="{% trans %} Do you really want to delete this comment? {% endtrans %}">
+                        <span class="glyphicon glyphicon-trash"></span> </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-xs-9">
+            <article itemtype="http://schema.org/Comment" itemscope>
+                <section class="discussion-text" itemprop="text">
+                    {{ comment.getContent() | nl2br }}
+                </section>
+            </article>
+        </div>
+    </div>
+</div>

@@ -1,24 +1,24 @@
 {{ pageHeader(user.getUsername()).setSubtitle('Profile') }}
-
+{{ discussion(user).render() }}
+<h2>{{ 'Recent activities' | trans }}</h2>
+<div class="row">
+    <div class="col-xs-12">
+        {{ eventLog().renderUserLog(user.getId(), 50) }}
+    </div>
+</div>
 {% if user.getLastLogin() %}
-    <h2>{{ 'Last seen' | trans }}</h2>
+    <h1>{{ 'Last seen' | trans }}</h1>
     <div class="row">
         <div class="col-xs-12">
-        {{ timeago().format(user.getLastLogin()) }}
+            {{ timeago().format(user.getLastLogin()) }}
         </div>
     </div>
 {% endif %}
-<h2>{{ 'Roles' | trans }}</h2>
+<h1>{{ 'Roles' | trans }}</h1>
 <div class="row">
     <div class="col-xs-12">
         {% for role in user.getRoles() %}
             <span class="badge badge-default">{{ role.getName() }}</span>
         {% endfor %}
-    </div>
-</div>
-<h2>{{ 'Recent activities' | trans }}</h2>
-<div class="row">
-    <div class="col-xs-12">
-        {{ eventLog().renderUserLog(user.getId(), 50) }}
     </div>
 </div>

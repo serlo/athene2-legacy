@@ -1,25 +1,4 @@
 .discussions {
-  & .panel-body {
-    padding: 0px;
-  }
-
-  & .list-group {
-    margin-bottom: 0;
-  }
-
-  & .panel-title {
-    display: inline
-  }
-
-  .panel-default > .panel-heading {
-    border-color: none;
-    background-color: #fafafa;
-  }
-
-  & .label-info {
-    float: right;
-  }
-
   .archived-toggle span:after {
     font-family: 'Glyphicons Halflings';
     content: "\e113";
@@ -29,40 +8,48 @@
     content: "\e114";
   }
 
-  & li.list-group-item {
-    border-radius: 0;
-    border: 0;
-    border-top: 1px solid #ddd;
-
-    & .form-group {
-      margin: 0 0 5px 0;
-    }
-  }
-
-  & li.list-group-item:hover {
-    & .discussion-action {
-    }
-  }
-
-  & .mic-info {
-    color: #666666;
-    font-size: 11px;
-  }
-
-  & .discussion-action {
+  .discussion-actions {
     margin: 5px 0;
   }
 
-  & .discussion-head {
+  .discussion-head {
     margin-bottom: 5px;
     font-size: 15px;
   }
 
-  & .discussion-text {
+  .discussion-info {
+    border-bottom: 1px solid $lighterGray;
   }
 
-  & .btn-block {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
+  .discussion-body {
+    min-height: 60px;
+    padding-bottom: 20px;
   }
+
+  .discussion-comments {
+    margin-top: 10px;
+    .row .col-xs-3 {
+      width: 21%;
+    }
+    .discussion-body {
+      min-height: 95px;
+    }
+  }
+
+  a.list-group-item {
+    text-align: center;
+  }
+
+  a.discussion-start, a.discussion-reply {
+    padding: 10px 16px;
+  }
+}
+
+.discussion-start {
+  margin-bottom: 10px;
+}
+
+h1 .discussion-start {
+  margin-top: 10px;
+  margin-bottom: 0px;
 }

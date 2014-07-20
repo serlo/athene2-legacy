@@ -11,9 +11,7 @@
     <section itemprop="description">
         {{ description }}
     </section>
-    <hr>
     {% include 'entity/view/partials/license' %}
-    <hr>
     <section class="hidden" id="discussion-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
     </section>

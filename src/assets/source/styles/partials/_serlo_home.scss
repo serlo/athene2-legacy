@@ -14,6 +14,7 @@
     h1.description {
       font-size: inherit;
       margin-top: 0px;
+      border: none;
     }
 
     .home-nav {
@@ -29,6 +30,8 @@
           }
           & h2 {
             font-size: inherit;
+            border: none;
+            cursor: pointer;
             margin: 0;
           }
         }

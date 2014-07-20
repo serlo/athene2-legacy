@@ -5,7 +5,7 @@
         "modernizr": "~2.6.2",
         "jquery": "~1.10.2",
         "jquery-ui": "~1.10.3",
-        "sass-bootstrap": "~3.0.2",
+        "bootstrap-sass-official": "~3.2.0",
         "underscore": "~1.5.2",
         "requirejs": "~2.1.8",
         "momentjs": "~2.3.1",

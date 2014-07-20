@@ -1,0 +1,24 @@
+{% set discussions = discussion().getDiscussions(object) %}
+<h1>
+    {% if isGranted('discussion.create') %}
+        {% if forum %}
+            {% set url = url('discussion/discussion/start', {'on': object.getId(), 'forum': forum.getId()}) %}
+        {% else %}
+            {% set url = url('discussion/discussion/start', {'on': object.getId()}) %}
+        {% endif %}
+        <a class="discussion-start btn btn-success pull-right" href="{{ url }}"><span
+                    class="glyphicon-regular glyphicon-plus"></span> {{ 'Discussion' | trans }}</a>
+    {% endif %}
+    <span>{{ 'Discussions' | trans }}</span>
+</h1>
+<div class="discussions">
+    {% for discussion in discussions %}
+        {% include 'discussion/helper/default/discussion' with {'discussion': discussion} only %}
+    {% else %}
+        <div class="list-group-item">
+            <div class="discussion-text">
+                <span class="text-muted">{% trans %} There are no discussions here yet. {% endtrans %}</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>

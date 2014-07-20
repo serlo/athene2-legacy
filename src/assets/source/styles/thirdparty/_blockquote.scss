@@ -6,7 +6,7 @@
   border-right: 5px solid #E6E6E6;
   margin-bottom: 25px;
 
-  &>.row {
+  & > .row {
     margin: 0;
   }
 
@@ -20,6 +20,17 @@
       position: absolute;
       bottom: -5px;
       right: -5px;
+    }
+  }
+
+  &.blockquote-default {
+    border-color: $btn-default-bg;
+    .square {
+      background-color: $btn-default-border;
+      color: #FFF;
+      & > .badge {
+        background-color: lighten($btn-default-border, 10%);
+      }
     }
   }
 

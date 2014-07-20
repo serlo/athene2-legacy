@@ -1,5 +1,2 @@
-{% if isGranted('discussion.create') %}
-    <h4>{% trans %} Start a discussion {% endtrans %}</h4>
-    <hr>
-    {{ form().render(form, null) }}
-{% endif %}
+{{ pageHeader('Start a new discussion').render() }}
+{{ form().render(form, null) }}

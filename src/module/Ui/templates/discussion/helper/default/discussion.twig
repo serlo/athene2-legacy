@@ -1,0 +1,117 @@
+<div class="blockquote-box blockquote-primary">
+    <div class="row">
+        <div class="col-xs-2">
+            <div class="square">
+                <span class="glyphicon-regular glyphicon-lg glyphicon-comments"></span>
+            </div>
+            {% trans %} by {% endtrans %} <span itemprop="creator" itemscope itemtype="http://schema.org/Person"><span
+                        itemprop="name">{{ normalize().toAnchor(discussion.getAuthor()) }}</span></span>
+            <small><span itemprop="dateCreated">{{ timeago().render(discussion.getTimestamp()) }}</span></small>
+            <section class="discussion-actions">
+                {% if not discussion.isTrashed() %}
+                    <div class="btn-group">
+                        {% if isGranted('discussion.vote', discussion) %}
+                            {% if discussion.hasUserVoted(discussion().getUser()) %}
+                                {% set vote = 'down' %}
+                                {% set button = 'success' %}
+                            {% else %}
+                                {% set vote = 'up' %}
+                                {% set button = 'default' %}
+                            {% endif %}
+                            <a href="{{ url('discussion/discussion/vote', {'comment': discussion.getId(), 'vote': vote}) }}"
+                               class="btn btn-xs btn-{{ button }}">
+                                <span class="glyphicon glyphicon-chevron-{{ vote }}"></span>
+                                <strong>{{ discussion.countUpVotes() }}</strong> </a>
+                        {% else %}
+                            <button class="btn btn-default btn-xs" disabled>
+                                <span class="glyphicon glyphicon-chevron-up"></span>
+                                <strong>{{ discussion.countUpVotes() }}</strong>
+                            </button>
+                        {% endif %}
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon-regular glyphicon-cogwheel"></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                {% if isGranted('discussion.archive', discussion) %}
+                                    <li>
+                                        <a href="{{ url('discussion/discussion/archive', {'comment': discussion.getId()}) }}">
+                                            <span class="glyphicon glyphicon-{{ discussion.getArchived() ? 'refresh' : 'ok' }}"></span>
+                                            {% if discussion.getArchived() %}
+                                                {{ 'Unarchive discussion' | trans }}
+                                            {% else %}
+                                                {{ 'Archive discussion' | trans }}
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% if isGranted('flag.create', discussion) %}
+                                    <li>
+                                        <a href="{{ url('flag/add', {'id': discussion.getId()}) }}">
+                                            <span class="glyphicon glyphicon-flag"></span>
+                                            {{ 'Flag discussion' | trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% if isGranted('discussion.trash', discussion) %}
+                                    <li>
+                                        <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
+                                           class="dialog"
+                                           data-content="{% trans %} Do you really want to delete this discussion? {% endtrans %}">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                            {{ 'Trash discussion' | trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+        <div class="col-xs-10">
+            <article itemscope itemtype="http://schema.org/Comment">
+                <header class="discussion-head">
+                    {% if discussion.getArchived() %}
+                        <a class="btn btn-default btn-xs pull-right archived-toggle collapsed" data-toggle="collapse"
+                           href="#collapse-{{ discussion.getId() }}">
+                            <span></span>
+                        </a>
+                    {% endif %}
+                    <div class="discussion-info">
+                        {% set type = normalize().toType(discussion.getObject()) %}
+                        {% set object = normalize().toAnchor(discussion.getObject()) %}
+                        {% set title = '<strong itemprop="name" class="discussion-title">' ~ discussion.getTitle() ~ '</strong>' %}
+                        {% trans %}
+                        On {{ type }} {{ object }}: "{{ title }}"
+                        {% endtrans %}
+                    </div>
+                    {% if discussion.getArchived() %}
+                        <small class="text-muted">
+                            {% trans %} archived {% endtrans %}
+                        </small>
+                    {% endif %}
+                </header>
+                {% if discussion.getArchived() %}
+                <div class="collapse" id="collapse-{{ discussion.getId() }}">
+                    {% endif %}
+                    <section class="discussion-body" itemprop="text">
+                        {{ discussion.getContent() | nl2br }}
+                    </section>
+                    <section class="discussion-comments">
+                        {% for comment in discussion.getChildren() if not comment.isTrashed() %}
+                            {% include 'discussion/helper/default/comment' with {'comment': comment} only %}
+                        {% endfor %}
+                    </section>
+                    {% if not discussion.getArchived() and isGranted('discussion.comment.create', discussion) %}
+                        <a class="btn btn-info pull-right"
+                           href="{{ url('discussion/discussion/comment', {'discussion': discussion.getId()}) }}"><span
+                                    class="glyphicon-regular glyphicon-unshare"></span> {{ 'Reply' | trans }}</a>
+                    {% endif %}
+                    {% if discussion.getArchived() %}
+                </div>
+                {% endif %}
+            </article>
+        </div>
+    </div>
+</div>

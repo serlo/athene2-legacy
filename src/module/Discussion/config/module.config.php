@@ -73,7 +73,7 @@ return [
     'router'          => [
         'routes' => [
             'discussion' => [
-                'type'    => 'segment',
+                'type'         => 'segment',
                 'options'      => [
                     'route' => ''
                 ],
@@ -89,7 +89,7 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type'    => 'literal',
+                        'type'          => 'literal',
                         'options'       => [
                             'route'    => '/discussions',
                             'defaults' => [
@@ -108,7 +108,7 @@ return [
                         ]
                     ],
                     'discussion'  => [
-                        'type'    => 'literal',
+                        'type'         => 'literal',
                         'options'      => [
                             'route'    => '/discussion',
                             'defaults' => []
@@ -117,15 +117,19 @@ return [
                             'start'   => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/start/:on/:forum',
-                                    'defaults' => [
+                                    'route'       => '/start/:on[/:forum]',
+                                    'defaults'    => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'start'
+                                    ],
+                                    'constraints' => [
+                                        'on'    => '[0-9]+',
+                                        'forum' => '[0-9]+'
                                     ]
                                 ]
                             ],
                             'select'  => [
-                                'type'    => 'literal',
+                                'type'         => 'literal',
                                 'options'      => [
                                     'route'    => '/select',
                                     'defaults' => [
@@ -136,9 +140,12 @@ return [
                                     'forum' => [
                                         'type'    => 'segment',
                                         'options' => [
-                                            'route'    => '/forum/:on',
-                                            'defaults' => [
+                                            'route'       => '/forum/:on',
+                                            'defaults'    => [
                                                 'action' => 'selectForum'
+                                            ],
+                                            'constraints' => [
+                                                'on' => '[0-9]+'
                                             ]
                                         ]
                                     ],
@@ -147,10 +154,13 @@ return [
                             'comment' => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/comment/:discussion',
-                                    'defaults' => [
+                                    'route'       => '/comment/:discussion',
+                                    'defaults'    => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'comment'
+                                    ],
+                                    'constraints' => [
+                                        'discussion' => '[0-9]+'
                                     ]
                                 ]
                             ],
@@ -163,27 +173,21 @@ return [
                                         'action'     => 'vote'
                                     ],
                                     'constraints' => [
-                                        'vote' => 'up|down'
-                                    ]
-                                ]
-                            ],
-                            'trash'   => [
-                                'type'    => 'segment',
-                                'options' => [
-                                    'route'    => '/trash/:comment',
-                                    'defaults' => [
-                                        'controller' => 'Discussion\Controller\DiscussionController',
-                                        'action'     => 'trash'
+                                        'vote'    => 'up|down',
+                                        'comment' => '[0-9]+'
                                     ]
                                 ]
                             ],
                             'archive' => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/archive/:comment',
-                                    'defaults' => [
+                                    'route'       => '/archive/:comment',
+                                    'defaults'    => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'archive'
+                                    ],
+                                    'constraints' => [
+                                        'comment' => '[0-9]+'
                                     ]
                                 ]
                             ]

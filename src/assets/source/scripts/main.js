@@ -15,7 +15,7 @@ require.config({
         "jquery": "../bower_components/jquery/jquery",
         "jquery-ui": "../bower_components/jquery-ui/ui/jquery-ui",
         "underscore": "../bower_components/underscore/underscore",
-        "bootstrap": "../bower_components/sass-bootstrap/dist/js/bootstrap",
+        "bootstrap": "../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap",
         "moment": "../bower_components/momentjs/min/moment.min",
         "moment_de": "../bower_components/momentjs/lang/de",
         "jasny": "../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap",

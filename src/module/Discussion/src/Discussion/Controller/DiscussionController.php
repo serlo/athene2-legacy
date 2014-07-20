@@ -13,10 +13,13 @@ use Discussion\Exception\CommentNotFoundException;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerAwareTrait;
+use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\View\Model\ViewModel;
+use Discussion\Exception\RuntimeException;
 
 class DiscussionController extends AbstractController
 {
@@ -95,8 +98,12 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->commentDiscussion($form);
                 $this->getDiscussionManager()->flush();
-                return $this->redirect()->toReferer();
+                $url = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('discussion')]);
+                $ref = $this->referer()->fromStorage($url);
+                return $this->redirect()->toUrl($ref);
             }
+        } else {
+            $this->referer()->store();
         }
 
         $view = new ViewModel(['form' => $form, 'discussion' => $discussion]);
@@ -124,7 +131,7 @@ class DiscussionController extends AbstractController
 
     public function startAction()
     {
-        $form     = $this->discussionForm;
+        $form = $this->getForm('discussion', $this->params('on'), $this->params('forum'));
         $view     = new ViewModel(['form' => $form]);
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $author   = $this->getUserManager()->getUserFromAuthenticator();
@@ -142,11 +149,15 @@ class DiscussionController extends AbstractController
                 $this->getDiscussionManager()->startDiscussion($form);
                 $this->getDiscussionManager()->flush();
                 if (!$this->getRequest()->isXmlHttpRequest()) {
-                    return $this->redirect()->toReferer();
+                    $url = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('on')]);
+                    $ref = $this->referer()->fromStorage($url);
+                    return $this->redirect()->toUrl($ref);
                 }
                 $view->setTerminal(true);
                 return $view;
             }
+        } else {
+            $this->referer()->store();
         }
 
         $view->setTemplate('discussion/discussion/start');
@@ -191,6 +202,43 @@ class DiscussionController extends AbstractController
         } catch (CommentNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return null;
+        }
+    }
+
+    protected function getForm($type, $id, $forum = null)
+    {
+        switch ($type) {
+            case 'discussion':
+                $form = clone $this->discussionForm;
+                if ($forum) {
+                    $form->setAttribute(
+                        'action',
+                        $this->url()->fromRoute(
+                            'discussion/discussion/start',
+                            ['on' => $id, 'forum' => $forum]
+                        )
+                    );
+                } else {
+                    $form->setAttribute(
+                        'data-select-forum-href',
+                        $this->url()->fromRoute('discussion/discussion/select/forum', ['on' => $id])
+                    );
+                }
+                return $form;
+                break;
+            case 'comment':
+                $form = clone $this->commentForm;
+                $form->setAttribute(
+                    'action',
+                    $this->url()->fromRoute(
+                        'discussion/discussion/comment',
+                        ['discussion' => $id]
+                    )
+                );
+                return $form;
+                break;
+            default:
+                throw new RuntimeException();
         }
     }
 }

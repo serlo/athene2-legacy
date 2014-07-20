@@ -50,11 +50,7 @@
             </article>
         {% endfor %}
     </section>
-    <hr>
     {% include 'entity/view/partials/license' %}
-    <hr>
-
-    <!-- Discussions -->
     <section class="hidden" id="discussion-{{ entity.getId() }}">
         {{ discussion(entity).render() }}
     </section>

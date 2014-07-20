@@ -191,10 +191,11 @@ class Discussion extends AbstractHelper
         return $this->getUserManager()->getUserFromAuthenticator();
     }
 
-    public function render()
+    public function render($template = null)
     {
+        $template = $template ? 'discussion/helper/' . $template . '/' . $template : $this->getOption('template');
         return $this->renderer->render(
-            $this->getOption('template'),
+            $template,
             [
                 'discussions' => $this->discussions,
                 'isArchived'  => $this->archived,
@@ -218,7 +219,7 @@ class Discussion extends AbstractHelper
     protected function getDefaultConfig()
     {
         return [
-            'template' => 'discussion/discussions',
+            'template' => 'discussion/helper/default/default',
             'root'     => 'root',
             'forum'    => 'forum'
         ];
