@@ -97,16 +97,20 @@ class ApiController extends AbstractController
         $data     = $this->normalize($entities);
 
         foreach ($data as $item) {
-            $entry = $feed->createEntry();
-            $entry->setTitle($item['title']);
-            $entry->setDescription($item['description']);
-            $entry->setId($item['guid']);
-            $entry->setLink($item['link']);
-            foreach($item['keywords'] as $keyword){
-                $entry->addCategory(['term' => $keyword]);
+            try {
+                $entry = $feed->createEntry();
+                $entry->setTitle($item['title']);
+                $entry->setDescription($item['description']);
+                $entry->setId($item['guid']);
+                $entry->setLink($item['link']);
+                foreach ($item['keywords'] as $keyword) {
+                    $entry->addCategory(['term' => $keyword]);
+                }
+                $entry->setDateModified($item['lastModified']);
+                $feed->addEntry($entry);
+            } catch (\Exception $e) {
+                // Invalid Item, do not add
             }
-            $entry->setDateModified($item['lastModified']);
-            $feed->addEntry($entry);
         }
 
         $feed->setTitle($this->brand()->getHeadTitle());

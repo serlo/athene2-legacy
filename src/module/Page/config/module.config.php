@@ -57,7 +57,7 @@ return [
     'router'          => [
         'routes' => [
             'pages' => [
-                'type'    => 'literal',
+                'type' => 'literal',
                 'may_terminate' => true,
                 'options'       => [
                     'route'    => '/pages',
@@ -68,7 +68,7 @@ return [
                 ],
             ],
             'page'  => [
-                'type'    => 'literal',
+                'type'         => 'literal',
                 'options'      => [
                     'route'    => '/page',
                     'defaults' => [
@@ -88,20 +88,26 @@ return [
                     'update'   => [
                         'type'    => 'segment',
                         'options' => [
-                            'route'    => '/update/:page',
-                            'defaults' => [
+                            'route'       => '/update/:page',
+                            'defaults'    => [
                                 'action' => 'update'
-                            ]
+                            ],
+                            'constraints' => [
+                                'page' => '[0-9]+'
+                            ],
                         ]
                     ],
                     'view'     => [
                         'type'          => 'segment',
                         'may_terminate' => true,
                         'options'       => [
-                            'route'    => '/view/:page',
-                            'defaults' => [
+                            'route'       => '/view/:page',
+                            'defaults'    => [
                                 'action' => 'view'
-                            ]
+                            ],
+                            'constraints' => [
+                                'page' => '[0-9]+'
+                            ],
                         ],
                     ],
                     'revision' => [
@@ -123,28 +129,38 @@ return [
                             'checkout' => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/:page/checkout/:revision',
-                                    'defaults' => [
+                                    'route'       => '/:page/checkout/:revision',
+                                    'defaults'    => [
                                         'action' => 'checkout'
-                                    ]
+                                    ],
+                                    'constraints' => [
+                                        'revision' => '[0-9]+'
+                                    ],
                                 ]
                             ],
                             'view-all' => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/revisions/:page',
-                                    'defaults' => [
+                                    'route'       => '/revisions/:page',
+                                    'defaults'    => [
                                         'action' => 'viewRevisions'
-                                    ]
+                                    ],
+                                    'constraints' => [
+                                        'page' => '[0-9]+'
+                                    ],
                                 ]
                             ],
                             'create'   => [
                                 'type'    => 'segment',
                                 'options' => [
-                                    'route'    => '/create/:page[/:revision]',
-                                    'defaults' => [
+                                    'route'       => '/create/:page[/:revision]',
+                                    'defaults'    => [
                                         'action' => 'createRevision'
-                                    ]
+                                    ],
+                                    'constraints' => [
+                                        'page'     => '[0-9]+',
+                                        'revision' => '[0-9]*',
+                                    ],
                                 ]
                             ]
                         ]
