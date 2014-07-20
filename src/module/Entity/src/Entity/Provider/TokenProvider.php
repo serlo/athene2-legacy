@@ -43,11 +43,12 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
         $path = $this->getObject()->getId();
 
         if ($term) {
-            $path = '';
+            $path = [];
             while ($term->hasParent()) {
-                $path .= $term->getName() . '/';
+                $path[] = $term->getName();
                 $term = $term->getParent();
             }
+            $path = implode('/', $path);
         }
 
         $normalized = $this->getNormalizer()->normalize($this->getObject());
