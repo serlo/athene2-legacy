@@ -26,10 +26,12 @@ echo $this->doctype();
                             title="Save changes">
                         <span class="btn-label"><span class="glyphicon-regular glyphicon-ok-2"></span></span>Save
                     </button>
-                    <a class="helper btn btn-danger btn-labeled" data-toggle="tooltip" data-placement="bottom"
-                       title="Reject changes">
+                    <?php if ($this->ref): ?>
+                        <a class="helper btn btn-danger btn-labeled" data-toggle="tooltip" data-placement="bottom"
+                           title="Reject changes" href="<?php $this->ref; ?>">
                         <span class="btn-label"><span class="glyphicon-regular glyphicon-remove-2"></span></span>Cancel
                     </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
