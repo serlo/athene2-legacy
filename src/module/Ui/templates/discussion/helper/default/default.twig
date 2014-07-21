@@ -1,6 +1,6 @@
 {% set discussions = discussion().getDiscussions(object) %}
-<h1>
-    {% if isGranted('discussion.create') %}
+<h1 class="heading-content">
+{% if isGranted('discussion.create') %}
         {% if forum %}
             {% set url = url('discussion/discussion/start', {'on': object.getId(), 'forum': forum.getId()}) %}
         {% else %}

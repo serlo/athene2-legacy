@@ -28,13 +28,24 @@ h6 {
 }
 
 h1, h2 {
-  border-bottom: 1px solid #EEE;
+  &.heading-content, &.heading-markdown {
+    border-bottom: 1px solid #EEE;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 1em 0px 15px;
-  padding: 0px;
-  font-weight: 600;
-  line-height: 1.7;
-  cursor: text;
+  &.heading-markdown {
+    margin: 1em 0px 15px;
+    padding: 0px;
+    font-weight: bold;
+    line-height: 1.7;
+    cursor: text;
+  }
+  &.heading-content {
+    margin: 1em 0px 15px;
+    padding: 0px;
+    font-weight: 600;
+    line-height: 1.7;
+    cursor: text;
+  }
 }
