@@ -10,6 +10,7 @@
 namespace Discussion\Controller;
 
 use Instance\Manager\InstanceManagerAwareTrait;
+use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Zend\View\Model\ViewModel;
@@ -21,7 +22,12 @@ class DiscussionsController extends AbstractController
     public function indexAction()
     {
         $forums = $this->getTaxonomy()->getChildren();
-        $forum  = $this->getTermService();
+        $forum = null;
+
+        try {
+            $forum = $this->getTermService();
+        } catch (TermNotFoundException $e) {
+        }
 
         if (is_object($forum)) {
             $forums = $forum->getChildren();
