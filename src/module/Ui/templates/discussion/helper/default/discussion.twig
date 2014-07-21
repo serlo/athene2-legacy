@@ -1,7 +1,7 @@
 <div class="blockquote-box blockquote-primary">
     <div class="row">
-        <div class="col-xs-2">
-            <div class="square">
+        <div class="col-xs-{{ leftWidth }}">
+        <div class="square">
                 <span class="glyphicon-regular glyphicon-lg glyphicon-comments"></span>
             </div>
             {% trans %} by {% endtrans %} <span itemprop="creator" itemscope itemtype="http://schema.org/Person"><span
@@ -69,8 +69,8 @@
                 {% endif %}
             </section>
         </div>
-        <div class="col-xs-10">
-            <article itemscope itemtype="http://schema.org/Comment">
+        <div class="col-xs-{{ 12 - leftWidth }}">
+        <article itemscope itemtype="http://schema.org/Comment">
                 <header class="discussion-head">
                     {% if discussion.getArchived() %}
                         <a class="btn btn-default btn-xs pull-right archived-toggle collapsed" data-toggle="collapse"

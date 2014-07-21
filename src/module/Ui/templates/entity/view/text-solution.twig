@@ -1,34 +1,35 @@
 {% set title = 'text-solution' | trans %}
 {% set revision = entity.getCurrentRevision() %}
-<article class="panel-group" itemscope itemtype="http://schema.org/Article">
-    <section class="{{ collapse is defined ? 'collapse' : '' }} panel panel-default" id="solution-{{ entity.getId() }}">
-        <div class="panel-body">
-            <strong>
-                <ul class="nav nav-pills pull-right">
-                    {% include 'entity/view/partials/actions/small-essential' %}
-                </ul>
-                <span class="glyphicon glyphicon-ok-circle"></span>
-                {% trans %} Solution {% endtrans %}
-            </strong>
+
+<article itemscope itemtype="http://schema.org/Article">
+    <div class="row {{ collapse is defined ? 'collapse' : '' }}" id="solution-{{ entity.getId() }}">
+        <div class="clearfix">
+            <ul class="nav nav-pills pull-right">
+                {% include 'entity/view/partials/actions/small-essential' %}
+            </ul>
         </div>
-        <div class="list-group">
-            <div class="list-group-item" itemprop="articleBody">
-                {% if revision %}
-                    {{ markdown().toHtml(revision.get('content')) | raw }}
-                {% elseif not entity.getHead() %}
-                    {% trans %} A solution has been created but no content has been added yet or it is pending approval. {% endtrans %}
-                {% endif %}
+        <section class="col-xs-12">
+            <div itemprop="articleBody" class="blockquote-box blockquote-info">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% if revision %}
+                            {{ markdown().toHtml(revision.get('content')) | raw }}
+                        {% elseif not entity.getHead() %}
+                            {% trans %} A solution has been created but no content has been added yet or it is pending approval. {% endtrans %}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="list-group">
-            <div class="list-group-item">
-                {% include 'entity/view/partials/license' %}
+        </section>
+        <footer class="col-xs-12">
+            <div class="blockquote-box blockquote-info">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% include 'entity/view/partials/license/minimalistic' %}
+                        {{ discussion(entity).render('minimalistic', 3) }}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="list-group">
-            <div class="list-group-item">
-                {{ discussion(entity).render('minimalistic') }}
-            </div>
-        </div>
-    </section>
+        </footer>
+    </div>
 </article>

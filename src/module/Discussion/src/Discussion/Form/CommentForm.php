@@ -60,7 +60,7 @@ class CommentForm extends AbstractForm
                 ]
             ]
         );
-        $this->add((new Textarea('content')));
+        $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(new OptInFieldset());
         $this->add(
             (new Submit('start'))->setValue('Answer')->setAttribute('class', 'btn btn-success pull-right')

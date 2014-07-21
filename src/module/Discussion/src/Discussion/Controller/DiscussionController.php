@@ -80,6 +80,8 @@ class DiscussionController extends AbstractController
     public function commentAction()
     {
         $discussion = $this->getDiscussion($this->params('discussion'));
+        $url        = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('discussion')]);
+        $ref        = $this->referer()->fromStorage($url);
 
         if (!$discussion) {
             return false;
@@ -98,16 +100,15 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->commentDiscussion($form);
                 $this->getDiscussionManager()->flush();
-                $url = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('discussion')]);
-                $ref = $this->referer()->fromStorage($url);
                 return $this->redirect()->toUrl($ref);
             }
         } else {
             $this->referer()->store();
         }
 
-        $view = new ViewModel(['form' => $form, 'discussion' => $discussion]);
+        $view = new ViewModel(['form' => $form, 'discussion' => $discussion, 'ref' => $ref]);
         $view->setTemplate('discussion/discussion/comment');
+        //$this->layout('editor/layout');
 
         return $view;
     }
@@ -131,10 +132,11 @@ class DiscussionController extends AbstractController
 
     public function startAction()
     {
-        $form = $this->getForm('discussion', $this->params('on'), $this->params('forum'));
-        $view     = new ViewModel(['form' => $form]);
+        $form     = $this->getForm('discussion', $this->params('on'), $this->params('forum'));
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $author   = $this->getUserManager()->getUserFromAuthenticator();
+        $url      = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('on')]);
+        $ref      = $this->referer()->fromStorage($url);
         $this->assertGranted('discussion.create', $instance);
 
         if ($this->getRequest()->isPost()) {
@@ -149,8 +151,6 @@ class DiscussionController extends AbstractController
                 $this->getDiscussionManager()->startDiscussion($form);
                 $this->getDiscussionManager()->flush();
                 if (!$this->getRequest()->isXmlHttpRequest()) {
-                    $url = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('on')]);
-                    $ref = $this->referer()->fromStorage($url);
                     return $this->redirect()->toUrl($ref);
                 }
                 $view->setTerminal(true);
@@ -160,7 +160,9 @@ class DiscussionController extends AbstractController
             $this->referer()->store();
         }
 
+        $view = new ViewModel(['form' => $form, 'ref' => $ref]);
         $view->setTemplate('discussion/discussion/start');
+        //$this->layout('editor/layout');
 
         return $view;
     }

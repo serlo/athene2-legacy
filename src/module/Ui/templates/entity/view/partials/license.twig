@@ -1,11 +1,2 @@
 <h1 class="heading-content">{{ 'License' | trans }}</h1>
-<section class="well">
-    <a class="pull-right" href="{{ entity.getLicense().getUrl() }}" rel="license"><img
-                alt="{{ entity.getLicense().getTitle() }}" src="{{ entity.getLicense().getIconHref() }}"></a>
-
-    <div>
-        {{ entity.getLicense().getTitle() }}
-        <a href="{{ url('license/detail', {'id': entity.getLicense().getId()}) }}">{% trans %} What is
-            that? {% endtrans %}</a>
-    </div>
-</section>
+{% include 'entity/view/partials/license/minimalistic' %}

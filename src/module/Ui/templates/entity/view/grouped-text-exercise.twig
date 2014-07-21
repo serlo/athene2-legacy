@@ -13,14 +13,14 @@
                     <li data-toggle="tooltip" data-placement="bottom"
                         title="{% trans %} I want to see the solution {% endtrans %}">
                         <a data-toggle="collapse" href="#solution-{{ solution.getId() }}">
-                            <span class="glyphicon glyphicon-ok-circle"></span>
+                            <span class="glyphicon-regular glyphicon-circle-ok"></span>
                         </a>
                     </li>
                 {% endif %}
                 {% if(hint) %}
                     <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I need a hint {% endtrans %}">
                         <a data-toggle="collapse" href="#hint-{{ hint.getId() }}">
-                            <span class="glyphicon glyphicon-question-sign"></span>
+                            <span class="glyphicon-regular glyphicon-circle-question-mark"></span>
                         </a>
                     </li>
                 {% endif %}
@@ -36,7 +36,7 @@
         </div>
     </section>
     <section class="collapse" id="discussions-{{ entity.getId() }}">
-        {{ discussion(entity).render('minimalistic') }}
+        {{ discussion(entity).render('minimalistic', 3) }}
     </section>
     {% if hint %}
         <section>

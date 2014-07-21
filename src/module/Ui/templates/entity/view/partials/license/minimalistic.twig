@@ -1,0 +1,11 @@
+<section class="well">
+    <a class="pull-right" href="{{ entity.getLicense().getUrl() }}" rel="license"><img
+                alt="{{ entity.getLicense().getTitle() }}" src="{{ entity.getLicense().getIconHref() }}"></a>
+
+    <div>
+        {{ entity.getLicense().getTitle() }}
+        <br>
+        <a href="{{ url('license/detail', {'id': entity.getLicense().getId()}) }}">{% trans %} What is
+            that? {% endtrans %}</a>
+    </div>
+</section>

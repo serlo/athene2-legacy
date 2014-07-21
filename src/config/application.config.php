@@ -9,7 +9,7 @@
  */
 
 $moduleCache = true;
-$configCache = true;
+$configCache = false;
 if (file_exists(__DIR__ . '/definitions.local.php')) {
     require_once __DIR__ . '/definitions.local.php';
 }
