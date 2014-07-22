@@ -44,7 +44,7 @@
 
   .discussion .collapse:before, .discussion .collapsing:before {
     content: " ";
-    @include gradient(rgba(0, 0, 0, 0), rgb(255, 255, 255));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
     position: absolute;
     width: 100%;
     height: 70px;
