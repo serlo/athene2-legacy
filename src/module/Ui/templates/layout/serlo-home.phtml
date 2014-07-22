@@ -34,6 +34,7 @@ echo $this->doctype();
                             <h1 class="description">
                                 <?php echo $this->brand()->getDescription(); ?>
                             </h1>
+                            <?php echo $this->partial('layout/partials/notifications'); ?>
                             <?php echo $this->partial('layout/partials/search'); ?>
                             <?php echo $this->partial('layout/partials/main'); ?>
                         </div>

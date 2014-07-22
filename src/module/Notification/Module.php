@@ -11,10 +11,10 @@ use Zend\Mvc\MvcEvent;
 
 class Module
 {
-
     public static $listeners = [
         'Notification\Listener\RepositoryManagerListener',
-        'Notification\Listener\DiscussionManagerListener'
+        'Notification\Listener\DiscussionManagerListener',
+        'Notification\Listener\AuthenticationControllerListener'
     ];
 
     public function getConfig()
@@ -24,7 +24,7 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [

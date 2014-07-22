@@ -1,6 +1,6 @@
-{{ pageHeader(user.getUsername()).setSubtitle('Profile') }}
+{{ pageHeader(user.getUsername()).setSubtitle('Profile').append('<div class="pull-right">' ~ subscribe(user).button() ~ '</div>') }}
 {{ discussion(user).render() }}
-<h2>{{ 'Recent activities' | trans }}</h2>
+<h1 class="heading-content">{{ 'Recent activities' | trans }}</h1>
 <div class="row">
     <div class="col-xs-12">
         {{ eventLog().renderUserLog(user.getId(), 50) }}
@@ -14,7 +14,7 @@
         </div>
     </div>
 {% endif %}
-<h1>{{ 'Roles' | trans }}</h1>
+<h1 class="heading-content">{{ 'Roles' | trans }}</h1>
 <div class="row">
     <div class="col-xs-12">
         {% for role in user.getRoles() %}

@@ -56,6 +56,7 @@ class AuthenticationController extends AbstractActionController
                 }
 
                 $this->getUserManager()->generateUserToken($user->getId());
+                $this->getEventManager()->trigger('activated', $this, ['user' => $user]);
                 $this->getUserManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
 

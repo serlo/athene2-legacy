@@ -110,7 +110,7 @@ return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\NotificationManager' => __NAMESPACE__ . '\Factory\NotificationManagerFactory',
-            __NAMESPACE__ . '\Storage\Storage' => __NAMESPACE__ . '\Factory\NotificationStorageFactory'
+            __NAMESPACE__ . '\Storage\Storage'     => __NAMESPACE__ . '\Factory\NotificationStorageFactory'
         ]
     ],
     'class_resolver'  => [
@@ -126,12 +126,9 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Listener\DiscussionManagerListener' => [
-                    'setSubscriptionManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\RepositoryManagerListener' => [
+                __NAMESPACE__ . '\Listener\AuthenticationControllerListener' => [],
+                __NAMESPACE__ . '\Listener\DiscussionManagerListener'        => [],
+                __NAMESPACE__ . '\Listener\RepositoryManagerListener'        => [
                     'setSubscriptionManager' => [
                         'required' => true
                     ],
@@ -139,7 +136,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\SubscriptionManager'                => [
+                __NAMESPACE__ . '\SubscriptionManager'                       => [
                     'setClassResolver' => [
                         'required' => true
                     ],
@@ -147,7 +144,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\NotificationWorker'                 => [
+                __NAMESPACE__ . '\NotificationWorker'                        => [
                     'setUserManager'         => [
                         'required' => true
                     ],
@@ -164,12 +161,12 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\WorkerController'        => [
+                __NAMESPACE__ . '\Controller\WorkerController'               => [
                     'setNotificationWorker' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\NotificationController'  => [],
+                __NAMESPACE__ . '\Controller\NotificationController'         => [],
             ]
         ],
         'instance'            => [

@@ -7,8 +7,8 @@
             <span class="label label-info"><?php echo $seen->count(); ?></span>
         <?php endif; ?>
     </a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <?php if (count($this->notifications) == 0): ?>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+    <?php if (count($this->notifications) == 0): ?>
             <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><?php echo sprintf(
                         $this->translate('You have no notifications.')
                     ); ?></a></li>

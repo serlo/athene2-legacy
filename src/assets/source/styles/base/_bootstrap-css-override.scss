@@ -19,3 +19,7 @@ abbr[title], abbr[data-original-title] {
   border-bottom: none;
   color: $lightGray;
 }
+
+.input-group .form-control {
+  z-index: 0;
+}

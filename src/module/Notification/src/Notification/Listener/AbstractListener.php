@@ -10,18 +10,15 @@
 namespace Notification\Listener;
 
 use Common\Listener\AbstractSharedListenerAggregate;
+use Notification\SubscriptionManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
+use Notification\SubscriptionManagerAwareTrait;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate implements SharedListenerAggregateInterface
 {
-    use \Notification\SubscriptionManagerAwareTrait;
+    use SubscriptionManagerAwareTrait;
 
-    public function subscribe($user, $object, $notifyMailman)
-    {
-        $this->getSubscriptionManager()->subscribe($user, $object, $notifyMailman);
-    }
-
-    public function __construct()
+    public function __construct(SubscriptionManagerInterface $subscriptionManager)
     {
         if (!class_exists($this->getMonitoredClass())) {
             throw new \RuntimeException(sprintf(
@@ -29,5 +26,11 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate implemen
                 $this->getMonitoredClass()
             ));
         }
+        $this->subscriptionManager = $subscriptionManager;
+    }
+
+    public function subscribe($user, $object, $notifyMailman)
+    {
+        $this->getSubscriptionManager()->subscribe($user, $object, $notifyMailman);
     }
 }
