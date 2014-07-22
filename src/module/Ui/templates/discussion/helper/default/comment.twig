@@ -1,16 +1,9 @@
-<div class="blockquote-box blockquote-info discussion-comment">
+<div class="blockquote-box blockquote-info discussion-comment {{ blockquoteClass }}">
     <div class="row">
-        <div class="col-xs-3">
-            <div class="square">
-                <span class="glyphicon-regular glyphicon-lg glyphicon-unshare"></span>
+        <div class="col-xs-{{ leftWidth }}">
+            <div class="square square-sm blockquote-info">
+            <span class="glyphicon-regular glyphicon-lg glyphicon-unshare"></span>
             </div>
-            {% trans %} by {% endtrans %}
-            <span itemprop="creator" itemscope itemtype="http://schema.org/Person">
-                <span itemprop="name">{{ normalize().toAnchor(comment.getAuthor()) }}</span>
-            </span>
-            <small>
-                <span itemprop="dateCreated">{{ timeago().render(comment.getTimestamp()) }}</span>
-            </small>
             <div class="discussion-actions btn-group">
                 {% if isGranted('flag.create', comment) %}
                     <a class="btn btn-xs btn-default"
@@ -25,8 +18,19 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-xs-9">
+        <div class="col-xs-{{ 12 - leftWidth }}">
             <article itemtype="http://schema.org/Comment" itemscope>
+                <header class="discussion-head">
+                    <div class="discussion-info">
+                        {% set time = '<small><span itemprop="dateCreated">' ~ timeago().render(comment.getTimestamp()) ~ '</span></small>' %}
+                        {% set author = '<small itemprop="creator" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' ~ normalize().toAnchor(comment.getAuthor()) ~ '</span></small>' %}
+                        <div>
+                            {% trans %}
+                            {{ author }} {{ time }}
+                            {% endtrans %}
+                        </div>
+                    </div>
+                </header>
                 <section class="discussion-text" itemprop="text">
                     {{ comment.getContent() | nl2br }}
                 </section>

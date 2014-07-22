@@ -96,6 +96,6 @@ class PageRepositoryAdapter extends AbstractAdapter
 
     protected function getType()
     {
-        return 'Page repository';
+        return 'Page';
     }
 }

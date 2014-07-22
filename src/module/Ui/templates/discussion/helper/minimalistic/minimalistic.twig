@@ -1,18 +1,16 @@
 {% set discussions = discussion().getDiscussions(object) %}
 <div class="clearfix">
-    {% if isGranted('discussion.create') %}
-        {% if forum %}
-            {% set url = url('discussion/discussion/start', {'on': object.getId(), 'forum': forum.getId()}) %}
-        {% else %}
-            {% set url = url('discussion/discussion/start', {'on': object.getId()}) %}
-        {% endif %}
-        <a class="discussion-start btn btn-success pull-right" href="{{ url }}"><span
-                    class="glyphicon-regular glyphicon-plus"></span> {{ 'Discussion' | trans }}</a>
+    {% if forum %}
+        {% set url = url('discussion/discussion/start', {'on': object.getId(), 'forum': forum.getId()}) %}
+    {% else %}
+        {% set url = url('discussion/discussion/start', {'on': object.getId()}) %}
     {% endif %}
+    <a class="discussion-start btn btn-success pull-right" href="{{ url }}"><span
+                class="glyphicon-regular glyphicon-plus"></span> {{ 'Discussion' | trans }}</a>
 </div>
 <div class="discussions">
     {% for discussion in discussions %}
-        {% include 'discussion/helper/default/discussion' with {'discussion': discussion} %}
+        {% include 'discussion/helper/default/discussion' with {'discussion': discussion, 'blockquoteClass': 'blockquote-noborder'} %}
     {% else %}
         <div class="list-group">
             <div class="list-group-item">

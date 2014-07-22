@@ -100,6 +100,7 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->commentDiscussion($form);
                 $this->getDiscussionManager()->flush();
+                $this->flashMessenger()->addSuccessMessage('Your comment has been saved.');
                 return $this->redirect()->toUrl($ref);
             }
         } else {
@@ -137,6 +138,7 @@ class DiscussionController extends AbstractController
         $author   = $this->getUserManager()->getUserFromAuthenticator();
         $url      = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('on')]);
         $ref      = $this->referer()->fromStorage($url);
+        $view     = new ViewModel(['form' => $form, 'ref' => $ref]);
         $this->assertGranted('discussion.create', $instance);
 
         if ($this->getRequest()->isPost()) {
@@ -151,6 +153,7 @@ class DiscussionController extends AbstractController
                 $this->getDiscussionManager()->startDiscussion($form);
                 $this->getDiscussionManager()->flush();
                 if (!$this->getRequest()->isXmlHttpRequest()) {
+                    $this->flashMessenger()->addSuccessMessage('Your discussion has been started.');
                     return $this->redirect()->toUrl($ref);
                 }
                 $view->setTerminal(true);
@@ -160,7 +163,6 @@ class DiscussionController extends AbstractController
             $this->referer()->store();
         }
 
-        $view = new ViewModel(['form' => $form, 'ref' => $ref]);
         $view->setTemplate('discussion/discussion/start');
         //$this->layout('editor/layout');
 

@@ -1,56 +1,70 @@
 @mixin theme-font($weight: normal) {
-    font-family: $themeFont;
-    font-weight: $weight;
-    -webkit-font-smoothing: antialiased;
+  font-family: $themeFont;
+  font-weight: $weight;
+  -webkit-font-smoothing: antialiased;
 }
 
 @mixin placeholder-color($color: "white") {
-    &::-webkit-input-placeholder {
-        color: #{$color};
-    }
-    &:-moz-placeholder {
-        color: #{$color};
-    }
-    &::-moz-placeholder {
-        color: #{$color};
-    }
-    &::-ms-placeholder {
-        color: #{$color};
-    }
+  &::-webkit-input-placeholder {
+    color: #{$color};
+  }
+  &:-moz-placeholder {
+    color: #{$color};
+  }
+  &::-moz-placeholder {
+    color: #{$color};
+  }
+  &::-ms-placeholder {
+    color: #{$color};
+  }
 }
 
 @mixin triangle($direction, $color, $size) {
 
-    @if $direction == "left" {
-        border-bottom: $size solid transparent;
-        border-right: $size solid $color;
-        border-top: $size solid transparent;
-    }
-    @else if $direction == "right" {
-        border-bottom: $size solid transparent;
-        border-left: $size solid $color;
-        border-top: $size solid transparent;
-    }
-    @else if $direction == "up" {
-        border-bottom: $size solid $color;
-        border-left: $size solid transparent;
-        border-right: $size solid transparent;
-    }
-    @else if $direction == "down" {
-        border-right: $size solid transparent;
-        border-left: $size solid transparent;
-        border-top: $size solid $color;
-    }
+  @if $direction == "left" {
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+    border-top: $size solid transparent;
+  } @else if $direction == "right" {
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+    border-top: $size solid transparent;
+  } @else if $direction == "up" {
+    border-bottom: $size solid $color;
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+  } @else if $direction == "down" {
+    border-right: $size solid transparent;
+    border-left: $size solid transparent;
+    border-top: $size solid $color;
+  }
 
-    height: 0;
-    width: 0;
+  height: 0;
+  width: 0;
 }
 
 @mixin inline-block {
-    display: -moz-inline-stack;
-    display: inline-block;
-    vertical-align: middle;
-    *vertical-align: auto;
-    zoom: 1;
-    *display: inline;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
+
+@mixin gradient($from, $to) {
+  /* fallback/image non-cover color */
+  background-color: $from;
+
+  /* Firefox 3.6+ */
+  background-image: -moz-linear-gradient($from, $to);
+
+  /* Safari 4+, Chrome 1+ */
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from($from), to($to));
+
+  /* Safari 5.1+, Chrome 10+ */
+  background-image: -webkit-linear-gradient($from, $to);
+
+  /* Opera 11.10+ */
+  background-image: -o-linear-gradient($from, $to);
 }

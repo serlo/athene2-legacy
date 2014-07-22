@@ -13,3 +13,9 @@
 .glyphicon:empty {
   width: 1em;
 }
+
+abbr[title], abbr[data-original-title] {
+  cursor: help;
+  border-bottom: none;
+  color: $lightGray;
+}
