@@ -10,10 +10,10 @@
                         {% if isGranted('discussion.vote', discussion) %}
                             {% if discussion.hasUserVoted(discussion().getUser()) %}
                                 {% set vote = 'down' %}
-                                {% set button = 'success' %}
+                                {% set button = 'warning' %}
                             {% else %}
                                 {% set vote = 'up' %}
-                                {% set button = 'default' %}
+                                {% set button = 'info' %}
                             {% endif %}
                             <a href="{{ url('discussion/discussion/vote', {'comment': discussion.getId(), 'vote': vote}) }}"
                                class="btn btn-xs btn-{{ button }}">
@@ -21,8 +21,8 @@
                                 <strong>{{ discussion.countUpVotes() }}</strong> </a>
                         {% else %}
                             <a href="{{ url('discussion/discussion/vote', {'comment': discussion.getId(), 'vote': 'up'}) }}"
-                               class="btn btn-xs btn-{{ button }}">
-                                <span class="glyphicon glyphicon-chevron-up"></span>
+                               class="btn btn-xs btn-info">
+                            <span class="glyphicon glyphicon-chevron-up"></span>
                                 <strong>{{ discussion.countUpVotes() }}</strong> </a>
                         {% endif %}
                         {% if isGranted('discussion.archive', discussion) or isGranted('flag.create', discussion) or isGranted('discussion.trash', discussion) %}
