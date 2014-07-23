@@ -141,7 +141,7 @@ class SolrAdapter implements AdapterInterface
      */
     public function search($query)
     {
-        $query = $result = preg_replace('@([\+\-\&\|\!\(\)\{\}\[\]\^\"\~\*\?\:\\])@is', '\\\1', $query);
+        $query = $result = preg_replace('@([\+\-\&\|\!\(\)\{\}\[\]\^\"\~\*\?\:])@is', '\\\1', $query);
         $queryClass = $this->client->createSelect();
         $instance   = $this->instanceManager->getInstanceFromRequest();
         $queryClass->createFilterQuery('ínstanceFilter')->setQuery('instance:(' . $instance->getId() . ')');
