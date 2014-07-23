@@ -15,10 +15,9 @@ class UsersController extends AbstractUserController
 {
     public function usersAction()
     {
-        $users = $this->getUserManager()->findAllUsers();
-        $view  = new ViewModel([
-            'users' => $users
-        ]);
+        $page  = $this->params()->fromQuery('page', 0);
+        $users = $this->getUserManager()->findAllUsers($page);
+        $view  = new ViewModel(['users' => $users]);
         return $view;
     }
 }

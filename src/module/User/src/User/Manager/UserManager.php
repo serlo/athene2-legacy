@@ -12,6 +12,7 @@ namespace User\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use Common\Paginator\DoctrinePaginatorFactory;
 use Common\Traits\AuthenticationServiceAwareTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -117,11 +118,13 @@ class UserManager implements UserManagerInterface
         return $user;
     }
 
-    public function findAllUsers()
+    public function findAllUsers($page = 0, $limit = 50)
     {
-        return new ArrayCollection($this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('User\Entity\UserInterface')
-        )->findAll());
+        $className = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
+        $dql       = 'SELECT u FROM ' . $className . ' u ' . 'ORDER BY u.id DESC';
+        $paginator = new DoctrinePaginatorFactory($this->objectManager);
+        $paginator = $paginator->createPaginator($dql, $page, $limit);
+        return $paginator;
     }
 
     public function updateUserPassword($id, $password)

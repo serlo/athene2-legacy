@@ -12,6 +12,7 @@ namespace User\Manager;
 use Common\ObjectManager\Flushable;
 use Doctrine\ORM\EntityRepository;
 use User\Entity\UserInterface;
+use Zend\Paginator\Paginator;
 
 interface UserManagerInterface extends Flushable
 {
@@ -23,9 +24,11 @@ interface UserManagerInterface extends Flushable
     public function createUser(array $data);
 
     /**
-     * @return EntityRepository
+     * @param int $page
+     * @param int $limit
+     * @return Paginator|UserInterface[]
      */
-    public function findAllUsers();
+    public function findAllUsers($page = 0, $limit = 50);
 
     /**
      * @param string $email
