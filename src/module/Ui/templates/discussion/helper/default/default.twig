@@ -1,10 +1,5 @@
 {% set discussions = discussion().getDiscussions(object) %}
 <h1 class="heading-content">
-    {% if forum %}
-        {% set url = url('discussion/discussion/start', {'on': object.getId(), 'forum': forum.getId()}) %}
-    {% else %}
-        {% set url = url('discussion/discussion/start', {'on': object.getId()}) %}
-    {% endif %}
     <button class="discussion-start btn btn-success pull-right" data-toggle="collapse"
             data-target="#discussion-form-container-{{ object.getId() }}">
         <span class="glyphicon-regular glyphicon-plus"></span> {{ 'Discussion' | trans }}
