@@ -67,7 +67,7 @@ class DiscussionController extends AbstractController
     public function selectForumAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $terms    = $this->taxonomyManager->findTaxonomyByName('forum-category', $instance)->getChildren();
+        $terms = $this->taxonomyManager->findTaxonomyByName('forum-category', 'forum', $instance)->getChildren();
         $view     = new ViewModel([
             'terms' => $terms,
             'on'    => $this->params('on')
