@@ -67,7 +67,7 @@ class DiscussionController extends AbstractController
     public function selectForumAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $terms = $this->taxonomyManager->findTaxonomyByName('forum-category', 'forum', $instance)->getChildren();
+        $terms    = $this->taxonomyManager->findTaxonomyByName('forum-category', $instance)->getChildren();
         $view     = new ViewModel([
             'terms' => $terms,
             'on'    => $this->params('on')
@@ -81,7 +81,7 @@ class DiscussionController extends AbstractController
     {
         $discussion = $this->getDiscussion($this->params('discussion'));
         $url        = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('discussion')]);
-        $ref = $this->referer()->fromStorage($url, 'discussion-comment');
+        $ref        = $this->referer()->fromStorage($url, 'discussion-comment');
 
         if (!$discussion) {
             return false;

@@ -58,9 +58,8 @@ return [
                     'Discussion\Entity\CommentInterface'
                 ],
                 'allowed_parents'      => [
-                    'forum',
                     'forum-category',
-                    'root'
+                    'forum'
                 ],
                 'rootable'             => false
             ]
