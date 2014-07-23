@@ -36,13 +36,13 @@
     }
   }
 
-  .discussion .collapse:not(.in) {
+  .discussion .discussion-archived.collapse:not(.in) {
     height: 70px !important;
     overflow: hidden;
     display: block;
   }
 
-  .discussion .collapse:before, .discussion .collapsing:before {
+  .discussion .discussion-archived.collapse:before, .discussion .discussion-archived.collapsing:before {
     content: " ";
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
     position: absolute;
@@ -50,7 +50,7 @@
     height: 70px;
   }
 
-  .discussion .collapse.in:before, .discussion .collapsing:before {
+  .discussion .collapse.discussion-archived.in:before, .discussion .discussion-archived.collapsing:before {
     background: none;
   }
 
@@ -60,6 +60,15 @@
 
   a.discussion-start, a.discussion-reply {
     padding: 10px 16px;
+  }
+}
+
+.discussion-form {
+  margin-top: 15px;
+
+  .form-horizontal .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
   }
 }
 

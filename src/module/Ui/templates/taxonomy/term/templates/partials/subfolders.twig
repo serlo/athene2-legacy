@@ -1,39 +1,34 @@
 {% set hasSubfolders = false %}
-
+{% set subfolderLimit = 3 %}
 <div>
     {% for child in term.findChildrenByTrashed(false) if child.getType().getName() %}
         <div class="blockquote-box blockquote-primary">
             <div class="row">
                 <div class="square col-xs-4">
                     {% if child.countElements() %}
-                        <span class="glyphicon-regular glyphicon-lg glyphicon-show-thumbnails-with_lines"></span>
+                        <span class="glyphicon-regular glyphicon-lg glyphicon-book-open"></span>
+                        <span class="badge">{{ child.countElements() }}</span>
                     {% else %}
-                        <span class="glyphicon-regular glyphicon-lg glyphicon-more-items"></span>
+                        <span class="glyphicon-regular glyphicon-lg glyphicon-book"></span>
                     {% endif %}
-                    <span class="badge">{{ child.countElements() + child.getChildren().count() }}</span>
                 </div>
                 <div class="col-xs-8">
                     <h4>
                         <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}">{{ child.getName() }}</a>
                     </h4>
-
-                    <p>
-                        {% if child.getDescription() %}
-                            {{ markdown().toHtml(child.getDescription()) }}
-                            <br>
+                    {% if child.getDescription() %}
+                        {{ markdown().toHtml(child.getDescription()) }}
+                    {% endif %}
+                    {% for childsChild in child.getChildren() %}
+                        {% if loop.index0 == subfolderLimit %}
+                            {% set subfolders = loop.length - subfolderLimit %}
+                            <a class="label label-info">{% trans %} {{ subfolders }} more ...{% endtrans %}</a>
+                        {% elseif loop.index0 > subfolderLimit %}
                         {% else %}
-                            <small class="text-muted">
-                                {% for childsChild in child.getChildren() %}
-                                    {% if loop.index0 == 4 %}
-                                        <em> ...</em>
-                                    {% elseif loop.index0 > 4 %}
-                                    {% else %}
-                                        <a class="label label-info" href="{{ url('taxonomy/term/get', {'term': childsChild.getId()}) }}">{{ childsChild.getName() }}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </small>
+                            <a class="label label-info"
+                               href="{{ url('taxonomy/term/get', {'term': childsChild.getId()}) }}">{{ childsChild.getName() }}</a>
                         {% endif %}
-                    </p>
+                    {% endfor %}
                 </div>
             </div>
         </div>

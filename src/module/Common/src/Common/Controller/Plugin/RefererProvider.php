@@ -24,20 +24,25 @@ class RefererProvider extends AbstractPlugin
         return $referer;
     }
 
-    public function store()
+    public function store($id = 'default')
     {
         if (!$this->container) {
-            $this->container = new Container('ref');
+            $this->container = new Container($this->normalizeId($id));
         }
         $this->container->ref = $this->toUrl();
 
         return $this;
     }
 
-    public function fromStorage($default = '/')
+    public function fromStorage($default = '/', $id = 'default')
     {
-        $container = new Container('ref');
+        $container = new Container($this->normalizeId($id));
 
-        return isset($container->ref) ? $container->ref : $this->toUrl();
+        return isset($container->ref) ? $container->ref : $this->toUrl($default);
+    }
+
+    protected function normalizeId($id)
+    {
+        return 'Ref\\' . str_replace('-', '\\', $id);
     }
 }

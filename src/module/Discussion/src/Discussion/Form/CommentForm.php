@@ -60,10 +60,10 @@ class CommentForm extends AbstractForm
                 ]
             ]
         );
-        $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
+        $this->add((new Textarea('content'))->setAttribute('placeholder', 'Content'));
         $this->add(new OptInFieldset());
         $this->add(
-            (new Submit('start'))->setValue('Answer')->setAttribute('class', 'btn btn-success pull-right')
+            (new Submit('start'))->setValue('Reply')->setAttribute('class', 'btn btn-success pull-right')
         );
 
         $inputFilter->add(['name' => 'content', 'required' => true, 'filters' => [['name' => 'StripTags']]]);

@@ -81,7 +81,7 @@ class DiscussionController extends AbstractController
     {
         $discussion = $this->getDiscussion($this->params('discussion'));
         $url        = $this->url()->fromRoute('uuid/get', ['uuid' => $this->params('discussion')]);
-        $ref        = $this->referer()->fromStorage($url);
+        $ref = $this->referer()->fromStorage($url, 'discussion-comment');
 
         if (!$discussion) {
             return false;
@@ -104,7 +104,7 @@ class DiscussionController extends AbstractController
                 return $this->redirect()->toUrl($ref);
             }
         } else {
-            $this->referer()->store();
+            $this->referer()->store('discussion-comment');
         }
 
         $view = new ViewModel(['form' => $form, 'discussion' => $discussion, 'ref' => $ref]);
@@ -154,13 +154,13 @@ class DiscussionController extends AbstractController
                 $this->getDiscussionManager()->flush();
                 if (!$this->getRequest()->isXmlHttpRequest()) {
                     $this->flashMessenger()->addSuccessMessage('Your discussion has been started.');
-                    return $this->redirect()->toUrl($ref);
+                    return $this->redirect()->toUrl($ref, 'discussion-start');
                 }
                 $view->setTerminal(true);
                 return $view;
             }
         } else {
-            $this->referer()->store();
+            $this->referer()->store('discussion-start');
         }
 
         $view->setTemplate('discussion/discussion/start');

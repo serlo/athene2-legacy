@@ -22,7 +22,7 @@
                         {% else %}
                             <a href="{{ url('discussion/discussion/vote', {'comment': discussion.getId(), 'vote': 'up'}) }}"
                                class="btn btn-xs btn-info">
-                            <span class="glyphicon glyphicon-chevron-up"></span>
+                                <span class="glyphicon glyphicon-chevron-up"></span>
                                 <strong>{{ discussion.countUpVotes() }}</strong> </a>
                         {% endif %}
                         {% if isGranted('discussion.archive', discussion) or isGranted('flag.create', discussion) or isGranted('discussion.trash', discussion) %}
@@ -71,7 +71,7 @@
             </section>
         </div>
         <div class="col-xs-{{ 12 - leftWidth }}">
-        <article itemscope itemtype="http://schema.org/Comment">
+            <article itemscope itemtype="http://schema.org/Comment">
                 <header class="discussion-head">
                     {% if discussion.getArchived() %}
                         <a class="btn btn-default btn-xs pull-right archived-toggle collapsed" data-toggle="collapse"
@@ -98,7 +98,7 @@
                     </div>
                 </header>
                 {% if discussion.getArchived() %}
-                <div class="collapse" id="collapse-{{ discussion.getId() }}">
+                <div class="discussion-archived collapse" id="collapse-{{ discussion.getId() }}">
                     {% endif %}
                     <section class="discussion-body" itemprop="text">
                         {{ discussion.getContent() | nl2br }}
@@ -109,9 +109,17 @@
                         {% endfor %}
                     </section>
                     {% if not discussion.getArchived() %}
-                        <a class="btn btn-info pull-right"
-                           href="{{ url('discussion/discussion/comment', {'discussion': discussion.getId()}) }}"><span
-                                    class="glyphicon-regular glyphicon-unshare"></span> {{ 'Reply' | trans }}</a>
+                        <div class="clearfix">
+                            <button class="btn btn-info pull-right" data-toggle="collapse"
+                                    data-target="#discussion-comment-form-container-{{ discussion.getId() }}">
+                                <span class="glyphicon-regular glyphicon-unshare"></span> {{ 'Reply' | trans }}
+                            </button>
+                        </div>
+                        <div class="collapse discussion-form"
+                             id="discussion-comment-form-container-{{ discussion.getId() }}">
+                            {% set form = discussion().getForm('comment', discussion) %}
+                            {{ form().render(form) }}
+                        </div>
                     {% endif %}
                     {% if discussion.getArchived() %}
                 </div>
