@@ -43,7 +43,7 @@ foreach ($this->pages as $page) {
     $html[] = '<a href="' . $this->alias($page->getHref()) . '"' . ($breadcrumb ? ' itemprop="url"' : '') . '>';
 
     if ($page->get('icon')) {
-        $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
+        $html[] = '<i class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></i>';
     }
 
     if ($breadcrumb) {
