@@ -30,17 +30,18 @@ class NavigationProvider implements PageProviderInterface
      * @var array
      */
     protected $defaultOptions = [
-        'name'      => 'default',
-        'route'     => 'default',
-        'parent'    => [
+        'name'       => 'default',
+        'route'      => 'default',
+        'parent'     => [
             'type' => '',
             'slug' => ''
         ],
-        'instance'  => 'de',
-        'max_depth' => 1,
-        'types'     => [],
-        'params'    => [],
-        'hidden'    => []
+        'instance'   => 'de',
+        'max_depth'  => 1,
+        'types'      => [],
+        'params'     => [],
+        'hidden'     => [],
+        'identifier' => 'term'
     ];
     /**
      * @var array
@@ -133,7 +134,7 @@ class NavigationProvider implements PageProviderInterface
             if (!$term->isTrashed()) {
                 $current             = [];
                 $current['route']    = $this->options['route'];
-                $current['params'] = ['term' => (string)$term->getId(), 'id' => (string)$term->getId()];
+                $current['params'] = [$this->options['identifier'] => (string)$term->getId()];
                 $current['label']    = $term->getName();
                 $current['elements'] = $term->countElements();
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);
