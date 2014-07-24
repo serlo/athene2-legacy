@@ -3,7 +3,7 @@
        data-href="{{ url('notification/read') }}">
         <span class="glyphicon glyphicon-bell"></span>
         {% set seen = notifications().getSeen(notifications) %}
-        {{ 'Notifications' | trans }}
+        {{ 'Notifications'|trans }}
         {% if seen.count() %}
             <span class="label label-info">{{ seen.count() }}</span>
         {% endif %}
