@@ -126,12 +126,15 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
 
     public function countElements()
     {
-        $count = 0;
-        foreach ($this->allowedRelations as $elements) {
-            // Key does not exist so we're good to go (removes dupes)
-            if (!array_key_exists($elements, $this->allowedRelations)) {
-                $count += $this->countAssociations($elements);
-            }
+        $count     = 0;
+        $relations = [
+            'comments',
+            'termTaxonomyEntities',
+            'blogPosts'
+        ];
+
+        foreach ($relations as $relation) {
+            $count += $this->countAssociations($relation);
         }
 
         return $count;
