@@ -10,9 +10,7 @@
         {% endtrans %}
     </div>
     {% set name = entity.getType().getName() %}
-    {% trans %}
     <div class="dropdown-menu-item">
-        Now view found for {{ name }}
+        {% trans %}No view found for {{ name }}{% endtrans %}
     </div>
-    {% endtrans %}
 {% endif %}

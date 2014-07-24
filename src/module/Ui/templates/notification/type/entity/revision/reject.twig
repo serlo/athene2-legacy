@@ -3,16 +3,15 @@
 {% set reason = event.getParameter('reason') %}
 {% set repository = normalize().toAnchor(event.getParameter('repository'), true) %}
 {% set url = normalize().toUrl(event.getObject(), true) %}
-{% set linkStart = '<a href="' ~ url ~ '">' %}
-{% set linkEnd = '</a>' %}
+{% set revision = '<a href="' ~ url ~ '">' ~ 'revision'|trans ~ '</a>' %}
 <div class="dropdown-menu-item">
     {% if reason %}
         {% trans %}
-        {{ user }} rejected a {{ linkStart }}revision{{ linkEnd }} of {{ repository }}: {{ reason }}
+        {{ user }} rejected a {{ revision }} of {{ repository }}: {{ reason }}
         {% endtrans %}
     {% else %}
         {% trans %}
-        {{ user }} rejected a {{ linkStart }}revision{{ linkEnd }} of {{ repository }} without a reason
+        {{ user }} rejected a {{ revision }} of {{ repository }} without a reason
         {% endtrans %}
     {% endif %}
     <small> - {{ timeago().render(event.getTimestamp()) }}</small>

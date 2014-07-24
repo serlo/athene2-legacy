@@ -3,11 +3,10 @@
 {% set reason = event.getParameter('reason') %}
 {% set repository = normalize().toAnchor(event.getParameter('repository'), true) %}
 {% set url = normalize().toUrl(event.getObject(), true) %}
-{% set linkStart = '<a href="' ~ url ~ '">' %}
-    {% set linkEnd = '</a>' %}
+{% set revision = '<a href="' ~ url ~ '">' ~ 'revision'|trans ~ '</a>' %}
 <div class="dropdown-menu-item">
     {% trans %}
-    {{ user }} created a new {{ linkStart }}revision{{ linkEnd }} of {{ repository }}
+    {{ user }} created a {{ revision }} in {{ repository }}
     {% endtrans %}
     <small> - {{ timeago().render(event.getTimestamp()) }}</small>
 </div>

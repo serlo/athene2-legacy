@@ -3,11 +3,10 @@
 {% set comment = normalize().toAnchor(event.getObject(), true) %}
 {% set discussion = normalize().toAnchor(event.getParameter('discussion'), true) %}
 {% set content = normalize().toPreview(event.getObject()) %}
-{% set linkStart = '<a href="' ~ normalize().toUrl(event.getObject()) ~ '">' %}
-{% set linkEnd = '</a>' %}
+{% set commented = '<a href="' ~ normalize().toUrl(event.getObject()) ~ '">' ~ 'commented'|trans ~ '</a>' %}
 <div class="dropdown-menu-item">
     {% trans %}
-    {{ user }} {{ linkStart }}commented{{ linkEnd }} on {{ discussion }}: {{ content }}
+    {{ user }} {{ commented }} on {{ discussion }}: {{ content }}
     {% endtrans %}
     <small> - {{ timeago().render(event.getTimestamp()) }}</small>
 </div>

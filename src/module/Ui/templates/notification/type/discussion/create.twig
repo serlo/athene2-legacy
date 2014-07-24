@@ -5,7 +5,7 @@
 {% set title = normalize().toTitle(event.getObject()) %}
 <div class="dropdown-menu-item">
     {% trans %}
-    {{ user }} started a {{ discussion }} on {{ object }}: {{ title }}
+    {{ user }} started {{ discussion }} on {{ object }}: {{ title }}
     {% endtrans %}
     <small> - {{ timeago().render(event.getTimestamp()) }}</small>
 </div>
