@@ -67,6 +67,7 @@ class Module
         /* @var $aliasManager AliasManagerInterface */
         $aliasManager    = $serviceManager->get('Alias\AliasManager');
         $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+
         if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
             return null;
         }
@@ -74,11 +75,16 @@ class Module
         /* @var $uriClone \Zend\Uri\Http */
         $uriClone = clone $request->getUri();
         $uri      = $uriClone->getPath();
+        $query = $uriClone->getQuery();
 
         try {
             $location = $aliasManager->findAliasBySource($uri, $instanceManager->getInstanceFromRequest());
         } catch (Exception $ex) {
             return null;
+        }
+
+        if ($query) {
+            $location .= '?' . $query;
         }
 
         $response->getHeaders()->addHeaderLine('Location', $location);
