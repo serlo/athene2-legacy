@@ -1,4 +1,4 @@
-{{ pageHeader('Ads').render() }}
+{{ pageHeader('Ads' | trans).render() }}
 <div class="clearfix">
     {% if isGranted('ad.create') %}
         <a href="{{ url('ads/add') }}" class="btn btn-default pull-left">

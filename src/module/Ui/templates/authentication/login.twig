@@ -7,7 +7,7 @@
     {% endfor %}
 </div>
 
-{{ pageHeader('Log in') }}
+{{ pageHeader('Log in' | trans) }}
 
 {% do form.prepare() %}
 {{ form().openTag(form) }}

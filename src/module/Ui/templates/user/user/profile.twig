@@ -1,4 +1,4 @@
-{{ pageHeader(user.getUsername()).setSubtitle('Profile').append('<div class="pull-right">' ~ subscribe(user).button() ~ '</div>') }}
+{{ pageHeader(user.getUsername()).setSubtitle('Profile'|trans).append('<div class="pull-right">' ~ subscribe(user).button() ~ '</div>') }}
 {{ discussion(user).render() }}
 <h1 class="heading-content">{{ 'Recent activities' | trans }}</h1>
 <div class="row">

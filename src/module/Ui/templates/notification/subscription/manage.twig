@@ -1,4 +1,4 @@
-{{ pageHeader('Manage subscriptions') }}
+{{ pageHeader('Manage subscriptions' | trans) }}
 <table class="table table-striped">
     <thead>
     <tr>
@@ -12,11 +12,16 @@
         <tr>
             <td>{{ normalize().toAnchor(subscription.getSubscribedObject()) }}</td>
             {% if subscription.getNotifyMailman() %}
-                <td><a href="{{ url('subscription/update', {'object': subscription.getSubscribedObject().getId(), 'email': 0}) }}" class="btn btn-sm btn-block btn-warning">{{ 'Deactivate' | trans }}</a></td>
+                <td>
+                    <a href="{{ url('subscription/update', {'object': subscription.getSubscribedObject().getId(), 'email': 0}) }}"
+                       class="btn btn-sm btn-block btn-warning">{{ 'Deactivate' | trans }}</a></td>
             {% else %}
-                <td><a href="{{ url('subscription/update', {'object': subscription.getSubscribedObject().getId(), 'email': 1}) }}" class="btn btn-sm btn-block btn-info">{{ 'Activate' | trans }}</a></td>
+                <td>
+                    <a href="{{ url('subscription/update', {'object': subscription.getSubscribedObject().getId(), 'email': 1}) }}"
+                       class="btn btn-sm btn-block btn-info">{{ 'Activate' | trans }}</a></td>
             {% endif %}
-            <td><a href="{{ url('subscription/unsubscribe', {'object': subscription.getSubscribedObject().getId()}) }}" class="btn btn-sm btn-block btn-danger">{{ 'Unsubscribe' | trans }}</a></td>
+            <td><a href="{{ url('subscription/unsubscribe', {'object': subscription.getSubscribedObject().getId()}) }}"
+                   class="btn btn-sm btn-block btn-danger">{{ 'Unsubscribe' | trans }}</a></td>
         </tr>
     {% endfor %}
     </tbody>

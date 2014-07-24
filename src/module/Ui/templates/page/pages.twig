@@ -1,4 +1,4 @@
-{{ pageHeader('Pages').render() }}
+{{ pageHeader('Pages' | trans).render() }}
 <div class="list-group">
     {% for page in pages %}
         <div class="list-group-item">
@@ -7,7 +7,7 @@
                     {{ page.getCurrentRevision().getTitle() }}
                 {% else %}
                     {% trans %}
-                        No revision checked out yet.
+                    No revision checked out yet.
                     {% endtrans %}
                 {% endif %}
             </a>

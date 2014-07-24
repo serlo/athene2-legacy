@@ -1,6 +1,6 @@
 {% set rows = 3 %}
 {% set col = 12 / rows %}
-{{ pageHeader('Manage related links').setSubtitle(normalize().toTitle(container.getObject())).setBackLink(normalize().toUrl(container.getObject())).append(contexter().renderButton('right')) }}
+{{ pageHeader('Manage related links' | trans)| trans)) }}
 <div class="row">
     <div class="col-xs-{{ col }}">
         <strong>{% trans %} Title {% endtrans %}</strong>

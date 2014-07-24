@@ -1,2 +1,2 @@
-{{ pageHeader('Event log').setSubtitle(id).setBacklink(url('uuid/get', {'uuid': id})) }}
+{{ pageHeader('Event log' | trans).setSubtitle(id).setBacklink(url('uuid/get', {'uuid': id})) }}
 {{ partial('event/helper/events', {'events': events}) }}

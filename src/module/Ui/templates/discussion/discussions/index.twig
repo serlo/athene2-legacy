@@ -1,4 +1,4 @@
-{{ pageHeader('Discussions').setSubtitle(forum ? forum.getName() : '').render() }}
+{{ pageHeader('Discussions' | trans)| trans).render() }}
 {% include 'discussion/discussions/tree' %}
 {% if forum %}
     {% include 'discussion/discussions/discussions' %}

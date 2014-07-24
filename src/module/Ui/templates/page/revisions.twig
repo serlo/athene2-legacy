@@ -1,4 +1,4 @@
-{{ pageHeader('Revisions').setBacklink(url('page/view', {'page': page.getId()})).render() }}
+{{ pageHeader('Revisions' | trans).setBacklink(url('page/view', {'page': page.getId()})).render() }}
 <div class="list-group">
     {% for revision in revisions if not(revision.isTrashed()) %}
         <div class="list-group-item">
