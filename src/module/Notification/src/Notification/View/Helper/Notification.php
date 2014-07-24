@@ -15,6 +15,7 @@ use Notification\NotificationManagerInterface;
 use User\Manager\UserManagerInterface;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\View\Helper\AbstractHelper;
+use ZfcTwig\View\TwigRenderer;
 
 class Notification extends AbstractHelper
 {
@@ -36,19 +37,27 @@ class Notification extends AbstractHelper
     protected $userManager;
 
     /**
+     * @var TwigRenderer
+     */
+    protected $renderer;
+
+    /**
      * @param NotificationManagerInterface $notificationManager
      * @param StorageInterface             $storage
+     * @param TwigRenderer                 $renderer
      * @param UserManagerInterface         $userManager
      */
     public function __construct(
         NotificationManagerInterface $notificationManager,
         StorageInterface $storage,
+        TwigRenderer $renderer,
         UserManagerInterface $userManager
     ) {
         $this->storage             = $storage;
         $this->notificationManager = $notificationManager;
         $this->userManager         = $userManager;
-        $this->template = 'user/notification/notifications';
+        $this->template = 'notification/notifications';
+        $this->renderer = $renderer;
     }
 
     public function aggregateUsers(Collection $users)
@@ -89,33 +98,32 @@ class Notification extends AbstractHelper
         );
     }
 
-    public function render()
+    public function render($limit = 25)
     {
-        $user = $this->userManager->getUserFromAuthenticator();
-        $key  = hash('sha256', serialize($user));
+        $user   = $this->userManager->getUserFromAuthenticator();
+        $key    = hash('sha256', serialize($user));
+        $output = '';
 
         if ($this->storage->hasItem($key)) {
-            return $this->storage->getItem($key);
+            //return $this->storage->getItem($key);
         }
 
         if ($user) {
-            $output = $this->getView()->partial(
-                $this->template,
-                [
-                    'notifications' => $this->notificationManager->findNotificationsBySubscriber($user, 20)
-                ]
-            );
+            $notifications = $this->notificationManager->findNotificationsBySubscriber($user, $limit);
+            $output        = $this->renderer->render($this->template, ['notifications' => $notifications]);
             $this->storage->setItem($key, $output);
-            return $output;
         }
 
-        return '';
+        return $output;
     }
 
     public function setTemplate($template)
     {
         $this->template = $template;
+    }
 
+    public function __invoke()
+    {
         return $this;
     }
 }

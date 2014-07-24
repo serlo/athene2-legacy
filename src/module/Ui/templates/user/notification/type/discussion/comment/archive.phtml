@@ -1,8 +1,0 @@
-<?php $event = $this->notification->getEvents()->current(); ?>
-<?php $user = $this->normalize()->toTitle($event->getActor()); ?>
-<?php $discussion = $this->normalize()->toTitle($event->getObject()); ?>
-
-<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getObject(), true); ?>">
-    <?php echo sprintf($this->translate('<strong>%s</strong> archived discussion "%s"'), $user , $discussion);?>
-    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
-</a>

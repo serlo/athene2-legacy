@@ -1,4 +1,4 @@
 {{ pageHeader(discussion.getTitle()) }}
 <div class="discussions">
-    {% include 'discussion/discussion/show' with {'discussion': discussion} only %}
+    {% include 'discussion/helper/default/discussion' with {'discussion': discussion, 'blockquoteClass': '', 'leftWidth': 2} only %}
 </div>

@@ -33,9 +33,9 @@ class NotificationHelperFactory implements FactoryInterface
         $userManager         = $this->getUserManager($serviceManager);
         $notificationManager = $serviceManager->get('Notification\NotificationManager');
         $storage             = $serviceManager->get('Notification\Storage\Storage');
+        $renderer            = $serviceManager->get('ZfcTwig\View\TwigRenderer');
 
-        return new Notification($notificationManager, $storage, $userManager);
+        return new Notification($notificationManager, $storage, $renderer, $userManager);
     }
 
 }
- 

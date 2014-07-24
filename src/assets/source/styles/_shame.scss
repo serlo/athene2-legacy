@@ -29,7 +29,7 @@ img.license-intext {
 
       overflow-y: scroll;
 
-      > li > a {
+      > li > a, > li > .dropdown-menu-item {
         white-space: normal;
       }
     }

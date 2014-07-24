@@ -23,3 +23,19 @@ abbr[title], abbr[data-original-title] {
 .input-group .form-control {
   z-index: 0;
 }
+
+.dropdown-menu-item {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857;
+  color: #333;
+  white-space: nowrap;
+
+  &:hover, &:active {
+    color: #262626;
+    text-decoration: none;
+    background-color: #F5F5F5;
+  }
+}

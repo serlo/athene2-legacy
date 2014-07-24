@@ -154,19 +154,12 @@ return [
                 'route' => 'blog',
                 'pages' => [
                     [
-                        'label' => 'Blogs',
-                        'route' => 'blog',
-                        'icon'  => 'home',
-                        'pages' => [
-                            [
-                                'route'   => 'blog/post/create',
-                                'visible' => false
-                            ],
-                            [
-                                'route'   => 'blog/post/view',
-                                'visible' => false
-                            ]
-                        ]
+                        'route'   => 'blog/post/create',
+                        'visible' => false
+                    ],
+                    [
+                        'route'   => 'blog/post/view',
+                        'visible' => false
                     ]
                 ]
             ],

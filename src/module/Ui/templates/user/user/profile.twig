@@ -7,7 +7,7 @@
     </div>
 </div>
 {% if user.getLastLogin() %}
-    <h1>{{ 'Last seen' | trans }}</h1>
+    <h1 class="heading-content">{{ 'Last seen' | trans }}</h1>
     <div class="row">
         <div class="col-xs-12">
             {{ timeago().format(user.getLastLogin()) }}

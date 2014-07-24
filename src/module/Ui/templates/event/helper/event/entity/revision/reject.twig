@@ -2,6 +2,12 @@
 {% set revision   = normalize().toAnchor(event.getObject()) %}
 {% set repository = normalize().toAnchor(event.getParameter('repository')) %}
 {% set reason = event.getParameter('reason') %}
-{% trans %}
-    {{ user }} rejected a revision of {{ repository }}: "{{ reason }}"
-{% endtrans %}
+{% if reason %}
+    {% trans %}
+    {{ user }} rejected {{ revision }} in {{ repository }}: "{{ reason }}"
+    {% endtrans %}
+{% else %}
+    {% trans %}
+    {{ user }} rejected {{ revision }} in {{ repository }} without a reason
+    {% endtrans %}
+{% endif %}

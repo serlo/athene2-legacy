@@ -1,0 +1,13 @@
+{% set event = notification.getEvents().current() %}
+{% set user = normalize().toAnchor(event.getActor(), true) %}
+{% set reason = event.getParameter('reason') %}
+{% set repository = normalize().toAnchor(event.getParameter('repository'), true) %}
+{% set url = normalize().toUrl(event.getObject(), true) %}
+{% set linkStart = '<a href="' ~ url ~ '">' %}
+    {% set linkEnd = '</a>' %}
+<div class="dropdown-menu-item">
+    {% trans %}
+    {{ user }} created a new {{ linkStart }}revision{{ linkEnd }} of {{ repository }}
+    {% endtrans %}
+    <small> - {{ timeago().render(event.getTimestamp()) }}</small>
+</div>
