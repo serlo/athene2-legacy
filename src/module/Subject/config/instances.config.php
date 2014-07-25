@@ -38,7 +38,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'betriebswirtschaftslehre-mit-rechnungswesen' => [
+                'betriebswirtschaftslehre mit rechnungswesen' => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
@@ -51,7 +51,7 @@ return [
                         'text-exercise-group'
                     ]
                 ],
-                'deutsch-als-fremdsprache'                    => [
+                'deutsch als fremdsprache'                    => [
                     'allowed_taxonomies' => [
                         'topic',
                         'locale'
