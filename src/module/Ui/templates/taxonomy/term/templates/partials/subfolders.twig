@@ -1,7 +1,7 @@
 {% set hasSubfolders = false %}
 {% set subfolderLimit = 3 %}
 <div>
-    {% for child in term.findChildrenByTrashed(false) if child.getType().getName() %}
+    {% for child in term.findChildrenByTrashed(false) %}
         <div class="blockquote-box blockquote-primary">
             <div class="row">
                 <div class="square col-xs-4">
@@ -19,7 +19,7 @@
                     {% if child.getDescription() %}
                         {{ markdown().toHtml(child.getDescription()) }}
                     {% endif %}
-                    {% for childsChild in child.getChildren() %}
+                    {% for childsChild in child.findChildrenByTrashed(false) %}
                         {% if loop.index0 == subfolderLimit %}
                             {% set subfolders = loop.length - subfolderLimit %}
                             <a class="label label-info">{% trans %} {{ subfolders }} more ...{% endtrans %}</a>
