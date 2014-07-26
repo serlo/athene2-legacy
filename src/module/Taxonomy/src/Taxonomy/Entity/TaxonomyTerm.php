@@ -19,6 +19,7 @@ use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\Uuid;
+use Zend\Filter\FilterInterface;
 
 /**
  * A
@@ -119,25 +120,28 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         }
     }
 
-    public function countAssociations($field)
+    public function countAssociations($field = null, FilterInterface $filter = null)
     {
-        return $this->getAssociated($field)->count();
-    }
+        if ($field === null) {
+            $count     = 0;
+            $relations = [
+                'comments',
+                'entities',
+                'blogPosts'
+            ];
 
-    public function countElements()
-    {
-        $count     = 0;
-        $relations = [
-            'comments',
-            'termTaxonomyEntities',
-            'blogPosts'
-        ];
+            foreach ($relations as $relation) {
+                $count += $this->countAssociations($relation, $filter);
+            }
 
-        foreach ($relations as $relation) {
-            $count += $this->countAssociations($relation);
+            return $count;
         }
 
-        return $count;
+        if ($filter) {
+            return $filter->filter($this->getAssociated($field))->count();
+        }
+
+        return $this->getAssociated($field)->count();
     }
 
     public function findAncestorByTypeName($name)
@@ -178,8 +182,23 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         );
     }
 
-    public function getAssociated($field)
+    public function getAssociated($field = null)
     {
+        if ($field === null) {
+            $elements = [];
+            $fields   = [
+                'comments',
+                'entities',
+                'blogPosts'
+            ];
+
+            foreach ($fields as $field) {
+                $elements[] = $this->getAssociated($field);
+            }
+
+            return new ArrayCollection($elements);
+        }
+
         if (!in_array($field, $this->allowedRelations) && !isset($this->allowedRelations[$field])) {
             throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
         }

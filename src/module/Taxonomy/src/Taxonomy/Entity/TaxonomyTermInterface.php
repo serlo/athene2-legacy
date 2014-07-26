@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Instance\Entity\InstanceProviderInterface;
 use Type\Entity\TypeInterface;
 use Uuid\Entity\UuidInterface;
+use Zend\Filter\FilterInterface;
 
 interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
 {
@@ -23,15 +24,11 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
     public function associateObject(TaxonomyTermAwareInterface $object);
 
     /**
-     * @param string $association
+     * @param string|null     $association
+     * @param FilterInterface $filter
      * @return int
      */
-    public function countAssociations($association);
-
-    /**
-     * @return int
-     */
-    public function countElements();
+    public function countAssociations($association = null, FilterInterface $filter = null);
 
     /**
      * @param string $name
@@ -49,7 +46,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
      * @param string $association
      * @return TaxonomyTermAwareInterface[]|Collection
      */
-    public function getAssociated($association);
+    public function getAssociated($association = null);
 
     /**
      * @param string $association

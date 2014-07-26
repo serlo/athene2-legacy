@@ -5,9 +5,10 @@
         <div class="blockquote-box blockquote-primary">
             <div class="row">
                 <div class="square col-xs-4">
-                    {% if child.countElements() %}
+                    {% set associationCount = taxonomy().countAssociations(child, 'NotTrashed') %}
+                    {% if associationCount %}
                         <span class="glyphicon-regular glyphicon-lg glyphicon-book-open"></span>
-                        <span class="badge">{{ child.countElements() }}</span>
+                        <span class="badge">{{ associationCount }}</span>
                     {% else %}
                         <span class="glyphicon-regular glyphicon-lg glyphicon-book"></span>
                     {% endif %}

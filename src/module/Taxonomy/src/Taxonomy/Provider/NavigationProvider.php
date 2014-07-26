@@ -17,6 +17,7 @@ use Navigation\Provider\PageProviderInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
+use Uuid\Filter\NotTrashedCollectionFilter;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\ArrayUtils;
@@ -57,6 +58,11 @@ class NavigationProvider implements PageProviderInterface
     protected $term;
 
     /**
+     * @var NotTrashedCollectionFilter
+     */
+    protected $filter;
+
+    /**
      * @param InstanceManagerInterface $instanceManager
      * @param TaxonomyManagerInterface $taxonomyManager
      * @param ObjectManager            $objectManager
@@ -72,6 +78,7 @@ class NavigationProvider implements PageProviderInterface
         $this->taxonomyManager = $taxonomyManager;
         $this->objectManager   = $objectManager;
         $this->storage         = $storage;
+        $this->filter = new NotTrashedCollectionFilter();
 
     }
 
@@ -136,7 +143,7 @@ class NavigationProvider implements PageProviderInterface
                 $current['route']    = $this->options['route'];
                 $current['params'] = [$this->options['identifier'] => (string)$term->getId()];
                 $current['label']    = $term->getName();
-                $current['elements'] = $term->countElements();
+                $current['elements'] = $term->countAssociations(null, $this->filter);
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);
                 if (in_array($term->getType()->getName(), $this->options['hidden'])) {
                     $current['visible'] = false;

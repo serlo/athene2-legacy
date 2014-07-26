@@ -9,11 +9,14 @@
  */
 namespace Taxonomy\View\Helper;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Options\ModuleOptions;
+use Uuid\Filter\NotTrashedCollectionFilter;
 use Zend\View\Helper\AbstractHelper;
 
 class TaxonomyHelper extends AbstractHelper
@@ -74,9 +77,25 @@ class TaxonomyHelper extends AbstractHelper
     }
 
     /**
+     * @param TaxonomyTermInterface $term
+     * @param string                $filter
+     * @return int
+     * @throws \Taxonomy\Exception\RuntimeException
+     */
+    public function countAssociations(TaxonomyTermInterface $term, $filter)
+    {
+        if ($filter === 'NotTrashed') {
+            $filter = new NotTrashedCollectionFilter();
+            return $term->countAssociations(null, $filter);
+        } else {
+            throw new Exception\RuntimeException();
+        }
+    }
+
+    /**
      * @param TaxonomyInterface|TaxonomyTermInterface|string $nameOrObject
      * @throws Exception\InvalidArgumentException
-     * @return Ambigous \Taxonomy\Options\TaxonomyOptions
+     * @return \Taxonomy\Options\TaxonomyOptions
      */
     public function getOptions($nameOrObject)
     {
