@@ -48,7 +48,7 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
                 $path[] = $term->getName();
                 $term = $term->getParent();
             }
-            array_reverse($path);
+            $path = array_reverse($path);
             $path = implode('/', $path);
         }
 
