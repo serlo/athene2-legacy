@@ -37,7 +37,7 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
     {
         $name   = $taxonomyTerm->getName();
         $parent = $taxonomyTerm->getParent();
-        $string = $string . '/' . $name;
+        $string = $name . '/' . $string;
 
         if ($parent && $parent->getTaxonomy()->getName() != 'root') {
             return $this->getPath($parent, $string);
