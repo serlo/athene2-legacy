@@ -23,7 +23,7 @@ use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
-use Versioning\RepositoryManagerInterface;
+use Versioning\Manager\RepositoryManagerInterface;
 
 class ExerciseWorker implements Worker
 {
@@ -138,11 +138,11 @@ class ExerciseWorker implements Worker
             $i++;
             echo (($i / $total) * 100) . " ($i of $total)\n";
 
-            if($i == 870) continue;
+            if ($i == 870) {
+                continue;
+            }
 
-            $content = $this->converterChain->convert(
-                utf8_encode($exercise->getContent())
-            );
+            $content = $this->converterChain->convert(utf8_encode($exercise->getContent()));
 
             if ($exercise->getExercise()->getChildren()->count() > 0) {
                 $lrExercise = $this->entityManager->createEntity('text-exercise-group', [], $instance);
@@ -193,26 +193,21 @@ class ExerciseWorker implements Worker
 
             $solution = $exercise->getSolution();
 
-            if (is_object($solution) && (strlen(trim($solution->getContent())) || strlen(
-                        trim($solution->getHint())
-                    )) && $exercise->getExercise()->getChildren()->count() == 0
+            if (is_object($solution)
+                && (strlen(trim($solution->getContent()))
+                    || strlen(trim($solution->getHint())))
+                && $exercise->getExercise()->getChildren()->count() == 0
             ) {
 
                 $lrSolution = $this->entityManager->createEntity('text-solution', [], $instance);
 
-                $content = $this->converterChain->convert(
-                    utf8_encode(trim($solution->getContent()))
-                );
-                $hint    = $this->converterChain->convert(
-                    utf8_encode(trim($solution->getHint()))
-                );
+                $content = $this->converterChain->convert(utf8_encode(trim($solution->getContent())));
+                $hint    = $this->converterChain->convert(utf8_encode(trim($solution->getHint())));
 
                 $this->objectManager->flush($lrSolution);
 
                 $repository = $this->repositoryManager->getRepository($lrSolution);
-                $revision   = $repository->commitRevision(
-                    ['content' => $content, 'hint' => $hint]
-                );
+                $revision   = $repository->commitRevision(['content' => $content, 'hint' => $hint]);
                 $repository->checkoutRevision($revision);
 
                 $workload[] = [
@@ -254,9 +249,7 @@ class ExerciseWorker implements Worker
     protected function doLink(EntityInterface $from, EntityInterface $to, $position = null)
     {
         //var_dump($to->getType()->getName());
-        $options = $this->moduleOptions->getType(
-            $from->getType()->getName()
-        )->getComponent('link');
+        $options = $this->moduleOptions->getType($from->getType()->getName())->getComponent('link');
         $this->linkService->associate($from, $to, $options, $position);
     }
 

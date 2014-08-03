@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RepositoryInterface;
+use ZfcRbac\Identity\IdentityInterface;
 
 /**
  * An entity link.
@@ -65,25 +66,12 @@ class Revision extends Uuid implements RevisionInterface
         return $field->getValue();
     }
 
-    protected function getField($field)
-    {
-        $expression = Criteria::expr()->eq("name", $field);
-        $criteria   = Criteria::create()->where($expression)->setFirstResult(0)->setMaxResults(1);
-        $data       = $this->fields->matching($criteria);
-
-        if (empty($data)) {
-            return null;
-        }
-
-        return $data[0];
-    }
-
     public function getAuthor()
     {
         return $this->author;
     }
 
-    public function setAuthor(UserInterface $author)
+    public function setAuthor(IdentityInterface $author)
     {
         $this->author = $author;
     }
@@ -100,6 +88,10 @@ class Revision extends Uuid implements RevisionInterface
 
     public function set($name, $value)
     {
+        if (!(is_string($name) && is_string($value))) {
+            return;
+        }
+
         $entity = $this->getField($name);
 
         if (!is_object($entity)) {
@@ -132,5 +124,18 @@ class Revision extends Uuid implements RevisionInterface
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
+    }
+
+    protected function getField($field)
+    {
+        $expression = Criteria::expr()->eq("name", $field);
+        $criteria   = Criteria::create()->where($expression)->setFirstResult(0)->setMaxResults(1);
+        $data       = $this->fields->matching($criteria);
+
+        if (empty($data)) {
+            return null;
+        }
+
+        return $data[0];
     }
 }

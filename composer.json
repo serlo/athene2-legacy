@@ -30,7 +30,10 @@
         "stroker/cache": "dev-master",
         "zf-commons/zfc-twig": "dev-master",
         "umpirsky/twig-gettext-extractor": "1.1.*",
-        "ewgo/solarium-module": "~1.0"
+        "ewgo/solarium-module": "~1.0",
+        "serlo-org/athene2-common": "dev-master",
+        "serlo-org/athene2-class-resolver": "dev-master",
+        "serlo-org/athene2-versioning": "dev-master"
     },
     "autoload": {
         "psr-0": {

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RepositoryInterface;
+use ZfcRbac\Identity\IdentityInterface;
 
 /**
  * A Page Revision.
@@ -15,7 +16,6 @@ use Versioning\Entity\RepositoryInterface;
  */
 class PageRevision extends Uuid implements PageRevisionInterface
 {
-
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
@@ -93,7 +93,7 @@ class PageRevision extends Uuid implements PageRevisionInterface
         return $this->author;
     }
 
-    public function setAuthor(UserInterface $author)
+    public function setAuthor(IdentityInterface $author)
     {
         $this->author = $author;
     }
@@ -109,7 +109,15 @@ class PageRevision extends Uuid implements PageRevisionInterface
 
     public function set($key, $value)
     {
+        if (!(is_string($key) && is_string($value))) {
+            return;
+        }
         $this->$key = $value;
+    }
+
+    public function get($key)
+    {
+        return $this->$key;
     }
 
     private function injectFromArray($key, array $array, $default = null)

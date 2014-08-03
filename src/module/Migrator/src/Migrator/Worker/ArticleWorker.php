@@ -19,7 +19,7 @@ use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
-use Versioning\RepositoryManagerInterface;
+use Versioning\Manager\RepositoryManagerInterface;
 
 class ArticleWorker implements Worker
 {
@@ -97,7 +97,7 @@ class ArticleWorker implements Worker
         $articles = $this->objectManager->getRepository('Migrator\Entity\ArticleTranslation')->findAll();
 
         $total = count($articles);
-        $i = 0;
+        $i     = 0;
         foreach ($articles as $article) {
 
             $i++;
@@ -105,9 +105,7 @@ class ArticleWorker implements Worker
 
             $revision = $article->getCurrentRevision();
             if (is_object($revision)) {
-                $content = $this->converterChain->convert(
-                    utf8_encode($revision->getSummary() . $revision->getContent())
-                );
+                $content = $this->converterChain->convert(utf8_encode($revision->getSummary() . $revision->getContent()));
                 $title   = utf8_encode($revision->getTitle());
 
                 $entity = $this->entityManager->createEntity('article', [], $instance);
@@ -117,9 +115,7 @@ class ArticleWorker implements Worker
                 $this->objectManager->flush($entity);
 
                 $repository = $this->repositoryManager->getRepository($entity);
-                $revision = $repository->commitRevision(
-                    ['title' => $title, 'content' => $content]
-                );
+                $revision   = $repository->commitRevision(['title' => $title, 'content' => $content]);
                 $repository->checkoutRevision($revision);
 
                 $workload[] = [

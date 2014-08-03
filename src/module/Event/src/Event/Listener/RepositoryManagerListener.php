@@ -30,7 +30,7 @@ class RepositoryManagerListener extends AbstractListener
 
     protected function getMonitoredClass()
     {
-        return 'Versioning\RepositoryManager';
+        return 'Versioning\Manager\RepositoryManager';
     }
 
     public function onAddRevision(Event $e)
@@ -39,17 +39,12 @@ class RepositoryManagerListener extends AbstractListener
         $revision   = $e->getParam('revision');
         $instance   = $repository->getInstance();
 
-        $this->logEvent(
-            'entity/revision/add',
-            $instance,
-            $revision,
-            [
-                [
-                    'name'  => 'repository',
-                    'value' => $repository
-                ]
-            ]
-        );
+        $this->logEvent('entity/revision/add', $instance, $revision, [
+                                                 [
+                                                     'name'  => 'repository',
+                                                     'value' => $repository
+                                                 ]
+                                             ]);
     }
 
     public function onCheckout(Event $e)
@@ -59,21 +54,16 @@ class RepositoryManagerListener extends AbstractListener
         $reason     = $e->getParam('reason');
         $instance   = $repository->getInstance();
 
-        $this->logEvent(
-            'entity/revision/checkout',
-            $instance,
-            $revision,
-            [
-                [
-                    'name'  => 'repository',
-                    'value' => $repository
-                ],
-                [
-                    'name'  => 'reason',
-                    'value' => $reason
-                ]
-            ]
-        );
+        $this->logEvent('entity/revision/checkout', $instance, $revision, [
+                                                      [
+                                                          'name'  => 'repository',
+                                                          'value' => $repository
+                                                      ],
+                                                      [
+                                                          'name'  => 'reason',
+                                                          'value' => $reason
+                                                      ]
+                                                  ]);
     }
 
     public function onReject(Event $e)
@@ -83,20 +73,15 @@ class RepositoryManagerListener extends AbstractListener
         $instance   = $repository->getInstance();
         $reason     = $e->getParam('reason');
 
-        $this->logEvent(
-            'entity/revision/reject',
-            $instance,
-            $revision,
-            [
-                [
-                    'name'  => 'repository',
-                    'value' => $repository
-                ],
-                [
-                    'name'  => 'reason',
-                    'value' => $reason
-                ]
-            ]
-        );
+        $this->logEvent('entity/revision/reject', $instance, $revision, [
+                                                    [
+                                                        'name'  => 'repository',
+                                                        'value' => $repository
+                                                    ],
+                                                    [
+                                                        'name'  => 'reason',
+                                                        'value' => $reason
+                                                    ]
+                                                ]);
     }
 }

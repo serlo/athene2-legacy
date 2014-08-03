@@ -13,8 +13,8 @@ use Page\Manager\PageManagerAwareTrait;
 use Page\Manager\PageManagerInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
-use Versioning\RepositoryManagerAwareTrait;
-use Versioning\RepositoryManagerInterface;
+use Versioning\Manager\RepositoryManagerAwareTrait;
+use Versioning\Manager\RepositoryManagerInterface;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -146,8 +146,8 @@ class IndexController extends AbstractActionController
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('page.create', $instance);
-        $pages    = $this->getPageManager()->findAllRepositories($instance);
-        $view     = new ViewModel(['pages' => $pages]);
+        $pages = $this->getPageManager()->findAllRepositories($instance);
+        $view  = new ViewModel(['pages' => $pages]);
         $view->setTemplate('page/pages');
         return $view;
     }
@@ -160,8 +160,8 @@ class IndexController extends AbstractActionController
             return $this->notFound();
         }
 
-        $alias    = $this->getAliasManager()->findAliasByObject($page)->getAlias();
-        $form     = $this->repositoryForm;
+        $alias = $this->getAliasManager()->findAliasByObject($page)->getAlias();
+        $form  = $this->repositoryForm;
 
         $this->assertGranted('page.update', $page);
         $form->bind($page);
@@ -173,13 +173,8 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $array  = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $source = $this->url()->fromRoute('page/view', ['page' => $page->getId()], null, null, false);
-                $this->getAliasManager()->createAlias(
-                    $source,
-                    $array['slug'],
-                    $array['slug'] . $page->getId(),
-                    $page,
-                    $instance
-                );
+                $this->getAliasManager()
+                    ->createAlias($source, $array['slug'], $array['slug'] . $page->getId(), $page, $instance);
                 $this->getPageManager()->editPageRepository($form);
                 $this->getPageManager()->flush();
                 $this->redirect()->toUrl($source);
@@ -231,8 +226,8 @@ class IndexController extends AbstractActionController
             return $this->notFound();
         }
 
-        $revisions      = $pageRepository->getRevisions();
-        $view           = new ViewModel(['revisions' => $revisions, 'page' => $pageRepository]);
+        $revisions = $pageRepository->getRevisions();
+        $view      = new ViewModel(['revisions' => $revisions, 'page' => $pageRepository]);
 
         $this->assertGranted('page.get', $pageRepository);
         $view->setTemplate('page/revisions');

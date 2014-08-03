@@ -29,7 +29,7 @@ return [
             ]
         ],
         'listens'      => [
-            'Versioning\RepositoryManager'         => [
+            'Versioning\Manager\RepositoryManager' => [
                 'checkout' => [
                     __NAMESPACE__ . '\Invalidator\RepositoryStorageInvalidator'
                 ]

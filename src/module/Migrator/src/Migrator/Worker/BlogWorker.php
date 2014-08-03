@@ -20,7 +20,7 @@ use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
-use Versioning\RepositoryManagerInterface;
+use Versioning\Manager\RepositoryManagerInterface;
 
 class BlogWorker implements Worker
 {
@@ -97,10 +97,7 @@ class BlogWorker implements Worker
         $user     = $this->userManager->getUserFromAuthenticator();
         $instance = $this->instanceManager->getInstance(1);
         /** @var $posts \Migrator\Entity\Blog[] */
-        $posts    = $this->objectManager->getRepository('Migrator\Entity\Blog')->findBy(
-            [],
-            ['publish' => 'desc']
-        );
+        $posts    = $this->objectManager->getRepository('Migrator\Entity\Blog')->findBy([], ['publish' => 'desc']);
         $category = $this->taxonomyManager->getTerm(8);
 
         $total = count($posts);
@@ -114,25 +111,21 @@ class BlogWorker implements Worker
 
             $form = clone $this->createPostForm;
 
-            $content = $this->converterChain->convert(
-                utf8_encode($post->getContent())
-            );
+            $content = $this->converterChain->convert(utf8_encode($post->getContent()));
             $title   = utf8_encode(html_entity_decode($post->getTitle()));
             $date    = new \DateTime();
             $t       = $date->getTimestamp();
 
             $date->setDate(date("y", $t), date("m", $t), date("d", $t));
 
-            $form->setData(
-                [
-                    'blog'     => $category,
-                    'author'   => $author,
-                    'title'    => $title,
-                    'content'  => $content,
-                    'publish'  => $date,
-                    'instance' => 1
-                ]
-            );
+            $form->setData([
+                               'blog'     => $category,
+                               'author'   => $author,
+                               'title'    => $title,
+                               'content'  => $content,
+                               'publish'  => $date,
+                               'instance' => 1
+                           ]);
             if (!$form->isValid()) {
                 throw new \Exception(print_r($form->getMessages(), true));
             } else {

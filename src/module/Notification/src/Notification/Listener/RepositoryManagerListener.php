@@ -33,19 +33,14 @@ class RepositoryManagerListener extends AbstractListener
 
     public function attachShared(SharedEventManagerInterface $events)
     {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'commit',
-            [
-                $this,
-                'onCommitRevision'
-            ],
-            2
-        );
+        $events->attach($this->getMonitoredClass(), 'commit', [
+                                                      $this,
+                                                      'onCommitRevision'
+                                                  ], 2);
     }
 
     protected function getMonitoredClass()
     {
-        return 'Versioning\RepositoryManager';
+        return 'Versioning\Manager\RepositoryManager';
     }
 }

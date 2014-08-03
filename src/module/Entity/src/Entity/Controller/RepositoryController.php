@@ -13,7 +13,7 @@ namespace Entity\Controller;
 use Entity\Entity\EntityInterface;
 use Entity\Options\ModuleOptions;
 use Versioning\Exception\RevisionNotFoundException;
-use Versioning\RepositoryManagerAwareTrait;
+use Versioning\Manager\RepositoryManagerAwareTrait;
 use Zend\Form\Form;
 use Zend\Mvc\Exception;
 use Zend\View\Model\ViewModel;
@@ -46,9 +46,8 @@ class RepositoryController extends AbstractController
                 $data = $form->getData();
                 $this->getRepositoryManager()->commitRevision($entity, $data);
                 $this->getEntityManager()->flush();
-                $this->flashMessenger()->addSuccessMessage(
-                    'Your revision has been saved, it will be available once it get\'s approved'
-                );
+                $this->flashMessenger()
+                    ->addSuccessMessage('Your revision has been saved, it will be available once it get\'s approved');
 
                 return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
             }
@@ -94,10 +93,10 @@ class RepositoryController extends AbstractController
         }
 
         $view = new ViewModel([
-            'currentRevision' => $currentRevision,
-            'revision'        => $revision,
-            'entity'          => $entity
-        ]);
+                                  'currentRevision' => $currentRevision,
+                                  'revision'        => $revision,
+                                  'entity'          => $entity
+                              ]);
 
         $view->setTemplate('entity/repository/compare-revision');
 
@@ -116,10 +115,10 @@ class RepositoryController extends AbstractController
         $this->assertGranted('entity.repository.history', $entity);
 
         $view = new ViewModel([
-            'entity'          => $entity,
-            'revisions'       => $entity->getRevisions(),
-            'currentRevision' => $currentRevision
-        ]);
+                                  'entity'          => $entity,
+                                  'revisions'       => $entity->getRevisions(),
+                                  'currentRevision' => $currentRevision
+                              ]);
 
         $view->setTemplate('entity/repository/history');
         return $view;

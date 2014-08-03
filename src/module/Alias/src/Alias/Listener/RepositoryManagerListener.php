@@ -24,7 +24,7 @@ class RepositoryManagerListener extends AbstractListener
 
     protected function getMonitoredClass()
     {
-        return 'Versioning\RepositoryManager';
+        return 'Versioning\Manager\RepositoryManager';
     }
 
     public function onCheckout(Event $e)

@@ -33,8 +33,8 @@ use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
-use Versioning\RepositoryManagerAwareTrait;
-use Versioning\RepositoryManagerInterface;
+use Versioning\Manager\RepositoryManagerAwareTrait;
+use Versioning\Manager\RepositoryManagerInterface;
 use Zend\Form\FormInterface;
 use ZfcRbac\Service\AuthorizationService;
 
