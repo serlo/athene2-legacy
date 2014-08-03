@@ -37,7 +37,7 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
     {
         $name   = $taxonomyTerm->getName();
         $parent = $taxonomyTerm->getParent();
-        $string = $name . '/' . $string;
+        $string = $string . '/' . $name;
 
         if ($parent && $parent->getTaxonomy()->getName() != 'root') {
             return $this->getPath($parent, $string);
@@ -49,10 +49,7 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
     protected function validObject($object)
     {
         if (!$object instanceof TaxonomyTermInterface) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Expected PostInterface but got `%s`',
-                get_class($object)
-            ));
+            throw new Exception\InvalidArgumentException(sprintf('Expected PostInterface but got `%s`', get_class($object)));
         }
     }
 }

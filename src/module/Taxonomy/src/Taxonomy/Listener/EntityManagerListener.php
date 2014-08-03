@@ -10,37 +10,29 @@
 namespace Taxonomy\Listener;
 
 use Common\Listener\AbstractSharedListenerAggregate;
+use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class EntityManagerListener extends AbstractSharedListenerAggregate
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait;
+    use TaxonomyManagerAwareTrait;
 
     public function onCreate(Event $e)
     {
-        /* var $entity \Entity\Service\EntityServiceInterface */
         $entity = $e->getParam('entity');
         $data   = $e->getParam('data');
 
         if (array_key_exists('taxonomy', $data)) {
             $options = $data['taxonomy'];
 
-            $term = $this->getTaxonomyManager()->getTerm($options['term']);
             $this->getTaxonomyManager()->associateWith($options['term'], $entity);
         }
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'create',
-            [
-                $this,
-                'onCreate'
-            ],
-            2
-        );
+        $events->attach($this->getMonitoredClass(), 'create', [$this, 'onCreate'], 2);
     }
 
     protected function getMonitoredClass()
