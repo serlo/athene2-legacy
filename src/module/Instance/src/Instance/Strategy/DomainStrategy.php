@@ -86,7 +86,7 @@ class DomainStrategy extends AbstractStrategy
 
         $hostNames = explode('.', $_SERVER['HTTP_HOST']);
         $tld       = $hostNames[count($hostNames) - 2] . "." . $hostNames[count($hostNames) - 1];
-        $url       = $instance->getSubdomain() . '.' . $tld . $url;
+        $url = 'http://' . $instance->getSubdomain() . '.' . $tld . $url;
 
         $this->redirect($url);
     }
