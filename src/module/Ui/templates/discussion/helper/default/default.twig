@@ -1,16 +1,23 @@
 {% set discussions = discussion().getDiscussions(object) %}
+{% set form = discussion().getForm('discussion', object, forum) %}
 <h1 class="heading-content">
-    <button class="discussion-start btn btn-success pull-right" data-toggle="collapse"
-            data-target="#discussion-form-container-{{ object.getId() }}">
-        <span class="glyphicon-regular glyphicon-plus"></span> {{ 'Discussion' | trans }}
-    </button>
+    {% if isGranted('discussion.create') %}
+        <button class="discussion-start btn btn-success pull-right" data-toggle="collapse"
+                data-target="#discussion-form-container-{{ object.getId() }}">
+            <span class="glyphicon-regular glyphicon-comments"></span> {{ 'Discuss' | trans }}
+        </button>
+    {% else %}
+        <a class="discussion-start btn btn-success pull-right"
+           href="{{ url('authentication/login', [], {'query': {'ref': form.getAttribute('action') }}) }}">
+            <span class="glyphicon-regular glyphicon-comments"></span> {{ 'Discuss' | trans }}
+        </a>
+    {% endif %}
     <span>{{ 'Discussions' | trans }}</span>
 </h1>
 <div class="collapse" id="discussion-form-container-{{ object.getId() }}">
     <div class="blockquote blockquote-primary blockquote-box">
         <div class="row">
             <div class="col-md-12 discussion-form">
-                {% set form = discussion().getForm('discussion', object, forum) %}
                 {{ form().render(form) }}
             </div>
         </div>
