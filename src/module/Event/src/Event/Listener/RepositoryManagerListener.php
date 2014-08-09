@@ -14,7 +14,6 @@ use Zend\EventManager\SharedEventManagerInterface;
 
 class RepositoryManagerListener extends AbstractListener
 {
-
     /**
      * @var array
      */

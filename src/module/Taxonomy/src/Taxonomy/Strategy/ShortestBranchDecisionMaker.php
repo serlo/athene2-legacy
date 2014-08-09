@@ -17,7 +17,7 @@ class ShortestBranchDecisionMaker implements BranchDecisionMakerStrategy
 {
     /**
      * @param Collection|TaxonomyTermInterface[] $collection
-     * @return TaxonomyTermInterface
+     * @return TaxonomyTermInterface|null
      */
     public function findBranch(Collection $collection)
     {
@@ -41,8 +41,13 @@ class ShortestBranchDecisionMaker implements BranchDecisionMakerStrategy
     {
         $currDepth = 0;
         while ($term->hasParent()) {
+            if ($term->isTrashed()) {
+                return $maxDepth;
+            }
+
             $term = $term->getParent();
             $currDepth++;
+
             if ($currDepth >= $maxDepth) {
                 return $currDepth;
             }

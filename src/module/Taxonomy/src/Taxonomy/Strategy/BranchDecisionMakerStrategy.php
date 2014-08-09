@@ -19,7 +19,7 @@ interface BranchDecisionMakerStrategy
 
     /**
      * @param Collection|TaxonomyTermInterface[] $collection
-     * @return TaxonomyTermInterface
+     * @return TaxonomyTermInterface|null
      */
     public function findBranch(Collection $collection);
 }
