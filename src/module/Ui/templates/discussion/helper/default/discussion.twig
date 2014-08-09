@@ -110,7 +110,7 @@
                     </section>
                     {% if not discussion.getArchived() %}
                         {% set form = discussion().getForm('comment', discussion) %}
-                        {% if isGranted('discussion.comment.create') %}
+                        {% if isGranted('discussion.comment.create', discussion) %}
                             <div class="clearfix">
                                 <button class="btn btn-info pull-right" data-toggle="collapse"
                                         data-target="#discussion-comment-form-container-{{ discussion.getId() }}">
