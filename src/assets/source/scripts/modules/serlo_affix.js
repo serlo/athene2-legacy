@@ -11,8 +11,7 @@ define(['jquery', 'underscore'], function ($, _) {
         stickToTop,
         defaultOptions,
         throttledPositioning,
-        windowHeight = window.outerHeight || $(window).height();
-
+        windowHeight;
 
     defaultOptions = {
         stickToSelector: '#content-layout'
@@ -29,13 +28,13 @@ define(['jquery', 'underscore'], function ($, _) {
         _.each(this.elements, fn);
     };
 
-    function positionElements($elem) {
+    function positionElements ($elem) {
         var cssProp = {},
-            scrollTop = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0),
+            scrollTop = (window.pageYOffset || document.documentElement.scrollTop) - (document.documentElement.clientTop
+                || 0),
             top = $elem.offsetTop,
             height = $elem[0].clientHeight,
             targetTop;
-
 
         // Case 1: element has more height than window 
         // && Case 2: element height is lower than stickToElements height
@@ -75,7 +74,7 @@ define(['jquery', 'underscore'], function ($, _) {
         leading: false
     });
 
-    function affixOnScroll() {
+    function affixOnScroll () {
         scrollTop = $('body,html').scrollTop();
         windowHeight = window.outerHeight || $(window).height();
 
@@ -88,6 +87,12 @@ define(['jquery', 'underscore'], function ($, _) {
     $(window)
         .scroll(affixOnScroll);
 
+    function updateOffsets () {
+        affixQueue.each(function ($elem) {
+            $elem.offsetTop = $elem.offset().top;
+        });
+        window.setTimeout(updateOffsets, 2000);
+    }
 
     SerloAffix = function (options) {
         var $elements = $(this);
@@ -100,6 +105,7 @@ define(['jquery', 'underscore'], function ($, _) {
             // for now: ignore touch devices
             if (!Modernizr.touch) {
                 affixQueue.append($(this));
+                updateOffsets();
             }
         });
     };

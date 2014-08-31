@@ -3,7 +3,6 @@
 $baseFont: Arial, serif;
 $themeFont: 'Open Sans', sans-serif;
 
-
 // $themeColor: #008FAB;
 $themeColor: #007EC1;
 // $themeColor: #00A0DF; //visionsummit-logo blue
@@ -33,13 +32,15 @@ $border-radius-large: 4px;
 $border-radius-small: 1px;
 
 // MAIN LAYOUT
-$minWidth: 835px;
+$minWidth: 400px;
 
 $navigationWidth: 200px;
 $navigationMargin: 0;
 $contentWidth: 700px;
 $contentPadding: 20px;
 $sidebarWidth: 200px;
+$contentMaxWidth: 1050px;
+$headerBreakPoint: 600px;
 
 $footerHeight: 320px;
 
@@ -58,25 +59,24 @@ $pagePaddingSmall: 15px;
 $pagePaddingMedium: 20px;
 $pagePaddingLarge: 30px;
 
-
 // NAVBAR LIGHT
-$navbarLightBackground:                $white;
-$navbarLightBackgroundHighlight:       $secondaryColor;
-$navbarLightBorder:                    $white;
+$navbarLightBackground: $white;
+$navbarLightBackgroundHighlight: $secondaryColor;
+$navbarLightBorder: $white;
 
-$navbarLightText:                      $secondaryColor;
-$navbarLightLinkColor:                 $secondaryColor;
-$navbarLightLinkColorHover:            $white;
-$navbarLightLinkColorActive:           $navbarLightLinkColorHover;
-$navbarLightLinkBackgroundHover:       $secondaryColor;
-$navbarLightLinkBackgroundActive:      $secondaryColor;
+$navbarLightText: $secondaryColor;
+$navbarLightLinkColor: $secondaryColor;
+$navbarLightLinkColorHover: $white;
+$navbarLightLinkColorActive: $navbarLightLinkColorHover;
+$navbarLightLinkBackgroundHover: $secondaryColor;
+$navbarLightLinkBackgroundActive: $secondaryColor;
 
-$navbarLightSearchBackground:          lighten($navbarLightBackground, 25%);
-$navbarLightSearchBackgroundFocus:     $white;
-$navbarLightSearchBorder:              $navbarLightBackground;
-$navbarLightSearchPlaceholderColor:    #ccc;
+$navbarLightSearchBackground: lighten($navbarLightBackground, 25%);
+$navbarLightSearchBackgroundFocus: $white;
+$navbarLightSearchBorder: $navbarLightBackground;
+$navbarLightSearchPlaceholderColor: #ccc;
 
-$navbarLightBrandColor:                $navbarLightLinkColor;
+$navbarLightBrandColor: $navbarLightLinkColor;
 
 /* Z INDEXES */
 

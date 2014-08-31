@@ -167,10 +167,10 @@ return [
                             '../node_modules/athene2-editor/build/styles/content.css'
                         ],
                         'filters' => [
-                            'CssRewriteFilter' => [
+                            '?CssRewriteFilter' => [
                                 'name' => 'Assetic\Filter\CssRewriteFilter'
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                     'editor_scripts' => [
                         'assets' => [

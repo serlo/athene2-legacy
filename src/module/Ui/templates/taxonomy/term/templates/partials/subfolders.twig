@@ -4,7 +4,7 @@
     {% for child in term.findChildrenByTrashed(false) %}
         <div class="blockquote-box blockquote-primary">
             <div class="row">
-                <div class="square col-xs-4">
+                <div class="square col-sm-4 hidden-xs">
                     {% set associationCount = taxonomy().countAssociations(child, 'NotTrashed') %}
                     {% if associationCount %}
                         <span class="glyphicon-regular glyphicon-lg glyphicon-book-open"></span>
@@ -13,7 +13,7 @@
                         <span class="glyphicon-regular glyphicon-lg glyphicon-book"></span>
                     {% endif %}
                 </div>
-                <div class="col-xs-8">
+                <div class="col-xs-12 col-sm-4">
                     <h4>
                         <a href="{{ url('taxonomy/term/get', {'term': child.getId()}) }}">{{ child.getName() }}</a>
                     </h4>

@@ -1,5 +1,5 @@
 <div class="page-header">
-    <div class="pull-right btn-group">
+    <div class="pull-right btn-group hidden-xs">
         {% include 'taxonomy/term/templates/partials/controls' %}
         {{ contexter().renderButton() }}
     </div>
@@ -13,6 +13,7 @@
         </ul>
     {% endif %}
     <h1>{{ term.getName() }}</h1>
+
     <div class="edit-control hidden">
         {% include 'taxonomy/term/templates/partials/actions' %}
     </div>

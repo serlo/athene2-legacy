@@ -7,6 +7,14 @@
     margin-left: 180px;
     padding: 0px 20px;
     margin-top: 8px;
+
+    @media only screen and (max-width: $screen-xs-min) {
+      margin-left: 0px;
+      margin-top: 0px;
+      height: 46px;
+      top: 40px;
+      left: 20px;
+    }
   }
 
   .subject-dropdown-toggle {
@@ -66,9 +74,9 @@
   }
 
   .open {
-    
+
     background: none;
-    
+
     .subject-dropdown-title {
       border-color: transparent;
     }
@@ -104,9 +112,14 @@
   top: -5px;
 
   width: 180px;
-  
+
   color: $grayDark;
   font-size: 0.9em;
   text-align: right;
+
+  @media only screen and (max-width: $screen-xs-min) {
+    top: -40px;
+    left: 60px;
+  }
 }
 

@@ -38,7 +38,7 @@ ga('create', 'UA-20283862-3', 'serlo.org');ga('require', 'displayfeatures');ga('
 var visitTookTime = false;var didScroll = false;var bounceSent = false;var scrollCount=0;
 function testScroll(){++scrollCount;if(scrollCount==2){didScroll=true}sendNoBounce()}
 function timeElapsed(){visitTookTime=true;sendNoBounce()}
-function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;ga("send","event","bounce","resist","User scrolled and spent 30 seconds on page.")}}
+function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;ga("send","event","no bounce","resist","User scrolled and spent 30 seconds on page.")}}
 setTimeout("timeElapsed()",3e4);
 window.addEventListener?window.addEventListener("scroll",testScroll,false):window.attachEvent("onScroll",testScroll);
 UserVoice=window.UserVoice||[];(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="//widget.uservoice.com/8JiCjX8pgkFb1do4yZljqg.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();UserVoice.push(["set",{accent_color:"#448dd6",trigger_color:"white",trigger_background_color:"#6aba2e"}]);UserVoice.push(["identify",{}]);UserVoice.push(["addTrigger",{mode:"satisfaction",trigger_position:"bottom-right"}]);UserVoice.push(["autoprompt",{}])
@@ -56,7 +56,7 @@ ga('create', 'UA-20283862-4', 'serlo.org');ga('require', 'displayfeatures');ga('
 var visitTookTime = false;var didScroll = false;var bounceSent = false;var scrollCount=0;
 function testScroll(){++scrollCount;if(scrollCount==2){didScroll=true}sendNoBounce()}
 function timeElapsed(){visitTookTime=true;sendNoBounce()}
-function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;ga("send","event","bounce","resist","User scrolled and spent 30 seconds on page.")}}
+function sendNoBounce(){if(didScroll&&visitTookTime&&!bounceSent){bounceSent=true;ga("send","event","no bounce","resist","User scrolled and spent 30 seconds on page.")}}
 setTimeout("timeElapsed()",3e4);
 window.addEventListener?window.addEventListener("scroll",testScroll,false):window.attachEvent("onScroll",testScroll);
 UserVoice=window.UserVoice||[];(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="//widget.uservoice.com/8JiCjX8pgkFb1do4yZljqg.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();UserVoice.push(["set",{accent_color:"#448dd6",trigger_color:"white",trigger_background_color:"#6aba2e"}]);UserVoice.push(["identify",{}]);UserVoice.push(["addTrigger",{mode:"satisfaction",trigger_position:"bottom-right"}]);UserVoice.push(["autoprompt",{}])

@@ -9,9 +9,13 @@
  */
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_element', 'content', 'search', 'system_notification',
-        'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'
-    ],
-    function ($, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay) {
+                   'moment', 'ajax_overlay', 'tracking', 'toggle_action', 'modals', 'trigger', 'sortable_list',
+                   'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'
+],
+    function (
+        $, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay,
+        Tracking
+        ) {
         "use strict";
         var languageFromDOM,
             ajaxOverlay;
@@ -134,6 +138,8 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
             }());
 
             SideElement.init();
+
+            new Tracking($context);
         }
 
         return {

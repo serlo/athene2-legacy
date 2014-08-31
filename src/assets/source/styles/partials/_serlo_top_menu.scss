@@ -45,6 +45,14 @@
     padding-right: 0;
   }
 
+  .navbar-collapse.in, .navbar-collapse.collapsing {
+    & li, & .navbar-nav {
+      @media only screen and (max-width: $screen-xs-max) {
+        float: none;
+      }
+    }
+  }
+
   .container {
     // min-width: 750px;
     // @extend .container;

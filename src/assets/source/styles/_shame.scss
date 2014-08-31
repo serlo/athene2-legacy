@@ -19,6 +19,9 @@ img.license-intext {
 }
 
 #serlo-menu {
+  .container-fluid {
+    padding: 0;
+  }
   .nav {
     /* this is really hacky */
     .dropdown-menu {

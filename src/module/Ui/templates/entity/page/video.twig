@@ -1,7 +1,7 @@
 {% do normalize().headMeta(entity).headTitle(entity) %}
 <div itemscope itemtype="http://schema.org/VideoObject">
     <div class="page-header">
-        <div class="pull-right btn-group">
+        <div class="pull-right btn-group hidden-xs">
             {% include 'entity/view/partials/actions/toggle-controls' %}
             {{ contexter().renderButton() }}
         </div>

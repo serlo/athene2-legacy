@@ -8,23 +8,17 @@
             <h2 class="heading-content">{{ cycle(['Articles' | trans, 'Videos' | trans, 'Courses' | trans], i) }}</h2>
             <div class="blockquote-box blockquote-primary">
                 <div class="row">
-                    <div class="square col-xs-2">
+                    <div class="square col-sm-2 hidden-xs">
                         <span class="glyphicon-regular glyphicon-lg glyphicon-{{ cycle(['align-left', 'play-button', 'share-alt'], i) }}"></span>
                     </div>
-                    <div class="col-xs-10">
+                    <div class="col-xs-12 col-sm-10">
                         <div class="row">
-                            {% set index = 0 %}
                             {% for link in types.get(type) %}
-                            {% if index % 3 == 0 and index != 0 %}
-                        </div>
-                        <div class="row">
-                            {% endif %}
-                            {% set index = index + 1 %}
-                            <div class="col-xs-4">
-                                <p>
-                                    {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
-                                </p>
-                            </div>
+                                <div class="col-md-3 col-lg-2 col-sm-4 col-xs-12">
+                                    <p>
+                                        {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
+                                    </p>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -32,7 +26,6 @@
             </div>
         {% endif %}
     {% endfor %}
-    <div>
     <div>
         {% if types.get('text-exercise') or types.get('text-exercise-group') %}
             <!-- Rest -->
@@ -42,10 +35,10 @@
                     {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
                         <div class="blockquote-box blockquote-primary">
                             <div class="row">
-                                <div class="col-xs-1">
+                                <div class="col-sm-1 hidden-xs">
                                     <strong>{{ loop.index }}.</strong>
                                 </div>
-                                <div class="col-xs-11">
+                                <div class="col-sm-11 col-xs-12">
                                     {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
                                 </div>
                             </div>
