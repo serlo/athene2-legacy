@@ -87,13 +87,6 @@ define(['jquery', 'underscore'], function ($, _) {
     $(window)
         .scroll(affixOnScroll);
 
-    function updateOffsets () {
-        affixQueue.each(function ($elem) {
-            $elem.offsetTop = $elem.offset().top;
-        });
-        window.setTimeout(updateOffsets, 2000);
-    }
-
     SerloAffix = function (options) {
         var $elements = $(this);
 
@@ -105,7 +98,6 @@ define(['jquery', 'underscore'], function ($, _) {
             // for now: ignore touch devices
             if (!Modernizr.touch) {
                 affixQueue.append($(this));
-                updateOffsets();
             }
         });
     };
