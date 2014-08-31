@@ -28,10 +28,9 @@ define(['jquery', 'underscore'], function ($, _) {
         _.each(this.elements, fn);
     };
 
-    function positionElements ($elem) {
+    function positionElements($elem) {
         var cssProp = {},
-            scrollTop = (window.pageYOffset || document.documentElement.scrollTop) - (document.documentElement.clientTop
-                || 0),
+            scrollTop = (window.pageYOffset || document.documentElement.scrollTop) - (document.documentElement.clientTop || 0),
             top = $elem.offsetTop,
             height = $elem[0].clientHeight,
             targetTop;
@@ -74,7 +73,7 @@ define(['jquery', 'underscore'], function ($, _) {
         leading: false
     });
 
-    function affixOnScroll () {
+    function affixOnScroll() {
         scrollTop = $('body,html').scrollTop();
         windowHeight = window.outerHeight || $(window).height();
 
