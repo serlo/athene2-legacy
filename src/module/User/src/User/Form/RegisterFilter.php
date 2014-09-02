@@ -10,6 +10,12 @@
 namespace User\Form;
 
 use Zend\InputFilter\InputFilter;
+use DoctrineModule\Validator\UniqueObject;
+use Zend\Validator\EmailAddress;
+use Zend\Validator\GreaterThan;
+use Zend\Validator\Identical;
+use Zend\Validator\Regex;
+use Zend\Validator\StringLength;
 
 class RegisterFilter extends InputFilter
 {
@@ -23,14 +29,27 @@ class RegisterFilter extends InputFilter
                 'required'   => true,
                 'validators' => [
                     [
-                        'name' => 'EmailAddress'
+                        'name' => 'EmailAddress',
+                        'options' => [
+                            'message' => 
+                                'This does not appear to be a valid email address. Please choose a different one.',
+                            // 'messages' => [
+                            //     Regex::NOT_MATCH => 'This does not appear to be a valid email address. Please choose a different one.',
+                            //     EmailAddress::LENGTH_EXCEEDED =>
+                            //         'This email address is too long. Please choose a different one.',
+                            // ]
+                        ]
                     ],
                     [
                         'name'    => 'User\Validator\UniqueUser',
                         'options' => [
                             'object_repository' => $objectManager->getRepository('User\Entity\User'),
                             'fields'            => ['email'],
-                            'object_manager'    => $objectManager
+                            'object_manager'    => $objectManager,
+                            'messages'          => [
+                                UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
+                                    'This email address is already in use. Please choose a different one.'
+                            ]
                         ]
                     ]
                 ]
@@ -47,13 +66,23 @@ class RegisterFilter extends InputFilter
                         'options' => [
                             'object_repository' => $objectManager->getRepository('User\Entity\User'),
                             'fields'            => ['username'],
-                            'object_manager'    => $objectManager
+                            'object_manager'    => $objectManager,
+                            'messages'          => [
+                                UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
+                                    'This username is already taken. Please choose a different one.'
+                            ]
                         ]
                     ],
                     [
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '~^[a-zA-Z\-\_0-9]+$~'
+                            'pattern'  => '~^[a-zA-Z\-\_0-9]+$~',
+                            'messages' => [
+                                Regex::NOT_MATCH =>
+                                    'Your username may only contain'
+                                    . ' letters, digits, underscores (_) and hyphens (-).'
+                                    . ' Please choose a different one.'
+                            ]
                         ]
                     ]
                 ]
@@ -66,12 +95,10 @@ class RegisterFilter extends InputFilter
                 'required'   => true,
                 'validators' => [
                     [
-                        'name' => 'EmailAddress'
-                    ],
-                    [
-                        'name'    => 'identical',
+                        'name'    => 'Identical',
                         'options' => [
-                            'token' => 'email'
+                            'token' => 'email',
+                            'message' => 'The email addresses did not match. Please make sure they are identical.'
                         ]
                     ]
                 ]
@@ -84,15 +111,17 @@ class RegisterFilter extends InputFilter
                 'required'   => true,
                 'validators' => [
                     [
-                        'name'    => 'stringLength',
+                        'name'    => 'StringLength',
                         'options' => [
-                            'min' => 6
+                            'min' => 6,
+                            'message' => 'Your password needs to be at least 6 characters long.'
                         ]
                     ],
                     [
-                        'name'    => 'identical',
+                        'name'    => 'Identical',
                         'options' => [
-                            'token' => 'password'
+                            'token'   => 'password',
+                            'message' => 'The passwords did not match. Please make sure they are identical.'
                         ]
                     ]
                 ]
@@ -120,9 +149,13 @@ class RegisterFilter extends InputFilter
                         'name' => 'NotEmpty',
                     ],
                     [
-                        'name'    => 'greaterThan',
+                        'name'    => 'GreaterThan',
                         'options' => [
-                            'min' => 0
+                            'min' => 0,
+                            'messages' => [
+                                GreaterThan::NOT_GREATER =>
+                                    'Please confirm, that you have read, understood and accepted our terms of service.'
+                            ]
                         ]
                     ]
                 ]
