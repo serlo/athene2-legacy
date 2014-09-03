@@ -32,12 +32,7 @@ class RegisterFilter extends InputFilter
                         'name' => 'EmailAddress',
                         'options' => [
                             'message' => 
-                                'This does not appear to be a valid email address. Please choose a different one.',
-                            // 'messages' => [
-                            //     Regex::NOT_MATCH => 'This does not appear to be a valid email address. Please choose a different one.',
-                            //     EmailAddress::LENGTH_EXCEEDED =>
-                            //         'This email address is too long. Please choose a different one.',
-                            // ]
+                                'This does not appear to be a valid email address. Please choose a different one.'
                         ]
                     ],
                     [
