@@ -32,7 +32,7 @@ class RegisterFilter extends InputFilter
                         'name' => 'EmailAddress',
                         'options' => [
                             'message' => 
-                                'This does not appear to be a valid email address. Please choose a different one.'
+                                'This does not appear to be a valid email address. Please use a different one.'
                         ]
                     ],
                     [
@@ -43,7 +43,7 @@ class RegisterFilter extends InputFilter
                             'object_manager'    => $objectManager,
                             'messages'          => [
                                 UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                                    'This email address is already in use. Please choose a different one.'
+                                    'This email address is already in use. Please use a different one.'
                             ]
                         ]
                     ]
@@ -64,7 +64,7 @@ class RegisterFilter extends InputFilter
                             'object_manager'    => $objectManager,
                             'messages'          => [
                                 UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                                    'This username is already taken. Please choose a different one.'
+                                    'This username is already taken. Please use a different one.'
                             ]
                         ]
                     ],
@@ -76,7 +76,7 @@ class RegisterFilter extends InputFilter
                                 Regex::NOT_MATCH =>
                                     'Your username may only contain'
                                     . ' letters, digits, underscores (_) and hyphens (-).'
-                                    . ' Please choose a different one.'
+                                    . ' Please use a different one.'
                             ]
                         ]
                     ]
@@ -93,7 +93,7 @@ class RegisterFilter extends InputFilter
                         'name'    => 'Identical',
                         'options' => [
                             'token' => 'email',
-                            'message' => 'The email addresses did not match. Please make sure they are identical.'
+                            'message' => 'The email address entered does not match the confirmation address. Ensure the addresses entered are identical.'
                         ]
                     ]
                 ]
