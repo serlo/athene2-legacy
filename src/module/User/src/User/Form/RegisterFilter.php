@@ -149,7 +149,7 @@ class RegisterFilter extends InputFilter
                             'min' => 0,
                             'messages' => [
                                 GreaterThan::NOT_GREATER =>
-                                    'Please confirm, that you have read, understood and accepted our terms of service.'
+                                    'Please confirm that you have read, understood and accepted our terms of service.'
                             ]
                         ]
                     ]
