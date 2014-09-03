@@ -116,7 +116,7 @@ class RegisterFilter extends InputFilter
                         'name'    => 'Identical',
                         'options' => [
                             'token'   => 'password',
-                            'message' => 'The passwords did not match. Please make sure they are identical.'
+                            'message' => 'The password entered does not match the confirmation password. Ensure the passwords entered are identical.'
                         ]
                     ]
                 ]
