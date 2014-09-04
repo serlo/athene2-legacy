@@ -12,6 +12,7 @@ namespace Entity\Form;
 
 use License\Entity\LicenseInterface;
 use License\Form\AgreementFieldset;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
@@ -26,7 +27,29 @@ class ModulePageForm extends Form
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
+
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
+        $select = new Select('icon');
+        $select->setLabel('Select an icon');
+        $select->setAttribute('id', 'icon');
+        $select->setValueOptions(array(
+                'book-open' => 'Open book',
+                'book' => 'Closed book',
+                'bookmark' => 'Bookmark',
+                'play-button' => 'Play',
+                'google-maps' => 'Marker',
+                'film' =>'Film',
+                'circle-question-mark' => 'Question mark (circle)',
+                'circle-exclamation-mark' => 'Exclamation mark (circle)',
+                'circle-info' => 'Info (circle)',
+                'pencil' => 'Pencil',
+                'file' => 'File',
+                'notes' => 'Notes',
+                'stats' => 'Stats',
+                'compass' => 'Compass',
+                'lightbulb' => 'Lightbulb'
+            ));
+        $this->add($select);
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
             (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(

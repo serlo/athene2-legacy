@@ -22,7 +22,9 @@ class LicenseController extends AbstractController
     {
         $licenses = $this->getLicenseManager()->findAllLicenses();
         $entity   = $this->getEntity();
-        if(!$entity){
+
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 

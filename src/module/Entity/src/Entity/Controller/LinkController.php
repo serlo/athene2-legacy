@@ -21,9 +21,12 @@ class LinkController extends AbstractController
     public function moveAction()
     {
         $entity = $this->getEntity();
-        if (!$entity) {
+
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
+
         $type = $this->params('type');
         $form = new MoveForm();
         $view = new ViewModel(['form' => $form]);

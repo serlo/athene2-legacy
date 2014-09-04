@@ -54,12 +54,12 @@ class Revision extends Uuid implements RevisionInterface
         return $this;
     }
 
-    public function get($field)
+    public function get($field, $default = null)
     {
         $field = $this->getField($field);
 
         if (!is_object($field)) {
-            return $field;
+            return $default;
         }
 
         return $field->getValue();

@@ -19,6 +19,8 @@ require.config({
         "moment": "../bower_components/momentjs/min/moment.min",
         "moment_de": "../bower_components/momentjs/lang/de",
         "jasny": "../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap",
+        "magnific_popup": "../bower_components/magnific-popup/dist/jquery.magnific-popup",
+        "historyjs": "../bower_components/history.js/scripts/bundled/html4+html5/jquery.history",
         "common": "modules/serlo_common",
         "easing": "libs/easing",
         "events": "libs/eventscope",
@@ -41,6 +43,7 @@ require.config({
         "spoiler": "modules/serlo_spoiler",
         "injections": "modules/serlo_injections",
         "search": "modules/serlo_search",
+        "slider": "modules/serlo_slider",
         "support": "modules/serlo_supporter",
         "modals": "modules/serlo_modals",
         "router": "modules/serlo_router",
@@ -66,8 +69,11 @@ require.config({
         nestable: {
             deps: ['jquery']
         },
+        historyjs: {
+            deps: ['jquery']
+        },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable', 'polyfills', 'datepicker', 'event_extensions', 'jasny']
+            deps: ['bootstrap', 'easing', 'nestable', 'historyjs', 'polyfills', 'datepicker', 'event_extensions', 'jasny']
         }
     },
     waitSeconds: 2

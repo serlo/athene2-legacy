@@ -24,6 +24,10 @@
   font-weight: light;
 }
 
+.is-pointable {
+  cursor: pointer;
+}
+
 .is-alpha-list {
   > li {
     list-style: lower-alpha;

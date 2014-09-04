@@ -20,7 +20,9 @@ class TaxonomyController extends AbstractController
     public function updateAction()
     {
         $entity = $this->getEntity();
-        if (!$entity) {
+
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 

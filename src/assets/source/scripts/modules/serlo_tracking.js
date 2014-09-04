@@ -18,7 +18,6 @@ define(['jquery'], function ($) {
     };
 
     Tracking.prototype.trackControls = function () {
-        console.log($('[data-toggle="edit-controls"]', this.$context).length);
         return $('[data-toggle="edit-controls"]', this.$context).on('click', function () {
             ga('send', 'event', 'button', 'click', 'Clicked on edit controls');
         });

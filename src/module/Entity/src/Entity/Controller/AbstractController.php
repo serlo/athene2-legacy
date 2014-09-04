@@ -19,18 +19,14 @@ abstract class AbstractController extends AbstractActionController
     use EntityManagerAwareTrait;
 
     /**
-     * @param int $id
+     * @param int  $id
      * @return EntityInterface
      */
     public function getEntity($id = null)
     {
-        $id = $id ? : $this->params('entity');
+        $id = null !== $id ? $id : $this->params('entity');
         try {
             $entity = $this->getEntityManager()->getEntity($id);
-            if ($entity->isTrashed()) {
-                $this->getResponse()->setStatusCode(404);
-                return false;
-            }
             return $entity;
         } catch (EntityNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);

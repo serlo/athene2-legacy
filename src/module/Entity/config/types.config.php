@@ -205,6 +205,7 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
                         'fields' => [
                             'title',
+                            'icon',
                             'content',
                             'changes'
                         ]

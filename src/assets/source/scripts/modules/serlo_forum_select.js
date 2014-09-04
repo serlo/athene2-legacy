@@ -19,7 +19,6 @@ define(['jquery', 'translator'], function ($, t) {
             $('button.select').click(function () {
                 var $this = $(this),
                     href = $this.data('action');
-                console.log('feeek');
                 $this.html(t('Please wait...'));
 
                 $that.attr('action', href);

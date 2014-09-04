@@ -30,7 +30,9 @@ class RepositoryController extends AbstractController
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
-        if (!$entity) {
+
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
@@ -65,7 +67,8 @@ class RepositoryController extends AbstractController
         $entity = $this->getEntity();
         $reason = $this->params()->fromPost('reason', '');
 
-        if (!$entity) {
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
@@ -81,7 +84,8 @@ class RepositoryController extends AbstractController
     {
         $entity = $this->getEntity();
 
-        if (!$entity) {
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
@@ -108,7 +112,8 @@ class RepositoryController extends AbstractController
     {
         $entity = $this->getEntity();
 
-        if (!$entity) {
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
@@ -130,7 +135,8 @@ class RepositoryController extends AbstractController
         $entity = $this->getEntity();
         $reason = $this->params()->fromPost('reason', '');
 
-        if (!$entity) {
+        if (!$entity || $entity->isTrashed()) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 

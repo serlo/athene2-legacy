@@ -42,9 +42,10 @@ interface RevisionInterface extends VersioningRevision, InstanceProviderInterfac
 
     /**
      * @param string $field
+     * @param string $default
      * @return string
      */
-    public function get($field);
+    public function get($field, $default = null);
 
     /**
      * @param string $name

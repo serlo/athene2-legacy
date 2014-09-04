@@ -18,7 +18,7 @@ class PageController extends AbstractController
     {
         $entity = $this->getEntity();
 
-        if (!$entity || !$entity->hasCurrentRevision()) {
+        if (!$entity) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
@@ -31,6 +31,12 @@ class PageController extends AbstractController
         }
 
         $this->layout('layout/3-col');
+
+        if(!$entity->hasCurrentRevision()){
+            $this->layout('layout/2-col');
+            $model->setTemplate('entity/page/pending');
+        }
+
         return $model;
     }
 }

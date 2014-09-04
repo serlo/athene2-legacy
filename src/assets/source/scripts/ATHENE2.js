@@ -10,7 +10,8 @@
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_element', 'content', 'search', 'system_notification',
                    'moment', 'ajax_overlay', 'tracking', 'toggle_action', 'modals', 'trigger', 'sortable_list',
-                   'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select'
+                   'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix', 'forum_select', 'slider',
+                   'magnific_popup'
 ],
     function (
         $, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay,
@@ -55,15 +56,30 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                     format: 'yyyy-mm-dd'
                 });
                 // init spoilers
-                $('.spoiler').Spoiler();
+                $('.spoiler', $context).Spoiler();
                 // init injections
-                $('.injection').Injections();
+                $('.injection', $context).Injections();
                 // init edit controls
-                $('[data-toggle]').ToggleAction();
+                $('[data-toggle]', $context).ToggleAction();
                 // init triggers
-                $('[data-trigger]').TriggerAction();
+                $('[data-trigger]', $context).TriggerAction();
                 // forum select
                 $('form[name="discussion"]', $context).ForumSelect();
+                // Slider
+                $('.carousel.slide.carousel-tabbed', $context).Slider();
+                $('.r img', $context).each(function () {
+                    var $that = $(this);
+                    $that.magnificPopup({
+                        type: 'image',
+                        closeOnContentClick: true,
+                        items: {
+                            src: $that.attr('src')
+                        },
+                        image: {
+                            verticalFit: true
+                        }
+                    });
+                });
 
                 // NOTE: deactivated for now
                 // init AjaxOverlay for /ref links
