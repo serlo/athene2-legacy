@@ -7,5 +7,6 @@
     <div class="page-header">
         <h1>{{ term.getName() }}</h1>
     </div>
+    {% include 'taxonomy/term/page/partials/alerts' %}
     {% include 'taxonomy/term/templates/default' %}
 {% endif %}

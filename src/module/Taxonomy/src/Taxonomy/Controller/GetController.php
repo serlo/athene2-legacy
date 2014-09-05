@@ -24,11 +24,6 @@ class GetController extends AbstractController
             return false;
         }
 
-        if ($term->isTrashed()) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
-        }
-
         $view = new ViewModel(['term' => $term]);
 
         $view->setTemplate('taxonomy/term/page/default');
