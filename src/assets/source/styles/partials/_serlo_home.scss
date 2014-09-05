@@ -23,6 +23,7 @@
 
     .home-nav {
       & > div {
+        margin-top: 10px;
         & > a {
           background-color: $themeColor;
           color:            $white;
@@ -70,7 +71,7 @@
     position: relative;
     left:     0;
     top:      0;
-    margin:   20px 0;
+    margin:   20px 0 0;
     width:    100%;
   }
 
@@ -100,7 +101,6 @@
 
 .serlo-home {
   #page {
-    padding:   0;
     max-width: 750px;
   }
 }
