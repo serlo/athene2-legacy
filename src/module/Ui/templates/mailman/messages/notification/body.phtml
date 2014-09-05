@@ -1,7 +1,7 @@
 <?php
 $content = '';
 foreach($this->notifications as $notification){
-    $content .= '<li>'.$this->partial('user/notification/notification', ['notification' => $notification]) . "</li>";
+    $content .= '<li>'.$this->partial('notification/notification', ['notification' => $notification]) . "</li>";
 }
 echo sprintf($this->translate("Hello %s,<br>
 <br>

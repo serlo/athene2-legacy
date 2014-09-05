@@ -83,7 +83,7 @@ class NotificationWorkerListener extends AbstractListener
             // TODO: Persist email and try resending it later
             $log = $this->exceptionToString($e);
             $this->logger->crit($log);
-            var_dump($e);
+            var_dump($e->getMessage(), $e->getTraceAsString());
         }
     }
 
