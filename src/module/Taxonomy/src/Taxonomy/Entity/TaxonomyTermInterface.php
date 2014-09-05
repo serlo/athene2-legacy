@@ -147,7 +147,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
      * @param self $parent
      * @return self
      */
-    public function setParent(self $parent = null);
+    public function setParent(TaxonomyTermInterface $parent = null);
 
     /**
      * @param int $position
