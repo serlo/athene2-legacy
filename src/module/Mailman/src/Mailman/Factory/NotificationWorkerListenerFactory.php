@@ -10,10 +10,26 @@
  */
 namespace Mailman\Factory;
 
-class NotificationWorkerListenerFactory extends AbstractListenerFactory
+use Mailman\Listener\NotificationWorkerListener;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\FactoryInterface;
+
+class NotificationWorkerListenerFactory implements FactoryInterface
 {
-    protected function getClassName()
+    /**
+     * Create service
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return 'Mailman\Listener\NotificationWorkerListener';
+        $mailman    = $serviceLocator->get('Mailman/Mailman');
+        $translator = $serviceLocator->get('Translator');
+        $logger     = $serviceLocator->get('Zend\Log\Logger');
+        $renderer   = $serviceLocator->get('ViewRenderer');
+        $class      = new NotificationWorkerListener($logger, $mailman, $renderer, $translator);
+
+        return $class;
     }
 }

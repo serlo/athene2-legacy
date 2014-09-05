@@ -26,6 +26,11 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
      */
     protected $renderer;
 
+    /**
+     * @param MailmanInterface $mailman
+     * @param PhpRenderer      $phpRenderer
+     * @param Translator       $translator
+     */
     public function __construct(MailmanInterface $mailman, PhpRenderer $phpRenderer, Translator $translator)
     {
         $this->mailman    = $mailman;
