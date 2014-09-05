@@ -20,6 +20,7 @@ use Zend\Log\LoggerInterface;
 use Zend\Mail\Protocol\Exception\RuntimeException;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
+use Zend\View\Renderer\RendererInterface;
 
 class NotificationWorkerListener extends AbstractListener
 {
@@ -29,13 +30,17 @@ class NotificationWorkerListener extends AbstractListener
     protected $logger;
 
     /**
-     * @param LoggerInterface  $logger
-     * @param MailmanInterface $mailman
-     * @param PhpRenderer      $phpRenderer
-     * @param Translator       $translator
+     * @param LoggerInterface   $logger
+     * @param MailmanInterface  $mailman
+     * @param RendererInterface $phpRenderer
+     * @param Translator        $translator
      */
-    public function __construct(LoggerInterface $logger, MailmanInterface $mailman, PhpRenderer $phpRenderer, Translator $translator)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        MailmanInterface $mailman,
+        RendererInterface $phpRenderer,
+        Translator $translator
+    ) {
         $this->logger = $logger;
         parent::__construct($mailman, $phpRenderer, $translator);
     }
