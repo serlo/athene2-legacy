@@ -1,11 +1,11 @@
 #main-home {
   #content-container {
     background: none;
-    border: none;
-    padding: 0;
+    border:     none;
+    padding:    0;
     min-height: 420px;
     text-align: center;
-    position: relative;
+    position:   relative;
 
     .alert {
       text-align: left;
@@ -16,27 +16,27 @@
     }
 
     h1.description {
-      font-size: inherit;
+      font-size:  inherit;
       margin-top: 0px;
-      border: none;
+      border:     none;
     }
 
     .home-nav {
       & > div {
         & > a {
           background-color: $themeColor;
-          color: $white;
-          padding: 15px 0;
-          display: block;
+          color:            $white;
+          padding:          15px 0;
+          display:          block;
           &:hover, &:active, &:focus {
             background-color: darken($themeColor, 10%);
-            text-decoration: none;
+            text-decoration:  none;
           }
           & h2 {
             font-size: inherit;
-            border: none;
-            cursor: pointer;
-            margin: 0;
+            border:    none;
+            cursor:    pointer;
+            margin:    0;
           }
         }
 
@@ -57,52 +57,50 @@
   }
 
   #search-help {
-    width: 750px;
+    width:      750px;
     text-align: left;
   }
 
   #search-results {
-    width: 750px;
+    width:      750px;
     text-align: left;
   }
 
   #search-content {
     position: relative;
-    left: 0;
-    top: 0;
-    margin: 20px 0;
-    width: 100%;
+    left:     0;
+    top:      0;
+    margin:   20px 0;
+    width:    100%;
   }
 
   #content-layout {
-    width: 100%;
+    width:      100%;
     min-height: 0px;
-    margin: 0 auto;
-    padding: 0;
+    margin:     0 auto;
+    padding:    0;
   }
 
   #serlo-brand {
-    margin-top: 80px;
     font-size: 50px;
+    display:   inline-block;
   }
 
   #serlo-logo {
-    font-size: 70px;
-    position: absolute;
-    top: -65px;
-    left: 220px;
+    font-size:      70px;
+    display:        inline-block;
+    height:         132px;
+    vertical-align: bottom;
   }
 
   #serlo-wrapper {
-    text-align: left;
-    margin-left: 310px;
+    margin: 0 auto;
   }
 }
 
 .serlo-home {
   #page {
-    padding: 0;
-    min-width: 600px;
-    width: 750px;
+    padding:   0;
+    max-width: 750px;
   }
 }
