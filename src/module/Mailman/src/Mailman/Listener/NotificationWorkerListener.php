@@ -11,19 +11,48 @@ namespace Mailman\Listener;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineModule\Paginator\Adapter\Collection;
+use Mailman\MailmanInterface;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
+use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorAwareTrait;
+use Zend\Log\LoggerInterface;
 use Zend\Mail\Protocol\Exception\RuntimeException;
 use Zend\View\Model\ViewModel;
+use Zend\View\Renderer\PhpRenderer;
 
 class NotificationWorkerListener extends AbstractListener
 {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @param LoggerInterface  $logger
+     * @param MailmanInterface $mailman
+     * @param PhpRenderer      $phpRenderer
+     * @param Translator       $translator
+     */
+    public function __construct(LoggerInterface $logger, MailmanInterface $mailman, PhpRenderer $phpRenderer, Translator $translator)
+    {
+        $this->logger = $logger;
+        parent::__construct($mailman, $phpRenderer, $translator);
+    }
+
+    /**
+     * @param SharedEventManagerInterface $events
+     * @return void
+     */
     public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach($this->getMonitoredClass(), 'notify', [$this, 'onNotify'], -1);
     }
 
+    /**
+     * @param Event $e
+     * @return void
+     */
     public function onNotify(Event $e)
     {
         /* @var $user \User\Entity\UserInterface */
@@ -51,12 +80,34 @@ class NotificationWorkerListener extends AbstractListener
                 $this->getRenderer()->render($body)
             );
         } catch (\Exception $e) {
-            // Todo find a better way to do this - maybe via syslog?
-            // Email could not be send, however, we do not want to crash  notifications because
-            // of this...
+            // TODO: Persist email and try resending it later
+            $log = $this->exceptionToString($e);
+            $this->logger->crit($log);
+            var_dump($e);
         }
     }
 
+    /**
+     * @param \Exception $e
+     * @return string
+     */
+    protected function exceptionToString(\Exception $e)
+    {
+        $trace = $e->getTraceAsString();
+        $i     = 1;
+        do {
+            $messages[] = $i++ . ": " . $e->getMessage();
+        } while ($e = $e->getPrevious());
+
+        $log = "Exception:n" . implode("n", $messages);
+        $log .= "nTrace:n" . $trace;
+
+        return $log;
+    }
+
+    /**
+     * @return string
+     */
     protected function getMonitoredClass()
     {
         return 'Notification\NotificationWorker';

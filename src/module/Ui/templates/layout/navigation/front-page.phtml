@@ -16,7 +16,7 @@ foreach ($this->container as $page) {
     }
 
     // li-element without subpages
-    $html[] = '<div class="col-xs-4">';
+    $html[] = '<div class="col-md-4 col-sm-6 col-xs-12">';
     $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
     if ($page->get('icon')) {
         $html[] = '<i class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></i>';
