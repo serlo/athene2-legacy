@@ -24,9 +24,14 @@ require 'init_autoloader.php';
 // Run the application!
 Zend\Mvc\Application::init(require 'config/application.config.php')->run();
 
-
 // catch catchable fatal errors
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+}
+
+// Use this method to tell PoEdit that the contained string needs to be translated
+function t($string)
+{
+    return $string;
 }

@@ -14,6 +14,7 @@ use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Validator\AbstractValidator;
 
 class Module
 {
@@ -71,6 +72,8 @@ class Module
         if ($router instanceof TranslatorAwareInterface) {
             $router->setTranslator($translator);
         }
+
+        AbstractValidator::setDefaultTranslator($translator);
 
         if (!setlocale(LC_ALL, $locale) || !setlocale(LC_MESSAGES, $locale)) {
             throw new \Exception(sprintf(

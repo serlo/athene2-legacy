@@ -9,17 +9,15 @@
  */
 namespace User\Form;
 
+use Common\Traits\ObjectManagerAwareTrait;
 use Zend\InputFilter\InputFilter;
 use DoctrineModule\Validator\UniqueObject;
-use Zend\Validator\EmailAddress;
 use Zend\Validator\GreaterThan;
-use Zend\Validator\Identical;
 use Zend\Validator\Regex;
-use Zend\Validator\StringLength;
 
 class RegisterFilter extends InputFilter
 {
-    use \Common\Traits\ObjectManagerAwareTrait;
+    use ObjectManagerAwareTrait;
 
     public function __construct($objectManager)
     {
@@ -29,9 +27,9 @@ class RegisterFilter extends InputFilter
                 'required'   => true,
                 'validators' => [
                     [
-                        'name' => 'EmailAddress',
+                        'name'    => 'EmailAddress',
                         'options' => [
-                            'message' => 
+                            'message' =>
                                 'This does not appear to be a valid email address. Please use a different one.'
                         ]
                     ],
@@ -43,7 +41,7 @@ class RegisterFilter extends InputFilter
                             'object_manager'    => $objectManager,
                             'messages'          => [
                                 UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                                    'This email address is already in use. Please use a different one.'
+                                    t('This email address is already in use. Please use a different one.')
                             ]
                         ]
                     ]
@@ -64,7 +62,7 @@ class RegisterFilter extends InputFilter
                             'object_manager'    => $objectManager,
                             'messages'          => [
                                 UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                                    'This username is already taken. Please use a different one.'
+                                    t('This username is already taken. Please use a different one.')
                             ]
                         ]
                     ],
@@ -74,9 +72,11 @@ class RegisterFilter extends InputFilter
                             'pattern'  => '~^[a-zA-Z\-\_0-9]+$~',
                             'messages' => [
                                 Regex::NOT_MATCH =>
-                                    'Your username may only contain'
-                                    . ' letters, digits, underscores (_) and hyphens (-).'
-                                    . ' Please use a different one.'
+                                    t(
+                                        'Your username may only contain'
+                                        . ' letters, digits, underscores (_) and hyphens (-).'
+                                        . ' Please use a different one.'
+                                    )
                             ]
                         ]
                     ]
@@ -92,8 +92,10 @@ class RegisterFilter extends InputFilter
                     [
                         'name'    => 'Identical',
                         'options' => [
-                            'token' => 'email',
-                            'message' => 'The email address entered does not match the confirmation address. Ensure the addresses entered are identical.'
+                            'token'   => 'email',
+                            'message' => t(
+                                'The email address entered does not match the confirmation address. Ensure the addresses entered are identical.'
+                            )
                         ]
                     ]
                 ]
@@ -108,15 +110,18 @@ class RegisterFilter extends InputFilter
                     [
                         'name'    => 'StringLength',
                         'options' => [
-                            'min' => 6,
-                            'message' => 'Your password needs to be at least 6 characters long.'
+                            'min'     => 6,
+                            'message' => t('Your password needs to be at least 6 characters long.')
                         ]
                     ],
                     [
                         'name'    => 'Identical',
                         'options' => [
                             'token'   => 'password',
-                            'message' => 'The password entered does not match the confirmation password. Ensure the passwords entered are identical.'
+                            'message' => t(
+                                'The password entered does not match the confirmation password. '
+                                . 'Ensure the passwords entered are identical.'
+                            )
                         ]
                     ]
                 ]
@@ -146,10 +151,12 @@ class RegisterFilter extends InputFilter
                     [
                         'name'    => 'GreaterThan',
                         'options' => [
-                            'min' => 0,
+                            'min'      => 0,
                             'messages' => [
                                 GreaterThan::NOT_GREATER =>
-                                    'Please confirm that you have read, understood and accepted our terms of service.'
+                                    t(
+                                        'Please confirm that you have read, understood and accepted our terms of service.'
+                                    )
                             ]
                         ]
                     ]
