@@ -78,11 +78,13 @@ class NotificationWorkerListener extends AbstractListener
         $body->setTemplate('mailman/messages/notification/body');
 
         try {
+            $subjectHtml = $this->getRenderer()->render($subject);
+            $bodyHtml = $this->getRenderer()->render($body);
             $this->getMailman()->send(
                 $user->getEmail(),
                 $this->getMailman()->getDefaultSender(),
-                $this->getRenderer()->render($subject),
-                $this->getRenderer()->render($body)
+                $subjectHtml,
+                $bodyHtml
             );
         } catch (\Exception $e) {
             // TODO: Persist email and try resending it later

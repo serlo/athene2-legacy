@@ -110,5 +110,17 @@ return [
             'url'   => __NAMESPACE__ . '\Factory\UrlHelperFactory',
             'alias' => __NAMESPACE__ . '\Factory\AliasHelperFactory'
         ]
-    ]
+    ],
+    'view_helpers'       => [
+        'factories' => [
+        ]
+    ],
+    'zfctwig'            => [
+        'helper_manager' => [
+            'factories' => [
+                'url'   => __NAMESPACE__ . '\Factory\UrlHelperFactory',
+                'alias' => __NAMESPACE__ . '\Factory\AliasHelperFactory'
+            ]
+        ]
+    ],
 ];

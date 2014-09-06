@@ -16,6 +16,7 @@ use Common\Traits\ConfigAwareTrait;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use Zend\Cache\Storage\StorageInterface;
+use Zend\Mvc\Router\Console\RouteInterface;
 use Zend\View\Helper\Url as ZendUrl;
 
 class Url extends ZendUrl
