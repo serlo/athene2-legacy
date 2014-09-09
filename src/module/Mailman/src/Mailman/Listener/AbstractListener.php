@@ -15,6 +15,7 @@ use Mailman\MailmanInterface;
 use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorAwareTrait;
 use Zend\View\Renderer\PhpRenderer;
+use Zend\View\Renderer\RendererInterface;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
@@ -27,11 +28,11 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
     protected $renderer;
 
     /**
-     * @param MailmanInterface $mailman
-     * @param PhpRenderer      $phpRenderer
-     * @param Translator       $translator
+     * @param MailmanInterface  $mailman
+     * @param RendererInterface $phpRenderer
+     * @param Translator        $translator
      */
-    public function __construct(MailmanInterface $mailman, PhpRenderer $phpRenderer, Translator $translator)
+    public function __construct(MailmanInterface $mailman, RendererInterface $phpRenderer, Translator $translator)
     {
         $this->mailman    = $mailman;
         $this->translator = $translator;

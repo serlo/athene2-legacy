@@ -1,9 +1,4 @@
 {% set template = 'taxonomy/term/templates/' ~ term.getTaxonomy().getName() %}
-{% if term.isTrashed() %}
-    <div class="alert alert-danger">
-        {% trans %} This taxonomy term is marked as <strong>trashed</strong>. Contents might be out of date or unmaintained. {% endtrans %}
-    </div>
-{% endif %}
 {% set template = include(template, ignore_missing = true) %}
 {% if template %}
     {{ template | raw }}

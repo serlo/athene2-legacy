@@ -1,16 +1,16 @@
 /* Serlo Menu */
 /* top navbar */
 #serlo-menu {
-  border: none;
+  //border: none;
 
-  @include bar();
+  //@include bar();
 
-  font-size: 0.91em;
-  border-radius: 0;
-  min-height: 0;
+  //font-size: 0.91em;
+  //border-radius: 0;
+  //min-height: 0;
 
-  .nav {
-    > li {
+  nav {
+    /*> li {
       line-height: 23px;
       float: left;
       > a {
@@ -27,7 +27,7 @@
           }
         }
       }
-    }
+    }*/
 
     .dropdown-menu {
       position: absolute;
@@ -36,19 +36,19 @@
   }
 
   .navbar-nav {
-    float: left;
-    margin: 0;
+    //float: left;
+    //margin: 0;
   }
 
   .navbar-inner {
-    padding-left: 0;
-    padding-right: 0;
+    //padding-left: 0;
+    //padding-right: 0;
   }
 
   .navbar-collapse.in, .navbar-collapse.collapsing {
     & li, & .navbar-nav {
       @media only screen and (max-width: $screen-xs-max) {
-        float: none;
+        //float: none;
       }
     }
   }

@@ -66,10 +66,10 @@ class Normalize extends AbstractHelper
         return true;
     }
 
-    public function toAnchor($object)
+    public function toAnchor($object, $forceCanonical = false)
     {
         $normalized = $this->normalize($object);
-        return '<a href="' . $this->toUrl($object) . '">' . $normalized->getTitle() . '</a>';
+        return '<a href="' . $this->toUrl($object, $forceCanonical) . '">' . $normalized->getTitle() . '</a>';
     }
 
     public function toAuthor($object)
