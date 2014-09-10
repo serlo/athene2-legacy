@@ -10,11 +10,6 @@
 return [
     'navigation' => [
         'top-right' => [
-            [
-                'label' => '',
-                'uri'   => 'http://facebook.com',
-                'icon'  => 'glyphicon-social glyphicon-facebook',
-            ],
         ]
     ]
 ];
