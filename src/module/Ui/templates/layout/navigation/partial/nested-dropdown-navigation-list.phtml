@@ -31,13 +31,19 @@ foreach ($this->pages as $page) {
     $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
     if ($dropdown) {
-        $html[] = '<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="' . $this->alias($page->getHref()) . '">';
+        $html[] = '<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="' . $this->alias(
+                $page->getHref()
+            ) . '">';
     } else {
         $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
     }
 
     if ($page->get('icon')) {
-        $html[] = '<i class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></i>';
+        if (stristr($page->get('icon'), 'glyphicon-')) {
+            $html[] = '<span class="' . $page->get('icon') . '"></span>';
+        } else {
+            $html[] = '<span class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></span>';
+        }
     }
 
     $html[] = $page->getLabel();

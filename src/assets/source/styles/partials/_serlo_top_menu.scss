@@ -10,7 +10,17 @@
   //min-height: 0;
 
   .nav.navbar-nav {
+
+    &.navbar-border-right {
+      border-right: 2px solid $backgroundColor;
+    }
+
     & > li {
+      &.dropdown.open > a {
+        background-color: $themeColor;
+        color: $white;
+      }
+
       &:hover, &:active {
         background-color: $themeColor;
         & > a {
