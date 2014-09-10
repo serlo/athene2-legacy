@@ -9,20 +9,20 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-return array(
-    'strokercache' => array(
-        'strategies' => array(
-            'enabled' => array(
-                'StrokerCache\Strategy\RouteName' => array(
-                    'routes' => array(
+return [
+    'strokercache' => [
+        'strategies' => [
+            'enabled' => [
+                'StrokerCache\Strategy\RouteName' => [
+                    'routes' => [
                         'taxonomy/term/get',
                         'entity/page',
                         'page/view',
                         'navigation/render',
                         'sitemap'
-                    ),
-                ),
-            ),
-        )
-    ),
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

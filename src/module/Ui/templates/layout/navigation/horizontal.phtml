@@ -35,9 +35,15 @@ foreach ($this->container as $page) {
         $html[] = '<li' . ($dropdown ? ' class="dropdown"' : '') . '>';
         $html[] = '<a class="' . $page->get('class') . ' href="' . ($dropdown ? '#' :
                 $this->alias($page->getHref())) . '" ' . 'class="dropdown-toggle" data-toggle="dropdown">';
+
         if ($page->get('icon')) {
-            $html[] = '<i class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></i>';
+            if (stristr($page->get('icon'), 'glyphicon-')) {
+                $html[] = '<span class="' . $page->get('icon') . '"></span>';
+            } else {
+                $html[] = '<span class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></span>';
+            }
         }
+
         $html[] = $this->translate($page->getLabel());
 
         if ($dropdown) {
@@ -49,9 +55,15 @@ foreach ($this->container as $page) {
         // li-element without subpages
         $html[] = '<li>';
         $html[] = '<a href="' . $this->alias($page->getHref()) . '" class="' . $page->get('class') . '">';
+
         if ($page->get('icon')) {
-            $html[] = '<i class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></i>';
+            if (stristr($page->get('icon'), 'glyphicon-')) {
+                $html[] = '<span class="' . $page->get('icon') . '"></span>';
+            } else {
+                $html[] = '<span class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></span>';
+            }
         }
+
         $html[] = $this->translate($page->getLabel());
         $html[] = '</a>';
     }

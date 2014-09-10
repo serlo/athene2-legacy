@@ -3,10 +3,10 @@
        data-href="{{ url('notification/read') }}">
         <span class="glyphicon glyphicon-bell"></span>
         {% set seen = notifications().getSeen(notifications) %}
-        {{ 'Notifications'|trans }}
         {% if seen.count() %}
             <span class="label label-info">{{ seen.count() }}</span>
         {% endif %}
+        <span class="caret"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
         {% for notification in notifications %}

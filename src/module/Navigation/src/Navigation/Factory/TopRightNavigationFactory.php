@@ -9,7 +9,7 @@
  */
 namespace Navigation\Factory;
 
-class TopRightNavigationFactory extends AbstractNavigationFactory
+class TopRightNavigationFactory extends ProvideableNavigationFactory
 {
     protected function getName()
     {

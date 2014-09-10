@@ -18,9 +18,15 @@ foreach ($this->container as $page) {
     // li-element without subpages
     $html[] = '<div class="col-md-4 col-sm-6 col-xs-12">';
     $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
+
     if ($page->get('icon')) {
-        $html[] = '<i class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></i>';
+        if (stristr($page->get('icon'), 'glyphicon-')) {
+            $html[] = '<span class="' . $page->get('icon') . '"></span>';
+        } else {
+            $html[] = '<span class="glyphicon-regular glyphicon-' . $page->get('icon') . '"></span>';
+        }
     }
+
     $html[] = '<h2>' . $this->translate($page->getLabel()) . '</h2>';
     $html[] = '</a>';
 

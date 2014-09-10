@@ -7,14 +7,12 @@
  * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  */
-return [
-    'navigation' => [
-        'top-right' => [
-            [
-                'label' => '',
-                'uri'   => 'http://facebook.com',
-                'icon'  => 'glyphicon-social glyphicon-facebook',
-            ],
-        ]
-    ]
-];
+namespace Navigation\Factory;
+
+class TopAuthNavigationFactory extends AbstractNavigationFactory
+{
+    protected function getName()
+    {
+        return 'top-auth';
+    }
+}
