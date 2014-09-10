@@ -9,25 +9,15 @@
   //border-radius: 0;
   //min-height: 0;
 
-  nav {
-    /*> li {
-      line-height: 23px;
-      float: left;
-      > a {
-        padding: 8px 15px 6px 0;
-        @include theme-font(600);
-
-        &.important {
-          @include theme-font(700);
-
-          color: $themeColor;
-          &:hover, &:active, &:focus {
-            color: darken($themeColor, 20%);
-            text-decoration: none;
-          }
+  .nav.navbar-nav {
+    & > li {
+      &:hover, &:active {
+        background-color: $themeColor;
+        & > a {
+          color: $white;
         }
       }
-    }*/
+    }
 
     .dropdown-menu {
       position: absolute;
