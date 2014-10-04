@@ -30,7 +30,7 @@ class Comment extends Uuid implements CommentInterface
     use InstanceAwareTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comments")
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $object;
