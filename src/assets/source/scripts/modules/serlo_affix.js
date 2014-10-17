@@ -67,6 +67,25 @@ define(['jquery', 'underscore'], function ($, _) {
         }
     }
 
+    function resetElements($elem) {
+        var cssProp = {};
+
+        // Apply Styles
+        if (useCssTransforms) {
+            cssProp.transform = 'translateY(' + 0 + 'px)';
+            $elem.css(cssProp);
+            // cssProp.top = 0 + 'px';
+        } else {
+            cssProp.top = 0 + 'px';
+
+            $elem.animate(cssProp, {
+                queue: false
+            });
+        }
+
+        $elem.offsetTop = $elem.offset().top;
+    }
+
     throttledPositioning = _.throttle(function () {
         affixQueue.each(positionElements);
     }, 60, {
@@ -83,8 +102,15 @@ define(['jquery', 'underscore'], function ($, _) {
         affixQueue.each(positionElements);
     }
 
+    function affixOnResize() {
+        affixQueue.each(resetElements);
+        affixOnScroll();
+    }
+
     $(window)
         .scroll(affixOnScroll);
+    $(window)
+        .resize(affixOnResize);
 
     SerloAffix = function (options) {
         var $elements = $(this);
