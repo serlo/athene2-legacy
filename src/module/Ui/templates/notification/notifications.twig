@@ -11,7 +11,7 @@
     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
         {% for notification in notifications %}
             {% if notification.getEvents().current() and isGranted('event.log.get', notification.getEvents().current()) %}
-                <li role="presentation" class="{{ notification.getSeen() ? '' : 'active' }}">
+                <li role="presentation" class="{{ notification.getSeen() ? '' : 'bg-info' }}">
                     {% include 'notification/notification' with {'notification': notification} %}
                 </li>
             {% endif %}
