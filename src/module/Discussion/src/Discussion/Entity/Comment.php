@@ -30,7 +30,7 @@ class Comment extends Uuid implements CommentInterface
     use InstanceAwareTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="opinions")
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $object;
@@ -56,7 +56,7 @@ class Comment extends Uuid implements CommentInterface
     protected $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", inversedBy="entities")
+     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", inversedBy="comments")
      * @ORM\JoinTable(name="term_taxonomy_comment",
      * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
      * joinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id")}

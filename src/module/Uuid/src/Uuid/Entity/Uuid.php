@@ -52,11 +52,11 @@ class Uuid implements UuidInterface
     /**
      * @ORM\OneToMany(targetEntity="Discussion\Entity\Comment", mappedBy="object", cascade={"remove"})
      */
-    protected $comments;
+    protected $opinions;
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection;
+        $this->opinions = new ArrayCollection;
     }
 
     public function isTrashed()
