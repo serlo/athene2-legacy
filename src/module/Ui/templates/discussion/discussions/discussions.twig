@@ -1,4 +1,6 @@
 {% set discussions = discussion().getForumDiscussions(forum, false) %}
-{% for discussion in discussions %}
+<div class="discussions">
+    {% for discussion in discussions %}
         {% include 'discussion/helper/default/discussion' with {'discussion': discussion, 'blockquoteClass': '', 'leftWidth': 2} %}
-{% endfor %}
+    {% endfor %}
+</div>
