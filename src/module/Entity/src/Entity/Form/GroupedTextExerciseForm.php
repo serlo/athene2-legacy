@@ -25,7 +25,7 @@ class GroupedTextExerciseForm extends Form
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
-        $this->add((new Textarea('content'))->setLabel('Content:'));
+        $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
             (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
