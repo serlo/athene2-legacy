@@ -27,7 +27,7 @@ class ApiController extends AbstractController
             'saplings' => [],
         ];
         foreach ($taxonomy->getChildren() as $term) {
-            $data['child_terms'][] = $this->ajaxify($term);
+            $data['saplings'][] = $this->ajaxify($term);
         }
         $view = new JsonModel($data);
         return $view;
