@@ -15,7 +15,7 @@ echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf
 apt-get -y update
 apt-get install -y python-software-properties python g++ make python-software-properties
 apt-get install -y apache2 mysql-server-5.5 git
-apt-get install -y language-pack-de-base
+apt-get install -y language-pack-de-base inotify-tools
 
 # Add repositories with current versions
 sudo add-apt-repository -y ppa:chris-lea/node.js
@@ -33,7 +33,7 @@ apt-get install -y solr-tomcat
 # Install nodejs related stuff
 
 apt-get install -y nodejs
-apt-get install -y npm
+apt-get install -y npm --unsafe-perm
 apt-get install -y ruby-sass 
 apt-get install -y ruby-compass
 usermod -a -G vagrant www-data
@@ -43,8 +43,15 @@ usermod -a -G vagrant www-data
 npm -g install bower
 npm -g install grunt
 npm -g install grunt-cli
-npm -g install pm2
+npm -g install pm2 --unsafe-perm
 npm -g install dnode
+
+# HHVM
+sudo add-apt-repository ppa:mapnik/boost
+wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | sudo apt-key add -
+echo deb http://dl.hhvm.com/ubuntu precise main | sudo tee /etc/apt/sources.list.d/hhvm.list
+sudo apt-get update
+sudo apt-get install -y hhvm
 
 # VirtualHost setup
 echo "<VirtualHost *:80>
@@ -53,6 +60,9 @@ echo "<VirtualHost *:80>
 	SetEnv APPLICATION_ENV \"development\"
 
 	DocumentRoot /var/www/src/public/
+
+	ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/src/public
+
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
@@ -88,30 +98,32 @@ sed -i '$ a\xdebug.max_nesting_level = 500' /etc/php5/apache2/php.ini
 ln -s /vagrant/bin/ /home/vagrant/bin
 
 # Enable apache mods
-a2enmod rewrite
+a2enmod rewrite proxy proxy_fcgi
 a2ensite athene2
+
+# Synch
+sudo /home/vagrant/bin/synch.sh
 
 # Restart apache
 service apache2 restart
 
 # Mysql
 sudo sed -i "s/bind-address.*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
-mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
+# mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
 
 # Install sphinxsearch
 # echo START=yes > /etc/default/sphinxsearch
-mkdir /var/lib/sphinxsearch/log
+# mkdir /var/lib/sphinxsearch/log
 
 # npm hack
-rm /var/www/src/assets/node_modules
+rm /var/athene/src/assets/node_modules
 sudo su - vagrant -c "mkdir /home/vagrant/athene2-assets/node_modules -p"
-sudo su - vagrant -c "ln -s /var/www/src/assets/package.json /home/vagrant/athene2-assets/"
+sudo su - vagrant -c "ln -s /var/athene/src/assets/package.json /home/vagrant/athene2-assets/"
 sudo chown vagrant:vagrant /home/vagrant/athene2-assets * -R
-ln -s /home/vagrant/athene2-assets/node_modules /var/www/src/assets/node_modules
+ln -s /home/vagrant/athene2-assets/node_modules /var/athene/src/assets/node_modules
 
 # Install crontab
-echo "* * * * * indexer --all --rotate" > cron
-echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
+# echo "*/10 * * * * cd /var/www/src && php public/index.php notification worker" >> cron
 crontab cron
 rm cron
 
@@ -122,9 +134,13 @@ sudo sed -i "s/\memory\_limit=128M/memory\_limit=512M/" /etc/php5/apache2/php.in
 sudo sed -i "s/\upload\_max\_filesize = .*M/upload\_max\_filesize = 128M/" /etc/php5/apache2/php.ini
 sudo sed -i "s/\post\_max\_size = .*M/post\_max\_size = 128M/" /etc/php5/apache2/php.ini
 
-sudo su - www-data -c "(cd /var/www/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar install)"
+sudo su - www-data -c "(cd /var/athene/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar install)"
+
+# Restart apache
+service apache2 restart
 
 chmod +x /home/vagrant/bin/*
-sudo /home/vagrant/bin/clean-ui.sh
+sudo /home/vagrant/bin/clear-caches.sh
+sudo /home/vagrant/bin/clear-ui.sh
 sudo /home/vagrant/bin/boot.sh
 sudo /home/vagrant/bin/update-mysql.sh

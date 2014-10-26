@@ -5,13 +5,13 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|  
-  config.vm.box = "http://files.vagrantup.com/precise32.box"
-  config.vm.box = "precise32"
+  config.vm.box = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "precise64"
   config.vm.provision :shell, :path => "bootstrap.sh"
   config.vm.network :forwarded_port, host: 4567, guest: 80
   config.vm.network :forwarded_port, host: 4568, guest: 8080
   config.vm.network :forwarded_port, host: 3456, guest: 3306
-  config.vm.synced_folder "../", "/var/www", :owner => "www-data", :group => "www-data"
+  config.vm.synced_folder "../", "/var/athene", :owner => "www-data", :group => "www-data"
   config.vm.provider :virtualbox do |vb|
     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/var/www", "1"]
     vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
