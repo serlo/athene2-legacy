@@ -25,7 +25,7 @@ class ApiController extends AbstractController
             'instance' => $taxonomy->getInstance()->getId(),
             'id'       => $taxonomy->getId(),
         ];
-        $view = new JsonModel($data);
+        $view     = new JsonModel($data);
         return $view;
     }
 
@@ -63,6 +63,7 @@ class ApiController extends AbstractController
             'type'     => $term->getType()->getName(),
             'taxonomy' => $term->getTaxonomy()->getId(),
             'url'      => $this->url()->fromRoute('uuid/get', ['uuid' => $term->getId()]),
+            'parent'   => $term->getParent()->getId(),
             'children' => []
         ];
 
