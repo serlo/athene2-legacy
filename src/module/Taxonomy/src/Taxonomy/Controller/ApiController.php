@@ -24,10 +24,10 @@ class ApiController extends AbstractController
             'name'     => $taxonomy->getName(),
             'instance' => $taxonomy->getInstance()->getId(),
             'id'       => $taxonomy->getId(),
-            'children' => []
+            'saplings' => [],
         ];
         foreach ($taxonomy->getChildren() as $term) {
-            $data['children'][] = $this->ajaxify($term);
+            $data['child_terms'][] = $this->ajaxify($term);
         }
         $view = new JsonModel($data);
         return $view;
