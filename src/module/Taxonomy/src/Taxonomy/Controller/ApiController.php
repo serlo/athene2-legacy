@@ -63,7 +63,7 @@ class ApiController extends AbstractController
             'type'     => $term->getType()->getName(),
             'taxonomy' => $term->getTaxonomy()->getId(),
             'url'      => $this->url()->fromRoute('uuid/get', ['uuid' => $term->getId()]),
-            'parent'   => $term->getParent()->getId(),
+            'parent'   => $term->hasParent() ? $term->getParent()->getId() : null,
             'children' => []
         ];
 
