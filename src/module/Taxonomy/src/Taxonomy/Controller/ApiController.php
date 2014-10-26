@@ -15,7 +15,7 @@ use Zend\View\Model\JsonModel;
 
 class ApiController extends AbstractController
 {
-    public function typesAction()
+    public function typeAction()
     {
         $type     = $this->params('type');
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
@@ -24,10 +24,32 @@ class ApiController extends AbstractController
             'name'     => $taxonomy->getName(),
             'instance' => $taxonomy->getInstance()->getId(),
             'id'       => $taxonomy->getId(),
-            'saplings' => [],
         ];
+        $view = new JsonModel($data);
+        return $view;
+    }
+
+    public function termsAction()
+    {
+        $type     = $this->params('type');
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($type, $instance);
+        $data     = [];
+        foreach ($taxonomy->getTerms() as $term) {
+            $data[] = $this->ajaxify($term);
+        }
+        $view = new JsonModel($data);
+        return $view;
+    }
+
+    public function saplingsAction()
+    {
+        $type     = $this->params('type');
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($type, $instance);
+        $data     = [];
         foreach ($taxonomy->getChildren() as $term) {
-            $data['saplings'][] = $this->ajaxify($term);
+            $data[] = $this->ajaxify($term);
         }
         $view = new JsonModel($data);
         return $view;

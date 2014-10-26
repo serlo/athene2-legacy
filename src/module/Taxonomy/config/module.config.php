@@ -66,12 +66,41 @@ return [
                 ],
                 'child_routes' => [
                     'types' => [
-                        'type'     => 'Segment',
-                        'options'  => [
-                            'route' => '/types/:type',
-                            'defaults' => [
-                                'action' => 'types'
-                            ]
+                        'type'         => 'Segment',
+                        'options'      => [
+                            'route'    => '/types',
+                        ],
+                        'child_routes' => [
+                            'type' => [
+                                'type'         => 'Segment',
+                                'options'      => [
+                                    'route'    => '/:type',
+                                    'defaults' => [
+                                        'action' => 'type'
+                                    ]
+                                ],
+                                'may_terminate' => true,
+                                'child_routes' => [
+                                    'saplings' => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/saplings',
+                                            'defaults' => [
+                                                'action' => 'saplings'
+                                            ]
+                                        ]
+                                    ],
+                                    'terms'    => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/terms',
+                                            'defaults' => [
+                                                'action' => 'terms'
+                                            ]
+                                        ]
+                                    ],
+                                ]
+                            ],
                         ]
                     ],
                 ]
