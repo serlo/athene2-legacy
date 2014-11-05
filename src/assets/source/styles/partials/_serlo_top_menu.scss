@@ -16,6 +16,12 @@
     }
 
     & > li {
+
+      > a.primary {
+        color: $themeColor;
+        font-weight: 700;
+      }
+
       &.dropdown.open > a {
         background-color: $themeColor;
         color: $white;
