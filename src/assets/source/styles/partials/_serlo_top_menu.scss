@@ -32,6 +32,17 @@
     .dropdown-menu {
       position: absolute;
       background: white;
+      & > li {
+        &:hover, &:active {
+          & > a {
+            background-color: $themeColor;
+            color: $white;
+          }
+        }
+        & > a {
+          padding: 10px 20px;
+        }
+      }
     }
   }
 
