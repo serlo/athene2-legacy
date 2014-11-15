@@ -61,7 +61,7 @@ echo "<VirtualHost *:80>
 
 	DocumentRoot /var/www/src/public/
 
-	ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/src/public
+	# ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/src/public
 
 	<Directory />
 		Options FollowSymLinks
@@ -109,23 +109,11 @@ service apache2 restart
 
 # Mysql
 sudo sed -i "s/bind-address.*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
-# mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
-
-# Install sphinxsearch
-# echo START=yes > /etc/default/sphinxsearch
-# mkdir /var/lib/sphinxsearch/log
-
-# npm hack
-rm /var/athene/src/assets/node_modules
-sudo su - vagrant -c "mkdir /home/vagrant/athene2-assets/node_modules -p"
-sudo su - vagrant -c "ln -s /var/athene/src/assets/package.json /home/vagrant/athene2-assets/"
-sudo chown vagrant:vagrant /home/vagrant/athene2-assets * -R
-ln -s /home/vagrant/athene2-assets/node_modules /var/athene/src/assets/node_modules
 
 # Install crontab
 # echo "*/10 * * * * cd /var/www/src && php public/index.php notification worker" >> cron
-crontab cron
-rm cron
+# crontab cron
+# rm cron
 
 # Php hacks
 sudo sed -i "s/\;pcre\.backtrack\_limit=100000/pcre\.backtrack\_limit=10000/" /etc/php5/cli/php.ini
@@ -134,13 +122,17 @@ sudo sed -i "s/\memory\_limit=128M/memory\_limit=512M/" /etc/php5/apache2/php.in
 sudo sed -i "s/\upload\_max\_filesize = .*M/upload\_max\_filesize = 128M/" /etc/php5/apache2/php.ini
 sudo sed -i "s/\post\_max\_size = .*M/post\_max\_size = 128M/" /etc/php5/apache2/php.ini
 
-sudo su - www-data -c "(cd /var/athene/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar install)"
+sudo su - www-data -c "(cd /var/www/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar install)"
+
+# Restart apache
+sudo a2dissite 000-default
+sudo service apache2 restart
+
+chmod +x /home/vagrant/bin/*
+sudo /home/vagrant/bin/clean-caches.sh
+sudo /home/vagrant/bin/clean-ui.sh
+sudo /home/vagrant/bin/boot.sh
+sudo /home/vagrant/bin/update-mysql.sh
 
 # Restart apache
 service apache2 restart
-
-chmod +x /home/vagrant/bin/*
-sudo /home/vagrant/bin/clear-caches.sh
-sudo /home/vagrant/bin/clear-ui.sh
-sudo /home/vagrant/bin/boot.sh
-sudo /home/vagrant/bin/update-mysql.sh
