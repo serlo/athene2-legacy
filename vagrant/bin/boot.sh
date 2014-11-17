@@ -10,4 +10,4 @@
 sudo sh restart-hhvm.sh
 sudo su - www-data -c "(pm2 start /var/www/src/assets/node_modules/athene2-editor/server/server.js)"
 sudo su - www-data -c "(cd /var/www/;COMPOSER_PROCESS_TIMEOUT=5600 php composer.phar update -o)"
-sudo su - www-data -c "cd /var/www/src/assets/;npm install && bower install && grunt dev"
+sudo su - www-data -c "cd /var/www/src/assets/;npm install && bower install && grunt dev &"
