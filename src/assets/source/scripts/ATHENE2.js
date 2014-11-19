@@ -67,6 +67,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 $('form[name="discussion"]', $context).ForumSelect();
                 // Slider
                 $('.carousel.slide.carousel-tabbed', $context).Slider();
+
                 $('.r img', $context).each(function () {
                     var $that = $(this);
                     $that.magnificPopup({
@@ -77,6 +78,12 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                         },
                         image: {
                             verticalFit: true
+                        },
+                        disableOn: function () {
+                            if ($that.parents('a').length > 0) {
+                                return false;
+                            }
+                            return true;
                         }
                     });
                 });
