@@ -60,11 +60,12 @@ return [
             __NAMESPACE__ . '\Form\PositionPageForm'                => __NAMESPACE__ . '\Factory\PositionPageFormFactory',
             'top_left_navigation'                                   => __NAMESPACE__ . '\Factory\TopLeftNavigationFactory',
             'top_right_navigation'                                  => __NAMESPACE__ . '\Factory\TopRightNavigationFactory',
+            'top_auth_navigation'                                   => __NAMESPACE__ . '\Factory\TopAuthNavigationFactory',
             'top_center_navigation'                                 => __NAMESPACE__ . '\Factory\TopCenterNavigationFactory',
             'footer_navigation'                                     => __NAMESPACE__ . '\Factory\FooterNavigationFactory',
             'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory',
             'frontpage_navigation'                                  => __NAMESPACE__ . '\Factory\FrontPageNavigationFactory',
-            'default_navigation'                                            => __NAMESPACE__ . '\Factory\UniqueDefaultNavigationFactory',
+            'default_navigation'                                    => __NAMESPACE__ . '\Factory\UniqueDefaultNavigationFactory',
         ]
     ],
     'view_helpers'       => [

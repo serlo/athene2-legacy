@@ -83,6 +83,9 @@ class SearchService implements SearchServiceInterface
      */
     public function rebuild()
     {
+        ini_set('mysql.connect_timeout', 60 * 30);
+        ini_set('default_socket_timeout', 60 * 30);
+
         $this->erase();
         $providers = $this->moduleOptions->getProviders();
         foreach ($providers as $provider) {

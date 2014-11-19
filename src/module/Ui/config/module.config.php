@@ -20,6 +20,9 @@ return [
             ],
             'top-center' => [
                 'hydrators' => []
+            ],
+            'top-right'  => [
+                'hydrators' => []
             ]
         ]
     ],

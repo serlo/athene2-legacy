@@ -56,7 +56,58 @@ return [
     ],
     'router'           => [
         'routes' => [
-            'taxonomy' => [
+            'taxonomies' => [
+                'type'         => 'literal',
+                'options'      => [
+                    'route'         => '/taxonomies',
+                    'defaults'      => [
+                        'controller' => __NAMESPACE__ . '\Controller\ApiController'
+                    ]
+                ],
+                'child_routes' => [
+                    'types' => [
+                        'type'         => 'Segment',
+                        'options'      => [
+                            'route' => '/types',
+                            'action'     => 'types'
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'type' => [
+                                'type'          => 'Segment',
+                                'options'       => [
+                                    'route'    => '/:type',
+                                    'defaults' => [
+                                        'action' => 'type'
+                                    ]
+                                ],
+                                'may_terminate' => true,
+                                'child_routes'  => [
+                                    'saplings' => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/saplings',
+                                            'defaults' => [
+                                                'action' => 'saplings'
+                                            ]
+                                        ]
+                                    ],
+                                    'terms'    => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/terms',
+                                            'defaults' => [
+                                                'action' => 'terms'
+                                            ]
+                                        ]
+                                    ],
+                                ]
+                            ],
+                        ]
+                    ],
+                ]
+            ],
+            'taxonomy'   => [
                 'type'         => 'literal',
                 'options'      => [
                     'route' => '/taxonomy'
@@ -161,7 +212,8 @@ return [
     'di'               => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\TermController',
-            __NAMESPACE__ . '\Controller\GetController'
+            __NAMESPACE__ . '\Controller\GetController',
+            __NAMESPACE__ . '\Controller\ApiController'
         ],
         'definition'          => [
             'class' => [
@@ -172,6 +224,7 @@ return [
                 ],
                 __NAMESPACE__ . '\Form\TermForm'                  => [],
                 __NAMESPACE__ . '\Controller\GetController'       => [],
+                __NAMESPACE__ . '\Controller\ApiController'       => [],
                 __NAMESPACE__ . '\Controller\TermController'      => [],
                 __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => []
             ]

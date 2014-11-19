@@ -30,7 +30,7 @@ class AuthenticationService extends ZendAuthenticationService
     protected $sessionConfig;
 
     /**
-     * @var Request
+     * @var Response
      */
     protected $response;
 
@@ -78,7 +78,8 @@ class AuthenticationService extends ZendAuthenticationService
         if ($result->isValid()) {
             // Set authentication indicator cookie
             $lifetime = (int)$this->sessionConfig->getCookieLifetime();
-            $expires  = time() + $lifetime;
+            $expires  = $lifetime !== 0 ? time() + $lifetime : null;
+            $lifetime = $lifetime !== 0 ? $lifetime : null;
             $this->setCookie(true, $expires, $lifetime);
         }
 
@@ -120,12 +121,20 @@ class AuthenticationService extends ZendAuthenticationService
         if ($cookie->offsetExists($this->cookieName) && $cookie->offsetGet($this->cookieName)) {
             return true;
         }
+        $cookies = $this->response->getCookie();
+        foreach ($cookies as $cookie) {
+            if ($cookie->getName() === $this->cookieName && $cookie->getValue() === true) {
+                return true;
+            }
+        }
         return false;
     }
 
-    protected function setCookie($value, $expires, $lifetime = null)
+    protected function setCookie($value, $expires = null, $lifetime = null)
     {
-        $cookie = new SetCookie((string)$this->cookieName, $value, (int)$expires, $this->cookiePath, null, null, null, (int)$lifetime, null);
+        $cookie = new SetCookie(
+            (string)$this->cookieName, $value, $expires, $this->cookiePath, null, null, null, $lifetime, null
+        );
         $this->response->getHeaders()->addHeader($cookie);
     }
 }

@@ -84,9 +84,16 @@ class Module
 
         putenv('LC_ALL=' . $locale);
         putenv('LC_MESSAGES=' . $locale);
-        bindtextdomain('athene2', __DIR__ . '/../../lang');
-        bind_textdomain_codeset('athene2', 'UTF-8');
-        textdomain('athene2');
+
+        if(function_exists('bindtextdomain')){
+            bindtextdomain('athene2', __DIR__ . '/../../lang');
+        }
+        if(function_exists('bind_textdomain_codeset')){
+            bind_textdomain_codeset('athene2', 'UTF-8');
+        }
+        if(function_exists('textdomain')){
+            textdomain('athene2');
+        }
 
         $translator->addTranslationFile('PhpArray', __DIR__ . '/../../lang/routes/' . $code . '.php', 'default', $code);
         $translator->setLocale($locale);

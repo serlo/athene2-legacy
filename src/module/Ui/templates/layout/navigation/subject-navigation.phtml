@@ -19,11 +19,11 @@ foreach ($this->container as $page) {
     $html[] = '</div>';
     $html[] = '<div class="col-xs-7">';
 
-    if(! empty($page->pages)) {
-        $html[] = '<ul class="nav">';
-        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages, 'useBreadCrumbs' => false));
-        $html[] = "</ul>";
-    }
+    //if(! empty($page->pages)) {
+    //    $html[] = '<ul class="nav">';
+    //    $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages, 'useBreadCrumbs' => false));
+    //    $html[] = "</ul>";
+    //}
 
     $html[] = '</div>';
     $html[] = '</div>';

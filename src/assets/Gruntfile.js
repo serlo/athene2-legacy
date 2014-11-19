@@ -247,6 +247,9 @@ module.exports = function (grunt) {
                 '<%= serlo.tmp %>/styles/{,*/}*.css',
                 '!<%= serlo.tmp %>/scripts/vendor/*'
             ],
+            "extensibility" : {
+                "prefixed" : true
+            },
             uglify: true
         },
         concurrent: {

@@ -71,6 +71,7 @@ class AttachmentController extends AbstractActionController
 
     protected function createJsonResponse(ContainerInterface $attachment)
     {
+        $files = [];
 
         foreach ($attachment->getFiles() as $file) {
             $url     = $this->url()->fromRoute(

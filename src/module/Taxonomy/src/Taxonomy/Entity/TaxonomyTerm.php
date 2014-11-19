@@ -203,11 +203,11 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
             throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
         }
 
-        if (property_exists($this, $field)) {
-            return $this->$field;
+        $method = 'get' . ucfirst($field);
+        if (method_exists($this, $method)) {
+            return $this->$method();
         } else {
-            $field = 'get' . ucfirst($field);
-            return $this->$field();
+            return $this->$field;
         }
     }
 

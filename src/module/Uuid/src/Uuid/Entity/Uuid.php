@@ -9,6 +9,7 @@
  */
 namespace Uuid\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Uuid\Exception;
 
@@ -47,6 +48,16 @@ class Uuid implements UuidInterface
      * @ORM\OneToMany(targetEntity="Flag\Entity\Flag", mappedBy="object")
      */
     protected $flags;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Discussion\Entity\Comment", mappedBy="object", cascade={"remove"})
+     */
+    protected $opinions;
+
+    public function __construct()
+    {
+        $this->opinions = new ArrayCollection;
+    }
 
     public function isTrashed()
     {
