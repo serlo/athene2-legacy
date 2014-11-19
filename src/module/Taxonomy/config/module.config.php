@@ -59,20 +59,22 @@ return [
             'taxonomies' => [
                 'type'         => 'literal',
                 'options'      => [
-                    'route'         => '/taxonomies',
-                    'defaults'      => [
+                    'route'    => '/taxonomies',
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\ApiController'
                     ]
                 ],
                 'child_routes' => [
                     'types' => [
-                        'type'         => 'Segment',
-                        'options'      => [
-                            'route' => '/types',
-                            'action'     => 'types'
+                        'type'          => 'Segment',
+                        'options'       => [
+                            'route'    => '/types',
+                            'defaults' => [
+                                'action' => 'types'
+                            ]
                         ],
                         'may_terminate' => true,
-                        'child_routes' => [
+                        'child_routes'  => [
                             'type' => [
                                 'type'          => 'Segment',
                                 'options'       => [
