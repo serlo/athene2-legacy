@@ -18,15 +18,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     :group => "www-data",
     type: "rsync",
     rsync__auto: "true",
-    rsync__exclude: [".git/", ".idea/"],
-    rsync__args: ["--verbose", "-r", "-l", "--stats"]
+    rsync__exclude: [".git/", ".idea/", "src/data", "src/assets/build", "src/assets/tmp", "src/assets/source/bower_components", "src/assets/node_modules"],
+    rsync__args: ["--verbose", "-r", "-l", "--delete", "--stats"]
 
   config.vm.provider :virtualbox do |vb|
     # Solves an issue with dns resolving (nodejs)
     vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     vb.customize ['modifyvm', :id, '--natdnsproxy1', 'off']
 
-    vb.customize ["modifyvm", :id, "--memory", "512"]
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
 
 end
