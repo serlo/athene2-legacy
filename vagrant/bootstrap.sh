@@ -34,7 +34,7 @@ apt-get install -y solr-tomcat
 
 apt-get install -y nodejs
 apt-get install -y npm --unsafe-perm
-apt-get install -y ruby-sass 
+apt-get install -y ruby-sass
 apt-get install -y ruby-compass
 usermod -a -G vagrant www-data
 
@@ -100,9 +100,6 @@ ln -s /vagrant/bin/ /home/vagrant/bin
 # Enable apache mods
 a2enmod rewrite proxy proxy_fcgi
 a2ensite athene2
-
-# Synch
-sudo /home/vagrant/bin/synch.sh
 
 # Restart apache
 service apache2 restart
