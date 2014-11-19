@@ -15,6 +15,22 @@ use Zend\View\Model\JsonModel;
 
 class ApiController extends AbstractController
 {
+    public function typesAction()
+    {
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomies = $this->getTaxonomyManager()->findAllTaxonomies($instance);
+        $data       = [];
+        foreach ($taxonomies as $taxonomy) {
+            $data[] = [
+                'name'     => $taxonomy->getName(),
+                'instance' => $taxonomy->getInstance()->getId(),
+                'id'       => $taxonomy->getId(),
+            ];
+        }
+        $view = new JsonModel($data);
+        return $view;
+    }
+
     public function typeAction()
     {
         $type     = $this->params('type');

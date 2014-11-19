@@ -79,11 +79,13 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->assertGranted('taxonomy.term.associate', $term);
 
         if (!$this->isAssociableWith($term, $object)) {
-            throw new Exception\RuntimeException(sprintf(
-                'Taxonomy "%s" can\'t be associated with "%s"',
-                $term->getTaxonomy()->getName(),
-                get_class($object)
-            ));
+            throw new Exception\RuntimeException(
+                sprintf(
+                    'Taxonomy "%s" can\'t be associated with "%s"',
+                    $term->getTaxonomy()->getName(),
+                    get_class($object)
+                )
+            );
         }
 
         if ($term->isAssociated($object)) {
@@ -134,6 +136,20 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $terms     = $this->getObjectManager()->getRepository($className)->findAll();
         $this->objectManager->setBypassIsolation($old);
         return new ArrayCollection($terms);
+    }
+
+    public function findAllTaxonomies(InstanceInterface $instance)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
+        $criteria  = ['instance' => $instance->getId()];
+        $entities  = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+
+        foreach ($entities as $entity) {
+            $this->assertGranted('taxonomy.get', $entity);
+
+        }
+
+        return $entities;
     }
 
     public function findTaxonomyByName($name, InstanceInterface $instance)
@@ -190,19 +206,23 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
 
         if (!is_object($found)) {
-            throw new Exception\TermNotFoundException(sprintf(
-                'Could not find term with acestors: %s',
-                implode(',', $ancestors)
-            ));
+            throw new Exception\TermNotFoundException(
+                sprintf(
+                    'Could not find term with acestors: %s',
+                    implode(',', $ancestors)
+                )
+            );
         }
 
         if ($ancestorsFound != count($ancestors)) {
-            throw new Exception\TermNotFoundException(sprintf(
-                'Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1',
-                implode(',', $ancestors),
-                $ancestorsFound,
-                count($ancestors)
-            ));
+            throw new Exception\TermNotFoundException(
+                sprintf(
+                    'Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1',
+                    implode(',', $ancestors),
+                    $ancestorsFound,
+                    count($ancestors)
+                )
+            );
         }
 
         return $found;
@@ -311,10 +331,12 @@ class TaxonomyManager implements TaxonomyManagerInterface
     protected function bind(TaxonomyTermInterface $object, FormInterface $form)
     {
         if (!$form->isValid()) {
-            throw new RuntimeException(print_r(
-                [$form->getMessages(), $form->getData(FormInterface::VALUES_AS_ARRAY)],
-                true
-            ));
+            throw new RuntimeException(
+                print_r(
+                    [$form->getMessages(), $form->getData(FormInterface::VALUES_AS_ARRAY)],
+                    true
+                )
+            );
         }
         $processingForm = clone $form;
         $data           = $form->getData(FormInterface::VALUES_AS_ARRAY);

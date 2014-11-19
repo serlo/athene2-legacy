@@ -55,6 +55,12 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
     public function findTaxonomyByName($name, InstanceInterface $instance);
 
     /**
+     * @param InstanceInterface $instance
+     * @return TaxonomyInterface[]
+     */
+    public function findAllTaxonomies(InstanceInterface $instance);
+
+    /**
      * @param TaxonomyInterface $taxonomy
      * @param array             $ancestors
      * @return TaxonomyTermInterface
