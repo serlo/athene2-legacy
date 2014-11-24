@@ -212,9 +212,29 @@ class RoleController extends AbstractActionController
 
     public function rolesAction()
     {
-        $this->assertGranted('authorization.role.create');
         $roles = $this->getRoleService()->findAllRoles();
-        $view  = new ViewModel(['roles' => $roles]);
+
+        if (!($this->isGranted('authorization.role.create') ||
+              $this->isGranted('authorization.role.grant.permission') ||
+              $this->isGranted('authorization.role.revoke.permission')
+        )) {
+            $identityRoleGranted = false;
+
+            // Check whether authorization.identity.revoke.role or authorization.identity.grant.role
+            // is granted for some role
+            foreach ($roles as $role) {
+                if ($this->isGranted('authorization.identity.revoke.role', $role) ||
+                    $this->isGranted('authorization.identity.grant.role', $role)) {
+                    $identityRoleGranted = true;
+                    break;
+                }
+            }
+
+            if (!$identityRoleGranted) {
+                throw new UnauthorizedException;
+            }
+        }
+        $view = new ViewModel(['roles' => $roles]);
         $view->setTemplate('authorization/role/roles');
 
         return $view;
@@ -222,14 +242,16 @@ class RoleController extends AbstractActionController
 
     public function showAction()
     {
-        if (!($this->isGranted('authorization.role.revoke.permission') || $this->isGranted(
-                'authorization.role.grant.permission'
-            ))
-        ) {
-            throw new UnauthorizedException;
-        }
         $role = $this->params('role');
         $role = $this->getRoleService()->getRole($role);
+
+        if (!($this->isGranted('authorization.role.revoke.permission') ||
+              $this->isGranted('authorization.role.grant.permission') ||
+              $this->isGranted('authorization.identity.revoke.role', $role) ||
+              $this->isGranted('authorization.identity.grant.role', $role)
+        )) {
+            throw new UnauthorizedException;
+        }
 
         $view = new ViewModel([
             'role'  => $role,
