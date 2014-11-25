@@ -44,11 +44,6 @@ class MarkdownHelper extends AbstractHelper
                 return $this->getRenderService()->render($content);
             } catch (RuntimeException $e) {
                 return htmlspecialchars($content);
-            } catch (Exception $e) {
-                $message  = $this->getView()->translate('Rendering failed:');
-                $eMessage = $e->getMessage();
-                $content  = htmlspecialchars($content);
-                return '<div class="alert alert-error"><strong>' . $message . '</strong> ' . $eMessage . '</div>' . $content;
             }
         } else {
             return $this->getRenderService()->render($content);

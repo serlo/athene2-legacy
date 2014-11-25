@@ -9,9 +9,11 @@
  */
 namespace Mailman;
 
+use Mailman\Options\ModuleOptions;
 use Zend\Console\Request;
 use Zend\Mvc\MvcEvent;
 use Zend\Uri\Http;
+use Zend\View\Helper\ServerUrl;
 
 class Module
 {
@@ -71,6 +73,23 @@ class Module
             $moduleOptions = $serviceLocator->get('Mailman\Options\ModuleOptions');
             $uri           = new Http($moduleOptions->getLocation());
             $serviceLocator->get('HttpRouter')->setRequestUri($uri);
+
+            $moduleOptions = $serviceLocator->get('Mailman\Options\ModuleOptions');
+            $serverUrlHelper = $serviceLocator->get('ViewHelperManager')->get('serverUrl');
+            $this->injectServerUrl($serverUrlHelper, $moduleOptions);
+            $serverUrlHelper = $serviceLocator->get('ZfcTwigViewHelperManager')->get('serverUrl');
+            $this->injectServerUrl($serverUrlHelper, $moduleOptions);
         }
+    }
+
+    /**
+     * @param ServerUrl     $serverUrlHelper
+     * @param ModuleOptions $moduleOptions
+     */
+    protected function injectServerUrl(ServerUrl $serverUrlHelper, ModuleOptions $moduleOptions){
+        $options = parse_url($moduleOptions->getLocation());
+        $serverUrlHelper->setScheme($options['scheme']);
+        $serverUrlHelper->setPort(isset($options['port']) ? $options['port'] : 80);
+        $serverUrlHelper->setHost($options['host']);
     }
 }
