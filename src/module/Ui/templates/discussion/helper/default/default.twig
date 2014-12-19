@@ -1,6 +1,6 @@
 {% set discussions = discussion().getDiscussions(object) %}
 {% set form = discussion().getForm('discussion', object, forum) %}
-<h1 class="heading-content">
+<div class="h1 heading-content">
     {% if isGranted('discussion.create') %}
         <button class="discussion-start btn btn-success pull-right" data-toggle="collapse"
                 data-target="#discussion-form-container-{{ object.getId() }}">
@@ -13,7 +13,7 @@
         </a>
     {% endif %}
     <span>{{ 'Discussions' | trans }}</span>
-</h1>
+</div>
 <div class="collapse" id="discussion-form-container-{{ object.getId() }}">
     <div class="blockquote blockquote-primary blockquote-box">
         <div class="row">
