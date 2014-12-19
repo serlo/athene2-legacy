@@ -10,13 +10,6 @@
         <div class="col-xs-2 col-sm-5 col-md-4">
             <ul class="nav nav-pills nav-right">
                 {% include 'entity/view/partials/actions/small-essential' %}
-                <li class="hidden-xs" data-toggle="tooltip" data-placement="bottom"
-                    title="{% trans %} I want to comment this {% endtrans %}">
-                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}"
-                       href="#discussions-{{ entity.getId() }}">
-                        <span class="glyphicon glyphicon-comment"></span>
-                    </a>
-                </li>
                 {% if(hint) %}
                     <li data-toggle="tooltip" data-placement="bottom" title="{% trans %} I need a hint {% endtrans %}">
                         <a data-toggle="collapse" href="#hint-{{ hint.getId() }}">
@@ -34,9 +27,6 @@
                 {% endif %}
             </ul>
         </div>
-    </section>
-    <section class="collapse" id="discussions-{{ entity.getId() }}">
-        {{ discussion(entity).render('minimalistic', 2) }}
     </section>
     {% if hint %}
         <section>
