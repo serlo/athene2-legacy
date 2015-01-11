@@ -13,6 +13,7 @@ namespace Entity\Controller;
 use Common\Filter\PreviewFilter;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
+use Entity\Entity\EntityInterface;
 use Entity\Filter\EntityAgeCollectionFilter;
 use Entity\Manager\EntityManagerInterface;
 use Markdown\Exception\RuntimeException;
@@ -103,7 +104,7 @@ class ApiController extends AbstractController
                 $entry->setDescription($item['description']);
                 $entry->setId($item['guid']);
                 $entry->setLink($item['link']);
-                foreach ($item['keywords'] as $keyword) {
+                foreach ($item['categories'] as $keyword) {
                     $entry->addCategory(['term' => $keyword]);
                 }
                 $entry->setDateModified($item['lastModified']);
@@ -145,14 +146,31 @@ class ApiController extends AbstractController
             $item        = [
                 'title'        => $normalized->getTitle(),
                 'description'  => $description,
-                'guid'         => (string) $entity->getId(),
+                'guid'         => (string)$entity->getId(),
                 'keywords'     => $normalized->getMetadata()->getKeywords(),
+                'categories'   => $this->getCategories($entity),
                 'link'         => $this->url()->fromRoute($normalized->getRouteName(), $normalized->getRouteParams()),
                 'lastModified' => $normalized->getMetadata()->getLastModified()
             ];
             $data[]      = $item;
         }
         return $data;
+    }
+
+    protected function getCategories(EntityInterface $entity)
+    {
+        $categories = [];
+        $i          = 0;
+        foreach ($entity->getTaxonomyTerms() as $term) {
+            $categories[$i] = '';
+            while ($term->hasParent()) {
+                $categories[$i] = $term->getName() . '/' . $categories[$i];
+                $term = $term->getParent();
+            }
+            $categories[$i] = substr($categories[$i], 0, -1);
+            $i++;
+        }
+        return $categories;
     }
 }
  
