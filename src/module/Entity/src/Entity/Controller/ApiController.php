@@ -25,6 +25,7 @@ use Zend\Feed\Writer\Feed;
 use Zend\Filter\FilterChain;
 use Zend\View\Model\FeedModel;
 use Zend\View\Model\JsonModel;
+use Entity\Entity\RevisionField;
 
 class ApiController extends AbstractController
 {
@@ -129,6 +130,35 @@ class ApiController extends AbstractController
         return $feedModel;
     }
 
+    public function entityAction()
+    {
+        $id     = $this->params('id');
+        $format = $this->params()->fromQuery('format', 'html');
+        $entity = $this->getEntity($id);
+        $item   = [
+            'id'      => $entity->getId(),
+            'type'    => $entity->getType()->getName(),
+            'content' => []
+        ];
+
+        foreach ($entity->getCurrentRevision()->getFields() as $field) {
+            /* @var $field RevisionField */
+            $value = $field->getValue();
+
+            try {
+                if ($format === 'html') {
+                    $value = $this->renderService->render($value);
+                }
+            } catch (RuntimeException $e) {
+                // nothing to do
+            }
+
+            $item['content'][$field->getName()] = $value;
+        }
+
+        return new JsonModel($item);
+    }
+
     protected function normalize(Collection $collection)
     {
         $data = [];
@@ -165,7 +195,7 @@ class ApiController extends AbstractController
             $categories[$i] = '';
             while ($term->hasParent()) {
                 $categories[$i] = $term->getName() . '/' . $categories[$i];
-                $term = $term->getParent();
+                $term           = $term->getParent();
             }
             $categories[$i] = substr($categories[$i], 0, -1);
             $i++;

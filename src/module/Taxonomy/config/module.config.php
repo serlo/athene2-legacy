@@ -65,6 +65,15 @@ return [
                     ]
                 ],
                 'child_routes' => [
+                    'terms'    => [
+                        'type'    => 'Segment',
+                        'options' => [
+                            'route'    => '/terms/:id',
+                            'defaults' => [
+                                'action' => 'term'
+                            ]
+                        ]
+                    ],
                     'types' => [
                         'type'          => 'Segment',
                         'options'       => [

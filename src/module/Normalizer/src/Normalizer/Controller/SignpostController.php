@@ -10,8 +10,12 @@
  */
 namespace Normalizer\Controller;
 
+use Attachment\Entity\Container;
+use Discussion\Entity\CommentInterface;
+use Entity\Entity\EntityInterface;
 use Normalizer\Exception\RuntimeException;
 use Normalizer\NormalizerAwareTrait;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Uuid\Exception\NotFoundException;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Http\Request;
@@ -79,6 +83,28 @@ class SignpostController extends AbstractActionController
         $view->setTemplate('normalizer/ref');
         $view->setTerminal(true);
         return $view;
+    }
+
+    public function metaAction()
+    {
+        $object = $this->getUuidManager()->getUuid($this->params('id'), false);
+
+        if($object instanceof EntityInterface) {
+            $type = 'entity';
+        } elseif ($object instanceof Container) {
+            $type = 'attachment';
+        } elseif ($object instanceof CommentInterface) {
+            $type = 'comment';
+        } elseif ($object instanceof TaxonomyTermInterface) {
+            $type = 'taxonomyTerm';
+        } else {
+            $type = 'Could not detect type';
+        }
+
+        return new JsonModel([
+            'id' => $object->getId(),
+            'type' => $type
+        ]);
     }
 
     public function refAction()

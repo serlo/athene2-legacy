@@ -53,4 +53,9 @@ interface RevisionInterface extends VersioningRevision, InstanceProviderInterfac
      * @return RevisionField
      */
     public function set($name, $value);
+
+    /**
+     * @return RevisionField[]
+     */
+    public function getFields();
 }

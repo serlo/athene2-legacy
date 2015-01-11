@@ -13,6 +13,26 @@ namespace Entity;
 return [
     'router' => [
         'routes' => [
+            'entities' => [
+                'type'    => 'segment',
+                'options' => [
+                    'route'    => '/entities',
+                    'defaults' => [
+                        'controller' => __NAMESPACE__ . '\Controller\ApiController'
+                    ]
+                ],
+                'child_routes' => [
+                    'entities' => [
+                        'type'    => 'segment',
+                        'options' => [
+                            'route'    => '/:id',
+                            'defaults' => [
+                                'action' => 'entity'
+                            ]
+                        ],
+                    ],
+                ]
+            ],
             'entity' => [
                 'type'         => 'literal',
                 'options'      => [

@@ -76,6 +76,16 @@ return [
     ],
     'router'          => [
         'routes' => [
+            'meta' => [
+                'type'    => 'segment',
+                'options' => [
+                    'route'    => '/meta/:id',
+                    'defaults' => [
+                        'controller' => __NAMESPACE__ . '\Controller\SignpostController',
+                        'action'     => 'meta'
+                    ]
+                ]
+            ],
             'normalizer' => [
                 'type'         => 'segment',
                 'options'      => [

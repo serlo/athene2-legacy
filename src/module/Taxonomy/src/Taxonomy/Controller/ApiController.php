@@ -58,6 +58,14 @@ class ApiController extends AbstractController
         return $view;
     }
 
+    public function termAction()
+    {
+        $type     = $this->params('id');
+        $taxonomy = $this->getTaxonomyManager()->getTerm($type);
+        $view     = new JsonModel($this->ajaxify($taxonomy));
+        return $view;
+    }
+
     public function saplingsAction()
     {
         $type     = $this->params('type');
@@ -74,16 +82,24 @@ class ApiController extends AbstractController
     protected function ajaxify(TaxonomyTermInterface $term)
     {
         $data = [
-            'id'       => $term->getId(),
-            'name'     => $term->getName(),
-            'taxonomy' => $term->getTaxonomy()->getId(),
-            'url'      => $this->url()->fromRoute('uuid/get', ['uuid' => $term->getId()]),
-            'parent'   => $term->hasParent() ? $term->getParent()->getId() : null,
-            'children' => []
+            'id'           => $term->getId(),
+            'name'         => $term->getName(),
+            'taxonomy'     => $term->getTaxonomy()->getId(),
+            'url'          => $this->url()->fromRoute('uuid/get', ['uuid' => $term->getId()]),
+            'parent'       => $term->hasParent() ? $term->getParent()->getId() : null,
+            'children'     => [],
+            'items'        => []
         ];
 
         foreach ($term->getChildren() as $child) {
             $data['children'][] = $this->ajaxify($child);
+        }
+
+        foreach ($term->getAssociated('entities') as $child) {
+            $data['children'][] = [
+                'id'   => $child->getId(),
+                'type' => 'entity'
+            ];
         }
 
         return $data;
