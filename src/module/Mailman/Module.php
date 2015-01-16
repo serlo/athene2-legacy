@@ -89,7 +89,6 @@ class Module
     protected function injectServerUrl(ServerUrl $serverUrlHelper, ModuleOptions $moduleOptions){
         $options = parse_url($moduleOptions->getLocation());
         $serverUrlHelper->setScheme($options['scheme']);
-        $serverUrlHelper->setPort(isset($options['port']) ? $options['port'] : 80);
         $serverUrlHelper->setHost($options['host']);
     }
 }
