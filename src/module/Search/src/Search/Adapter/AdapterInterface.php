@@ -15,18 +15,12 @@ use Zend\Paginator\Paginator;
 
 interface AdapterInterface extends Flushable
 {
+
     /**
-     * @param int      $id
-     * @param string   $title
-     * @param string   $content
-     * @param string   $type
-     * @param string   $link
-     * @param array    $keywords
-     * @param int|null $instance
+     * @param Entity\DocumentInterface $solrDocument
      * @return void
-     * @throws \Exception
      */
-    public function add($id, $title, $content, $type, $link, array $keywords, $instance = null);
+    public function add(Entity\DocumentInterface $solrDocument);
 
     /**
      * Deletes an object by it's id

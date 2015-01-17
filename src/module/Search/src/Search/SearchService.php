@@ -12,6 +12,7 @@ namespace Search;
 use Search\Adapter\AdapterInterface;
 use Search\Options\ModuleOptions;
 use Search\Provider\ProviderPluginManager;
+use Search\Exception\InvalidArgumentException;
 
 class SearchService implements SearchServiceInterface
 {
@@ -48,18 +49,35 @@ class SearchService implements SearchServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function add($id, $title, $content, $type, $link, array $keywords, $instance = null)
+    public function add($object)
     {
-        //var_dump([$id, $title, $content, $type, $link, $keywords, $instance]);
-        $this->adapter->add($id, $title, $content, $type, $link, $keywords, $instance);
+        $providers = $this->moduleOptions->getProviders();
+        foreach ($providers as $provider) {
+            /* @var $provider Provider\ProviderInterface */
+            $provider = $this->providerPluginManager->get($provider);
+            try {
+                $document = $provider->toDocument($object);
+                $this->adapter->add($document);
+            } catch (InvalidArgumentException $e) {
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function delete($id)
+    public function delete($object)
     {
-        $this->adapter->delete($id);
+        $providers = $this->moduleOptions->getProviders();
+        foreach ($providers as $provider) {
+            /* @var $provider Provider\ProviderInterface */
+            $provider = $this->providerPluginManager->get($provider);
+            try {
+                $id = $provider->getId($object);
+                $this->adapter->delete($id);
+            } catch (InvalidArgumentException $e) {
+            }
+        }
     }
 
     /**
@@ -93,15 +111,7 @@ class SearchService implements SearchServiceInterface
             $provider = $this->providerPluginManager->get($provider);
             $results  = $provider->provide();
             foreach ($results as $result) {
-                $this->add(
-                    $result->getId(),
-                    $result->getTitle(),
-                    $result->getContent(),
-                    $result->getType(),
-                    $result->getLink(),
-                    $result->getKeywords(),
-                    $result->getInstance()
-                );
+                $this->adapter->add($result);
             }
         }
     }

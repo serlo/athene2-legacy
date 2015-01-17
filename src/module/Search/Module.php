@@ -9,8 +9,15 @@
  */
 namespace Search;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
+    public static $listeners = [
+        'Search\Listener\RepositoryManagerListener',
+        'Search\Listener\TaxonomyManagerListener',
+        'Search\Listener\UuidManagerListener',
+    ];
 
     public function getConfig()
     {
@@ -37,5 +44,22 @@ class Module
         }
 
         return $autoloader;
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatchRegisterListeners'), 1000);
+    }
+
+    public function onDispatchRegisterListeners(MvcEvent $e)
+    {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        foreach (self::$listeners as $listener) {
+            $sharedEventManager->attachAggregate(
+                $e->getApplication()->getServiceManager()->get($listener)
+            );
+        }
     }
 }

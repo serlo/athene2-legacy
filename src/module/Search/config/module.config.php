@@ -17,8 +17,11 @@ return [
             'Search\Adapter\ProviderPluginManager'
         ],
         'factories'  => [
-            __NAMESPACE__ . '\SearchService'         => __NAMESPACE__ . '\Factory\SearchServiceFactory',
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\SearchService'                      => __NAMESPACE__ . '\Factory\SearchServiceFactory',
+            __NAMESPACE__ . '\Options\ModuleOptions'              => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Listener\RepositoryManagerListener' => __NAMESPACE__ . '\Factory\RepositoryManagerListenerFactory',
+            __NAMESPACE__ . '\Listener\UuidManagerListener'       => __NAMESPACE__ . '\Factory\UuidManagerListenerFactory',
+            __NAMESPACE__ . '\Listener\TaxonomyManagerListener'   => __NAMESPACE__ . '\Factory\TaxonomyManagerListenerFactory',
         ]
     ],
     'di'              => [
@@ -57,7 +60,7 @@ return [
             __NAMESPACE__ . '\Provider\TaxonomyProvider',
         ]
     ],
-    'console' => [
+    'console'         => [
         'router' => [
             'routes' => [
                 'search' => [
@@ -85,7 +88,7 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [
-                    'ajax'    => [
+                    'ajax' => [
                         'type'    => 'literal',
                         'options' => [
                             'route'    => '/ajax',

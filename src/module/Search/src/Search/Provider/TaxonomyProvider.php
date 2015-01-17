@@ -18,6 +18,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Uuid\Filter\NotTrashedCollectionFilter;
 use Zend\Mvc\Router\RouteInterface;
+use Search\Exception\InvalidArgumentException;
 
 class TaxonomyProvider implements ProviderInterface
 {
@@ -39,6 +40,55 @@ class TaxonomyProvider implements ProviderInterface
         $this->router          = $router;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getId($object)
+    {
+        if (!$object instanceof TaxonomyTermInterface) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected TaxonomyTermInterface but got %s',
+                is_object($object) ? get_class($object) : gettype($object)
+            ));
+        }
+        return $object->getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toDocument($object)
+    {
+        if (!$object instanceof TaxonomyTermInterface) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected TaxonomyTermInterface but got %s',
+                is_object($object) ? get_class($object) : gettype($object)
+            ));
+        }
+        $normalized = $this->normalizer->normalize($object);
+        $id         = $object->getId();
+        $title      = $object->getName();
+        $content    = $object->getDescription();
+        $type       = $object->getType();
+        $link       = $this->router->assemble(
+            $normalized->getRouteParams(),
+            ['name' => $normalized->getRouteName()]
+        );
+        $keywords   = $normalized->getMetadata()->getKeywords();
+        $instance   = $object->getInstance()->getId();
+
+        try {
+            $content = $this->renderService->render($content);
+        } catch (RuntimeException $e) {
+            // Could not render -> nothing to do.
+        }
+
+        return new Document($id, $title, $content, $type, $link, $keywords, $instance);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function provide()
     {
         $container = [];
@@ -47,24 +97,7 @@ class TaxonomyProvider implements ProviderInterface
         $terms     = $filter->filter($terms);
         /* @var $term TaxonomyTermInterface */
         foreach ($terms as $term) {
-            $normalized = $this->normalizer->normalize($term);
-            $id         = $term->getId();
-            $title      = $term->getName();
-            $content    = $term->getDescription();
-            $type       = $term->getType();
-            $link       = $this->router->assemble(
-                $normalized->getRouteParams(),
-                ['name' => $normalized->getRouteName()]
-            );
-            $keywords   = $normalized->getMetadata()->getKeywords();
-            $instance   = $term->getInstance()->getId();
-
-            try {
-                $content = $this->renderService->render($content);
-            } catch (RuntimeException $e) {
-                // Could not render -> nothing to do.
-            }
-            $result      = new Document($id, $title, $content, $type, $link, $keywords, $instance);
+            $result      = $this->toDocument($term);
             $container[] = $result;
         }
         return $container;

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-sudo cp /var/www/dist/solr/data-config.xml /etc/solr/config/data-config.xml
-sudo cp /var/www/dist/solr/data-config.xml /etc/solr/config/data-config.xml
+sudo cp /var/www/dist/solr/data-config.xml /etc/solr/conf/data-config.xml
+sudo cp /var/www/dist/solr/schema.xml /etc/solr/conf/schema.xml
 sudo su - root -c "(cd /var/www/src/assets;npm cache clean)"
 sudo su - root -c "cd /home/vagrant/athene2-assets/;npm update"
 sudo su - www-data -c "(cd /var/www/src/assets;bower cache clean)"

@@ -15,25 +15,19 @@ use Zend\Paginator\Paginator;
 interface SearchServiceInterface extends Flushable
 {
     /**
-     * @param int      $id
-     * @param string   $title
-     * @param string   $content
-     * @param string   $type
-     * @param string   $link
-     * @param array    $keywords
-     * @param int|null $instance
+     * @param object $object
      * @return void
      * @throws \Exception
      */
-    public function add($id, $title, $content, $type, $link, array $keywords, $instance = null);
+    public function add($object);
 
     /**
-     * Deletes an object by it's id
+     * Deletes an object
      *
-     * @param int $id
+     * @param object $object
      * @return void
      */
-    public function delete($id);
+    public function delete($object);
 
     /**
      * Deletes all entries from the index

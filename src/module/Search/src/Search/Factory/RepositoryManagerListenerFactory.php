@@ -8,23 +8,20 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Search\Listener;
+namespace Search\Factory;
 
-use Common\Listener\AbstractSharedListenerAggregate;
-use Search\SearchServiceInterface;
+use Search\Listener\UuidManagerListener;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-abstract class AbstractListener extends AbstractSharedListenerAggregate
+class RepositoryManagerListenerFactory implements FactoryInterface
 {
     /**
-     * @var SearchServiceInterface
+     * {@inheritDoc}
      */
-    protected $searchService;
-
-    /**
-     * @param SearchServiceInterface $searchService
-     */
-    function __construct(SearchServiceInterface $searchService)
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->searchService = $searchService;
+        $searchService = $serviceLocator->get('Search\SearchService');
+        return new UuidManagerListener($searchService);
     }
 }

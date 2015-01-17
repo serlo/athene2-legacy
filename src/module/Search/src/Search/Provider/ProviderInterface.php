@@ -11,6 +11,7 @@
 namespace Search\Provider;
 
 use Search\Entity\DocumentInterface;
+use Search\Exception\InvalidArgumentException;
 
 interface ProviderInterface
 {
@@ -18,4 +19,21 @@ interface ProviderInterface
      * @return DocumentInterface[]
      */
     public function provide();
+
+    /**
+     * Converts an object into a Document
+     *
+     * @param object $object
+     * @return DocumentInterface
+     * @throws InvalidArgumentException
+     */
+    public function toDocument($object);
+
+    /**
+     * Returns the object's ID
+     *
+     * @param object $object
+     * @return int
+     */
+    public function getId($object);
 }

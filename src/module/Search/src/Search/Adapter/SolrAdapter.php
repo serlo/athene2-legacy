@@ -84,21 +84,30 @@ class SolrAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function add($id, $title, $content, $type, $link, array $keywords, $instance = null)
+    public function add(Entity\DocumentInterface $document)
     {
-        $keywords               = implode(self::KEYWORD_DELIMITER, $keywords);
-        $update                 = $this->update = $this->client->createUpdate();
-        $document               = $update->createDocument();
-        $document->id           = (string)$id;
-        $document->title        = (string)$title;
-        $document->content      = (string)$content;
-        $document->content_type = (string)$type;
-        $document->keywords     = (string)$keywords;
-        $document->link         = (string)$link;
-        $document->instance     = (string)$instance;
+        $id       = $document->getId();
+        $title    = $document->getTitle();
+        $content  = $document->getContent();
+        $type     = $document->getType();
+        $link     = $document->getLink();
+        $keywords = $document->getKeywords();
+        $instance = $document->getInstance();
+
+        $keywords = implode(self::KEYWORD_DELIMITER, $keywords);
+        $update   = $this->update = $this->client->createUpdate();
+
+        $solrDocument               = $update->createDocument();
+        $solrDocument->id           = (string)$id;
+        $solrDocument->title        = (string)$title;
+        $solrDocument->content      = (string)$content;
+        $solrDocument->content_type = (string)$type;
+        $solrDocument->keywords     = (string)$keywords;
+        $solrDocument->link         = (string)$link;
+        $solrDocument->instance     = (string)$instance;
 
         $update->addDeleteById($id);
-        $update->addDocument($document);
+        $update->addDocument($solrDocument);
         $update->addCommit();
         $this->flush();
     }
@@ -141,7 +150,7 @@ class SolrAdapter implements AdapterInterface
      */
     public function search($query)
     {
-        $query = $result = preg_replace('@([\+\-\&\|\!\(\)\{\}\[\]\^\"\~\*\?\:])@is', '\\\1', $query);
+        $query      = $result = preg_replace('@([\+\-\&\|\!\(\)\{\}\[\]\^\"\~\*\?\:])@is', '\\\1', $query);
         $queryClass = $this->client->createSelect();
         $instance   = $this->instanceManager->getInstanceFromRequest();
         $queryClass->createFilterQuery('ínstanceFilter')->setQuery('instance:(' . $instance->getId() . ')');

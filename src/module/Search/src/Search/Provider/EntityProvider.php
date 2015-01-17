@@ -24,6 +24,7 @@ use Versioning\Filter\HasCurrentRevisionCollectionFilter;
 use Zend\Filter\FilterChain;
 use Zend\Filter\StripTags;
 use Zend\Mvc\Router\RouteInterface;
+use Search\Exception\InvalidArgumentException;
 
 class EntityProvider implements ProviderInterface
 {
@@ -52,6 +53,11 @@ class EntityProvider implements ProviderInterface
     protected $router;
 
     /**
+     * @var StripTags
+     */
+    protected $stripTags;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param ModuleOptions          $options
      * @param NormalizerInterface    $normalizer
@@ -70,6 +76,55 @@ class EntityProvider implements ProviderInterface
         $this->options       = $options;
         $this->normalizer    = $normalizer;
         $this->router        = $router;
+        $this->stripTags     = new StripTags();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getId($object)
+    {
+        if (!$object instanceof EntityInterface) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected TaxonomyTermInterface but got %s',
+                is_object($object) ? get_class($object) : gettype($object)
+            ));
+        }
+        return $object->getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toDocument($object)
+    {
+        if (!$object instanceof EntityInterface) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected TaxonomyTermInterface but got %s',
+                is_object($object) ? get_class($object) : gettype($object)
+            ));
+        }
+        $normalized = $this->normalizer->normalize($object);
+        $id         = $object->getId();
+        $instance   = $object->getInstance()->getId();
+        $title      = $normalized->getTitle();
+        $content    = $normalized->getContent();
+        $keywords   = $normalized->getMetadata()->getKeywords();
+        $type       = $object->getType()->getName();
+        $link       = $this->router->assemble(
+            $normalized->getRouteParams(),
+            ['name' => $normalized->getRouteName()]
+        );
+
+        try {
+            $content = $this->renderService->render($content);
+        } catch (RuntimeException $e) {
+            // Could not render -> nothing to do.
+        }
+
+        $content = $this->stripTags->filter($content);
+
+        return new Document($id, $title, $content, $type, $link, $keywords, $instance);
     }
 
     /**
@@ -101,35 +156,18 @@ class EntityProvider implements ProviderInterface
         return $container;
     }
 
+    /**
+     * @param Collection $collection
+     * @param array      $container
+     * @return void
+     */
     protected function addEntitiesToContainer(
         Collection $collection,
         array &$container
     ) {
-        $stripTags = new StripTags();
         /* @var $entity EntityInterface */
         foreach ($collection as $entity) {
-            $normalized = $this->normalizer->normalize($entity);
-            $id         = $entity->getId();
-            $instance   = $entity->getInstance()->getId();
-            $title      = $normalized->getTitle();
-            $content    = $normalized->getContent();
-            $keywords   = $normalized->getMetadata()->getKeywords();
-            $type       = $entity->getType()->getName();
-            $link       = $this->router->assemble(
-                $normalized->getRouteParams(),
-                ['name' => $normalized->getRouteName()]
-            );
-
-            try {
-                $content = $this->renderService->render($content);
-            } catch (RuntimeException $e) {
-                // Could not render -> nothing to do.
-            }
-
-            $content = $stripTags->filter($content);
-
-            $result      = new Document($id, $title, $content, $type, $link, $keywords, $instance);
-            $container[] = $result;
+            $container[] = $this->toDocument($entity);
         }
     }
 }
