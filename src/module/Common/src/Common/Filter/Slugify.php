@@ -13,11 +13,10 @@ use Zend\Filter\FilterInterface;
 
 class Slugify implements FilterInterface
 {
-    public function filter($value)
-    {
-        return self::slugify($value);
-    }
-
+    /**
+     * @param string $text
+     * @return bool|mixed
+     */
     static protected function slugify($text)
     {
         // replace non letter or digits by -
@@ -42,6 +41,11 @@ class Slugify implements FilterInterface
         return $text;
     }
 
+    /**
+     * @param string $str
+     * @param string $delimiter
+     * @return mixed|string
+     */
     static protected function toAscii($str, $delimiter = '-')
     {
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
@@ -50,5 +54,13 @@ class Slugify implements FilterInterface
         $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
 
         return $clean;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function filter($value)
+    {
+        return self::slugify($value);
     }
 }

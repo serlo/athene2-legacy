@@ -14,6 +14,7 @@ use Alias\Exception;
 use Alias\Options\ManagerOptions;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
+use Common\Filter\Shortify;
 use Common\Filter\Slugify;
 use Common\Traits;
 use DateTime;
@@ -230,9 +231,9 @@ class AliasManager implements AliasManagerInterface
 
         /* @var $entity Entity\AliasInterface */
         $criteria = ['alias' => $alias];
-        $order   = ['timestamp' => 'DESC'];
-        $results = $this->getAliasRepository()->findBy($criteria, $order);
-        $entity  = current($results);
+        $order    = ['timestamp' => 'DESC'];
+        $results  = $this->getAliasRepository()->findBy($criteria, $order);
+        $entity   = current($results);
 
         if (!is_object($entity)) {
             $this->storage->setItem($key, self::CACHE_NONEXISTENT);
@@ -321,11 +322,14 @@ class AliasManager implements AliasManagerInterface
 
     protected function slugify($text)
     {
-        $filter    = new Slugify();
+        $slugify   = new Slugify();
+        $shortify  = new Shortify();
         $slugified = [];
 
         foreach (explode('/', $text) as $token) {
-            $slugified[] = $filter->filter($token);
+            $text        = $slugify->filter($token);
+            $text        = $shortify->filter($text);
+            $slugified[] = $text;
         }
 
         $text = implode('/', $slugified);

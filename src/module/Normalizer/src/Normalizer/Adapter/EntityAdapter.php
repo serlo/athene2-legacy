@@ -45,7 +45,7 @@ class EntityAdapter extends AbstractAdapter
         return $this->getField(['summary', 'description', 'content']);
     }
 
-    protected function getField($field)
+    protected function getField($field, $default = '')
     {
         $entity = $this->getObject();
         $id     = $entity->getId();
@@ -67,7 +67,7 @@ class EntityAdapter extends AbstractAdapter
         $revision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : $entity->getHead();
 
         if (!$revision) {
-            return $id;
+            return $default;
         }
 
         $value = $revision->get($field);
@@ -124,7 +124,7 @@ class EntityAdapter extends AbstractAdapter
 
     protected function getTitle()
     {
-        return $this->getField(['title', 'id']);
+        return $this->getField(['title', 'id'], $this->getId());
     }
 
     protected function getType()
