@@ -40,4 +40,3 @@ class SessionController extends AbstractActionController
         return 'success';
     }
 }
- 

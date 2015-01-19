@@ -39,4 +39,3 @@ class Encrypt extends AbstractHelper
         );
     }
 }
- 

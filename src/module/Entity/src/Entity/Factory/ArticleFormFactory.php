@@ -18,4 +18,3 @@ class ArticleFormFactory extends AbstractFormFactory
         return 'Entity\Form\ArticleForm';
     }
 }
- 

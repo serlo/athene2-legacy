@@ -64,4 +64,3 @@ class UuidManagerListener extends AbstractListener
         return 'Uuid\Manager\UuidManager';
     }
 }
- 

@@ -13,4 +13,3 @@ namespace Instance\Exception;
 class RuntimeException extends \RuntimeException
 {
 }
- 

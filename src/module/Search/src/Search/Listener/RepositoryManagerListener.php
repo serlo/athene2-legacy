@@ -50,4 +50,3 @@ class RepositoryManagerListener extends AbstractListener
         return 'Versioning\RepositoryManager';
     }
 }
- 

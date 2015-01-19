@@ -18,4 +18,3 @@ class TextSolutionFormFactory extends AbstractFormFactory
         return 'Entity\Form\TextSolutionForm';
     }
 }
- 

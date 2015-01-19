@@ -35,4 +35,3 @@ class SessionControllerFactory implements FactoryInterface
         return new SessionController($saveHandler, $config);
     }
 }
- 

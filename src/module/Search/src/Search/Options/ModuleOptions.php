@@ -56,4 +56,3 @@ class ModuleOptions extends AbstractOptions
         $this->providers = $providers;
     }
 }
- 

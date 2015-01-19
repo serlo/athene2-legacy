@@ -241,4 +241,3 @@ class Module
         $this->knownClasses = array_unique($scanner->getClassNames());
     }
 }
- 

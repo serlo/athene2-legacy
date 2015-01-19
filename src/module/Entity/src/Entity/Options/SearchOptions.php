@@ -45,4 +45,3 @@ class SearchOptions extends AbstractOptions implements ComponentOptionsInterface
         return $key === 'search';
     }
 }
- 

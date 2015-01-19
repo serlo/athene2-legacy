@@ -18,4 +18,3 @@ class VideoFormFactory extends AbstractFormFactory
         return 'Entity\Form\VideoForm';
     }
 }
- 

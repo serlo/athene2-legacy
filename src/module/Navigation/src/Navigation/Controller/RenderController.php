@@ -92,4 +92,3 @@ class RenderController extends AbstractController
         return $view;
     }
 }
- 

@@ -186,4 +186,3 @@ class Json extends Menu
         return $data;
     }
 }
- 

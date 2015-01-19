@@ -63,4 +63,3 @@ class TaxonomyManagerListener extends AbstractListener
         return 'Taxonomy\Manager\TaxonomyManager';
     }
 }
- 

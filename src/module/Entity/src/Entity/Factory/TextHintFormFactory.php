@@ -18,4 +18,3 @@ class TextHintFormFactory extends AbstractFormFactory
         return 'Entity\Form\TextHintForm';
     }
 }
- 

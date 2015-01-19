@@ -124,4 +124,3 @@ class Subscribe extends AbstractHelper
         );
     }
 }
- 

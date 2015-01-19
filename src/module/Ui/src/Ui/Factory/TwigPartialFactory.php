@@ -33,4 +33,3 @@ class TwigPartialFactory implements FactoryInterface
         return new TwigPartial($renderer);
     }
 }
- 

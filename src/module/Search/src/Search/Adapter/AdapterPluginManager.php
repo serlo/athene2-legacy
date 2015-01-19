@@ -48,4 +48,3 @@ class AdapterPluginManager extends AbstractPluginManager
         return $name;
     }
 }
- 

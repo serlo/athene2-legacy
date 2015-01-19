@@ -23,4 +23,3 @@ trait SearchServiceFactoryTrait
         return $serviceLocator->get('Search\SearchService');
     }
 }
- 

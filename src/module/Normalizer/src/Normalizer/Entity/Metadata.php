@@ -206,4 +206,3 @@ class Metadata extends AbstractOptions implements MetadataInterface
         $this->title = $title;
     }
 }
- 

@@ -18,4 +18,3 @@ class TextExerciseGroupFormFactory extends AbstractFormFactory
         return 'Entity\Form\TextExerciseGroupForm';
     }
 }
- 

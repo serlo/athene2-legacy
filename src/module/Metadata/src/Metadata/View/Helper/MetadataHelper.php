@@ -70,4 +70,3 @@ class MetadataHelper extends AbstractHelper
         return $this;
     }
 }
- 

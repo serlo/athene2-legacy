@@ -18,4 +18,3 @@ class ModulePageFormFactory extends AbstractFormFactory
         return 'Entity\Form\ModulePageForm';
     }
 }
- 

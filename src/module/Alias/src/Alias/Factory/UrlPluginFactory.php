@@ -33,4 +33,3 @@ class UrlPluginFactory implements FactoryInterface
         return new Url($aliasManager, $instanceManager);
     }
 }
- 

@@ -227,4 +227,3 @@ class InstanceAwareEntityManager extends EntityManager
         return $this;
     }
 }
- 

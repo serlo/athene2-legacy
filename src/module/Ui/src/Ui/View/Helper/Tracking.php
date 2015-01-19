@@ -54,4 +54,3 @@ class Tracking extends AbstractHelper
         return $this->options->getCode();
     }
 }
- 
